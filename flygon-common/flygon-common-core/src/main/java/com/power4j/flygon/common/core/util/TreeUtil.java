@@ -16,6 +16,7 @@
 
 package com.power4j.flygon.common.core.util;
 
+import com.power4j.flygon.common.core.model.TreeNode;
 import lombok.experimental.UtilityClass;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ import java.util.stream.Collectors;
  * <p>
  *
  * @author CJ (power4j@outlook.com)
- * @date 11/17/20
+ * @date 2020-11-17
  * @since 1.0
  */
 @UtilityClass
@@ -61,7 +62,8 @@ public class TreeUtil {
 	 * @param predicate
 	 * @return
 	 */
-	public List<TreeNode> search(Collection<? extends TreeNode> nodes, final Predicate<? super TreeNode> predicate) {
+	public List<TreeNode> simpleSearch(Collection<? extends TreeNode> nodes,
+			final Predicate<? super TreeNode> predicate) {
 		return nodes.stream().filter(predicate::test).collect(Collectors.toList());
 	}
 
@@ -75,14 +77,14 @@ public class TreeUtil {
 	 * @param out 集合容器，保存收集结果
 	 * @return
 	 */
-	public Collection<TreeNode> filterNode(TreeNode root, final Predicate<? super TreeNode> predicate,
+	public Collection<TreeNode> findChildren(TreeNode root, final Predicate<? super TreeNode> predicate,
 			Collection<TreeNode> out) {
 		if (predicate.test(root)) {
 			out.add(root);
 		}
 		if (root.getChildren() != null && !root.getChildren().isEmpty()) {
 			for (TreeNode node : root.getChildren()) {
-				filterNode(node, predicate, out);
+				findChildren(node, predicate, out);
 			}
 		}
 		return out;
@@ -95,9 +97,9 @@ public class TreeUtil {
 	 * @param out
 	 * @return
 	 */
-	public Collection<TreeNode> filterNode(Collection<TreeNode> nodes, final Predicate<? super TreeNode> predicate,
+	public Collection<TreeNode> findChildren(Collection<TreeNode> nodes, final Predicate<? super TreeNode> predicate,
 			Collection<TreeNode> out) {
-		nodes.forEach(o -> filterNode(o, predicate, out));
+		nodes.forEach(o -> findChildren(o, predicate, out));
 		return out;
 	}
 
@@ -106,9 +108,9 @@ public class TreeUtil {
 	 * @param root
 	 * @return
 	 */
-	public List<? extends TreeNode> treeToList(TreeNode root) {
+	public List<? extends TreeNode> flattenTree(TreeNode root) {
 		List<TreeNode> list = new ArrayList<>();
-		filterNode(root, o -> true, list);
+		findChildren(root, o -> true, list);
 		return list;
 	}
 
@@ -117,8 +119,8 @@ public class TreeUtil {
 	 * @param root
 	 * @return
 	 */
-	public Collection<? extends TreeNode> collect(TreeNode root, Collection<TreeNode> out) {
-		return filterNode(root, o -> true, out);
+	public Collection<? extends TreeNode> flattenTree(TreeNode root, Collection<TreeNode> out) {
+		return findChildren(root, o -> true, out);
 	}
 
 	/**
@@ -126,8 +128,8 @@ public class TreeUtil {
 	 * @param root
 	 * @return
 	 */
-	public Collection<? extends TreeNode> treeLeafs(TreeNode root) {
-		return filterNode(root, o -> (o.getChildren() == null || o.getChildren().isEmpty()), new ArrayList<>());
+	public Collection<? extends TreeNode> getLeafNode(TreeNode root) {
+		return findChildren(root, o -> (o.getChildren() == null || o.getChildren().isEmpty()), new ArrayList<>());
 	}
 
 	/**

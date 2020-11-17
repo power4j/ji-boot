@@ -28,7 +28,7 @@
   <modules>
     <module>flygon-common-core</module>
     <module>flygon-common-data</module>
-    <module>flygon-common-swagger</module>
+    <module>flygon-common-open-api</module>
     <module>flygon-common-security</module>
   </modules>
 </project>

@@ -25,7 +25,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * @author CJ (power4j@outlook.com)
- * @date 2020/11/13
+ * @date 2020-11-13
  * @since 1.0
  */
 @Documented

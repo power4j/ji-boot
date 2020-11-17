@@ -68,17 +68,23 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-configuration-processor</artifactId>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <optional>true</optional>
     </dependency>
-    <dependency>
+    <!--<dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -86,7 +92,7 @@
   <modules>
     <module>flygon-bom</module>
     <module>flygon-common</module>
-    <!--<module>flygon-admin</module>-->
+    <module>flygon-admin</module>
   </modules>
 
   <dependencyManagement>
@@ -109,8 +115,19 @@
   </dependencyManagement>
 
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
     <pluginManagement>
       <plugins>
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+          <version>${spring-boot.version}</version>
+        </plugin>
         <!-- deploy-plugin -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -123,6 +140,18 @@
       </plugins>
     </pluginManagement>
     <plugins>
+      <plugin>
+        <!-- resources-plugin -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.7</version>
+        <configuration>
+          <delimiters>
+            <delimiter>@</delimiter>
+          </delimiters>
+          <useDefaultDelimiters>false</useDefaultDelimiters>
+        </configuration>
+      </plugin>
       <!-- source-plugin -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

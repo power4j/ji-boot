@@ -21,7 +21,7 @@ package com.power4j.flygon.common.core.constant;
  * <p>
  *
  * @author CJ (power4j@outlook.com)
- * @date 11/17/20
+ * @date 2020-11-17
  * @since 1.0
  */
 public interface DateTimePattern {

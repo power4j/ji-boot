@@ -20,7 +20,11 @@ import cn.hutool.core.lang.Pair;
 import com.power4j.flygon.common.core.constant.DateTimePattern;
 import lombok.experimental.UtilityClass;
 
-import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.MonthDay;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +35,7 @@ import java.util.Optional;
  * <p>
  *
  * @author CJ (power4j@outlook.com)
- * @date 11/17/20
+ * @date 2020-11-17
  * @since 1.0
  */
 @UtilityClass
@@ -65,7 +69,7 @@ public class DateTimeParser {
 
 	static {
 
-		// @formatter: off
+		// @formatter:off
 
 		YEAR_MONTH_FORMAT_REGISTRY.add(new Pair<>("^\\d{4}-\\d{2}$", DEFAULT_YEAR_MONTH_FORMATTER));
 		YEAR_MONTH_FORMAT_REGISTRY.add(new Pair<>("^\\d{4} {1}\\d{2}$", DateTimeFormatter.ofPattern("yyyy MM")));
@@ -90,7 +94,7 @@ public class DateTimeParser {
 		DATE_TIME_FORMAT_REGISTRY.add(new Pair<>("^\\d{8} {1}\\d{6}$", DateTimeFormatter.ofPattern("yyyyMMdd HHmmss")));
 		DATE_TIME_FORMAT_REGISTRY.add(new Pair<>("^\\d{14}$", DateTimeFormatter.ofPattern("yyyyMMddHHmmss")));
 
-		// @formatter: on
+		// @formatter:on
 
 	}
 

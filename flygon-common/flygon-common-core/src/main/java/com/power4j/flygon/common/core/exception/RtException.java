@@ -17,11 +17,11 @@
 package com.power4j.flygon.common.core.exception;
 
 /**
- * 通用异常，该异常的子类会被转换为 {@code Rt} 返回给客户端
+ * 通用异常，该异常的子类会被全局异常处理器处理
  * <p>
  *
  * @author CJ (power4j@outlook.com)
- * @date 11/17/20
+ * @date 2020-11-17
  * @since 1.0
  */
 public class RtException extends RuntimeException {

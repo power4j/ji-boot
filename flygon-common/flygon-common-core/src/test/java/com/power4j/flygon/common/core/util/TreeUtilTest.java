@@ -16,6 +16,7 @@
 
 package com.power4j.flygon.common.core.util;
 
+import com.power4j.flygon.common.core.model.TreeNode;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +24,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class TreeUtilTest {
 
@@ -69,17 +70,17 @@ public class TreeUtilTest {
 		assertEquals(fullTree.size(), 2);
 
 		List<TreeNode> nodeList = new ArrayList<>(10);
-		fullTree.forEach(o -> nodeList.addAll(TreeUtil.treeToList(o)));
+		fullTree.forEach(o -> nodeList.addAll(TreeUtil.flattenTree(o)));
 		assertEquals(nodeList.size(), allNode.size());
 
 		List<TreeNode> leafList = new ArrayList<>(10);
-		fullTree.forEach(o -> leafList.addAll(TreeUtil.treeLeafs(o)));
+		fullTree.forEach(o -> leafList.addAll(TreeUtil.getLeafNode(o)));
 		assertEquals(leafList.size(), 4);
 	}
 
 	@Test
 	public void search() {
-		List<TreeNode> found = TreeUtil.search(allNode, o -> o.getParentId() == ROOT_ID);
+		List<TreeNode> found = TreeUtil.simpleSearch(allNode, o -> o.getParentId() == ROOT_ID);
 		assertEquals(found.size(), 2);
 	}
 

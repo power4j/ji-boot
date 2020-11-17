@@ -16,13 +16,12 @@
 
 package com.power4j.flygon.common.data.scope;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 /**
  * @author CJ (power4j@outlook.com)
- * @date 2020/11/13
+ * @date 2020-11-13
  * @since 1.0
  */
 @Data
