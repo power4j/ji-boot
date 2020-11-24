@@ -16,9 +16,15 @@ import com.power4j.flygon.common.core.model.PageData;
 import com.power4j.flygon.common.core.model.PageRequest;
 import com.power4j.flygon.common.data.crud.CrudUtil;
 import com.power4j.flygon.common.data.crud.service.impl.AbstractCrudService;
+import com.power4j.flygon.common.security.LoginUser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * @author CJ (power4j@outlook.com)
@@ -28,6 +34,17 @@ import java.util.Arrays;
 @Service
 public class SysUserServiceImpl extends AbstractCrudService<SysUserMapper, SysUserDTO, SysUserEntity>
 		implements SysUserService {
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
+	@Override
+	public SysUserDTO create(SysUserDTO dto) {
+		SysUserEntity entity = toEntity(dto);
+		entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+		save(entity);
+		return toDto(entity);
+	}
 
 	@Override
 	public PageData<SysUserDTO> selectPage(PageRequest pageRequest, SearchSysUserVO param) {
@@ -52,4 +69,16 @@ public class SysUserServiceImpl extends AbstractCrudService<SysUserMapper, SysUs
 		return BeanUtil.toBean(dto, SysUserEntity.class, CopyOptions.create().setIgnoreProperties("slat"));
 	}
 
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		Wrapper<SysUserEntity> wrapper  = new QueryWrapper<SysUserEntity>().lambda()
+				.eq(SysUserEntity::getUsername,username);
+		SysUserEntity entity = getBaseMapper().selectOne(wrapper);
+		if(entity == null){
+			log.debug(String.format("用户不存在:{}",username));
+			throw new UsernameNotFoundException(String.format("用户不存在:{}",username));
+		}
+		LoginUser loginUser = new LoginUser(entity.getUsername(),entity.getPassword(), Collections.emptyList());
+		return loginUser;
+	}
 }

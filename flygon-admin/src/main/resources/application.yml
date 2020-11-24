@@ -8,9 +8,9 @@ spring:
     active: dev
   application:
     name: '@project.artifactId@'
-  autoconfigure:
-    exclude:
-      - "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration"
+#  autoconfigure:
+#    exclude:
+#      - "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration"
 
 springdoc:
   version: '@project.version@'
@@ -44,3 +44,4 @@ mybatis-plus:
       logic-delete-value: 1 # 逻辑已删除值(默认为 1)
       logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
   type-handlers-package:  com.power4j.flygon.common.data.mybatis.handler
+

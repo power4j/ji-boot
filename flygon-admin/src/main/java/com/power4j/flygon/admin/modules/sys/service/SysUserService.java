@@ -23,13 +23,14 @@ import com.power4j.flygon.common.core.model.PageData;
 import com.power4j.flygon.common.core.model.PageRequest;
 import com.power4j.flygon.common.data.crud.service.CrudService;
 import org.springframework.lang.Nullable;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
  * @author CJ (power4j@outlook.com)
  * @date 2020-11-19
  * @since 1.0
  */
-public interface SysUserService extends CrudService<SysUserDTO, SysUserEntity> {
+public interface SysUserService extends CrudService<SysUserDTO, SysUserEntity>, UserDetailsService {
 
 	/**
 	 * 分页查询

@@ -1,4 +1,14 @@
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always # 开发环境打开
+  info:
+    git:
+      mode: full # 开发环境打开
 
 spring:
   datasource:

@@ -49,7 +49,7 @@ public class ExceptionTranslator {
 	@ExceptionHandler(Throwable.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public ApiResponse<Object> handleException(Throwable e) {
-		log.error("未知异常", e);
+		log.error(String.format("未知异常 - %s",e.getClass().getName()), e);
 		ErrorEventUtil.publishEvent(publisher, e);
 		return ApiResponseUtil.fail(String.format("%s - %s", e.getClass().getSimpleName(), e.getMessage()));
 	}
