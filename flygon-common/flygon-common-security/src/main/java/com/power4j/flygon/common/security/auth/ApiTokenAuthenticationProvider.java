@@ -21,26 +21,32 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 @Slf4j
 @AllArgsConstructor
 public class ApiTokenAuthenticationProvider implements AuthenticationProvider {
+
 	protected final MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
+
 	private final TokenService tokenService;
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		if(authentication.isAuthenticated()){
+		if (authentication.isAuthenticated()) {
 			return authentication;
 		}
 		String tokenValue = authentication.getCredentials().toString();
-		if(StrUtil.isBlank(tokenValue)){
+		if (StrUtil.isBlank(tokenValue)) {
 			log.debug("认证失败:token为空");
-			throw new BadCredentialsException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials","无效的凭据"));
+			throw new BadCredentialsException(
+					messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "无效的凭据"));
 		}
 		Authentication savedAuthentication = tokenService.loadAuthentication(tokenValue);
-		if(savedAuthentication == null || savedAuthentication.getPrincipal() == null || !(savedAuthentication.getPrincipal() instanceof  UserDetails)){
+		if (savedAuthentication == null || savedAuthentication.getPrincipal() == null
+				|| !(savedAuthentication.getPrincipal() instanceof UserDetails)) {
 			log.debug("认证失败:无效的token");
-			throw new BadCredentialsException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials","无效的凭据"));
+			throw new BadCredentialsException(
+					messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "无效的凭据"));
 		}
-		UserDetails userDetails = (UserDetails)savedAuthentication.getPrincipal();
-		PreAuthenticatedAuthenticationToken preAuthenticatedAuthenticationToken = new PreAuthenticatedAuthenticationToken(userDetails, tokenValue,userDetails.getAuthorities());
+		UserDetails userDetails = (UserDetails) savedAuthentication.getPrincipal();
+		PreAuthenticatedAuthenticationToken preAuthenticatedAuthenticationToken = new PreAuthenticatedAuthenticationToken(
+				userDetails, tokenValue, userDetails.getAuthorities());
 		preAuthenticatedAuthenticationToken.setAuthenticated(true);
 		return preAuthenticatedAuthenticationToken;
 	}
@@ -49,4 +55,5 @@ public class ApiTokenAuthenticationProvider implements AuthenticationProvider {
 	public boolean supports(Class<?> authentication) {
 		return ApiTokenAuthentication.class.isAssignableFrom(authentication);
 	}
+
 }

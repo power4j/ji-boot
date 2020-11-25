@@ -41,7 +41,8 @@ public class MybatisPlusConfig {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public AutoFillHandler dateTimeFillHandler(){
+	public AutoFillHandler dateTimeFillHandler() {
 		return new AutoFillHandler();
 	}
+
 }

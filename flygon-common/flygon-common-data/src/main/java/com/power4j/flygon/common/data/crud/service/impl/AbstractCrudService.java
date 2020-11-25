@@ -88,4 +88,5 @@ public abstract class AbstractCrudService<M extends BaseMapper<T>, D, T> extends
 	public boolean update(D dto) {
 		return updateById(toEntity(dto));
 	}
+
 }

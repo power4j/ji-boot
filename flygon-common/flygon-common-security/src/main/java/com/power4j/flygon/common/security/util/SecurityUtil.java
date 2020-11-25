@@ -15,14 +15,15 @@ import java.util.Optional;
 @UtilityClass
 public class SecurityUtil {
 
-	public Optional<Authentication> getAuthentication(){
+	public Optional<Authentication> getAuthentication() {
 		return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication());
 	}
 
-	public Optional<LoginUser> getLoginUser(){
+	public Optional<LoginUser> getLoginUser() {
 		return getAuthentication().map(authentication -> {
 			Object principal = authentication.getPrincipal();
-			return (principal instanceof LoginUser) ? (LoginUser)principal : null;
+			return (principal instanceof LoginUser) ? (LoginUser) principal : null;
 		});
 	}
+
 }

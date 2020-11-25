@@ -1,4 +1,4 @@
-package com.power4j.flygon.common.security.constant;
+package com.power4j.flygon.common.core.constant;
 
 /**
  * @author CJ (power4j@outlook.com)
@@ -6,9 +6,11 @@ package com.power4j.flygon.common.security.constant;
  * @since 1.0
  */
 public interface SecurityConstant {
+
 	String TOKEN_ATTRIBUTE_KEY = "com.power4j.flygon.common.security.filter.ApiTokenAuthenticationFilter.filtered";
 
 	String HEADER_TOKEN_KEY = "x-api-token";
 
 	String PARAMETER_TOKEN_KEY = "x-api-token";
+
 }

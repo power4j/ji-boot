@@ -91,9 +91,15 @@
           <artifactId>knife4j-spring-boot-starter</artifactId>
           <version>${knife4j.version}</version>
       </dependency>
+      <!-- springdoc -->
       <dependency>
         <groupId>org.springdoc</groupId>
         <artifactId>springdoc-openapi-common</artifactId>
+        <version>${springdoc-openapi.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springdoc</groupId>
+        <artifactId>springdoc-openapi-webmvc-core</artifactId>
         <version>${springdoc-openapi.version}</version>
       </dependency>
       <dependency>

@@ -33,14 +33,12 @@ public class CrudUtil {
 		page.setCurrent(pageRequest.getPage());
 
 		if (CollUtil.isNotEmpty(pageRequest.getAsc())) {
-			List<OrderItem> orderItems = pageRequest.getAsc().stream()
-					.map(col -> new OrderItem(col, true))
+			List<OrderItem> orderItems = pageRequest.getAsc().stream().map(col -> new OrderItem(col, true))
 					.collect(Collectors.toList());
 			page.addOrder(orderItems);
 		}
 		if (CollUtil.isNotEmpty(pageRequest.getDesc())) {
-			List<OrderItem> orderItems = pageRequest.getDesc().stream()
-					.map(col -> new OrderItem(col, false))
+			List<OrderItem> orderItems = pageRequest.getDesc().stream().map(col -> new OrderItem(col, false))
 					.collect(Collectors.toList());
 			page.addOrder(orderItems);
 		}
@@ -55,7 +53,7 @@ public class CrudUtil {
 	 */
 	public <T> Page<T> toPage(PageRequest pageRequest, List<OrderItem> defaultOrders) {
 		Page<T> page = toPage(pageRequest);
-		if(CollUtil.isEmpty(page.getRecords()) && CollUtil.isNotEmpty(defaultOrders)){
+		if (CollUtil.isEmpty(page.getRecords()) && CollUtil.isNotEmpty(defaultOrders)) {
 			page.addOrder(defaultOrders);
 		}
 		return page;

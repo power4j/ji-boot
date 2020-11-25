@@ -55,8 +55,8 @@ public class PageRequestResolver implements HandlerMethodArgumentResolver {
 		String size = request.getParameter(CrudConstant.QRY_PAGE_SIZE);
 
 		PageRequest pageRequest = new PageRequest();
-		pageRequest.setPage(NumUtil.parseLong(page,1L));
-		pageRequest.setSize(NumUtil.parseLong(size,10L));
+		pageRequest.setPage(NumUtil.parseLong(page, 1L));
+		pageRequest.setSize(NumUtil.parseLong(size, 10L));
 		Optional.ofNullable(ascColumns).ifPresent(array -> pageRequest.setAsc(Arrays.asList(array)));
 		Optional.ofNullable(descColumns).ifPresent(array -> pageRequest.setDesc(Arrays.asList(array)));
 

@@ -29,7 +29,7 @@ class AdminServerApplicationTests {
 
 	@Test
 	void contextLoads() {
-		System.out.println(passwordEncoder.getClass().getName() + " - "+passwordEncoder.encode("admin"));
+		System.out.println(passwordEncoder.getClass().getName() + " - " + passwordEncoder.encode("admin"));
 	}
 
 }

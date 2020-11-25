@@ -16,7 +16,7 @@ public interface BaseService<T> extends IService<T> {
 	 * @param value
 	 * @return
 	 */
-	//int checkUnique(String prop,Object value);
+	// int checkUnique(String prop,Object value);
 
 	/**
 	 * 检查唯一性
@@ -25,5 +25,6 @@ public interface BaseService<T> extends IService<T> {
 	 * @param excludeId
 	 * @return
 	 */
-	//int checkUnique(String prop, Object value, Serializable excludeId);
+	// int checkUnique(String prop, Object value, Serializable excludeId);
+
 }

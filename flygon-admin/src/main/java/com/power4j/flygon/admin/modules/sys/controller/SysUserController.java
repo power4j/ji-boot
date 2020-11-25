@@ -62,27 +62,26 @@ public class SysUserController {
 
 	@GetMapping("/page")
 	@Operation(summary = "分页")
-	public ApiResponse<PageData<?>> page(PageRequest page, SearchSysUserVO param) {
-		return ApiResponseUtil.ok(sysUserService.selectPage(page, param));
+	public ApiResponse<PageData<SysUserVO>> page(PageRequest page, SearchSysUserVO param) {
+		return ApiResponseUtil.ok(sysUserService.selectPage(page, param).map(o -> BeanUtil.toBean(o, SysUserVO.class)));
 	}
 
 	@GetMapping("/{id}")
 	@Operation(summary = "查看")
 	public ApiResponse<SysUserVO> getById(@PathVariable("id") Long id) {
 		SysUserVO vo = sysUserService.read(id).map(o -> BeanUtil.toBean(o, SysUserVO.class)).orElse(null);
-		return ApiResponseUtil.nullAsNotFound(vo,"用户不存在");
+		return ApiResponseUtil.nullAsNotFound(vo, "用户不存在");
 	}
 
 	@PostMapping
 	@Operation(summary = "添加用户")
 	public ApiResponse<SysUserVO> add(
 			@Validated(value = { Groups.Create.class, Groups.Default.class }) @RequestBody SysUserVO vo) {
-		if(sysUserService.countUsername(vo.getUsername(),null) > 0){
+		if (sysUserService.countUsername(vo.getUsername(), null) > 0) {
 			return ApiResponseUtil.conflict("用户名已经存在");
 		}
 		SysUserDTO dto = BeanUtil.toBean(vo, SysUserDTO.class);
-		return ApiResponseUtil
-				.ok(BeanUtil.toBean(sysUserService.create(dto), SysUserVO.class));
+		return ApiResponseUtil.ok(BeanUtil.toBean(sysUserService.create(dto), SysUserVO.class));
 	}
 
 	@DeleteMapping("/{id}")
@@ -100,19 +99,20 @@ public class SysUserController {
 	@PutMapping
 	@Operation(summary = "修改")
 	public ApiResponse<Boolean> update(@RequestBody SysUserVO vo) {
-		if(sysUserService.read(vo.getId()) == null){
+		if (sysUserService.read(vo.getId()) == null) {
 			return ApiResponseUtil.notFound("用户不存在");
 		}
-		if(sysUserService.countUsername(vo.getUsername(),vo.getId()) > 0){
+		if (sysUserService.countUsername(vo.getUsername(), vo.getId()) > 0) {
 			return ApiResponseUtil.conflict("用户名已经使用");
 		}
 		return ApiResponseUtil.ok(sysUserService.update(BeanUtil.toBean(vo, SysUserDTO.class)));
 	}
 
 	@GetMapping("/validate/username/{username}")
-	@Operation(summary = "用户名使用次数",description = "可用于用户名唯一性检查")
-	public ApiResponse<Integer> getById(@PathVariable("username") @NotEmpty String username, @Schema(description = "排除的用户ID") @RequestParam(required = false) Long expectedId) {
-		return ApiResponseUtil.ok(sysUserService.countUsername(username,expectedId));
+	@Operation(summary = "用户名使用次数", description = "可用于用户名唯一性检查")
+	public ApiResponse<Integer> getById(@PathVariable("username") @NotEmpty String username,
+			@Schema(description = "排除的用户ID") @RequestParam(required = false) Long expectedId) {
+		return ApiResponseUtil.ok(sysUserService.countUsername(username, expectedId));
 	}
 
 }

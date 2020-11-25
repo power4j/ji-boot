@@ -14,6 +14,8 @@ spring:
 
 springdoc:
   version: '@project.version@'
+  global-security-scheme:
+    enabled: true
   api-docs:
     enabled: true
     path: /api-docs
@@ -32,6 +34,9 @@ springdoc:
   group-configs:
     - group: sys 系统管理
       paths-to-match: /sys/**
+    - group: 监控
+      paths-to-match: /actuator/**
+
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*Mapper.xml
@@ -44,4 +49,14 @@ mybatis-plus:
       logic-delete-value: 1 # 逻辑已删除值(默认为 1)
       logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
   type-handlers-package:  com.power4j.flygon.common.data.mybatis.handler
+
+flygon:
+  security:
+    expose:
+      - pattern: '/actuator/**'
+      - pattern: '/swagger-ui/**'
+        methods: GET
+      - pattern: '/swagger-ui.html'
+        methods: GET
+      - pattern: '/api-docs/**'
 

@@ -30,6 +30,7 @@ import java.io.Serializable;
  */
 @Mapper
 public interface SysUserMapper extends BaseMapper<SysUserEntity> {
+
 	/**
 	 * 统计用户名
 	 * @param username
@@ -37,4 +38,5 @@ public interface SysUserMapper extends BaseMapper<SysUserEntity> {
 	 * @return
 	 */
 	int countUsernameIgnoreLogicDel(@Param("username") String username, @Param("ignoreId") Serializable ignoreId);
+
 }

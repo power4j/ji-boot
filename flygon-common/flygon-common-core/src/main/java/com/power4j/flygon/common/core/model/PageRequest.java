@@ -42,19 +42,19 @@ public class PageRequest implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Schema(title = "页码，从1开始", defaultValue = "1",example = "1")
+	@Schema(title = "页码，从1开始", defaultValue = "1", example = "1")
 	@Min(value = 1)
 	private Long page = 1L;
 
-	@Schema(title = "每页条数", defaultValue = "10",example = "10")
+	@Schema(title = "每页条数", defaultValue = "10", example = "10")
 	@Min(value = 1)
 	@Max(value = 100)
 	private Long size = 10L;
 
-	@Schema(title = "升序字段",example = "[]")
+	@Schema(title = "升序字段", example = "[]")
 	private List<String> asc;
 
-	@Schema(title = "降序字段",example = "[]")
+	@Schema(title = "降序字段", example = "[]")
 	private List<String> desc;
 
 }

@@ -15,11 +15,14 @@ import java.io.Serializable;
 @Data
 @Accessors(chain = true)
 @NoArgsConstructor
-public  class AuthInfo implements Serializable {
+public class AuthInfo implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
 	@Schema(description = "用户名")
 	private String username;
+
 	@Schema(description = "口令")
 	private String password;
+
 }

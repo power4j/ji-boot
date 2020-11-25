@@ -42,6 +42,7 @@ spring:
         wall:
           config:
             multi-statement-allow: true
+
 logging:
   level:
     com.power4j.flygon.admin.modules: debug

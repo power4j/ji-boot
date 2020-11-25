@@ -16,16 +16,11 @@
 
 package com.power4j.flygon.common.openapi.config;
 
-import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
-import org.springdoc.core.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 
 /**
  * Swagger3 config
@@ -37,7 +32,6 @@ import org.springframework.context.annotation.Profile;
  * @since 1.0
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnClass(OpenAPI.class)
 public class OpenApiAutoConfiguration {
 
 	@Value("${spring.application.name:demo}")
@@ -47,17 +41,9 @@ public class OpenApiAutoConfiguration {
 	private String applicationVersion;
 
 	@Bean
-	@Profile("!prod")
-	public GroupedOpenApi actuatorApi() {
-		return GroupedOpenApi.builder().group("Actuator").pathsToMatch("/actuator/**")
-				.pathsToExclude("/actuator/health/*").build();
-	}
-
-	@Bean
-	@ConditionalOnMissingBean
 	public OpenAPI openAPI() {
-		return new OpenAPI().components(new Components())
-				.info(new Info().title(applicationName).version(applicationVersion));
+		OpenAPI openAPI = new OpenAPI().info(new Info().title(applicationName).version(applicationVersion));
+		return openAPI;
 	}
 
 }

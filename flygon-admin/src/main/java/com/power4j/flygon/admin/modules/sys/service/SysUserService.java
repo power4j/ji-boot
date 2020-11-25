@@ -38,7 +38,7 @@ public interface SysUserService extends CrudService<SysUserDTO, SysUserEntity>, 
 	 * @param param
 	 * @return
 	 */
-	PageData<SysUserDTO> selectPage(PageRequest pageRequest,@Nullable SearchSysUserVO param);
+	PageData<SysUserDTO> selectPage(PageRequest pageRequest, @Nullable SearchSysUserVO param);
 
 	/**
 	 * 统计用户名使用次数
@@ -46,5 +46,6 @@ public interface SysUserService extends CrudService<SysUserDTO, SysUserEntity>, 
 	 * @param ignoreId 排除的ID
 	 * @return
 	 */
-	int countUsername(String username,@Nullable Long ignoreId);
+	int countUsername(String username, @Nullable Long ignoreId);
+
 }

@@ -27,11 +27,13 @@ import java.nio.charset.StandardCharsets;
  */
 @Slf4j
 public class ApiTokenAuthenticationEntryPoint implements AuthenticationEntryPoint {
+
 	private final ObjectMapper jsonMapper = new ObjectMapper();
 
 	@Override
-	public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
-		log.debug("Handling {} : {}",authException.getClass().getSimpleName(),authException.getMessage());
+	public void commence(HttpServletRequest request, HttpServletResponse response,
+			AuthenticationException authException) throws IOException {
+		log.debug("Handling {} : {}", authException.getClass().getSimpleName(), authException.getMessage());
 		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		ApiResponse<?> result = ApiResponseUtil.fail(authException.getMessage());

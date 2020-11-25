@@ -18,10 +18,11 @@ public class NumUtil extends NumberUtil {
 	 * @param defaultValue
 	 * @return
 	 */
-	public Integer parseInt(String str,Integer defaultValue) {
-		try{
+	public Integer parseInt(String str, Integer defaultValue) {
+		try {
 			return StrUtil.isBlank(str) ? defaultValue : Integer.parseInt(str);
-		}catch (NumberFormatException e){
+		}
+		catch (NumberFormatException e) {
 			return defaultValue;
 		}
 	}
@@ -32,11 +33,13 @@ public class NumUtil extends NumberUtil {
 	 * @param defaultValue
 	 * @return
 	 */
-	public Long parseLong(String str,Long defaultValue) {
-		try{
+	public Long parseLong(String str, Long defaultValue) {
+		try {
 			return StrUtil.isBlank(str) ? defaultValue : Long.parseLong(str);
-		}catch (NumberFormatException e){
+		}
+		catch (NumberFormatException e) {
 			return defaultValue;
 		}
 	}
+
 }

@@ -16,6 +16,7 @@ public interface TokenService {
 	 * @return 获取失败返回 null
 	 */
 	Authentication loadAuthentication(String tokenValue);
+
 	/**
 	 * 删除 token
 	 * @param tokenValue
@@ -29,4 +30,5 @@ public interface TokenService {
 	 * @return
 	 */
 	ApiToken createToken(Authentication authentication);
+
 }

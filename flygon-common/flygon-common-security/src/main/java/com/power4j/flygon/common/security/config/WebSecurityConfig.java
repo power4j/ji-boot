@@ -6,9 +6,11 @@ import com.power4j.flygon.common.security.endpoint.ApiTokenEndpoint;
 import com.power4j.flygon.common.security.filter.ApiTokenAuthenticationFilter;
 import com.power4j.flygon.common.security.service.TokenService;
 import com.power4j.flygon.common.security.service.impl.DemoTokenService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -18,49 +20,59 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 /**
  * @author CJ (power4j@outlook.com)
  * @date 2020/11/22
  * @since 1.0
  */
+@Slf4j
 @Configuration
 @EnableWebSecurity
+@EnableConfigurationProperties(SecurityProperties.class)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Value("${flygon.token.endpoint.path:/token}")
 	private String tokenEndpointPath;
 
 	@Autowired
-	private UserDetailsService userDetailsService;
+	private SecurityProperties securityProperties;
 
+	@Autowired
+	private UserDetailsService userDetailsService;
 
 	@Bean
 	@ConditionalOnMissingBean
-	public TokenService tokenService(){
+	public TokenService tokenService() {
 		return new DemoTokenService();
 	}
 
 	@Bean
 	@ConditionalOnMissingBean
 	public ApiTokenEndpoint apiTokenEndpoint() throws Exception {
-		return new ApiTokenEndpoint(tokenService(),authenticationManager());
+		return new ApiTokenEndpoint(tokenService(), authenticationManager());
 	}
 
 	@Bean
 	@ConditionalOnMissingBean
-	public PasswordEncoder passwordEncoder(){
+	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 
 	@Bean
-	public ApiTokenAuthenticationProvider apiTokenAuthenticationProvider(){
-		ApiTokenAuthenticationProvider apiTokenAuthenticationProvider = new ApiTokenAuthenticationProvider(tokenService());
+	public ApiTokenAuthenticationProvider apiTokenAuthenticationProvider() {
+		ApiTokenAuthenticationProvider apiTokenAuthenticationProvider = new ApiTokenAuthenticationProvider(
+				tokenService());
 		return apiTokenAuthenticationProvider;
 	}
 
@@ -80,21 +92,38 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.headers().frameOptions().disable();
-		http.authorizeRequests().mvcMatchers(HttpMethod.POST,tokenEndpointPath).permitAll();
-		http.authorizeRequests().mvcMatchers(HttpMethod.DELETE,tokenEndpointPath+"/*").permitAll();
-		http.authorizeRequests().anyRequest().authenticated();
-		http.authorizeRequests()
-				.and()
-				.csrf()
-				.disable()
-				.sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.NEVER);
-
+		applyMatchers(http, securityProperties.getExpose());
+		http.headers().frameOptions().disable().and().authorizeRequests()
+				.mvcMatchers(HttpMethod.POST, tokenEndpointPath).permitAll()
+				.mvcMatchers(HttpMethod.DELETE, tokenEndpointPath + "/*").permitAll().anyRequest().authenticated().and()
+				.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER);
 		ApiTokenAuthenticationFilter apiTokenAuthenticationFilter = new ApiTokenAuthenticationFilter();
 		http.authenticationProvider(apiTokenAuthenticationProvider()).addFilterAfter(apiTokenAuthenticationFilter,
 				UsernamePasswordAuthenticationFilter.class);
 		http.exceptionHandling().authenticationEntryPoint(new ApiTokenAuthenticationEntryPoint());
 	}
-}
 
+	protected void applyMatchers(HttpSecurity http, Collection<SecurityProperties.MvcMatcher> mvcMatchers)
+			throws Exception {
+		ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = http
+				.authorizeRequests();
+		if (mvcMatchers != null && !mvcMatchers.isEmpty()) {
+			for (SecurityProperties.MvcMatcher mvcMatcher : mvcMatchers) {
+				if (mvcMatcher.getMethods() != null && !mvcMatcher.getMethods().isEmpty()) {
+					Set<HttpMethod> methodSet = mvcMatcher.getMethods().stream()
+							.map(m -> (m == null || m.trim().isEmpty()) ? null : HttpMethod.valueOf(m))
+							.filter(m -> m != null).collect(Collectors.toSet());
+					for (HttpMethod m : methodSet) {
+						log.info("add matchers:{} {}", m.name(), mvcMatcher.getPattern());
+						registry.mvcMatchers(m, mvcMatcher.getPattern()).permitAll();
+					}
+				}
+				else {
+					log.info("add matchers:{} {}", "*", mvcMatcher.getPattern());
+					registry.antMatchers(mvcMatcher.getPattern()).permitAll();
+				}
+			}
+		}
+	}
+
+}

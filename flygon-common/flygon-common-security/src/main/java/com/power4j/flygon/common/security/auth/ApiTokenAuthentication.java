@@ -12,6 +12,7 @@ import java.util.Collections;
  * @since 1.0
  */
 public class ApiTokenAuthentication implements Authentication {
+
 	private String token;
 
 	public ApiTokenAuthentication(String token) {
@@ -52,4 +53,5 @@ public class ApiTokenAuthentication implements Authentication {
 	public String getName() {
 		return "apiToken";
 	}
+
 }

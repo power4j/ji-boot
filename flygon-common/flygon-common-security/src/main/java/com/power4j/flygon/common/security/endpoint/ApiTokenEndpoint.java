@@ -27,24 +27,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 public class ApiTokenEndpoint {
+
 	private final TokenService tokenService;
+
 	private final AuthenticationManager authenticationManager;
 
 	@Operation(summary = "获取token")
 	@PostMapping("${flygon.token.endpoint.path:/token}")
-	public ApiResponse<ApiToken> getToken(@RequestBody AuthInfo authInfo){
-		Authentication userAuth = new UsernamePasswordAuthenticationToken(authInfo.getUsername(), authInfo.getPassword());
-		//Authentication userAuth = new ApiTokenAuthentication("xx");
+	public ApiResponse<ApiToken> getToken(@RequestBody AuthInfo authInfo) {
+		Authentication userAuth = new UsernamePasswordAuthenticationToken(authInfo.getUsername(),
+				authInfo.getPassword());
+		// Authentication userAuth = new ApiTokenAuthentication("xx");
 		try {
 			userAuth = authenticationManager.authenticate(userAuth);
 		}
 		catch (AccountStatusException e) {
-			log.error(e.getMessage(),e);
+			log.error(e.getMessage(), e);
 			// expired, locked, disabled
 			return ApiResponseUtil.fail("账号无效");
 		}
 		catch (BadCredentialsException e) {
-			log.error(e.getMessage(),e);
+			log.error(e.getMessage(), e);
 			// username/password are wrong
 			return ApiResponseUtil.fail("用户名或密码错误");
 		}
@@ -57,12 +60,13 @@ public class ApiTokenEndpoint {
 
 	@Operation(summary = "删除token")
 	@DeleteMapping("${flygon.token.endpoint.path:/token}/{tokenId}")
-	public ApiResponse<Boolean> delToken(@PathVariable("id") String tokenId){
-		log.info("删除token:{}",tokenId);
+	public ApiResponse<Boolean> delToken(@PathVariable("id") String tokenId) {
+		log.info("删除token:{}", tokenId);
 		boolean deleted = tokenService.deleteToken(tokenId);
-		if(deleted){
-			log.warn("token删除失败:{}",tokenId);
+		if (deleted) {
+			log.warn("token删除失败:{}", tokenId);
 		}
 		return ApiResponseUtil.ok(deleted);
 	}
+
 }

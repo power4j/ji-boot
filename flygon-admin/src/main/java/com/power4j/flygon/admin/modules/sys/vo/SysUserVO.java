@@ -127,9 +127,9 @@ public class SysUserVO implements Serializable {
 	/**
 	 * 状态 0 有效 1 停用
 	 */
-	@Schema(description = "状态 0 有效 1 停用",example = "0")
+	@Schema(description = "状态 0 有效 1 停用", example = "0")
 	@NotNull(groups = { Groups.Default.class, Groups.Update.class })
-	@Pattern(regexp = "0|1",message = "状态只能是 0 或者 1")
+	@Pattern(regexp = "0|1", message = "状态只能是 0 或者 1")
 	private Integer status;
 
 }

@@ -49,19 +49,21 @@ public class SysUserServiceImpl extends AbstractCrudService<SysUserMapper, SysUs
 	@Override
 	public PageData<SysUserDTO> selectPage(PageRequest pageRequest, SearchSysUserVO param) {
 		Wrapper<SysUserEntity> wrapper = new QueryWrapper<>();
-		if(param != null){
+		if (param != null) {
 			wrapper = new QueryWrapper<SysUserEntity>().lambda()
 					.likeRight(StrUtil.isNotEmpty(param.getUsername()), SysUserEntity::getUsername, param.getUsername())
-					.ge(null != param.getStartDate(), SysUserEntity::getCreateAt, CrudUtil.dayStart(param.getStartDate()))
+					.ge(null != param.getStartDate(), SysUserEntity::getCreateAt,
+							CrudUtil.dayStart(param.getStartDate()))
 					.le(null != param.getEndDate(), SysUserEntity::getCreateAt, CrudUtil.dayEnd(param.getEndDate()));
 		}
-		Page<SysUserEntity> page = getBaseMapper().selectPage(CrudUtil.toPage(pageRequest, Arrays.asList(new OrderItem("create_at",true))), wrapper);
+		Page<SysUserEntity> page = getBaseMapper()
+				.selectPage(CrudUtil.toPage(pageRequest, Arrays.asList(new OrderItem("create_at", true))), wrapper);
 		return CrudUtil.toPageData(page).map(o -> toDto(o));
 	}
 
 	@Override
 	public int countUsername(String username, Long ignoreId) {
-		return getBaseMapper().countUsernameIgnoreLogicDel(username,ignoreId);
+		return getBaseMapper().countUsernameIgnoreLogicDel(username, ignoreId);
 	}
 
 	@Override
@@ -71,14 +73,15 @@ public class SysUserServiceImpl extends AbstractCrudService<SysUserMapper, SysUs
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Wrapper<SysUserEntity> wrapper  = new QueryWrapper<SysUserEntity>().lambda()
-				.eq(SysUserEntity::getUsername,username);
+		Wrapper<SysUserEntity> wrapper = new QueryWrapper<SysUserEntity>().lambda().eq(SysUserEntity::getUsername,
+				username);
 		SysUserEntity entity = getBaseMapper().selectOne(wrapper);
-		if(entity == null){
-			log.debug(String.format("用户不存在:{}",username));
-			throw new UsernameNotFoundException(String.format("用户不存在:{}",username));
+		if (entity == null) {
+			log.debug(String.format("用户不存在:{}", username));
+			throw new UsernameNotFoundException(String.format("用户不存在:{}", username));
 		}
-		LoginUser loginUser = new LoginUser(entity.getUsername(),entity.getPassword(), Collections.emptyList());
+		LoginUser loginUser = new LoginUser(entity.getUsername(), entity.getPassword(), Collections.emptyList());
 		return loginUser;
 	}
+
 }

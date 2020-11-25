@@ -117,7 +117,7 @@ public class ApiResponseUtil {
 	}
 
 	public static <E> ApiResponse<E> nullAsNotFound(E data, String msg) {
-		return data == null ? notFound(msg) : ok(data) ;
+		return data == null ? notFound(msg) : ok(data);
 	}
 
 	public static <E> ApiResponse<E> conflict(String msg) {

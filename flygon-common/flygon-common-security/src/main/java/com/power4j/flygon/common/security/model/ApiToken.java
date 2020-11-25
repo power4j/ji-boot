@@ -17,11 +17,16 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 @NoArgsConstructor
 public class ApiToken implements Serializable {
+
 	private static final long serialVersionUID = 1L;
+
 	@Schema(description = "访问令牌")
 	private String token;
+
 	@Schema(description = "过期时间(yyyy-MM-dd'T'HH:mm:ss'Z')", example = "2020-01-01T20:05:01Z")
 	private LocalDateTime expireIn;
+
 	@Schema(description = "发布者")
 	private String issuedBy;
+
 }

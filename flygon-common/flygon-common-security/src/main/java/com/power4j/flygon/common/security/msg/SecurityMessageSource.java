@@ -11,6 +11,7 @@ import java.util.Locale;
  * @since 1.0
  */
 public class SecurityMessageSource extends ReloadableResourceBundleMessageSource {
+
 	public SecurityMessageSource() {
 		setBasename("classpath:messages/messages");
 		setDefaultLocale(Locale.CHINA);
@@ -19,4 +20,5 @@ public class SecurityMessageSource extends ReloadableResourceBundleMessageSource
 	public static MessageSourceAccessor getAccessor() {
 		return new MessageSourceAccessor(new SecurityMessageSource());
 	}
+
 }
