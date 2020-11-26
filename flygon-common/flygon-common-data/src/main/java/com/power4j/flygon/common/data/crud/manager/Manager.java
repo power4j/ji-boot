@@ -1,4 +1,4 @@
-package com.power4j.flygon.common.data.manager;
+package com.power4j.flygon.common.data.crud.manager;
 
 /**
  * Manager 层

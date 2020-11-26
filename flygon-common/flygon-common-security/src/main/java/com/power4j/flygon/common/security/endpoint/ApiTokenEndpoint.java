@@ -55,7 +55,7 @@ public class ApiTokenEndpoint {
 			return ApiResponseUtil.fail("认证失败:" + authInfo.getUsername());
 		}
 
-		return ApiResponseUtil.ok(tokenService.createToken(userAuth));
+		return ApiResponseUtil.ok(tokenService.createToken(authInfo.getUsername()));
 	}
 
 	@Operation(summary = "删除token")

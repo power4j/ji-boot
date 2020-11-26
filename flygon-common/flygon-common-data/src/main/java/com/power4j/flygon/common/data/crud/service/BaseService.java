@@ -10,21 +10,4 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface BaseService<T> extends IService<T> {
 
-	/**
-	 * 检查唯一性
-	 * @param prop
-	 * @param value
-	 * @return
-	 */
-	// int checkUnique(String prop,Object value);
-
-	/**
-	 * 检查唯一性
-	 * @param prop
-	 * @param value
-	 * @param excludeId
-	 * @return
-	 */
-	// int checkUnique(String prop, Object value, Serializable excludeId);
-
 }

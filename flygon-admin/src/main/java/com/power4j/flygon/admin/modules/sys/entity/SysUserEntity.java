@@ -78,4 +78,13 @@ public class SysUserEntity extends BaseEntity implements Serializable {
 	 */
 	private Integer status;
 
+	/**
+	 * 创建人
+	 */
+	private String createBy;
+
+	/**
+	 * 更新人
+	 */
+	private String updateBy;
 }

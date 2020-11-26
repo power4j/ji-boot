@@ -23,6 +23,7 @@ public class SecurityProperties {
 
 	public static final String PREFIX = CommonConstant.PROPERTY_PREFIX + ".security";
 
+	private ApiTokenProperties apiToken = new ApiTokenProperties();
 	/**
 	 * 对外暴露的 URL
 	 */
@@ -53,4 +54,18 @@ public class SecurityProperties {
 
 	}
 
+	@Data
+	public static class ApiTokenProperties {
+
+		/**
+		 * 过期时间,秒
+		 */
+		private Long expireSec = 3600 * 24L;
+
+		/**
+		 * 发布者
+		 */
+		private String issueBy = "power4j.com";
+
+	}
 }

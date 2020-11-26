@@ -26,4 +26,8 @@ public class SecurityUtil {
 		});
 	}
 
+	public Optional<String> getLoginUsername() {
+		return getLoginUser().map(loginUser -> loginUser.getUsername());
+	}
+
 }

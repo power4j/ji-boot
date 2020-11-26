@@ -1,6 +1,7 @@
 package com.power4j.flygon.common.security.auth;
 
 import cn.hutool.core.util.StrUtil;
+import com.power4j.flygon.common.security.model.ApiToken;
 import com.power4j.flygon.common.security.service.TokenService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
 /**
@@ -26,6 +28,8 @@ public class ApiTokenAuthenticationProvider implements AuthenticationProvider {
 
 	private final TokenService tokenService;
 
+	private final UserDetailsService userDetailsService;
+
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		if (authentication.isAuthenticated()) {
@@ -37,14 +41,13 @@ public class ApiTokenAuthenticationProvider implements AuthenticationProvider {
 			throw new BadCredentialsException(
 					messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "无效的凭据"));
 		}
-		Authentication savedAuthentication = tokenService.loadAuthentication(tokenValue);
-		if (savedAuthentication == null || savedAuthentication.getPrincipal() == null
-				|| !(savedAuthentication.getPrincipal() instanceof UserDetails)) {
+		ApiToken apiToken = tokenService.loadApiToken(tokenValue);
+		if (apiToken == null) {
 			log.debug("认证失败:无效的token");
 			throw new BadCredentialsException(
 					messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "无效的凭据"));
 		}
-		UserDetails userDetails = (UserDetails) savedAuthentication.getPrincipal();
+		UserDetails userDetails = userDetailsService.loadUserByUsername(apiToken.getUsername());
 		PreAuthenticatedAuthenticationToken preAuthenticatedAuthenticationToken = new PreAuthenticatedAuthenticationToken(
 				userDetails, tokenValue, userDetails.getAuthorities());
 		preAuthenticatedAuthenticationToken.setAuthenticated(true);

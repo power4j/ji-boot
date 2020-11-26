@@ -5,7 +5,6 @@ import com.power4j.flygon.common.security.auth.ApiTokenAuthenticationProvider;
 import com.power4j.flygon.common.security.endpoint.ApiTokenEndpoint;
 import com.power4j.flygon.common.security.filter.ApiTokenAuthenticationFilter;
 import com.power4j.flygon.common.security.service.TokenService;
-import com.power4j.flygon.common.security.service.impl.DemoTokenService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,19 +47,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private SecurityProperties securityProperties;
 
+
 	@Autowired
 	private UserDetailsService userDetailsService;
 
-	@Bean
-	@ConditionalOnMissingBean
-	public TokenService tokenService() {
-		return new DemoTokenService();
-	}
+	@Autowired
+	private TokenService tokenService;
 
 	@Bean
 	@ConditionalOnMissingBean
 	public ApiTokenEndpoint apiTokenEndpoint() throws Exception {
-		return new ApiTokenEndpoint(tokenService(), authenticationManager());
+		return new ApiTokenEndpoint(tokenService, authenticationManager());
 	}
 
 	@Bean
@@ -72,7 +69,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	public ApiTokenAuthenticationProvider apiTokenAuthenticationProvider() {
 		ApiTokenAuthenticationProvider apiTokenAuthenticationProvider = new ApiTokenAuthenticationProvider(
-				tokenService());
+				tokenService,userDetailsService);
 		return apiTokenAuthenticationProvider;
 	}
 

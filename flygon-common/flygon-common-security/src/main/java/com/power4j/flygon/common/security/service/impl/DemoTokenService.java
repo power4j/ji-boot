@@ -3,7 +3,6 @@ package com.power4j.flygon.common.security.service.impl;
 import cn.hutool.core.lang.UUID;
 import com.power4j.flygon.common.security.model.ApiToken;
 import com.power4j.flygon.common.security.service.TokenService;
-import org.springframework.security.core.Authentication;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -18,32 +17,27 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class DemoTokenService implements TokenService {
 
-	private final Map<String, Authentication> authenticationMap = new ConcurrentHashMap<>(32);
-
 	private final Map<String, ApiToken> tokenMap = new ConcurrentHashMap<>(32);
 
 	@Override
-	public Authentication loadAuthentication(String tokenValue) {
+	public ApiToken loadApiToken(String tokenValue) {
 		ApiToken apiToken = tokenMap.get(tokenValue);
 		if (apiToken == null || apiToken.getExpireIn().isBefore(LocalDateTime.now())) {
-			authenticationMap.remove(tokenValue);
 			return null;
 		}
-		return authenticationMap.get(tokenValue);
+		return apiToken;
 	}
 
 	@Override
 	public boolean deleteToken(String tokenValue) {
-		tokenMap.remove(tokenValue);
-		return authenticationMap.remove(tokenValue) != null;
+		return tokenMap.remove(tokenValue) != null;
 	}
 
 	@Override
-	public ApiToken createToken(Authentication authentication) {
+	public ApiToken createToken(String username) {
 		ApiToken apiToken = new ApiToken().setToken(UUID.fastUUID().toString())
-				.setExpireIn(LocalDateTime.now().plusHours(48L)).setIssuedBy("power4j.com");
+				.setExpireIn(LocalDateTime.now().plusHours(48L)).setUsername(username).setIssuedBy("power4j.com");
 		tokenMap.put(apiToken.getToken(), apiToken);
-		authenticationMap.put(apiToken.getToken(), authentication);
 		return apiToken;
 	}
 

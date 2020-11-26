@@ -37,6 +37,10 @@ public abstract class AbstractCrudService<M extends BaseMapper<T>, D, T> extends
 		return new QueryWrapper<>(toEntity(param));
 	}
 
+	public Optional<D> searchOne(Wrapper<T> wrapper){
+		return Optional.ofNullable(getBaseMapper().selectOne(wrapper)).map(this::toDto);
+	}
+
 	@Override
 	public T toEntity(D dto) {
 		if (dto == null) {

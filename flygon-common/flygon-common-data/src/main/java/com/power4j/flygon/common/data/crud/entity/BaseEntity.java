@@ -52,22 +52,10 @@ public abstract class BaseEntity implements Serializable {
 	private Integer delFlag;
 
 	/**
-	 * 创建人
-	 */
-	@TableField(fill = FieldFill.INSERT)
-	private String createBy;
-
-	/**
 	 * 创建时间
 	 */
 	@TableField(fill = FieldFill.INSERT)
 	private LocalDateTime createAt;
-
-	/**
-	 * 更新人
-	 */
-	@TableField(fill = FieldFill.UPDATE)
-	private String updateBy;
 
 	/**
 	 * 更新时间

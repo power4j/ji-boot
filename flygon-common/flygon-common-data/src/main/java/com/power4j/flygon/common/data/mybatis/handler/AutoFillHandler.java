@@ -25,7 +25,7 @@ public class AutoFillHandler implements MetaObjectHandler {
 
 	@Override
 	public void updateFill(MetaObject metaObject) {
-		this.strictInsertFill(metaObject, CrudConstant.COLUMN_UPDATE_AT, LocalDateTime.class, LocalDateTime.now());
+		this.strictUpdateFill(metaObject, CrudConstant.COLUMN_UPDATE_AT, LocalDateTime.class, LocalDateTime.now());
 	}
 
 }

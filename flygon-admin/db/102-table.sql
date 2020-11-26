@@ -21,3 +21,19 @@ CREATE TABLE `t_sys_user`
 
 ALTER TABLE `t_sys_user`
   ADD INDEX `idx_page_query` (`create_at`);
+
+CREATE TABLE `t_api_token`
+(
+    `id`          BIGINT      NOT NULL COMMENT '主健',
+    `token`       VARCHAR(40) NOT NULL COMMENT '访问令牌',
+    `username`    VARCHAR(20) NOT NULL COMMENT '登录用户名',
+    `expire_in`   DATETIME NOT NULL COMMENT '过期时间',
+    `create_at`   DATETIME COMMENT '创建时间',
+    `update_at`   DATETIME COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uk_username` (`username`)
+) ENGINE = InnoDB
+  CHARSET = `utf8mb4` COMMENT ='访问令牌';
+
+ALTER TABLE `t_api_token`
+    ADD INDEX `idx_token` (`token`);
