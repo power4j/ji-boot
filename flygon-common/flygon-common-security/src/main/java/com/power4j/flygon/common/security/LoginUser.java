@@ -1,5 +1,7 @@
 package com.power4j.flygon.common.security;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
@@ -14,6 +16,20 @@ import java.util.Collection;
 public class LoginUser extends User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 唯一ID
+	 */
+	@Setter
+	@Getter
+	private Long uid;
+
+	/**
+	 * 姓名
+	 */
+	@Getter
+	@Setter
+	private String name;
 
 	public LoginUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, authorities);

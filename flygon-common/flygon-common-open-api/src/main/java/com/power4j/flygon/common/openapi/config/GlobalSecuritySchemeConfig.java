@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConditionalOnBean(OpenAPI.class)
 @AutoConfigureAfter(OpenApiAutoConfiguration.class)
-@ConditionalOnProperty(prefix = "springdoc.global-security-scheme", name = "enabled", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "springdoc.global-security-scheme", name = "enabled", havingValue = "true")
 public class GlobalSecuritySchemeConfig {
 
 	@Bean

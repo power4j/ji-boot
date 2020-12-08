@@ -23,8 +23,14 @@ public class ApiToken implements Serializable {
 	@Schema(description = "访问令牌")
 	private String token;
 
-	@Schema(description = "用户名")
+	@Schema(description = "用户UID")
+	private Long uuid;
+
+	@Schema(description = "登录名")
 	private String username;
+
+	@Schema(description = "姓名")
+	private String name;
 
 	@Schema(description = "过期时间(yyyy-MM-dd'T'HH:mm:ss'Z')", example = "2020-01-01T20:05:01Z")
 	private LocalDateTime expireIn;

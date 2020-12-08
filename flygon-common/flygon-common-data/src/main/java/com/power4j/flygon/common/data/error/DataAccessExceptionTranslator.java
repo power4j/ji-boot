@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import javax.servlet.Servlet;
+import java.sql.SQLException;
 
 /**
  * @author CJ (power4j@outlook.com)
@@ -25,24 +27,33 @@ import javax.servlet.Servlet;
  * @since 1.0
  */
 @Slf4j
-@Order
+@Order(Ordered.HIGHEST_PRECEDENCE + 100)
 @Configuration(proxyBeanMethods = false)
 @RestControllerAdvice
 @RequiredArgsConstructor
 @ConditionalOnClass({ Servlet.class, DispatcherServlet.class })
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-public class DataExceptionTranslator {
+public class DataAccessExceptionTranslator {
 
 	private final ApplicationEventPublisher publisher;
 
 	@ExceptionHandler(DataAccessException.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public ApiResponse<Object> handleException(DataAccessException e) {
-		log.error("未处理的数据访问异常", e);
+		log.error("数据库访问异常", e);
 		ApiResponse<Object> result = ApiResponseUtil
-				.fail(String.format("数据库访问异常,请联系管理员(%s)", e.getClass().getSimpleName()));
+				.fail(String.format("数据库访问异常(%s),请联系管理员", e.getClass().getSimpleName()));
 		ErrorEventUtil.publishEvent(publisher, e);
 		return result;
 	}
 
+	@ExceptionHandler(SQLException.class)
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	public ApiResponse<Object> handleException(SQLException e) {
+		log.error("数据库访问异常", e);
+		ApiResponse<Object> result = ApiResponseUtil
+				.fail(String.format("数据库访问异常(%s),请联系管理员", e.getClass().getSimpleName()));
+		ErrorEventUtil.publishEvent(publisher, e);
+		return result;
+	}
 }

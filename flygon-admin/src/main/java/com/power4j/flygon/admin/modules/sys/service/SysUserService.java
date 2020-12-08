@@ -17,7 +17,7 @@
 package com.power4j.flygon.admin.modules.sys.service;
 
 import com.power4j.flygon.admin.modules.sys.dto.SysUserDTO;
-import com.power4j.flygon.admin.modules.sys.entity.SysUserEntity;
+import com.power4j.flygon.admin.modules.sys.entity.SysUser;
 import com.power4j.flygon.admin.modules.sys.vo.SearchSysUserVO;
 import com.power4j.flygon.common.core.model.PageData;
 import com.power4j.flygon.common.core.model.PageRequest;
@@ -29,7 +29,7 @@ import org.springframework.lang.Nullable;
  * @date 2020-11-19
  * @since 1.0
  */
-public interface SysUserService extends CrudService<SysUserDTO, SysUserEntity>{
+public interface SysUserService extends CrudService<SysUserDTO, SysUser> {
 
 	/**
 	 * 分页查询

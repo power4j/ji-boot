@@ -6,15 +6,16 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.power4j.flygon.admin.modules.sys.dao.SysUserMapper;
 import com.power4j.flygon.admin.modules.sys.dto.SysUserDTO;
-import com.power4j.flygon.admin.modules.sys.entity.SysUserEntity;
+import com.power4j.flygon.admin.modules.sys.entity.SysUser;
 import com.power4j.flygon.admin.modules.sys.service.SysUserService;
 import com.power4j.flygon.admin.modules.sys.vo.SearchSysUserVO;
 import com.power4j.flygon.common.core.model.PageData;
 import com.power4j.flygon.common.core.model.PageRequest;
-import com.power4j.flygon.common.data.crud.CrudUtil;
+import com.power4j.flygon.common.data.crud.util.CrudUtil;
 import com.power4j.flygon.common.data.crud.service.impl.AbstractCrudService;
 import com.power4j.flygon.common.security.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,22 +30,23 @@ import java.util.Arrays;
  * @since 1.0
  */
 @Service
-public class SysUserServiceImpl extends AbstractCrudService<SysUserMapper, SysUserDTO, SysUserEntity>
+public class SysUserServiceImpl extends AbstractCrudService<SysUserMapper, SysUserDTO, SysUser>
 		implements SysUserService {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	@Override
-	public boolean update(SysUserDTO dto) {
-		SysUserEntity entity = toEntity(dto);
+	public SysUserDTO put(SysUserDTO dto) {
+		SysUser entity = toEntity(dto);
 		entity.setUpdateBy(SecurityUtil.getLoginUsername().orElse(null));
-		return updateById(toEntity(dto));
+		updateById(toEntity(dto));
+		return toDto(entity);
 	}
 
 	@Override
-	public SysUserDTO create(SysUserDTO dto) {
-		SysUserEntity entity = toEntity(dto);
+	public SysUserDTO post(SysUserDTO dto) {
+		SysUser entity = toEntity(dto);
 		entity.setPassword(passwordEncoder.encode(entity.getPassword()));
 		entity.setCreateBy(SecurityUtil.getLoginUsername().orElse(null));
 		save(entity);
@@ -53,27 +55,29 @@ public class SysUserServiceImpl extends AbstractCrudService<SysUserMapper, SysUs
 
 	@Override
 	public PageData<SysUserDTO> selectPage(PageRequest pageRequest, SearchSysUserVO param) {
-		Wrapper<SysUserEntity> wrapper = new QueryWrapper<>();
+		Wrapper<SysUser> wrapper = new QueryWrapper<>();
 		if (param != null) {
-			wrapper = new QueryWrapper<SysUserEntity>().lambda()
-					.likeRight(StrUtil.isNotEmpty(param.getUsername()), SysUserEntity::getUsername, param.getUsername())
-					.ge(null != param.getStartDate(), SysUserEntity::getCreateAt,
+			wrapper = new QueryWrapper<SysUser>().lambda()
+					.likeRight(StrUtil.isNotEmpty(param.getUsername()), SysUser::getUsername, param.getUsername())
+					.ge(null != param.getStartDate(), SysUser::getCreateAt,
 							CrudUtil.dayStart(param.getStartDate()))
-					.le(null != param.getEndDate(), SysUserEntity::getCreateAt, CrudUtil.dayEnd(param.getEndDate()));
+					.le(null != param.getEndDate(), SysUser::getCreateAt, CrudUtil.dayEnd(param.getEndDate()));
 		}
-		Page<SysUserEntity> page = getBaseMapper()
+		Page<SysUser> page = getBaseMapper()
 				.selectPage(CrudUtil.toPage(pageRequest, Arrays.asList(new OrderItem("create_at", true))), wrapper);
 		return CrudUtil.toPageData(page).map(o -> toDto(o));
 	}
 
 	@Override
 	public int countUsername(String username, Long ignoreId) {
-		return getBaseMapper().countUsernameIgnoreLogicDel(username, ignoreId);
+		Wrapper<SysUser> wrapper = Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUsername, username)
+				.ne(null != ignoreId, SysUser::getId, ignoreId);
+		return getBaseMapper().selectCount(wrapper);
 	}
 
 	@Override
-	public SysUserEntity toEntity(SysUserDTO dto) {
-		return BeanUtil.toBean(dto, SysUserEntity.class, CopyOptions.create().setIgnoreProperties("slat"));
+	public SysUser toEntity(SysUserDTO dto) {
+		return BeanUtil.toBean(dto, SysUser.class, CopyOptions.create().setIgnoreProperties("slat"));
 	}
 
 }

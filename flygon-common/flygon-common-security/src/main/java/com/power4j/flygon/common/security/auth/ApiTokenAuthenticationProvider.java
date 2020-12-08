@@ -2,6 +2,7 @@ package com.power4j.flygon.common.security.auth;
 
 import cn.hutool.core.util.StrUtil;
 import com.power4j.flygon.common.security.model.ApiToken;
+import com.power4j.flygon.common.security.msg.SecurityMessageSource;
 import com.power4j.flygon.common.security.service.TokenService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,10 +11,11 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
+
+import java.time.LocalDateTime;
 
 /**
  * @author CJ (power4j@outlook.com)
@@ -24,7 +26,7 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 @AllArgsConstructor
 public class ApiTokenAuthenticationProvider implements AuthenticationProvider {
 
-	protected final MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
+	protected final MessageSourceAccessor messages = SecurityMessageSource.getAccessor();
 
 	private final TokenService tokenService;
 
@@ -46,6 +48,11 @@ public class ApiTokenAuthenticationProvider implements AuthenticationProvider {
 			log.debug("认证失败:无效的token");
 			throw new BadCredentialsException(
 					messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "无效的凭据"));
+		}
+		if (apiToken.getExpireIn().isBefore(LocalDateTime.now())) {
+			log.debug("认证失败:token已经过期");
+			throw new BadCredentialsException(
+					messages.getMessage("AbstractUserDetailsAuthenticationProvider.credentialsExpired", "凭据已经过期"));
 		}
 		UserDetails userDetails = userDetailsService.loadUserByUsername(apiToken.getUsername());
 		PreAuthenticatedAuthenticationToken preAuthenticatedAuthenticationToken = new PreAuthenticatedAuthenticationToken(

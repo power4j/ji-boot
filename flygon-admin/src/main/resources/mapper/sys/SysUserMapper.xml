@@ -3,10 +3,4 @@
 
 <mapper namespace="com.power4j.flygon.admin.modules.sys.dao.SysUserMapper">
 
-  <select id="countUsernameIgnoreLogicDel" resultType="java.lang.Integer">
-    select count(1) from `t_sys_user` t where t.username = #{username}
-    <if test="ignoreId != null">
-      and t.id != #{ignoreId}
-    </if>
-  </select>
 </mapper>

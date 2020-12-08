@@ -8,4 +8,5 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  * @since 1.0
  */
 public interface AuthService extends UserDetailsService {
+
 }

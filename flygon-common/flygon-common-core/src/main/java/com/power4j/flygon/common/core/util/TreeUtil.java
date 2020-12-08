@@ -16,7 +16,7 @@
 
 package com.power4j.flygon.common.core.util;
 
-import com.power4j.flygon.common.core.model.TreeNode;
+import com.power4j.flygon.common.core.model.Node;
 import lombok.experimental.UtilityClass;
 
 import java.util.ArrayList;
@@ -46,10 +46,10 @@ public class TreeUtil {
 	 * @param <T>
 	 * @return
 	 */
-	public <T extends TreeNode> List<T> buildTree(Collection<T> nodes, final Object rootId) {
+	public <T extends Node> List<T> buildTree(Collection<T> nodes, final Object rootId) {
 		List<T> tree = new ArrayList<>();
 		nodes.forEach(node -> {
-			if (rootId.equals(node.getParentId())) {
+			if (rootId.equals(node.getNodePid())) {
 				tree.add(mountChildren(nodes, node));
 			}
 		});
@@ -62,8 +62,8 @@ public class TreeUtil {
 	 * @param predicate
 	 * @return
 	 */
-	public List<TreeNode> simpleSearch(Collection<? extends TreeNode> nodes,
-			final Predicate<? super TreeNode> predicate) {
+	public List<Node> simpleSearch(Collection<? extends Node> nodes,
+			final Predicate<? super Node> predicate) {
 		return nodes.stream().filter(predicate::test).collect(Collectors.toList());
 	}
 
@@ -77,13 +77,14 @@ public class TreeUtil {
 	 * @param out 集合容器，保存收集结果
 	 * @return
 	 */
-	public Collection<TreeNode> findChildren(TreeNode root, final Predicate<? super TreeNode> predicate,
-			Collection<TreeNode> out) {
+	public <T extends Node> Collection<T> findChildren(T root, final Predicate<? super T> predicate,
+			Collection<T> out) {
 		if (predicate.test(root)) {
 			out.add(root);
 		}
-		if (root.getChildren() != null && !root.getChildren().isEmpty()) {
-			for (TreeNode node : root.getChildren()) {
+		if (root.getNextNodes() != null && !root.getNextNodes().isEmpty()) {
+			List<T> nodes = root.getNextNodes();
+			for (T node : nodes) {
 				findChildren(node, predicate, out);
 			}
 		}
@@ -97,8 +98,8 @@ public class TreeUtil {
 	 * @param out
 	 * @return
 	 */
-	public Collection<TreeNode> findChildren(Collection<TreeNode> nodes, final Predicate<? super TreeNode> predicate,
-			Collection<TreeNode> out) {
+	public <T extends Node> Collection<? extends T> findChildren(Collection<T> nodes, final Predicate<? super T> predicate,
+			Collection<T> out) {
 		nodes.forEach(o -> findChildren(o, predicate, out));
 		return out;
 	}
@@ -108,8 +109,8 @@ public class TreeUtil {
 	 * @param root
 	 * @return
 	 */
-	public List<? extends TreeNode> flattenTree(TreeNode root) {
-		List<TreeNode> list = new ArrayList<>();
+	public <T extends Node> List<T> flattenTree(T root) {
+		List<T> list = new ArrayList<>();
 		findChildren(root, o -> true, list);
 		return list;
 	}
@@ -119,7 +120,7 @@ public class TreeUtil {
 	 * @param root
 	 * @return
 	 */
-	public Collection<? extends TreeNode> flattenTree(TreeNode root, Collection<TreeNode> out) {
+	public Collection<? extends Node> flattenTree(Node root, Collection<Node> out) {
 		return findChildren(root, o -> true, out);
 	}
 
@@ -128,8 +129,8 @@ public class TreeUtil {
 	 * @param root
 	 * @return
 	 */
-	public Collection<? extends TreeNode> getLeafNode(TreeNode root) {
-		return findChildren(root, o -> (o.getChildren() == null || o.getChildren().isEmpty()), new ArrayList<>());
+	public <T extends Node> Collection<T> getLeafNode(T root) {
+		return findChildren(root, o -> (o.getNextNodes() == null || o.getNextNodes().isEmpty()), new ArrayList<>());
 	}
 
 	/**
@@ -139,11 +140,11 @@ public class TreeUtil {
 	 * @param <T>
 	 * @return
 	 */
-	public <T extends TreeNode> T mountChildren(Collection<T> nodes, T parent) {
+	public <T extends Node> T mountChildren(Collection<T> nodes, T parent) {
 		for (T node : nodes) {
-			if (node.getParentId() == parent.getId()) {
-				if (node.getChildren() == null) {
-					node.setChildren(new ArrayList<>());
+			if (node.getNodePid().equals(parent.getNodeId())) {
+				if (node.getNextNodes() == null) {
+					node.setNextNodes(new ArrayList<>());
 				}
 				parent.add(mountChildren(nodes, node));
 			}

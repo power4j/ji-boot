@@ -2,6 +2,7 @@ package com.power4j.flygon.common.security.filter;
 
 import com.power4j.flygon.common.core.constant.SecurityConstant;
 import com.power4j.flygon.common.security.auth.ApiTokenAuthentication;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -18,6 +19,7 @@ import java.util.Optional;
  * @date 2020/11/22
  * @since 1.0
  */
+@Slf4j
 public class ApiTokenAuthenticationFilter extends OncePerRequestFilter {
 
 	@Override
@@ -37,11 +39,14 @@ public class ApiTokenAuthenticationFilter extends OncePerRequestFilter {
 	}
 
 	private String getTokenValueFromHeader(HttpServletRequest request) {
-		return request.getHeader(SecurityConstant.HEADER_TOKEN_KEY);
+		final String value = request.getHeader(SecurityConstant.HEADER_TOKEN_KEY);
+		log.trace("请求头中的{}:{}",SecurityConstant.HEADER_TOKEN_KEY,value);
+		return value;
 	}
 
 	private String getTokenValueFromParam(HttpServletRequest request) {
 		String[] values = request.getParameterValues(SecurityConstant.PARAMETER_TOKEN_KEY);
+		log.trace("请求参数的{}:{}",SecurityConstant.HEADER_TOKEN_KEY,values);
 		return (values != null && values.length > 0) ? values[0] : null;
 	}
 

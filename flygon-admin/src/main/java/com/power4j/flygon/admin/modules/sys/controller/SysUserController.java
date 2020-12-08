@@ -16,33 +16,30 @@
 
 package com.power4j.flygon.admin.modules.sys.controller;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.power4j.flygon.admin.modules.sys.dto.SysUserDTO;
+import com.power4j.flygon.admin.modules.sys.entity.SysUser;
 import com.power4j.flygon.admin.modules.sys.service.SysUserService;
 import com.power4j.flygon.admin.modules.sys.vo.SearchSysUserVO;
-import com.power4j.flygon.admin.modules.sys.vo.SysUserVO;
+import com.power4j.flygon.common.core.constant.SysErrorCodes;
+import com.power4j.flygon.common.core.exception.BizException;
 import com.power4j.flygon.common.core.model.ApiResponse;
 import com.power4j.flygon.common.core.model.PageData;
 import com.power4j.flygon.common.core.model.PageRequest;
 import com.power4j.flygon.common.core.util.ApiResponseUtil;
-import com.power4j.flygon.common.core.validate.Groups;
+import com.power4j.flygon.common.data.crud.api.CrudApi;
+import com.power4j.flygon.common.data.crud.constant.OpFlagEnum;
+import com.power4j.flygon.common.data.crud.controller.CrudController;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.AllArgsConstructor;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotEmpty;
-import java.util.List;
 
 /**
  * 用户管理
@@ -52,67 +49,52 @@ import java.util.List;
  * @date 2020-11-17
  * @since 1.0
  */
-@AllArgsConstructor
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/sys/users")
-@Tag(name = "sys-user", description = "用户管理")
-public class SysUserController {
+@Tag(name = "用户管理", description = "用户管理")
+public class SysUserController  extends CrudController<SysUserDTO, SysUser> implements CrudApi<SysUserDTO,ApiResponse<SysUserDTO>> {
 
 	private final SysUserService sysUserService;
 
 	@GetMapping("/page")
 	@Operation(summary = "分页")
-	public ApiResponse<PageData<SysUserVO>> page(PageRequest page, SearchSysUserVO param) {
-		return ApiResponseUtil.ok(sysUserService.selectPage(page, param).map(o -> BeanUtil.toBean(o, SysUserVO.class)));
+	public ApiResponse<PageData<SysUserDTO>> page(PageRequest page, SearchSysUserVO param) {
+		return ApiResponseUtil.ok(sysUserService.selectPage(page, param));
 	}
 
-	@GetMapping("/{id}")
-	@Operation(summary = "查看")
-	public ApiResponse<SysUserVO> getById(@PathVariable("id") Long id) {
-		SysUserVO vo = sysUserService.read(id).map(o -> BeanUtil.toBean(o, SysUserVO.class)).orElse(null);
-		return ApiResponseUtil.nullAsNotFound(vo, "用户不存在");
+	@GetMapping("/count/username/{username}")
+	@Operation(summary = "查找用户名", description = "返回统计值,可用于唯一性检查")
+	public ApiResponse<Integer> findUsername(@PathVariable("username") @NotEmpty String username,
+			@Parameter(description = "排除的用户ID") @RequestParam(required = false) Long excludeId) {
+		return ApiResponseUtil.ok(sysUserService.countUsername(username, excludeId));
 	}
 
-	@PostMapping
-	@Operation(summary = "添加用户")
-	public ApiResponse<SysUserVO> add(
-			@Validated(value = { Groups.Create.class, Groups.Default.class }) @RequestBody SysUserVO vo) {
-		if (sysUserService.countUsername(vo.getUsername(), null) > 0) {
-			return ApiResponseUtil.conflict("用户名已经存在");
+	@Override
+	protected void prePostCheck(SysUserDTO obj) throws BizException {
+		if (sysUserService.countUsername(obj.getUsername(), null) > 0) {
+			throw new BizException(SysErrorCodes.E_CONFLICT,String.format("用户名不能使用: %s", obj.getUsername()));
 		}
-		SysUserDTO dto = BeanUtil.toBean(vo, SysUserDTO.class);
-		return ApiResponseUtil.ok(BeanUtil.toBean(sysUserService.create(dto), SysUserVO.class));
 	}
 
-	@DeleteMapping("/{id}")
-	@Operation(summary = "删除")
-	public ApiResponse<Boolean> delete(@PathVariable("id") Long id) {
-		return ApiResponseUtil.ok(sysUserService.removeById(id));
-	}
-
-	@DeleteMapping
-	@Operation(summary = "批量删除")
-	public ApiResponse<Boolean> deleteBatch(@RequestBody List<Long> ids) {
-		return ApiResponseUtil.ok(sysUserService.removeByIds(ids));
-	}
-
-	@PutMapping
-	@Operation(summary = "修改")
-	public ApiResponse<Boolean> update(@RequestBody SysUserVO vo) {
-		if (sysUserService.read(vo.getId()) == null) {
-			return ApiResponseUtil.notFound("用户不存在");
+	@Override
+	protected void prePutCheck(SysUserDTO obj,SysUser entity) throws BizException {
+		if (entity == null) {
+			throw new BizException(SysErrorCodes.E_CONFLICT,String.format("用户不存在"));
 		}
-		if (sysUserService.countUsername(vo.getUsername(), vo.getId()) > 0) {
-			return ApiResponseUtil.conflict("用户名已经使用");
+		checkOpFlagNq(entity,OpFlagEnum.SYS_LOCKED.getValue(),"系统数据不允许修改");
+		if (sysUserService.countUsername(obj.getUsername(), obj.getId()) > 0) {
+			throw new BizException(SysErrorCodes.E_CONFLICT,String.format("用户名不能使用: %s", obj.getUsername()));
 		}
-		return ApiResponseUtil.ok(sysUserService.update(BeanUtil.toBean(vo, SysUserDTO.class)));
 	}
 
-	@GetMapping("/validate/username/{username}")
-	@Operation(summary = "用户名使用次数", description = "可用于用户名唯一性检查")
-	public ApiResponse<Integer> getById(@PathVariable("username") @NotEmpty String username,
-			@Schema(description = "排除的用户ID") @RequestParam(required = false) Long expectedId) {
-		return ApiResponseUtil.ok(sysUserService.countUsername(username, expectedId));
+	@Override
+	protected void preReadCheck(SysUserDTO obj) throws BizException {
+
 	}
 
+	@Override
+	protected void preDeleteCheck(SysUserDTO obj,SysUser entity) throws BizException {
+		checkOpFlagNq(entity,OpFlagEnum.SYS_LOCKED.getValue(),"系统数据不允许删除");
+	}
 }

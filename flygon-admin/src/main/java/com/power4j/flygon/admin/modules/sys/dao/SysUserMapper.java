@@ -17,11 +17,8 @@
 package com.power4j.flygon.admin.modules.sys.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.power4j.flygon.admin.modules.sys.entity.SysUserEntity;
+import com.power4j.flygon.admin.modules.sys.entity.SysUser;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-
-import java.io.Serializable;
 
 /**
  * @author CJ (power4j@outlook.com)
@@ -29,14 +26,6 @@ import java.io.Serializable;
  * @since 1.0
  */
 @Mapper
-public interface SysUserMapper extends BaseMapper<SysUserEntity> {
-
-	/**
-	 * 统计用户名
-	 * @param username
-	 * @param ignoreId 忽略的ID,可以为null
-	 * @return
-	 */
-	int countUsernameIgnoreLogicDel(@Param("username") String username, @Param("ignoreId") Serializable ignoreId);
+public interface SysUserMapper extends BaseMapper<SysUser> {
 
 }

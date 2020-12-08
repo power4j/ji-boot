@@ -6,6 +6,7 @@ import com.power4j.flygon.common.core.model.ApiResponse;
 import com.power4j.flygon.common.core.util.ApiResponseUtil;
 import com.power4j.flygon.common.security.msg.SecurityMessageSource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.CredentialsExpiredException;
@@ -30,6 +31,8 @@ public class ApiTokenAuthenticationEntryPoint implements AuthenticationEntryPoin
 
 	private final ObjectMapper jsonMapper = new ObjectMapper();
 
+	protected final MessageSourceAccessor messages = SecurityMessageSource.getAccessor();
+
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException authException) throws IOException {
@@ -38,22 +41,27 @@ public class ApiTokenAuthenticationEntryPoint implements AuthenticationEntryPoin
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		ApiResponse<?> result = ApiResponseUtil.fail(authException.getMessage());
 
-		if (authException instanceof CredentialsExpiredException
-				|| authException instanceof InsufficientAuthenticationException) {
-			String msg = SecurityMessageSource.getAccessor().getMessage(
+		if (authException instanceof InsufficientAuthenticationException) {
+			String msg = messages.getMessage(
+					"AbstractAccessDecisionManager.accessDenied", authException.getMessage());
+			result.setMsg(msg);
+		}
+
+		if (authException instanceof CredentialsExpiredException) {
+			String msg = messages.getMessage(
 					"AbstractUserDetailsAuthenticationProvider.credentialsExpired", authException.getMessage());
 			result.setMsg(msg);
 		}
 
 		if (authException instanceof UsernameNotFoundException) {
-			String msg = SecurityMessageSource.getAccessor().getMessage(
-					"AbstractUserDetailsAuthenticationProvider.noopBindAccount", authException.getMessage());
+			String msg = messages.getMessage(
+					"AbstractUserDetailsAuthenticationProvider.badCredentials", authException.getMessage());
 			result.setMsg(msg);
 		}
 
 		if (authException instanceof BadCredentialsException) {
 			String msg = SecurityMessageSource.getAccessor().getMessage(
-					"AbstractUserDetailsAuthenticationProvider.badClientCredentials", authException.getMessage());
+					"AbstractUserDetailsAuthenticationProvider.badCredentials", authException.getMessage());
 			result.setMsg(msg);
 		}
 

@@ -17,10 +17,7 @@
 package com.power4j.flygon.common.core.constant;
 
 /**
- * Error code
- * <ul>
- * <li>General Error 0 ~ 1000</li>
- * </ul>
+ * System Error code
  * <p>
  *
  * @author CJ (power4j@outlook.com)
@@ -30,18 +27,18 @@ package com.power4j.flygon.common.core.constant;
 public interface SysErrorCodes {
 
 	// -----------------------------------------------------------------
-	// Common error code : -9999 ~ 19999
+	// Common error code : 0 ~ 19999
 	// -----------------------------------------------------------------
-
-	/**
-	 * 失败
-	 */
-	int E_FAIL = -1;
 
 	/**
 	 * 成功
 	 */
-	int E_OK = 200;
+	int E_OK = 0;
+
+	/**
+	 * 失败
+	 */
+	int E_FAIL = 1;
 
 	/**
 	 * 无效请求
@@ -107,19 +104,5 @@ public interface SysErrorCodes {
 	 * 不支持的媒体类型
 	 */
 	int E_MEDIA_TYPE_NOT_SUPPORTED = 10107;
-
-	/**
-	 * 数据已经存在
-	 */
-	int E_DATA_EXISTS = 10201;
-
-	/**
-	 * 数据不存在
-	 */
-	int E_DATA_NOT_EXISTS = 10202;
-
-	// -----------------------------------------------------------------
-	// Biz error : 20000 ~ 29999
-	// -----------------------------------------------------------------
 
 }

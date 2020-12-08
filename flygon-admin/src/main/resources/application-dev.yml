@@ -45,4 +45,10 @@ spring:
 
 logging:
   level:
-    com.power4j.flygon.admin.modules: debug
+    com:
+      power4j:
+        flygon:
+          admin:
+            modules: debug
+          common:
+            security: trace

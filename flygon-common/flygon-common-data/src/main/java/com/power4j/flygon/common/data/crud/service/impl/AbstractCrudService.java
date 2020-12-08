@@ -5,11 +5,14 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.ReflectionKit;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.power4j.flygon.common.core.model.PageData;
 import com.power4j.flygon.common.core.model.PageRequest;
-import com.power4j.flygon.common.data.crud.CrudUtil;
+import com.power4j.flygon.common.data.crud.util.CrudUtil;
+import com.power4j.flygon.common.data.crud.util.Unique;
 import com.power4j.flygon.common.data.crud.service.CrudService;
+import lombok.Getter;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
@@ -21,12 +24,14 @@ import java.util.Optional;
  * @date 2020/11/20
  * @since 1.0
  */
-public abstract class AbstractCrudService<M extends BaseMapper<T>, D, T> extends BaseServiceImpl<M, T>
+public abstract class AbstractCrudService<M extends BaseMapper<T>, D, T extends Unique> extends BaseServiceImpl<M, T>
 		implements CrudService<D, T> {
 
-	private Class<D> dtoClass;
+	@Getter
+	private Class<D> dtoClass = (Class<D>) ReflectionKit.getSuperClassGenericType(getClass(), 1);
 
-	private Class<T> entityClass;
+	@Getter
+	private Class<T> entityClass = (Class<T>) ReflectionKit.getSuperClassGenericType(getClass(), 2);
 
 	/**
 	 * 分页查询 QueryWrapper
@@ -34,10 +39,10 @@ public abstract class AbstractCrudService<M extends BaseMapper<T>, D, T> extends
 	 * @return
 	 */
 	protected Wrapper<T> getSearchWrapper(D param) {
-		return new QueryWrapper<>(toEntity(param));
+		return param == null ? Wrappers.emptyWrapper() : new QueryWrapper<>(toEntity(param));
 	}
 
-	public Optional<D> searchOne(Wrapper<T> wrapper){
+	public Optional<D> searchOne(Wrapper<T> wrapper) {
 		return Optional.ofNullable(getBaseMapper().selectOne(wrapper)).map(this::toDto);
 	}
 
@@ -46,9 +51,6 @@ public abstract class AbstractCrudService<M extends BaseMapper<T>, D, T> extends
 		if (dto == null) {
 			return null;
 		}
-		if (entityClass == null) {
-			entityClass = (Class<T>) ReflectionKit.getSuperClassGenericType(getClass(), 2);
-		}
 		return BeanUtil.toBean(dto, entityClass);
 	}
 
@@ -56,9 +58,6 @@ public abstract class AbstractCrudService<M extends BaseMapper<T>, D, T> extends
 	public D toDto(T entity) {
 		if (entity == null) {
 			return null;
-		}
-		if (dtoClass == null) {
-			dtoClass = (Class<D>) ReflectionKit.getSuperClassGenericType(getClass(), 1);
 		}
 		return BeanUtil.toBean(entity, dtoClass);
 	}
@@ -71,7 +70,7 @@ public abstract class AbstractCrudService<M extends BaseMapper<T>, D, T> extends
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public D create(D dto) {
+	public D post(D dto) {
 		T entity = toEntity(dto);
 		save(entity);
 		return toDto(entity);
@@ -89,8 +88,17 @@ public abstract class AbstractCrudService<M extends BaseMapper<T>, D, T> extends
 	}
 
 	@Override
-	public boolean update(D dto) {
-		return updateById(toEntity(dto));
+	public D put(D dto) {
+		T entity = toEntity(dto);
+		updateById(toEntity(dto));
+		return toDto(entity);
 	}
 
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public Optional<D> delete(Serializable id) {
+		Optional<D> pre = read(id);
+		pre.ifPresent(d -> removeById(id));
+		return pre;
+	}
 }

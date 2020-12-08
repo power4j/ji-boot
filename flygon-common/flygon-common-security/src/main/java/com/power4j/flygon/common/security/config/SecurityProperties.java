@@ -24,6 +24,7 @@ public class SecurityProperties {
 	public static final String PREFIX = CommonConstant.PROPERTY_PREFIX + ".security";
 
 	private ApiTokenProperties apiToken = new ApiTokenProperties();
+
 	/**
 	 * 对外暴露的 URL
 	 */
@@ -35,7 +36,7 @@ public class SecurityProperties {
 		/**
 		 * Ant风格URL表达式,如{@code  /api/** }
 		 */
-		String pattern;
+		Set<String> patterns;
 
 		/**
 		 * HTTP 方法(可以为空,表示匹配所有方法):
@@ -68,4 +69,5 @@ public class SecurityProperties {
 		private String issueBy = "power4j.com";
 
 	}
+
 }

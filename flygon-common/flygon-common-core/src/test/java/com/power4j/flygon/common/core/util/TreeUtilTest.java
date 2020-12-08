@@ -16,7 +16,8 @@
 
 package com.power4j.flygon.common.core.util;
 
-import com.power4j.flygon.common.core.model.TreeNode;
+import com.power4j.flygon.common.core.model.Node;
+import lombok.Data;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,15 +29,53 @@ import static org.junit.Assert.assertEquals;
 
 public class TreeUtilTest {
 
-	private final int ROOT_ID = 0;
+	@Data
+	public static class TreeNode implements Node<TreeNode> {
+		private static final long serialVersionUID = 1L;
+		private Long id;
+		private Long parentId;
+		private List<TreeNode> children = new ArrayList<>();
 
-	private List<TreeNode> allNode = new ArrayList<>(20);
+		@Override
+		public Long getNodeId() {
+			return id;
+		}
 
-	private TreeNode createNode(int id, int parentId, List<TreeNode> children) {
+		@Override
+		public void setNodeId(Long id) {
+			this.id = id;
+		}
+
+		@Override
+		public Long getNodePid() {
+			return parentId;
+		}
+
+		@Override
+		public void setNodePid(Long parentId) {
+			this.parentId = parentId;
+		}
+
+		@Override
+		public List<TreeNode> getNextNodes() {
+			return children;
+		}
+
+		@Override
+		public void setNextNodes(List<TreeNode> children) {
+			this.children = children;
+		}
+	}
+
+	private final Long ROOT_ID = 0L;
+
+	private List<Node> allNode = new ArrayList<>(20);
+
+	private Node createNode(long id, long parentId, List<TreeNode> children) {
 		final TreeNode node = new TreeNode();
-		node.setId(id);
-		node.setParentId(parentId);
-		node.setChildren((children == null || children.isEmpty()) ? new ArrayList<>() : children);
+		node.setNodeId(id);
+		node.setNodePid(parentId);
+		node.setNextNodes((children == null || children.isEmpty()) ? new ArrayList<>() : children);
 		return node;
 	}
 
@@ -66,21 +105,21 @@ public class TreeUtilTest {
 
 	@Test
 	public void buildTree() {
-		List<TreeNode> fullTree = TreeUtil.buildTree(allNode, ROOT_ID);
+		List<Node> fullTree = TreeUtil.buildTree(allNode, ROOT_ID);
 		assertEquals(fullTree.size(), 2);
 
-		List<TreeNode> nodeList = new ArrayList<>(10);
+		List<Node> nodeList = new ArrayList<>(10);
 		fullTree.forEach(o -> nodeList.addAll(TreeUtil.flattenTree(o)));
 		assertEquals(nodeList.size(), allNode.size());
 
-		List<TreeNode> leafList = new ArrayList<>(10);
+		List<Node> leafList = new ArrayList<>(10);
 		fullTree.forEach(o -> leafList.addAll(TreeUtil.getLeafNode(o)));
 		assertEquals(leafList.size(), 4);
 	}
 
 	@Test
 	public void search() {
-		List<TreeNode> found = TreeUtil.simpleSearch(allNode, o -> o.getParentId() == ROOT_ID);
+		List<Node> found = TreeUtil.simpleSearch(allNode, o -> o.getNodePid() == ROOT_ID);
 		assertEquals(found.size(), 2);
 	}
 

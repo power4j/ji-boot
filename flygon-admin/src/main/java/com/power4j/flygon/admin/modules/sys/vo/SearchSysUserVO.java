@@ -33,7 +33,7 @@ import java.time.LocalDate;
  */
 @Data
 @Accessors(chain = true)
-@Schema(title = "查询条件")
+@Schema(title = "用户查询")
 public class SearchSysUserVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;

@@ -1,4 +1,4 @@
-package com.power4j.flygon.common.data.crud;
+package com.power4j.flygon.common.data.crud.util;
 
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
@@ -79,7 +79,7 @@ public class CrudUtil {
 	 * @return
 	 */
 	public LocalDateTime dayStart(LocalDate localDate) {
-		return localDate.atTime(LocalTime.MIN);
+		return localDate == null ? null : localDate.atTime(LocalTime.MIN);
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class CrudUtil {
 	 * @return
 	 */
 	public LocalDateTime dayEnd(LocalDate localDate) {
-		return localDate.atTime(LocalTime.MAX);
+		return  localDate == null ? null : localDate.atTime(LocalTime.MAX);
 	}
 
 }

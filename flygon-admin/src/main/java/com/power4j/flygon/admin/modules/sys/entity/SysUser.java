@@ -34,7 +34,7 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("t_sys_user")
-public class SysUserEntity extends BaseEntity implements Serializable {
+public class SysUser extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -87,4 +87,5 @@ public class SysUserEntity extends BaseEntity implements Serializable {
 	 * 更新人
 	 */
 	private String updateBy;
+
 }

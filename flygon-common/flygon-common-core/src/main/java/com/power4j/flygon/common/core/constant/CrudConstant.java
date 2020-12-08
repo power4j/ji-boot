@@ -12,7 +12,7 @@ public interface CrudConstant {
 	/**
 	 * 分页查询: 页码
 	 */
-	String QRY_PAGE_INDEX = "page";
+	String QRY_PAGE_INDEX = "current";
 
 	/**
 	 * 分页查询: 页大小

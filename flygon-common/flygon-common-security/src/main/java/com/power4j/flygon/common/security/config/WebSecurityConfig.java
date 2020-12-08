@@ -1,5 +1,6 @@
 package com.power4j.flygon.common.security.config;
 
+import cn.hutool.core.util.StrUtil;
 import com.power4j.flygon.common.security.auth.ApiTokenAuthenticationEntryPoint;
 import com.power4j.flygon.common.security.auth.ApiTokenAuthenticationProvider;
 import com.power4j.flygon.common.security.endpoint.ApiTokenEndpoint;
@@ -47,7 +48,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private SecurityProperties securityProperties;
 
-
 	@Autowired
 	private UserDetailsService userDetailsService;
 
@@ -68,14 +68,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Bean
 	public ApiTokenAuthenticationProvider apiTokenAuthenticationProvider() {
-		ApiTokenAuthenticationProvider apiTokenAuthenticationProvider = new ApiTokenAuthenticationProvider(
-				tokenService,userDetailsService);
+		ApiTokenAuthenticationProvider apiTokenAuthenticationProvider = new ApiTokenAuthenticationProvider(tokenService,
+				userDetailsService);
 		return apiTokenAuthenticationProvider;
 	}
 
 	@Override
 	public void configure(WebSecurity web) {
-		web.ignoring().antMatchers("/css/**");
+		web.ignoring().antMatchers("/static/**","/webjars/**");
 	}
 
 	@Override
@@ -111,13 +111,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 							.map(m -> (m == null || m.trim().isEmpty()) ? null : HttpMethod.valueOf(m))
 							.filter(m -> m != null).collect(Collectors.toSet());
 					for (HttpMethod m : methodSet) {
-						log.info("add matchers:{} {}", m.name(), mvcMatcher.getPattern());
-						registry.mvcMatchers(m, mvcMatcher.getPattern()).permitAll();
+						log.info("add matchers:[{}] {}", m.name(), StrUtil.join(", ",mvcMatcher.getPatterns()));
+						registry.antMatchers(m, mvcMatcher.getPatterns().toArray(new String[0])).permitAll();
 					}
 				}
 				else {
-					log.info("add matchers:{} {}", "*", mvcMatcher.getPattern());
-					registry.antMatchers(mvcMatcher.getPattern()).permitAll();
+					log.info("add matchers:[{}] {}", "*", StrUtil.join(", ",mvcMatcher.getPatterns()));
+					registry.antMatchers(mvcMatcher.getPatterns().toArray(new String[0])).permitAll();
 				}
 			}
 		}

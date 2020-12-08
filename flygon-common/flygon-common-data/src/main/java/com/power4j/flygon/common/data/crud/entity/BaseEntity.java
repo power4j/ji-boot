@@ -21,7 +21,10 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
-import lombok.Data;
+import com.power4j.flygon.common.data.crud.util.OperateFlag;
+import com.power4j.flygon.common.data.crud.util.Unique;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -34,10 +37,9 @@ import java.time.LocalDateTime;
  * @date 2020-11-19
  * @since 1.0
  */
-@Data
-public abstract class BaseEntity implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+@Getter
+@Setter
+public abstract class BaseEntity implements Unique , OperateFlag {
 
 	/**
 	 * 主健
@@ -46,10 +48,15 @@ public abstract class BaseEntity implements Serializable {
 	private Long id;
 
 	/**
+	 * 数据标记 0 普通数据, 1 系统保护数据
+	 */
+	private Integer opFlag;
+
+	/**
 	 * 逻辑删除标志
 	 */
 	@TableLogic
-	private Integer delFlag;
+	private LocalDateTime delFlag;
 
 	/**
 	 * 创建时间
@@ -63,4 +70,13 @@ public abstract class BaseEntity implements Serializable {
 	@TableField(fill = FieldFill.UPDATE)
 	private LocalDateTime updateAt;
 
+	@Override
+	public Serializable getOnlyId() {
+		return id;
+	}
+
+	@Override
+	public Integer getOperateFlag() {
+		return opFlag;
+	}
 }

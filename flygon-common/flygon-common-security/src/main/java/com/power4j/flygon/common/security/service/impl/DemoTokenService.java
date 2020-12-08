@@ -1,8 +1,11 @@
 package com.power4j.flygon.common.security.service.impl;
 
+import cn.hutool.core.lang.Assert;
 import cn.hutool.core.lang.UUID;
+import com.power4j.flygon.common.security.LoginUser;
 import com.power4j.flygon.common.security.model.ApiToken;
 import com.power4j.flygon.common.security.service.TokenService;
+import org.springframework.security.core.Authentication;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -34,9 +37,12 @@ public class DemoTokenService implements TokenService {
 	}
 
 	@Override
-	public ApiToken createToken(String username) {
+	public ApiToken createToken(Authentication authentication) {
+		Assert.isInstanceOf(LoginUser.class, authentication.getPrincipal());
+		LoginUser loginUser = (LoginUser) authentication.getPrincipal();
 		ApiToken apiToken = new ApiToken().setToken(UUID.fastUUID().toString())
-				.setExpireIn(LocalDateTime.now().plusHours(48L)).setUsername(username).setIssuedBy("power4j.com");
+				.setExpireIn(LocalDateTime.now().plusHours(48L)).setUsername(loginUser.getUsername()).setName("power4j")
+				.setUuid(loginUser.getUid()).setIssuedBy("power4j.com");
 		tokenMap.put(apiToken.getToken(), apiToken);
 		return apiToken;
 	}

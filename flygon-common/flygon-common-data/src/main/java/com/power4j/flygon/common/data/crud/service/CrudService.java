@@ -5,6 +5,7 @@ package com.power4j.flygon.common.data.crud.service;
 
 import com.power4j.flygon.common.core.model.PageData;
 import com.power4j.flygon.common.core.model.PageRequest;
+import com.power4j.flygon.common.data.crud.util.Unique;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
  * @param <D> DTO
  * @param <T> Entity
  */
-public interface CrudService<D, T> extends BaseService<T> {
+public interface CrudService<D, T extends Unique> extends BaseService<T> {
 
 	/**
 	 * DTO 转 Entity
@@ -73,7 +74,7 @@ public interface CrudService<D, T> extends BaseService<T> {
 	 * @param dto
 	 * @return
 	 */
-	D create(D dto);
+	D post(D dto);
 
 	/**
 	 * 搜索
@@ -94,6 +95,13 @@ public interface CrudService<D, T> extends BaseService<T> {
 	 * @param dto
 	 * @return
 	 */
-	boolean update(D dto);
+	D put(D dto);
+
+	/**
+	 * 删除
+	 * @param id
+	 * @return
+	 */
+	Optional<D> delete(Serializable id);
 
 }

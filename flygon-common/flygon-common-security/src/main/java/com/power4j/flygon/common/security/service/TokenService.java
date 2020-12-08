@@ -1,6 +1,7 @@
 package com.power4j.flygon.common.security.service;
 
 import com.power4j.flygon.common.security.model.ApiToken;
+import org.springframework.security.core.Authentication;
 
 /**
  * @author CJ (power4j@outlook.com)
@@ -25,9 +26,9 @@ public interface TokenService {
 
 	/**
 	 * 创建 访问令牌
-	 * @param username
+	 * @param authentication
 	 * @return
 	 */
-	ApiToken createToken(String username);
+	ApiToken createToken(Authentication authentication);
 
 }

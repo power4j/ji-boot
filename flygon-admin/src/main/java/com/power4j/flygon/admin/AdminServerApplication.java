@@ -16,7 +16,6 @@
 
 package com.power4j.flygon.admin;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -29,7 +28,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @since 1.0
  */
 @SpringBootApplication
-@MapperScan(basePackages = {"com.power4j.flygon.admin.modules.security.dao","com.power4j.flygon.admin.modules.sys.dao"})
 public class AdminServerApplication {
 
 	public static void main(String[] args) {

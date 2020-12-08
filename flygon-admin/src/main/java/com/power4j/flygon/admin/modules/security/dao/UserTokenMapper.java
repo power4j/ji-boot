@@ -1,7 +1,7 @@
 package com.power4j.flygon.admin.modules.security.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.power4j.flygon.admin.modules.security.entity.ApiTokenEntity;
+import com.power4j.flygon.admin.modules.security.entity.UserToken;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -11,12 +11,13 @@ import org.apache.ibatis.annotations.Param;
  * @since 1.0
  */
 @Mapper
-public interface ApiTokenMapper extends BaseMapper<ApiTokenEntity> {
+public interface UserTokenMapper extends BaseMapper<UserToken> {
 
 	/**
 	 * 行锁
-	 * @param username
+	 * @param uid
 	 * @return
 	 */
-	ApiTokenEntity selectForUpdate(@Param("username") String username);
+	UserToken selectForUpdate(@Param("uid") Long uid);
+
 }
