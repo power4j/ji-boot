@@ -56,4 +56,5 @@ public class DataAccessExceptionTranslator {
 		ErrorEventUtil.publishEvent(publisher, e);
 		return result;
 	}
+
 }

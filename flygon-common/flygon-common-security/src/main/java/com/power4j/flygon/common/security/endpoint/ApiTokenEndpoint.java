@@ -8,9 +8,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AccountStatusException;
+import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.CredentialsExpiredException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,14 +47,24 @@ public class ApiTokenEndpoint {
 		try {
 			userAuth = authenticationManager.authenticate(userAuth);
 		}
-		catch (AccountStatusException e) {
+		catch (CredentialsExpiredException e) {
 			log.error(e.getMessage(), e);
-			// expired, locked, disabled
-			return ApiResponseUtil.fail("账号无效");
+			return ApiResponseUtil.fail("凭据已经过期");
+		}
+		catch (AccountExpiredException e) {
+			log.error(e.getMessage(), e);
+			return ApiResponseUtil.fail("账号已经过期");
+		}
+		catch (DisabledException e) {
+			log.error(e.getMessage(), e);
+			return ApiResponseUtil.fail("账号已禁用");
+		}
+		catch (LockedException e) {
+			log.error(e.getMessage(), e);
+			return ApiResponseUtil.fail("账号已锁定");
 		}
 		catch (BadCredentialsException e) {
 			log.error(e.getMessage(), e);
-			// username/password are wrong
 			return ApiResponseUtil.fail("用户名或密码错误");
 		}
 		if (userAuth == null || !userAuth.isAuthenticated()) {

@@ -40,9 +40,13 @@ public class DemoTokenService implements TokenService {
 	public ApiToken createToken(Authentication authentication) {
 		Assert.isInstanceOf(LoginUser.class, authentication.getPrincipal());
 		LoginUser loginUser = (LoginUser) authentication.getPrincipal();
-		ApiToken apiToken = new ApiToken().setToken(UUID.fastUUID().toString())
-				.setExpireIn(LocalDateTime.now().plusHours(48L)).setUsername(loginUser.getUsername()).setName("power4j")
-				.setUuid(loginUser.getUid()).setIssuedBy("power4j.com");
+		ApiToken apiToken = new ApiToken();
+		apiToken.setToken(UUID.fastUUID().toString());
+		apiToken.setExpireIn(LocalDateTime.now().plusHours(48L));
+		apiToken.setUsername(loginUser.getUsername());
+		apiToken.setName("power4j");
+		apiToken.setUuid(loginUser.getUid());
+		apiToken.setIssuedBy("power4j.com");
 		tokenMap.put(apiToken.getToken(), apiToken);
 		return apiToken;
 	}

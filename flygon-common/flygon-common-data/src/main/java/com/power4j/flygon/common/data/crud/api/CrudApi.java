@@ -11,15 +11,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author CJ (power4j@outlook.com)
  * @date 2020/11/27
  * @since 1.0
  */
-public interface CrudApi<D extends Unique,R extends ApiResponse<D>> {
+public interface CrudApi<D extends Unique> {
 
 	/**
 	 * 读取
@@ -28,7 +30,17 @@ public interface CrudApi<D extends Unique,R extends ApiResponse<D>> {
 	 */
 	@GetMapping("/{id}")
 	@Operation(summary = "读取")
-	R read(@PathVariable("id") Serializable id);
+	ApiResponse<D> read(@PathVariable("id") Serializable id);
+
+
+	/**
+	 * 读取
+	 * @param id
+	 * @return 如果资源不存在返回 null
+	 */
+	@GetMapping("/list")
+	@Operation(summary = "读取列表")
+	ApiResponse<List<D>> readList(@RequestParam List<Serializable> id);
 
 	/**
 	 * 创建
@@ -37,7 +49,7 @@ public interface CrudApi<D extends Unique,R extends ApiResponse<D>> {
 	 */
 	@PostMapping
 	@Operation(summary = "添加")
-	R post(@Validated({ Groups.Create.class}) @RequestBody D obj);
+	ApiResponse<D> post(@Validated({ Groups.Create.class }) @RequestBody D obj);
 
 	/**
 	 * 修改
@@ -46,7 +58,7 @@ public interface CrudApi<D extends Unique,R extends ApiResponse<D>> {
 	 */
 	@PutMapping
 	@Operation(summary = "修改")
-	R put(@Validated(value = { Groups.Update.class}) @RequestBody D obj);
+	ApiResponse<D> put(@Validated(value = { Groups.Update.class }) @RequestBody D obj);
 
 	/**
 	 * 删除
@@ -55,5 +67,6 @@ public interface CrudApi<D extends Unique,R extends ApiResponse<D>> {
 	 */
 	@DeleteMapping("/{id}")
 	@Operation(summary = "删除")
-	R delete(@PathVariable("id") Serializable id);
+	ApiResponse<D> delete(@PathVariable("id") Serializable id);
+
 }

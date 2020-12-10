@@ -63,12 +63,12 @@
     <flygon.version>0.0.1-SNAPSHOT</flygon.version>
     <druid.version>1.1.21</druid.version>
     <hutool.version>5.4.7</hutool.version>
-    <knife4j.version>2.0.7</knife4j.version>
+    <knife4j.version>3.0.2</knife4j.version>
     <esc-pos.version>1.0.1</esc-pos.version>
     <sequence.version>1.4.0</sequence.version>
     <friendly-id.version>1.1.0</friendly-id.version>
     <mybatis-plus.version>3.4.0</mybatis-plus.version>
-    <springdoc-openapi.version>1.5.0</springdoc-openapi.version>
+    <springdoc-openapi.version>1.5.2</springdoc-openapi.version>
     <transmittable-thread-local.version>2.11.2</transmittable-thread-local.version>
     <hibernate-validator-test-utils.version>6.1.6.Final</hibernate-validator-test-utils.version>
   </properties>

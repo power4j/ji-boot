@@ -7,15 +7,19 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.ReflectionKit;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.power4j.flygon.common.core.constant.SysErrorCodes;
+import com.power4j.flygon.common.core.exception.BizException;
 import com.power4j.flygon.common.core.model.PageData;
 import com.power4j.flygon.common.core.model.PageRequest;
+import com.power4j.flygon.common.data.crud.constant.SysCtlFlagEnum;
+import com.power4j.flygon.common.data.crud.service.CrudService;
 import com.power4j.flygon.common.data.crud.util.CrudUtil;
 import com.power4j.flygon.common.data.crud.util.Unique;
-import com.power4j.flygon.common.data.crud.service.CrudService;
 import lombok.Getter;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +28,7 @@ import java.util.Optional;
  * @date 2020/11/20
  * @since 1.0
  */
-public abstract class AbstractCrudService<M extends BaseMapper<T>, D, T extends Unique> extends BaseServiceImpl<M, T>
+public abstract class AbstractCrudService<M extends BaseMapper<T>, D extends Unique, T extends Unique> extends BaseServiceImpl<M, T>
 		implements CrudService<D, T> {
 
 	@Getter
@@ -88,17 +92,61 @@ public abstract class AbstractCrudService<M extends BaseMapper<T>, D, T extends 
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public D put(D dto) {
-		T entity = toEntity(dto);
-		updateById(toEntity(dto));
-		return toDto(entity);
+		updateById(toEntity(prePutHandle(dto)));
+		return dto;
+	}
+
+	@Override
+	public List<D> readList(Collection<Serializable> idList) {
+		return toDtoList(getBaseMapper().selectBatchIds(idList));
 	}
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public Optional<D> delete(Serializable id) {
-		Optional<D> pre = read(id);
-		pre.ifPresent(d -> removeById(id));
-		return pre;
+		T entity = preDeleteHandle(id);
+		if(entity != null){
+			removeById(id);
+			return Optional.of(toDto(entity));
+		}
+		return Optional.empty();
+	}
+
+	/**
+	 * 前置检查,并对入参进行处理
+	 * @param dto
+	 * @return 返回处理后的对象
+	 */
+	protected D prePostHandle(D dto){
+		return dto;
+	}
+
+	/**
+	 * 前置检查,并对入参进行处理
+	 * @param dto
+	 * @return 返回处理后的对象
+	 */
+	protected D prePutHandle(D dto){
+		T entity = getById(dto.getOnlyId());
+		if (entity == null) {
+			throw new BizException(SysErrorCodes.E_CONFLICT, String.format("数据不存在"));
+		}
+		checkSysCtlNot(entity,SysCtlFlagEnum.SYS_LOCKED.getValue(),"系统数据不允许修改");
+		return dto;
+	}
+
+	/**
+	 * 前置检查
+	 * @param id
+	 * @return 返回数据库中当前值
+	 */
+	protected T preDeleteHandle(Serializable id){
+		T entity = getById(id);
+		if(entity != null){
+			checkSysCtlNot(entity,SysCtlFlagEnum.SYS_LOCKED.getValue(),"系统数据不允许删除");
+		}
+		return entity;
 	}
 }

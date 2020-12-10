@@ -2,6 +2,7 @@ package com.power4j.flygon.common.data.crud.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.power4j.flygon.common.core.validate.Groups;
+import com.power4j.flygon.common.data.crud.util.SysCtl;
 import com.power4j.flygon.common.data.crud.util.Unique;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -19,20 +20,21 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
-public abstract class BaseDTO implements Unique {
+public abstract class BaseDTO implements Unique, SysCtl {
+
 	/**
 	 * 主健
 	 */
 	@Schema(description = "主健")
 	@NotNull(groups = { Groups.Update.class })
-	@Null(groups = { Groups.Create.class },message = "主健ID由系统分配")
+	@Null(groups = { Groups.Create.class }, message = "主健ID由系统分配")
 	private Long id;
 
 	/**
 	 * 数据标记 0 普通数据, 1 系统保护数据
 	 */
 	@Schema(description = "数据标记 0 普通数据, 1 系统保护数据", defaultValue = "0")
-	private Integer opFlag;
+	private Integer sysFlag;
 
 	/**
 	 * 更新时间
@@ -52,4 +54,10 @@ public abstract class BaseDTO implements Unique {
 	public Serializable getOnlyId() {
 		return id;
 	}
+
+	@Override
+	public Integer getCtlFlag() {
+		return sysFlag;
+	}
+
 }

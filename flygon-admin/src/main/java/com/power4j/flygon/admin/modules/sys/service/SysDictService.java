@@ -13,6 +13,7 @@ import java.util.Optional;
  * @since 1.0
  */
 public interface SysDictService extends CrudService<SysDictDTO, SysDict> {
+
 	/**
 	 * 统计字典代码
 	 * @param code
@@ -27,4 +28,5 @@ public interface SysDictService extends CrudService<SysDictDTO, SysDict> {
 	 * @return
 	 */
 	Optional<SysDictDTO> getDict(String code);
+
 }

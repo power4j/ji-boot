@@ -16,8 +16,9 @@ import java.io.Serializable;
  * @since 1.0
  */
 @Data
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 public class SysDictItemDTO extends BaseDTO implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -30,7 +31,7 @@ public class SysDictItemDTO extends BaseDTO implements Serializable {
 	/**
 	 * 值
 	 */
-	@Schema(description = "值")
+	@Schema(description = "值", example = "1")
 	@NotNull(groups = { Groups.Default.class })
 	@Size(min = 1, max = 255, groups = { Groups.Default.class })
 	private String value;
@@ -38,7 +39,7 @@ public class SysDictItemDTO extends BaseDTO implements Serializable {
 	/**
 	 * 标签
 	 */
-	@Schema(description = "标签")
+	@Schema(description = "标签", example = "red color")
 	@NotNull(groups = { Groups.Default.class })
 	@Size(min = 1, max = 20, groups = { Groups.Default.class })
 	private String label;
@@ -49,4 +50,5 @@ public class SysDictItemDTO extends BaseDTO implements Serializable {
 	@Schema(description = "备注")
 	@Size(min = 1, max = 40, groups = { Groups.Default.class })
 	private String remarks;
+
 }

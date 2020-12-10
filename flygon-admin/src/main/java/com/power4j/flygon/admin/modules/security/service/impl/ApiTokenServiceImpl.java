@@ -1,5 +1,6 @@
 package com.power4j.flygon.admin.modules.security.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.lang.UUID;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -7,7 +8,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.power4j.flygon.admin.modules.security.dao.UserTokenMapper;
 import com.power4j.flygon.admin.modules.security.entity.UserToken;
 import com.power4j.flygon.admin.modules.security.service.ApiTokenService;
-import com.power4j.flygon.common.data.crud.service.impl.AbstractCrudService;
+import com.power4j.flygon.common.data.crud.service.impl.BaseServiceImpl;
 import com.power4j.flygon.common.security.LoginUser;
 import com.power4j.flygon.common.security.config.SecurityProperties;
 import com.power4j.flygon.common.security.model.ApiToken;
@@ -25,7 +26,7 @@ import java.time.LocalDateTime;
  */
 @Service
 @RequiredArgsConstructor
-public class ApiTokenServiceImpl extends AbstractCrudService<UserTokenMapper, ApiToken, UserToken>
+public class ApiTokenServiceImpl extends BaseServiceImpl<UserTokenMapper, UserToken>
 		implements ApiTokenService {
 
 	private final SecurityProperties securityProperties;
@@ -34,7 +35,8 @@ public class ApiTokenServiceImpl extends AbstractCrudService<UserTokenMapper, Ap
 	public ApiToken loadApiToken(String tokenValue) {
 		LambdaQueryWrapper<UserToken> queryWrapper = Wrappers.lambdaQuery();
 		queryWrapper.eq(UserToken::getToken, tokenValue);
-		return searchOne(queryWrapper).orElse(null);
+		UserToken userToken = getOne(queryWrapper);
+		return userToken == null ? null : BeanUtil.toBean(userToken,ApiToken.class);
 	}
 
 	@Override
@@ -64,7 +66,10 @@ public class ApiTokenServiceImpl extends AbstractCrudService<UserTokenMapper, Ap
 			entity.setExpireIn(expire);
 			updateById(entity);
 		}
-		return toDto(entity).setName(loginUser.getName()).setIssuedBy(securityProperties.getApiToken().getIssueBy());
+		ApiToken token = BeanUtil.toBean(entity,ApiToken.class);
+		token.setName(loginUser.getName());
+		token.setIssuedBy(securityProperties.getApiToken().getIssueBy());
+		return token;
 	}
 
 }

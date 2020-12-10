@@ -18,7 +18,6 @@ package com.power4j.flygon.admin.modules.sys.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -32,19 +31,18 @@ import java.time.LocalDate;
  * @since 1.0
  */
 @Data
-@Accessors(chain = true)
 @Schema(title = "用户查询")
 public class SearchSysUserVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Schema(description = "开始注册时间", example = "1970-01-01")
-	private LocalDate startDate;
-
-	@Schema(description = "结束注册时间", example = "2050-12-312")
-	private LocalDate endDate;
+	@Schema(description = "创建日期范围", example = "[\"2020-01-01\",\"2020-12-31\"]")
+	private LocalDate[] createIn;
 
 	@Schema(description = "用户名", example = "admin")
 	private String username;
+
+	@Schema(description = "状态", example = "0")
+	private String status;
 
 }

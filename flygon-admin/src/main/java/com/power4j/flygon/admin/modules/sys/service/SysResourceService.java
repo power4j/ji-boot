@@ -4,6 +4,7 @@ import com.power4j.flygon.admin.modules.sys.dto.SysResourceDTO;
 import com.power4j.flygon.admin.modules.sys.entity.SysResource;
 import com.power4j.flygon.common.data.crud.service.CrudService;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ public interface SysResourceService extends CrudService<SysResourceDTO, SysResou
 	 * @param rootId
 	 * @return
 	 */
-	List<SysResourceDTO> getNodes(Long rootId);
+	List<SysResourceDTO> getTreeNodes(Long rootId);
 
 	/**
 	 * 返回树
@@ -33,4 +34,19 @@ public interface SysResourceService extends CrudService<SysResourceDTO, SysResou
 	 * @return
 	 */
 	SysResourceDTO getTree(Long rootId);
+
+	/**
+	 * 查询列表
+	 * @param roleCodes
+	 * @return
+	 */
+	List<SysResource> listForRoles(Collection<String> roleCodes);
+
+	/**
+	 * 查询角色的资源,并构建为树
+	 * @param roleCodes
+	 * @return
+	 */
+	List<SysResourceDTO> getTreeForRoles(Collection<String> roleCodes);
+
 }

@@ -91,6 +91,13 @@ public interface CrudService<D, T extends Unique> extends BaseService<T> {
 	Optional<D> read(Serializable id);
 
 	/**
+	 * 获取列表
+	 * @param idList
+	 * @return
+	 */
+	List<D> readList(Collection<Serializable> idList);
+
+	/**
 	 * 修改
 	 * @param dto
 	 * @return

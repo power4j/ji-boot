@@ -27,7 +27,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
-import java.util.Optional;
 
 /**
  * Resolver for {@code PageRequest}
@@ -49,16 +48,22 @@ public class PageRequestResolver implements HandlerMethodArgumentResolver {
 			NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) throws Exception {
 		HttpServletRequest request = nativeWebRequest.getNativeRequest(HttpServletRequest.class);
 
-		String[] ascColumns = request.getParameterValues(CrudConstant.QRY_PAGE_ASC);
-		String[] descColumns = request.getParameterValues(CrudConstant.QRY_PAGE_DESC);
+		String orderProp = request.getParameter(CrudConstant.QRY_PAGE_ORDER_PROP);
+		String asc = request.getParameter(CrudConstant.QRY_PAGE_ORDER_ASC);
 		String page = request.getParameter(CrudConstant.QRY_PAGE_INDEX);
 		String size = request.getParameter(CrudConstant.QRY_PAGE_SIZE);
 
 		PageRequest pageRequest = new PageRequest();
-		pageRequest.setPage(NumUtil.parseLong(page, 1L));
-		pageRequest.setSize(NumUtil.parseLong(size, 10L));
-		Optional.ofNullable(ascColumns).ifPresent(array -> pageRequest.setAsc(Arrays.asList(array)));
-		Optional.ofNullable(descColumns).ifPresent(array -> pageRequest.setDesc(Arrays.asList(array)));
+		pageRequest.setPage(NumUtil.parseInt(page, 1));
+		pageRequest.setSize(NumUtil.parseInt(size, 20));
+
+		if(orderProp != null && !orderProp.isEmpty()){
+			if(Boolean.FALSE.toString().equalsIgnoreCase(asc)){
+				pageRequest.setDesc(Arrays.asList(orderProp));
+			} else {
+				pageRequest.setAsc(Arrays.asList(orderProp));
+			}
+		}
 
 		return pageRequest;
 	}

@@ -27,5 +27,6 @@ public interface SysDictItemService {
 	 * @param dictId
 	 * @return
 	 */
-	int countDictItemValue(String value, @Nullable Long ignoreId,Serializable dictId);
+	int countDictItemValue(String value, @Nullable Long ignoreId, Serializable dictId);
+
 }

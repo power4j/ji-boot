@@ -15,10 +15,12 @@ import java.io.Serializable;
 @Data
 @TableName("t_resource_node")
 @NoArgsConstructor
-public class ResourceNode extends TreePath implements Serializable {
+public class SysResourceNode extends TreePath implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
-	public ResourceNode(Long ancestor, Long descendant, Integer distance) {
+	public SysResourceNode(Long ancestor, Long descendant, Integer distance) {
 		super(ancestor, descendant, distance);
 	}
+
 }

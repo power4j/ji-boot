@@ -17,18 +17,22 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TreePath implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * 祖先ID
 	 */
 	private Long ancestor;
+
 	/**
 	 * 后代ID
 	 */
 	private Long descendant;
+
 	/**
 	 * 层距离,指向自己时距离为0
 	 */
 	private Integer distance;
+
 }

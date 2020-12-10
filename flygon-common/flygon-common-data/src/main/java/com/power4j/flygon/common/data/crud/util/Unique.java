@@ -10,10 +10,12 @@ import java.io.Serializable;
  * @since 1.0
  */
 public interface Unique {
+
 	/**
-	 * 返回唯一ID
+	 * 分布式唯一ID
 	 * @return
 	 */
 	@JsonIgnore
 	Serializable getOnlyId();
+
 }

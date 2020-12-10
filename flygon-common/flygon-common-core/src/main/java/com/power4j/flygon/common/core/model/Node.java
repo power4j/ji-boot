@@ -65,7 +65,6 @@ public interface Node<T extends Node<T>> {
 	@JsonIgnore
 	List<T> getNextNodes();
 
-
 	/**
 	 * 设置子节点
 	 * @param children

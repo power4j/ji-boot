@@ -13,7 +13,9 @@ import java.io.Serializable;
 @Data
 @Schema(title = "参数查询")
 public class SearchSysParamVO implements Serializable {
+
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * 参数键
 	 */
@@ -25,4 +27,5 @@ public class SearchSysParamVO implements Serializable {
 	 */
 	@Schema(description = "状态")
 	private String status;
+
 }

@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -51,7 +52,7 @@ public class ApiTokenAuthenticationProvider implements AuthenticationProvider {
 		}
 		if (apiToken.getExpireIn().isBefore(LocalDateTime.now())) {
 			log.debug("认证失败:token已经过期");
-			throw new BadCredentialsException(
+			throw new CredentialsExpiredException(
 					messages.getMessage("AbstractUserDetailsAuthenticationProvider.credentialsExpired", "凭据已经过期"));
 		}
 		UserDetails userDetails = userDetailsService.loadUserByUsername(apiToken.getUsername());

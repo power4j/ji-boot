@@ -7,14 +7,10 @@ spring:
   profiles:
     active: dev
   application:
-    name: @project.artifactId@
-#  autoconfigure:
-#    exclude:
-#      - "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration"
-
+    name: "@project.artifactId@"
 
 springdoc:
-  version: @project.version@
+  version: "@project.version@"
   api-docs:
     enabled: true
     path: /v3/api-docs
@@ -32,14 +28,14 @@ springdoc:
   #oAuthFlow:
   #  authorizationUrl: http://localhost:8083/auth/realms/springdoc/protocol/openid-connect/auth
   #  tokenUrl: http://localhost:8083/auth/realms/springdoc/protocol/openid-connect/token
-  #show-actuator: true
+  show-actuator: true
   group-configs:
     - group: token 管理
       paths-to-match: /token/**
     - group: sys 系统管理
       paths-to-match: /sys/**
-  #  - group: 监控
-  #    paths-to-match: /actuator/**
+    - group: 监控
+      paths-to-match: /actuator/**
 
 
 mybatis-plus:
@@ -48,19 +44,30 @@ mybatis-plus:
     banner: false
     db-config:
       field-strategy: NOT_EMPTY
-      logic-delete-value: now() # 逻辑已删除值(默认为 1)
-      logic-not-delete-value: 'null' # 逻辑未删除值(默认为 0)
+      logic-delete-value: now() # 逻辑已删除值
+      logic-not-delete-value: 'null' # 逻辑未删除值
   type-handlers-package:  com.power4j.flygon.common.data.mybatis.handler
 
 flygon:
+  doc:
+    global-security-scheme:
+      enabled: true
   security:
-    expose:
-      - patterns: '/actuator/**'
-        methods: GET,POST
-      - patterns: '/swagger-ui/**,/swagger-ui.html,/swagger-resources'
-        methods: GET
-      - patterns: '/doc.html'
-        methods: GET
-      - patterns: '/v3/api-docs/**'
-        methods: GET
-
+    access:
+      enabled: true
+      ignore:
+        patterns:
+          - '/static/**,/webjars/**'
+      http-accesses:
+        - patterns: '/actuator/**'
+          methods: GET,POST
+          access: 'hasIpAddress("127.0.0.1")'
+        - patterns: '/swagger-ui/**,/swagger-ui.html,/swagger-resources'
+          methods: GET
+          access: permitAll
+        - patterns: '/doc.html'
+          methods: GET
+          access: permitAll
+        - patterns: '/v3/api-docs/**'
+          methods: GET
+          access: permitAll

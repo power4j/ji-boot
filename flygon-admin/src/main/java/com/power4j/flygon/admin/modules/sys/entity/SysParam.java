@@ -16,6 +16,7 @@ import java.io.Serializable;
 @TableName("t_sys_param")
 @EqualsAndHashCode(callSuper = false)
 public class SysParam extends BaseEntity implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -47,4 +48,5 @@ public class SysParam extends BaseEntity implements Serializable {
 	 * 更新人
 	 */
 	private String updateBy;
+
 }

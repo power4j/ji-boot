@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.power4j.flygon.common.core.model.PageData;
 import com.power4j.flygon.common.core.model.PageRequest;
 import lombok.experimental.UtilityClass;
+import org.springframework.lang.Nullable;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -67,9 +68,9 @@ public class CrudUtil {
 	 */
 	public <T> PageData<T> toPageData(Page<T> page) {
 		PageData<T> pageData = new PageData<>();
-		pageData.setPage(page.getCurrent());
-		pageData.setSize(page.getSize());
-		pageData.setTotal(page.getTotal());
+		pageData.setPage((int)page.getCurrent());
+		pageData.setSize((int)page.getSize());
+		pageData.setTotal((int)page.getTotal());
 		pageData.setRecords(page.getRecords());
 		return pageData;
 	}
@@ -78,7 +79,7 @@ public class CrudUtil {
 	 * @param localDate
 	 * @return
 	 */
-	public LocalDateTime dayStart(LocalDate localDate) {
+	public LocalDateTime dayStart(@Nullable LocalDate localDate) {
 		return localDate == null ? null : localDate.atTime(LocalTime.MIN);
 	}
 
@@ -86,8 +87,8 @@ public class CrudUtil {
 	 * @param localDate
 	 * @return
 	 */
-	public LocalDateTime dayEnd(LocalDate localDate) {
-		return  localDate == null ? null : localDate.atTime(LocalTime.MAX);
+	public LocalDateTime dayEnd(@Nullable LocalDate localDate) {
+		return localDate == null ? null : localDate.atTime(LocalTime.MAX);
 	}
 
 }

@@ -18,12 +18,13 @@ import java.io.Serializable;
  * @since 1.0
  */
 @Data
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 public class SysParamDTO extends BaseDTO implements Serializable {
+
 	/**
 	 * 参数键,唯一
 	 */
-	@Schema(description = "参数名,唯一")
+	@Schema(description = "参数名,唯一", example = "project-home")
 	@NotNull(groups = { Groups.Default.class })
 	@Size(min = 1, max = 255, groups = { Groups.Default.class })
 	private String paramKey;
@@ -31,7 +32,7 @@ public class SysParamDTO extends BaseDTO implements Serializable {
 	/**
 	 * 参数值
 	 */
-	@Schema(description = "值")
+	@Schema(description = "值", example = "power4j.com")
 	@NotNull(groups = { Groups.Default.class })
 	@Size(min = 1, max = 2000, groups = { Groups.Default.class })
 	private String paramValue;
@@ -46,9 +47,9 @@ public class SysParamDTO extends BaseDTO implements Serializable {
 	/**
 	 * 状态 0 有效 1 停用
 	 */
-	@Schema(description = "备注")
+	@Schema(description = "状态 0 有效 1 停用", example = "0")
 	@NotNull(groups = { Groups.Default.class })
-	@Pattern(regexp = "0|1", message = "状态只能是 0 或者 1")
+	@Pattern(regexp = "0|1", message = "状态只能是 0 或者 1", groups = { Groups.Default.class })
 	private String status;
 
 	/**
@@ -64,4 +65,5 @@ public class SysParamDTO extends BaseDTO implements Serializable {
 	@Schema(description = "更新人", accessMode = Schema.AccessMode.READ_ONLY)
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private String updateBy;
+
 }

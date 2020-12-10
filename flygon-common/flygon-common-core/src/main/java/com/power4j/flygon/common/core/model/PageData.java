@@ -16,6 +16,8 @@
 
 package com.power4j.flygon.common.core.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.power4j.flygon.common.core.constant.CrudConstant;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -44,15 +46,19 @@ public class PageData<T> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Schema(title = "页码")
-	private Long page = 1L;
+	@JsonProperty(CrudConstant.QRY_PAGE_INDEX)
+	private Integer page;
 
 	@Schema(title = "每页条数")
-	private Long size = 20L;
+	@JsonProperty(CrudConstant.QRY_PAGE_SIZE)
+	private Integer size;
 
 	@Schema(title = "总条数")
-	private Long total = 0L;
+	@JsonProperty(CrudConstant.QRY_PAGE_TOTAL)
+	private Integer total;
 
 	@Schema(title = "数据")
+	@JsonProperty(CrudConstant.QRY_PAGE_RECORDS)
 	private List<T> records = new ArrayList<>();
 
 	public <U> PageData<U> map(Function<T, U> converter) {

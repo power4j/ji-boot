@@ -9,6 +9,7 @@ import java.io.Serializable;
 
 /**
  * 字典
+ *
  * @author CJ (power4j@outlook.com)
  * @date 2020/11/27
  * @since 1.0
@@ -17,6 +18,7 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = false)
 @TableName("t_sys_dict")
 public class SysDict extends BaseEntity implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -33,4 +35,5 @@ public class SysDict extends BaseEntity implements Serializable {
 	 * 备注
 	 */
 	private String remarks;
+
 }

@@ -10,6 +10,8 @@ import com.power4j.flygon.common.data.crud.service.BaseService;
 import lombok.Getter;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author CJ (power4j@outlook.com)
@@ -24,25 +26,33 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, 
 	@Override
 	public int countById(Serializable id) {
 		TableInfo tableInfo = TableInfoHelper.getTableInfo(entityClass);
-		if(tableInfo == null){
-			throw new IllegalStateException("Can not find TableInfo for entity : "+ entityClass.getSimpleName());
+		if (tableInfo == null) {
+			throw new IllegalStateException(String.format("Can not find TableInfo for %s, check mybatis config",entityClass.getSimpleName()));
 		}
 		QueryWrapper<T> wrapper = new QueryWrapper<>();
-		wrapper.eq(tableInfo.getKeyColumn(),id);
+		wrapper.eq(tableInfo.getKeyColumn(), id);
 		return getBaseMapper().selectCount(wrapper);
 	}
 
 	@Override
 	public int countByColumn(String column, Object value, Long ignoreId) {
+		Map<String, Object> map = new HashMap<>(1);
+		map.put(column,value);
+		return countByColumns(map,ignoreId);
+	}
+
+	@Override
+	public int countByColumns(Map<String, Object> columns, Long ignoreId) {
 		QueryWrapper<T> wrapper = new QueryWrapper<>();
-		wrapper.eq(column,value);
-		if(ignoreId != null){
+		wrapper.allEq(columns);
+		if (ignoreId != null) {
 			TableInfo tableInfo = TableInfoHelper.getTableInfo(entityClass);
-			if(tableInfo == null){
-				throw new IllegalStateException("Can not find TableInfo for entity : "+ entityClass.getSimpleName());
+			if (tableInfo == null) {
+				throw new IllegalStateException(String.format("Can not find TableInfo for %s, check mybatis config",entityClass.getSimpleName()));
 			}
-			wrapper.ne(tableInfo.getKeyColumn(),ignoreId);
+			wrapper.ne(tableInfo.getKeyColumn(), ignoreId);
 		}
 		return getBaseMapper().selectCount(wrapper);
 	}
+
 }

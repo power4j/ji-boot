@@ -16,6 +16,7 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = false)
 @TableName("t_sys_dict_item")
 public class SysDictItem extends BaseEntity implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -37,4 +38,5 @@ public class SysDictItem extends BaseEntity implements Serializable {
 	 * 备注
 	 */
 	private String remarks;
+
 }

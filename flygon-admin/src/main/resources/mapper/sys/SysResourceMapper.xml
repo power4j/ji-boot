@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.power4j.flygon.admin.modules.sys.dao.SysResourceMapper">
+  <select id="selectByRoles" resultType="com.power4j.flygon.admin.modules.sys.entity.SysResource">
+    select res.* from t_sys_resource res,t_sys_resource_grantee g,t_sys_role r
+    where res.del_flag is null and res.id = g.resource_id and g.role_id =  r.id and r.code in
+    <foreach item="item" collection="roleCodes" separator="," open="(" close=")">
+      #{item}
+    </foreach>
+  </select>
+</mapper>

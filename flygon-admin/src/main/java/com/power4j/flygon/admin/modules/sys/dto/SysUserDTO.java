@@ -24,7 +24,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -38,8 +37,7 @@ import java.io.Serializable;
  * @since 1.0
  */
 @Data
-@Accessors(chain = true)
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 public class SysUserDTO extends BaseDTO implements Serializable {
 
@@ -48,14 +46,14 @@ public class SysUserDTO extends BaseDTO implements Serializable {
 	/**
 	 * 登录用户名
 	 */
-	@Schema(description = "用户名")
+	@Schema(description = "用户名", example = "power4j")
 	@Size(min = 6, max = 20, groups = { Groups.Default.class })
 	private String username;
 
 	/**
 	 * 密码
 	 */
-	@Schema(description = "密码")
+	@Schema(description = "密码", example = "a123Z456", accessMode = Schema.AccessMode.WRITE_ONLY)
 	@NotNull(groups = { Groups.Default.class })
 	@Size(min = 6, max = 20, groups = { Groups.Default.class })
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -64,7 +62,7 @@ public class SysUserDTO extends BaseDTO implements Serializable {
 	/**
 	 * 姓名
 	 */
-	@Schema(description = "姓名")
+	@Schema(description = "姓名", example = "momo")
 	@NotNull(groups = { Groups.Default.class })
 	@Size(min = 2, max = 20, groups = { Groups.Default.class })
 	private String name;
@@ -72,7 +70,7 @@ public class SysUserDTO extends BaseDTO implements Serializable {
 	/**
 	 * 邮箱
 	 */
-	@Schema(description = "邮箱")
+	@Schema(description = "邮箱", example = "cj@power4j.com")
 	@Size(min = 6, max = 20, groups = { Groups.Default.class })
 	@Email(groups = { Groups.Default.class })
 	private String mail;
@@ -80,14 +78,14 @@ public class SysUserDTO extends BaseDTO implements Serializable {
 	/**
 	 * 手机号码
 	 */
-	@Schema(description = "手机号码")
+	@Schema(description = "手机号码", example = "+8618081020301")
 	@Pattern(regexp = RegxPattern.MOBILE_PHONE_NUMBER, groups = { Groups.Default.class }, message = "不是一个合法的手机号码")
 	private String mobilePhone;
 
 	/**
 	 * 管理员备注
 	 */
-	@Schema(description = "管理员备注")
+	@Schema(description = "管理员备注", example = "test user")
 	@Size(max = 20, groups = { Groups.Default.class })
 	private String remarks;
 
@@ -95,8 +93,8 @@ public class SysUserDTO extends BaseDTO implements Serializable {
 	 * 状态 0 有效 1 停用
 	 */
 	@Schema(description = "状态 0 有效 1 停用", example = "0")
-	@NotNull(groups = { Groups.Default.class, Groups.Update.class })
-	@Pattern(regexp = "0|1", message = "状态只能是 0 或者 1")
+	@NotNull(groups = { Groups.Default.class })
+	@Pattern(regexp = "0|1", message = "状态只能是 0 或者 1", groups = { Groups.Default.class })
 	private Integer status;
 
 	/**
@@ -112,4 +110,5 @@ public class SysUserDTO extends BaseDTO implements Serializable {
 	@Schema(description = "更新人", accessMode = Schema.AccessMode.READ_ONLY)
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private String updateBy;
+
 }

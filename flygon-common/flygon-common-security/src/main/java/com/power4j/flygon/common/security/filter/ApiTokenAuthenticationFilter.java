@@ -1,5 +1,6 @@
 package com.power4j.flygon.common.security.filter;
 
+import cn.hutool.core.util.StrUtil;
 import com.power4j.flygon.common.core.constant.SecurityConstant;
 import com.power4j.flygon.common.security.auth.ApiTokenAuthentication;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +13,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Optional;
 
 /**
  * @author CJ (power4j@outlook.com)
@@ -27,10 +27,9 @@ public class ApiTokenAuthenticationFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 		SecurityContext securityContext = SecurityContextHolder.getContext();
 		if (securityContext.getAuthentication() == null || !securityContext.getAuthentication().isAuthenticated()) {
-			String tokenValue = Optional.ofNullable(getTokenValueFromHeader(request))
-					.orElse(getTokenValueFromParam(request));
+			String tokenValue = getApiTokenValue(request);
 			if (tokenValue != null && !tokenValue.isEmpty()) {
-				ApiTokenAuthentication apiTokenAuthentication = new ApiTokenAuthentication(tokenValue);
+				ApiTokenAuthentication apiTokenAuthentication = new ApiTokenAuthentication(tokenValue.trim());
 				SecurityContextHolder.getContext().setAuthentication(apiTokenAuthentication);
 			}
 			request.setAttribute(SecurityConstant.TOKEN_ATTRIBUTE_KEY, true);
@@ -38,16 +37,18 @@ public class ApiTokenAuthenticationFilter extends OncePerRequestFilter {
 		filterChain.doFilter(request, response);
 	}
 
-	private String getTokenValueFromHeader(HttpServletRequest request) {
-		final String value = request.getHeader(SecurityConstant.HEADER_TOKEN_KEY);
-		log.trace("请求头中的{}:{}",SecurityConstant.HEADER_TOKEN_KEY,value);
-		return value;
-	}
-
-	private String getTokenValueFromParam(HttpServletRequest request) {
+	protected String getApiTokenValue(HttpServletRequest request) {
+		String value = request.getHeader(SecurityConstant.HEADER_TOKEN_KEY);
+		if (StrUtil.isNotBlank(value)) {
+			log.trace("请求头中的{}:{}", SecurityConstant.HEADER_TOKEN_KEY, value);
+			return value;
+		}
 		String[] values = request.getParameterValues(SecurityConstant.PARAMETER_TOKEN_KEY);
-		log.trace("请求参数的{}:{}",SecurityConstant.HEADER_TOKEN_KEY,values);
-		return (values != null && values.length > 0) ? values[0] : null;
+		if (values != null && values.length > 0) {
+			log.trace("请求参数的{}:{}", SecurityConstant.HEADER_TOKEN_KEY, values);
+			return values[0];
+		}
+		return null;
 	}
 
 }

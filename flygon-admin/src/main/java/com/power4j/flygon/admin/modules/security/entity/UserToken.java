@@ -64,4 +64,5 @@ public class UserToken implements Unique, Serializable {
 	public Serializable getOnlyId() {
 		return id;
 	}
+
 }

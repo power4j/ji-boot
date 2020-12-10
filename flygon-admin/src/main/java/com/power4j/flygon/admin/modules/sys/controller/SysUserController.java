@@ -16,21 +16,23 @@
 
 package com.power4j.flygon.admin.modules.sys.controller;
 
+import cn.hutool.core.bean.BeanUtil;
+import com.power4j.flygon.admin.modules.sys.dto.SysRoleDTO;
 import com.power4j.flygon.admin.modules.sys.dto.SysUserDTO;
 import com.power4j.flygon.admin.modules.sys.entity.SysUser;
+import com.power4j.flygon.admin.modules.sys.service.SysRoleService;
 import com.power4j.flygon.admin.modules.sys.service.SysUserService;
 import com.power4j.flygon.admin.modules.sys.vo.SearchSysUserVO;
-import com.power4j.flygon.common.core.constant.SysErrorCodes;
-import com.power4j.flygon.common.core.exception.BizException;
+import com.power4j.flygon.common.core.constant.CrudConstant;
 import com.power4j.flygon.common.core.model.ApiResponse;
 import com.power4j.flygon.common.core.model.PageData;
 import com.power4j.flygon.common.core.model.PageRequest;
 import com.power4j.flygon.common.core.util.ApiResponseUtil;
 import com.power4j.flygon.common.data.crud.api.CrudApi;
-import com.power4j.flygon.common.data.crud.constant.OpFlagEnum;
 import com.power4j.flygon.common.data.crud.controller.CrudController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +41,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotEmpty;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 用户管理
@@ -52,49 +55,45 @@ import javax.validation.constraints.NotEmpty;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/sys/users")
-@Tag(name = "用户管理", description = "用户管理")
-public class SysUserController  extends CrudController<SysUserDTO, SysUser> implements CrudApi<SysUserDTO,ApiResponse<SysUserDTO>> {
+@Tag(name = "用户")
+public class SysUserController extends CrudController<SysUserDTO, SysUser>
+		implements CrudApi<SysUserDTO> {
 
 	private final SysUserService sysUserService;
+	private final SysRoleService sysRoleService;
 
 	@GetMapping("/page")
-	@Operation(summary = "分页")
-	public ApiResponse<PageData<SysUserDTO>> page(PageRequest page, SearchSysUserVO param) {
+	@Operation(summary = "分页",
+			parameters = {
+					@Parameter(name = CrudConstant.QRY_PAGE_INDEX, in = ParameterIn.QUERY, description = "页码,从1开始"),
+					@Parameter(name = CrudConstant.QRY_PAGE_SIZE, in = ParameterIn.QUERY, description = "记录数量"),
+					@Parameter(name = CrudConstant.QRY_PAGE_ORDER_PROP, in = ParameterIn.QUERY, description = "排序字段"),
+					@Parameter(name = CrudConstant.QRY_PAGE_ORDER_ASC, in = ParameterIn.QUERY, description = "是否升序"),
+					@Parameter(name = "username", in = ParameterIn.QUERY, description = "用户名,支持模糊查询"),
+					@Parameter(name = "status", in = ParameterIn.QUERY, description = "状态"),
+					@Parameter(name = "createIn", in = ParameterIn.QUERY, description = "创建日期范围", example = "2020-01-01,2020-12-31")})
+	public ApiResponse<PageData<SysUserDTO>> page(@Parameter(hidden = true) PageRequest page,
+			@Parameter(hidden = true) SearchSysUserVO param) {
 		return ApiResponseUtil.ok(sysUserService.selectPage(page, param));
 	}
 
-	@GetMapping("/count/username/{username}")
-	@Operation(summary = "查找用户名", description = "返回统计值,可用于唯一性检查")
-	public ApiResponse<Integer> findUsername(@PathVariable("username") @NotEmpty String username,
+	@GetMapping("/counter/username/{username}")
+	@Operation(summary = "统计用户名", description = "返回统计值,可用于唯一性检查")
+	public ApiResponse<Integer> countOfUsername(@PathVariable("username") String username,
 			@Parameter(description = "排除的用户ID") @RequestParam(required = false) Long excludeId) {
 		return ApiResponseUtil.ok(sysUserService.countUsername(username, excludeId));
 	}
 
-	@Override
-	protected void prePostCheck(SysUserDTO obj) throws BizException {
-		if (sysUserService.countUsername(obj.getUsername(), null) > 0) {
-			throw new BizException(SysErrorCodes.E_CONFLICT,String.format("用户名不能使用: %s", obj.getUsername()));
-		}
+
+	@GetMapping("/{username}/roles")
+	@Operation(summary = "用户的角色列表")
+	public ApiResponse<List<SysRoleDTO>> getRoleList(@Parameter(description = "用户名") @PathVariable String username,
+													 @Parameter(description = "授权类型") @RequestParam(required = false) String grantType) {
+		List<SysRoleDTO> data = sysRoleService.listForUser(username,grantType)
+				.stream()
+				.map(o -> BeanUtil.toBean(o,SysRoleDTO.class))
+				.collect(Collectors.toList());
+		return ApiResponseUtil.ok(data);
 	}
 
-	@Override
-	protected void prePutCheck(SysUserDTO obj,SysUser entity) throws BizException {
-		if (entity == null) {
-			throw new BizException(SysErrorCodes.E_CONFLICT,String.format("用户不存在"));
-		}
-		checkOpFlagNq(entity,OpFlagEnum.SYS_LOCKED.getValue(),"系统数据不允许修改");
-		if (sysUserService.countUsername(obj.getUsername(), obj.getId()) > 0) {
-			throw new BizException(SysErrorCodes.E_CONFLICT,String.format("用户名不能使用: %s", obj.getUsername()));
-		}
-	}
-
-	@Override
-	protected void preReadCheck(SysUserDTO obj) throws BizException {
-
-	}
-
-	@Override
-	protected void preDeleteCheck(SysUserDTO obj,SysUser entity) throws BizException {
-		checkOpFlagNq(entity,OpFlagEnum.SYS_LOCKED.getValue(),"系统数据不允许删除");
-	}
 }

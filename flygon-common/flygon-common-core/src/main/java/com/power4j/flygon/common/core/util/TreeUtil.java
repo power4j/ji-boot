@@ -62,8 +62,7 @@ public class TreeUtil {
 	 * @param predicate
 	 * @return
 	 */
-	public List<Node> simpleSearch(Collection<? extends Node> nodes,
-			final Predicate<? super Node> predicate) {
+	public List<Node> simpleSearch(Collection<? extends Node> nodes, final Predicate<? super Node> predicate) {
 		return nodes.stream().filter(predicate::test).collect(Collectors.toList());
 	}
 
@@ -71,36 +70,58 @@ public class TreeUtil {
 	// ---------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * 遍历并收集节点
-	 * @param root 根节点,即遍历的起始节点
-	 * @param predicate 断言,返回true表示该节点需要被收集
-	 * @param out 集合容器，保存收集结果
+	 * 遍历并过滤节点
+	 * @param nodes 节点
+	 * @param predicate 断言,返回true表示该节点需要保留
 	 * @return
 	 */
-	public <T extends Node> Collection<T> findChildren(T root, final Predicate<? super T> predicate,
-			Collection<T> out) {
+	public <T extends Node> List<T> filterNode(List<T> nodes, final Predicate<? super T> predicate) {
+		if(nodes == null || nodes.isEmpty()){
+			return nodes;
+		}
+		List<T> ret = new ArrayList<>();
+		nodes.forEach(node -> {
+			if(predicate.test(node)){
+				ret.add(node);
+				if(node.getNextNodes() != null && !node.getNextNodes().isEmpty()){
+					node.setNextNodes(filterNode(node.getNextNodes(),predicate));
+				}
+			}
+		});
+		return ret;
+	}
+
+	/**
+	 * 遍历并过滤节点
+	 * @param root 根节点,即遍历的起始节点
+	 * @param predicate 断言,返回true表示该节点需要保留
+	 * @param out 集合容器，保存过滤结果
+	 * @return
+	 */
+	public <T extends Node> Collection<T> filter(T root, final Predicate<? super T> predicate,
+												 Collection<T> out) {
 		if (predicate.test(root)) {
 			out.add(root);
 		}
 		if (root.getNextNodes() != null && !root.getNextNodes().isEmpty()) {
 			List<T> nodes = root.getNextNodes();
 			for (T node : nodes) {
-				findChildren(node, predicate, out);
+				filter(node, predicate, out);
 			}
 		}
 		return out;
 	}
 
 	/**
-	 * 遍历并收集节点
+	 * 遍历并过滤节点
 	 * @param nodes
 	 * @param predicate
 	 * @param out
 	 * @return
 	 */
-	public <T extends Node> Collection<? extends T> findChildren(Collection<T> nodes, final Predicate<? super T> predicate,
-			Collection<T> out) {
-		nodes.forEach(o -> findChildren(o, predicate, out));
+	public <T extends Node> Collection<? extends T> filter(Collection<T> nodes,
+														   final Predicate<? super T> predicate, Collection<T> out) {
+		nodes.forEach(o -> filter(o, predicate, out));
 		return out;
 	}
 
@@ -111,7 +132,7 @@ public class TreeUtil {
 	 */
 	public <T extends Node> List<T> flattenTree(T root) {
 		List<T> list = new ArrayList<>();
-		findChildren(root, o -> true, list);
+		filter(root, o -> true, list);
 		return list;
 	}
 
@@ -121,7 +142,7 @@ public class TreeUtil {
 	 * @return
 	 */
 	public Collection<? extends Node> flattenTree(Node root, Collection<Node> out) {
-		return findChildren(root, o -> true, out);
+		return filter(root, o -> true, out);
 	}
 
 	/**
@@ -130,7 +151,7 @@ public class TreeUtil {
 	 * @return
 	 */
 	public <T extends Node> Collection<T> getLeafNode(T root) {
-		return findChildren(root, o -> (o.getNextNodes() == null || o.getNextNodes().isEmpty()), new ArrayList<>());
+		return filter(root, o -> (o.getNextNodes() == null || o.getNextNodes().isEmpty()), new ArrayList<>());
 	}
 
 	/**

@@ -21,7 +21,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.power4j.flygon.common.data.crud.util.OperateFlag;
+import com.power4j.flygon.common.data.crud.util.SysCtl;
 import com.power4j.flygon.common.data.crud.util.Unique;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,7 +39,7 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
-public abstract class BaseEntity implements Unique , OperateFlag {
+public abstract class BaseEntity implements Unique, SysCtl {
 
 	/**
 	 * 主健
@@ -50,7 +50,7 @@ public abstract class BaseEntity implements Unique , OperateFlag {
 	/**
 	 * 数据标记 0 普通数据, 1 系统保护数据
 	 */
-	private Integer opFlag;
+	private Integer sysFlag;
 
 	/**
 	 * 逻辑删除标志
@@ -76,7 +76,8 @@ public abstract class BaseEntity implements Unique , OperateFlag {
 	}
 
 	@Override
-	public Integer getOperateFlag() {
-		return opFlag;
+	public Integer getCtlFlag() {
+		return sysFlag;
 	}
+
 }

@@ -7,11 +7,14 @@ import com.power4j.flygon.admin.modules.sys.dao.SysParamMapper;
 import com.power4j.flygon.admin.modules.sys.dto.SysParamDTO;
 import com.power4j.flygon.admin.modules.sys.entity.SysParam;
 import com.power4j.flygon.admin.modules.sys.service.SysParamService;
+import com.power4j.flygon.common.core.constant.SysErrorCodes;
+import com.power4j.flygon.common.core.exception.BizException;
 import com.power4j.flygon.common.data.crud.service.impl.AbstractCrudService;
 import com.power4j.flygon.common.security.util.SecurityUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
 import java.util.Optional;
 
 /**
@@ -21,37 +24,50 @@ import java.util.Optional;
  */
 @Slf4j
 @Service
-public class SysParamServiceImpl extends AbstractCrudService<SysParamMapper, SysParamDTO, SysParam> implements SysParamService {
+public class SysParamServiceImpl extends AbstractCrudService<SysParamMapper, SysParamDTO, SysParam>
+		implements SysParamService {
+
 	@Override
 	public int countParamKey(String key, Long ignoreId) {
-		return countByColumn("param_key",key,ignoreId);
+		return countByColumn("param_key", key, ignoreId);
 	}
 
 	@Override
 	public Optional<SysParamDTO> findByKey(String key) {
-		SysParam entity = getBaseMapper().selectOne(Wrappers.<SysParam>lambdaQuery().eq(SysParam::getParamKey,key));
+		SysParam entity = getBaseMapper().selectOne(Wrappers.<SysParam>lambdaQuery().eq(SysParam::getParamKey, key));
 		return Optional.ofNullable(toDto(entity));
 	}
 
 	@Override
 	protected Wrapper<SysParam> getSearchWrapper(SysParamDTO param) {
-		if(param == null){
+		if (param == null) {
 			return Wrappers.emptyWrapper();
 		}
 		return Wrappers.<SysParam>lambdaQuery()
-				.eq(StrUtil.isNotBlank(param.getStatus()),SysParam::getStatus,param.getStatus())
-				.like(StrUtil.isNotBlank(param.getParamKey()),SysParam::getParamKey,param.getParamKey());
+				.eq(StrUtil.isNotBlank(param.getStatus()), SysParam::getStatus, param.getStatus())
+				.like(StrUtil.isNotBlank(param.getParamKey()), SysParam::getParamKey, param.getParamKey());
 	}
 
 	@Override
-	public SysParamDTO post(SysParamDTO dto) {
+	protected SysParamDTO prePostHandle(SysParamDTO dto) {
+		if (countParamKey(dto.getParamKey(), null) > 0) {
+			throw new BizException(SysErrorCodes.E_CONFLICT, String.format("参数名不能使用: %s", dto.getParamKey()));
+		}
 		dto.setCreateBy(SecurityUtil.getLoginUsername().orElse(null));
-		return super.post(dto);
+		return super.prePostHandle(dto);
 	}
 
 	@Override
-	public SysParamDTO put(SysParamDTO dto) {
+	protected SysParamDTO prePutHandle(SysParamDTO dto) {
+		if (countParamKey(dto.getParamKey(), dto.getId()) > 0) {
+			throw new BizException(SysErrorCodes.E_CONFLICT, String.format("参数名不能使用: %s", dto.getParamKey()));
+		}
 		dto.setUpdateBy(SecurityUtil.getLoginUsername().orElse(null));
-		return super.put(dto);
+		return super.prePutHandle(dto);
+	}
+
+	@Override
+	protected SysParam preDeleteHandle(Serializable id) {
+		return super.preDeleteHandle(id);
 	}
 }

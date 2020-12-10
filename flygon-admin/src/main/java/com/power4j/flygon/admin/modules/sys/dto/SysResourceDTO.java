@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
  * @since 1.0
  */
 @Data
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 public class SysResourceDTO extends BaseDTO implements Node<SysResourceDTO>, Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -27,14 +28,15 @@ public class SysResourceDTO extends BaseDTO implements Node<SysResourceDTO>, Ser
 	/**
 	 * 菜单类型
 	 */
-	@Schema(description = "菜单类型")
+	@Schema(description = "菜单类型", example = "1")
 	@NotNull(groups = { Groups.Default.class })
+	@Pattern(regexp = "1|2|3", message = "菜单类型只能是 1,2,3", groups = { Groups.Default.class })
 	private String type;
 
 	/**
-	 * 菜单名称
+	 * 资源代码
 	 */
-	@Schema(description = "菜单名称")
+	@Schema(description = "资源名称", example = "home-page")
 	@NotNull(groups = { Groups.Default.class })
 	@Size(min = 1, max = 20, groups = { Groups.Default.class })
 	private String name;
@@ -42,7 +44,7 @@ public class SysResourceDTO extends BaseDTO implements Node<SysResourceDTO>, Ser
 	/**
 	 * 显示名称
 	 */
-	@Schema(description = "显示名称")
+	@Schema(description = "显示名称", example = "home-page")
 	@NotNull(groups = { Groups.Default.class })
 	@Size(min = 1, max = 20, groups = { Groups.Default.class })
 	private String title;
@@ -55,16 +57,16 @@ public class SysResourceDTO extends BaseDTO implements Node<SysResourceDTO>, Ser
 	private String permission;
 
 	/**
-	 * 前端路径
+	 * 路由地址
 	 */
-	@Schema(description = "前端路径")
+	@Schema(description = "路由地址", example = "/home")
 	@Size(max = 240, groups = { Groups.Default.class })
 	private String path;
 
 	/**
 	 * 前端组件路径
 	 */
-	@Schema(description = "前端组件路径")
+	@Schema(description = "路由组件", example = "layoutHeaderAside")
 	@Size(max = 240, groups = { Groups.Default.class })
 	private String component;
 
@@ -78,21 +80,27 @@ public class SysResourceDTO extends BaseDTO implements Node<SysResourceDTO>, Ser
 	/**
 	 * 排序
 	 */
-	@Schema(description = "排序",example = "0")
+	@Schema(description = "排序", example = "0")
 	private Integer sort;
-
 
 	/**
 	 * 父节点
 	 */
-	@Schema(description = "父节点",example = "0")
+	@Schema(description = "父节点", example = "0")
 	@NotNull(groups = { Groups.Default.class })
 	private Long parentId;
 
 	/**
+	 * 是否包含子节点
+	 */
+	@Schema(description = "是否包含子节点", accessMode = Schema.AccessMode.READ_ONLY)
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	private Boolean hasChildren;
+
+	/**
 	 * 子节点
 	 */
-	@Schema(description = "子节点",accessMode = Schema.AccessMode.READ_ONLY)
+	@Schema(description = "子节点", accessMode = Schema.AccessMode.READ_ONLY)
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private List<SysResourceDTO> children;
 
@@ -125,4 +133,5 @@ public class SysResourceDTO extends BaseDTO implements Node<SysResourceDTO>, Ser
 	public void setNextNodes(List<SysResourceDTO> children) {
 		setChildren(children);
 	}
+
 }

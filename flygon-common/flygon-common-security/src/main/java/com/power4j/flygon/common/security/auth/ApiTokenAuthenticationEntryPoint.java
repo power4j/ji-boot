@@ -42,26 +42,25 @@ public class ApiTokenAuthenticationEntryPoint implements AuthenticationEntryPoin
 		ApiResponse<?> result = ApiResponseUtil.fail(authException.getMessage());
 
 		if (authException instanceof InsufficientAuthenticationException) {
-			String msg = messages.getMessage(
-					"AbstractAccessDecisionManager.accessDenied", authException.getMessage());
+			String msg = messages.getMessage("AbstractAccessDecisionManager.accessDenied", authException.getMessage());
 			result.setMsg(msg);
 		}
 
 		if (authException instanceof CredentialsExpiredException) {
-			String msg = messages.getMessage(
-					"AbstractUserDetailsAuthenticationProvider.credentialsExpired", authException.getMessage());
+			String msg = messages.getMessage("AbstractUserDetailsAuthenticationProvider.credentialsExpired",
+					authException.getMessage());
 			result.setMsg(msg);
 		}
 
 		if (authException instanceof UsernameNotFoundException) {
-			String msg = messages.getMessage(
-					"AbstractUserDetailsAuthenticationProvider.badCredentials", authException.getMessage());
+			String msg = messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials",
+					authException.getMessage());
 			result.setMsg(msg);
 		}
 
 		if (authException instanceof BadCredentialsException) {
-			String msg = SecurityMessageSource.getAccessor().getMessage(
-					"AbstractUserDetailsAuthenticationProvider.badCredentials", authException.getMessage());
+			String msg = SecurityMessageSource.getAccessor()
+					.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", authException.getMessage());
 			result.setMsg(msg);
 		}
 

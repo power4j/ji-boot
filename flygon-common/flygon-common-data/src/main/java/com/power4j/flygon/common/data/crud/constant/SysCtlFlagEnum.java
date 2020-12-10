@@ -7,7 +7,8 @@ import java.util.function.Function;
  * @date 2020/11/27
  * @since 1.0
  */
-public enum  OpFlagEnum {
+public enum SysCtlFlagEnum {
+
 	/**
 	 * 普通数据
 	 */
@@ -19,7 +20,7 @@ public enum  OpFlagEnum {
 
 	private final int value;
 
-	OpFlagEnum(int value) {
+	SysCtlFlagEnum(int value) {
 		this.value = value;
 	}
 
@@ -29,16 +30,15 @@ public enum  OpFlagEnum {
 
 	/**
 	 * 解析
-	 *
-	 * @param value    被解析的数据,可以是null
+	 * @param value 被解析的数据,可以是null
 	 * @param defValue 默认值
 	 * @return 如果解析失败返回默认值
 	 */
-	public static OpFlagEnum parseOrDefault(final Integer value, final OpFlagEnum defValue) {
+	public static SysCtlFlagEnum parseOrDefault(final Integer value, final SysCtlFlagEnum defValue) {
 		if (value == null) {
 			return defValue;
 		}
-		for (OpFlagEnum o : OpFlagEnum.values()) {
+		for (SysCtlFlagEnum o : SysCtlFlagEnum.values()) {
 			if (o.value == value.intValue()) {
 				return o;
 			}
@@ -48,23 +48,21 @@ public enum  OpFlagEnum {
 
 	/**
 	 * 解析
-	 *
 	 * @param value 被解析的数据
 	 * @return 如果解析失败返回 null
 	 */
-	public static OpFlagEnum parseOrNull(final Integer value) {
+	public static SysCtlFlagEnum parseOrNull(final Integer value) {
 		return parseOrDefault(value, null);
 	}
 
 	/**
 	 * 解析
-	 *
-	 * @param value   被解析的数据
+	 * @param value 被解析的数据
 	 * @param thrower 异常抛出器
 	 * @return 如果解析失败抛出异常
 	 */
-	public static OpFlagEnum parseOrThrow(final Integer value, Function<Integer, RuntimeException> thrower) {
-		OpFlagEnum o = parseOrDefault(value, null);
+	public static SysCtlFlagEnum parseOrThrow(final Integer value, Function<Integer, RuntimeException> thrower) {
+		SysCtlFlagEnum o = parseOrDefault(value, null);
 		if (o == null) {
 			throw thrower.apply(value);
 		}
@@ -73,11 +71,11 @@ public enum  OpFlagEnum {
 
 	/**
 	 * 解析
-	 *
 	 * @param value 被解析的数据
 	 * @return 如果解析失败抛出 IllegalArgumentException
 	 */
-	public static OpFlagEnum parse(final Integer value) throws IllegalArgumentException {
+	public static SysCtlFlagEnum parse(final Integer value) throws IllegalArgumentException {
 		return parseOrThrow(value, (v) -> new IllegalArgumentException("Invalid value : " + v));
 	}
+
 }

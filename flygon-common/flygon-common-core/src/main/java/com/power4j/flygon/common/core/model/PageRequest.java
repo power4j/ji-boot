@@ -44,12 +44,12 @@ public class PageRequest implements Serializable {
 
 	@Schema(title = "页码，从1开始", defaultValue = "1", example = "1")
 	@Min(value = 1)
-	private Long page = 1L;
+	private Integer page;
 
-	@Schema(title = "每页条数", defaultValue = "10", example = "10")
+	@Schema(title = "每页条数", defaultValue = "10", example = "20")
 	@Min(value = 1)
-	@Max(value = 100)
-	private Long size = 10L;
+	@Max(value = 500)
+	private Integer size;
 
 	@Schema(title = "升序字段", example = "[]")
 	private List<String> asc;

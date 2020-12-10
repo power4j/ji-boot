@@ -20,6 +20,26 @@ public interface CrudConstant {
 	String QRY_PAGE_SIZE = "size";
 
 	/**
+	 * 分页查询: 总条数
+	 */
+	String QRY_PAGE_TOTAL = "total";
+
+	/**
+	 * 分页查询: 数据行
+	 */
+	String QRY_PAGE_RECORDS = "records";
+
+	/**
+	 * 分页查询: 升序排序
+	 */
+	String QRY_PAGE_ORDER_ASC = "orderAsc";
+
+	/**
+	 * 分页查询: 排序字段
+	 */
+	String QRY_PAGE_ORDER_PROP = "orderProp";
+
+	/**
 	 * 分页查询: 升序字段
 	 */
 	String QRY_PAGE_ASC = "asc";

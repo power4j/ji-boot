@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface SysParamService extends CrudService<SysParamDTO, SysParam> {
 
 	/**
-	 * 统计key用次数
+	 * 统计key使用次数
 	 * @param key
 	 * @param ignoreId 排除的ID
 	 * @return
@@ -28,4 +28,5 @@ public interface SysParamService extends CrudService<SysParamDTO, SysParam> {
 	 * @return
 	 */
 	Optional<SysParamDTO> findByKey(String key);
+
 }

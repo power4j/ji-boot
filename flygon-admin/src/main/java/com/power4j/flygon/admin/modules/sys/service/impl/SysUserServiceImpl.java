@@ -2,26 +2,30 @@ package com.power4j.flygon.admin.modules.sys.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.power4j.flygon.admin.modules.sys.dao.SysUserMapper;
 import com.power4j.flygon.admin.modules.sys.dto.SysUserDTO;
 import com.power4j.flygon.admin.modules.sys.entity.SysUser;
 import com.power4j.flygon.admin.modules.sys.service.SysUserService;
 import com.power4j.flygon.admin.modules.sys.vo.SearchSysUserVO;
+import com.power4j.flygon.common.core.constant.SysErrorCodes;
+import com.power4j.flygon.common.core.exception.BizException;
 import com.power4j.flygon.common.core.model.PageData;
 import com.power4j.flygon.common.core.model.PageRequest;
-import com.power4j.flygon.common.data.crud.util.CrudUtil;
 import com.power4j.flygon.common.data.crud.service.impl.AbstractCrudService;
+import com.power4j.flygon.common.data.crud.util.CrudUtil;
 import com.power4j.flygon.common.security.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Arrays;
 
 /**
@@ -37,31 +41,16 @@ public class SysUserServiceImpl extends AbstractCrudService<SysUserMapper, SysUs
 	private PasswordEncoder passwordEncoder;
 
 	@Override
-	public SysUserDTO put(SysUserDTO dto) {
-		SysUser entity = toEntity(dto);
-		entity.setUpdateBy(SecurityUtil.getLoginUsername().orElse(null));
-		updateById(toEntity(dto));
-		return toDto(entity);
-	}
-
-	@Override
-	public SysUserDTO post(SysUserDTO dto) {
-		SysUser entity = toEntity(dto);
-		entity.setPassword(passwordEncoder.encode(entity.getPassword()));
-		entity.setCreateBy(SecurityUtil.getLoginUsername().orElse(null));
-		save(entity);
-		return toDto(entity);
-	}
-
-	@Override
 	public PageData<SysUserDTO> selectPage(PageRequest pageRequest, SearchSysUserVO param) {
+		LocalDate start =  ArrayUtil.get(param.getCreateIn(),0);
+		LocalDate end =  ArrayUtil.get(param.getCreateIn(),1);
 		Wrapper<SysUser> wrapper = new QueryWrapper<>();
 		if (param != null) {
 			wrapper = new QueryWrapper<SysUser>().lambda()
+					.eq(StrUtil.isNotBlank(param.getStatus()),SysUser::getStatus,param.getStatus())
 					.likeRight(StrUtil.isNotEmpty(param.getUsername()), SysUser::getUsername, param.getUsername())
-					.ge(null != param.getStartDate(), SysUser::getCreateAt,
-							CrudUtil.dayStart(param.getStartDate()))
-					.le(null != param.getEndDate(), SysUser::getCreateAt, CrudUtil.dayEnd(param.getEndDate()));
+					.ge(null != start, SysUser::getCreateAt, CrudUtil.dayStart(start))
+					.le(null != end, SysUser::getCreateAt, CrudUtil.dayEnd(end));
 		}
 		Page<SysUser> page = getBaseMapper()
 				.selectPage(CrudUtil.toPage(pageRequest, Arrays.asList(new OrderItem("create_at", true))), wrapper);
@@ -70,9 +59,7 @@ public class SysUserServiceImpl extends AbstractCrudService<SysUserMapper, SysUs
 
 	@Override
 	public int countUsername(String username, Long ignoreId) {
-		Wrapper<SysUser> wrapper = Wrappers.<SysUser>lambdaQuery().eq(SysUser::getUsername, username)
-				.ne(null != ignoreId, SysUser::getId, ignoreId);
-		return getBaseMapper().selectCount(wrapper);
+		return countByColumn("username", username, ignoreId);
 	}
 
 	@Override
@@ -80,4 +67,31 @@ public class SysUserServiceImpl extends AbstractCrudService<SysUserMapper, SysUs
 		return BeanUtil.toBean(dto, SysUser.class, CopyOptions.create().setIgnoreProperties("slat"));
 	}
 
+	@Override
+	protected SysUserDTO prePostHandle(SysUserDTO dto) {
+		if (countUsername(dto.getUsername(), null) > 0) {
+			throw new BizException(SysErrorCodes.E_CONFLICT, String.format("%s 不能使用", dto.getUsername()));
+		}
+		dto.setCreateBy(SecurityUtil.getLoginUsername().orElse(null));
+		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
+		return super.prePostHandle(dto);
+	}
+
+	@Override
+	protected SysUserDTO prePutHandle(SysUserDTO dto) {
+		if (countUsername(dto.getUsername(), dto.getId()) > 0) {
+			throw new BizException(SysErrorCodes.E_CONFLICT, String.format("%s 不能使用", dto.getUsername()));
+		}
+		dto.setPassword(null);
+		dto.setUpdateBy(SecurityUtil.getLoginUsername().orElse(null));
+		if(!StrUtil.isBlank(dto.getPassword())){
+			dto.setPassword(passwordEncoder.encode(dto.getPassword()));
+		}
+		return super.prePutHandle(dto);
+	}
+
+	@Override
+	protected SysUser preDeleteHandle(Serializable id) {
+		return super.preDeleteHandle(id);
+	}
 }

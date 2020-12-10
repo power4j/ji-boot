@@ -60,10 +60,10 @@ public class SysResource extends BaseEntity implements Serializable {
 	 */
 	private Integer sort;
 
-
 	/**
 	 * 父节点
 	 */
 	@TableField(exist = false)
 	private Long parentId;
+
 }

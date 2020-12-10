@@ -2,11 +2,13 @@ package com.power4j.flygon.common.core.exception;
 
 /**
  * 业务异常
+ *
  * @author CJ (power4j@outlook.com)
  * @date 2020/11/27
  * @since 1.0
  */
-public class BizException extends RtException{
+public class BizException extends RtException {
+
 	private int code;
 
 	public BizException(int code, String message) {
@@ -31,4 +33,5 @@ public class BizException extends RtException{
 	public void setCode(int code) {
 		this.code = code;
 	}
+
 }

@@ -31,9 +31,13 @@ public class TreeUtilTest {
 
 	@Data
 	public static class TreeNode implements Node<TreeNode> {
+
 		private static final long serialVersionUID = 1L;
+
 		private Long id;
+
 		private Long parentId;
+
 		private List<TreeNode> children = new ArrayList<>();
 
 		@Override
@@ -65,6 +69,7 @@ public class TreeUtilTest {
 		public void setNextNodes(List<TreeNode> children) {
 			this.children = children;
 		}
+
 	}
 
 	private final Long ROOT_ID = 0L;

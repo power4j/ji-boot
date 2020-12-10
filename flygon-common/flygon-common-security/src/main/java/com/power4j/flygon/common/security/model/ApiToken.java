@@ -3,10 +3,11 @@ package com.power4j.flygon.common.security.model;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * @author CJ (power4j@outlook.com)
@@ -14,7 +15,6 @@ import java.time.LocalDateTime;
  * @since 1.0
  */
 @Data
-@Accessors(chain = true)
 @NoArgsConstructor
 public class ApiToken implements Serializable {
 
@@ -38,4 +38,6 @@ public class ApiToken implements Serializable {
 	@Schema(description = "发布者")
 	private String issuedBy;
 
+	@Schema(description = "其他信息")
+	private Map<String, Object> additionalInformation = Collections.emptyMap();
 }
