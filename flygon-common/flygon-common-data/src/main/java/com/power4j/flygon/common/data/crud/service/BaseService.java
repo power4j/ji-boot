@@ -1,6 +1,21 @@
+/*
+ * Copyright 2020 ChenJun (power4j@outlook.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.power4j.flygon.common.data.crud.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.power4j.flygon.common.core.constant.SysErrorCodes;
 import com.power4j.flygon.common.core.exception.BizException;
 import com.power4j.flygon.common.data.crud.util.SysCtl;
@@ -16,7 +31,7 @@ import java.util.function.Predicate;
  * @since 1.0
  * @param <T> Entity
  */
-public interface BaseService<T> extends IService<T> {
+public interface BaseService<T> {
 
 	/**
 	 * 根据主键统计
@@ -34,14 +49,13 @@ public interface BaseService<T> extends IService<T> {
 	 */
 	int countByColumn(String column, Object value, @Nullable Long ignoreId);
 
-
 	/**
 	 * 根据某些字段进行统计
-	 * @param columns  key 是字段名, value 是字段值
+	 * @param columns key 是字段名, value 是字段值
 	 * @param ignoreId 排除的ID
 	 * @return
 	 */
-	int countByColumns(Map<String,Object> columns, @Nullable Long ignoreId);
+	int countByColumns(Map<String, Object> columns, @Nullable Long ignoreId);
 
 	/**
 	 * 校验 SysCtl
@@ -64,6 +78,7 @@ public interface BaseService<T> extends IService<T> {
 	 * @param msg
 	 */
 	default void checkSysCtlNot(Object obj, Integer failValue, String msg) {
-		checkSysCtl(obj,o -> !o.getCtlFlag().equals(failValue),msg);
+		checkSysCtl(obj, o -> !o.getCtlFlag().equals(failValue), msg);
 	}
+
 }

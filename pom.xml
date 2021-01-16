@@ -20,17 +20,17 @@
 
   <groupId>com.power4j</groupId>
   <artifactId>flygon</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.2.1</version>
   <name>${project.artifactId}</name>
   <packaging>pom</packaging>
 
   <url>https://github.com/power4j/flygon-server</url>
-  <description>基于Spring Boot 2.x的一站式前后端分离快速开发平台</description>
+  <description>基于Spring Boot 2 的前后端分离权限管理系统</description>
 
   <licenses>
     <license>
-      <name>GNU LESSER GENERAL PUBLIC LICENSE 3.0</name>
-      <url>http://www.gnu.org/licenses/lgpl-3.0.html</url>
+      <name>APACHE LICENSE, VERSION 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
@@ -63,7 +63,7 @@
     <spring-javaformat.plugin.version>0.0.25</spring-javaformat.plugin.version>
     <git.commit.plugin.version>2.2.5</git.commit.plugin.version>
     <spring-boot.version>2.3.5.RELEASE</spring-boot.version>
-    <flygon-bom.version>1.0.1-SNAPSHOT</flygon-bom.version>
+    <flygon-bom.version>0.2.1</flygon-bom.version>
   </properties>
 
   <dependencies>
@@ -110,6 +110,7 @@
   </dependencyManagement>
 
   <build>
+    <finalName>${project.artifactId}</finalName>
     <pluginManagement>
       <plugins>
         <plugin>

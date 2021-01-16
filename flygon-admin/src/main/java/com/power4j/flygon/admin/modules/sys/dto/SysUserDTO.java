@@ -26,6 +26,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -47,14 +48,14 @@ public class SysUserDTO extends BaseDTO implements Serializable {
 	 * 登录用户名
 	 */
 	@Schema(description = "用户名", example = "power4j")
-	@Size(min = 6, max = 20, groups = { Groups.Default.class })
+	@Size(min = 3, max = 20, groups = { Groups.Default.class })
 	private String username;
 
 	/**
 	 * 密码
 	 */
 	@Schema(description = "密码", example = "a123Z456", accessMode = Schema.AccessMode.WRITE_ONLY)
-	@NotNull(groups = { Groups.Default.class })
+	@NotBlank(groups = { Groups.Create.class })
 	@Size(min = 6, max = 20, groups = { Groups.Default.class })
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
@@ -63,15 +64,15 @@ public class SysUserDTO extends BaseDTO implements Serializable {
 	 * 姓名
 	 */
 	@Schema(description = "姓名", example = "momo")
-	@NotNull(groups = { Groups.Default.class })
-	@Size(min = 2, max = 20, groups = { Groups.Default.class })
+	@NotBlank(groups = { Groups.Default.class })
+	@Size(max = 20, groups = { Groups.Default.class })
 	private String name;
 
 	/**
 	 * 邮箱
 	 */
 	@Schema(description = "邮箱", example = "cj@power4j.com")
-	@Size(min = 6, max = 20, groups = { Groups.Default.class })
+	@Size(max = 40, groups = { Groups.Default.class })
 	@Email(groups = { Groups.Default.class })
 	private String mail;
 
@@ -95,7 +96,7 @@ public class SysUserDTO extends BaseDTO implements Serializable {
 	@Schema(description = "状态 0 有效 1 停用", example = "0")
 	@NotNull(groups = { Groups.Default.class })
 	@Pattern(regexp = "0|1", message = "状态只能是 0 或者 1", groups = { Groups.Default.class })
-	private Integer status;
+	private String status;
 
 	/**
 	 * 创建人

@@ -1,7 +1,22 @@
+/*
+ * Copyright 2020 ChenJun (power4j@outlook.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.power4j.flygon.common.security.config;
 
 import com.power4j.flygon.common.core.constant.CommonConstant;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -20,6 +35,7 @@ import java.util.Set;
 @Setter
 @ConfigurationProperties(SecureAccessProperties.PREFIX)
 public class SecureAccessProperties {
+
 	public static final String PREFIX = CommonConstant.PROPERTY_PREFIX + ".security.access";
 
 	/**
@@ -35,9 +51,10 @@ public class SecureAccessProperties {
 	/**
 	 * 自定义配置
 	 */
-	public List<HttpAccess> httpAccesses = new ArrayList<>();
+	public List<HttpAccess> filters = new ArrayList<>();
 
-	@Data
+	@Getter
+	@Setter
 	public static class PathMatcher {
 
 		/**
@@ -47,8 +64,10 @@ public class SecureAccessProperties {
 
 	}
 
-	@Data
+	@Getter
+	@Setter
 	public static class MvcMatcher extends PathMatcher {
+
 		/**
 		 * HTTP 方法(可以为空,表示匹配所有方法):
 		 * <ul>
@@ -66,8 +85,9 @@ public class SecureAccessProperties {
 
 	}
 
-	@Data
-	public static class HttpAccess extends MvcMatcher{
+	@Getter
+	@Setter
+	public static class HttpAccess extends MvcMatcher {
 
 		/**
 		 * 访问控制
@@ -76,8 +96,7 @@ public class SecureAccessProperties {
 		 * <li>denyAll</li>
 		 * <li>anonymous</li>
 		 * <li>authenticated</li>
-		 * <li>fullyAuthenticated</li>
-		 * <li>rememberMe</li>
+		 * <li>fullyAuthenticated</li<li>rememberMe</li>
 		 * <li>hasAnyRole("xxx")</li>
 		 * <li>hasRole("xxx")</li>
 		 * <li>hasAnyAuthority("xxx")</li>
@@ -88,4 +107,5 @@ public class SecureAccessProperties {
 		private String access = "authenticated";
 
 	}
+
 }

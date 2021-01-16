@@ -19,7 +19,6 @@ package com.power4j.flygon.admin.modules.sys.controller;
 import cn.hutool.core.bean.BeanUtil;
 import com.power4j.flygon.admin.modules.sys.dto.SysRoleDTO;
 import com.power4j.flygon.admin.modules.sys.dto.SysUserDTO;
-import com.power4j.flygon.admin.modules.sys.entity.SysUser;
 import com.power4j.flygon.admin.modules.sys.service.SysRoleService;
 import com.power4j.flygon.admin.modules.sys.service.SysUserService;
 import com.power4j.flygon.admin.modules.sys.vo.SearchSysUserVO;
@@ -29,12 +28,12 @@ import com.power4j.flygon.common.core.model.PageData;
 import com.power4j.flygon.common.core.model.PageRequest;
 import com.power4j.flygon.common.core.util.ApiResponseUtil;
 import com.power4j.flygon.common.data.crud.api.CrudApi;
-import com.power4j.flygon.common.data.crud.controller.CrudController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,22 +55,52 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @RequestMapping("/sys/users")
 @Tag(name = "用户")
-public class SysUserController extends CrudController<SysUserDTO, SysUser>
-		implements CrudApi<SysUserDTO> {
+public class SysUserController implements CrudApi<Long, SysUserDTO> {
 
 	private final SysUserService sysUserService;
+
 	private final SysRoleService sysRoleService;
 
+	@PreAuthorize("@pms.any('sys:user:view')")
+	@Override
+	public ApiResponse<List<SysUserDTO>> readList(List<Long> idList) {
+		return ApiResponseUtil.ok(sysUserService.readList(idList));
+	}
+
+	@PreAuthorize("@pms.any('sys:user:view')")
+	@Override
+	public ApiResponse<SysUserDTO> read(Long id) {
+		return ApiResponseUtil.ok(sysUserService.read(id).orElse(null));
+	}
+
+	@PreAuthorize("@pms.any('sys:user:add')")
+	@Override
+	public ApiResponse<SysUserDTO> post(SysUserDTO obj) {
+		return ApiResponseUtil.ok(sysUserService.post(obj));
+	}
+
+	@PreAuthorize("@pms.any('sys:user:edit')")
+	@Override
+	public ApiResponse<SysUserDTO> put(SysUserDTO obj) {
+		return ApiResponseUtil.ok(sysUserService.put(obj));
+	}
+
+	@PreAuthorize("@pms.any('sys:user:del')")
+	@Override
+	public ApiResponse<SysUserDTO> delete(Long id) {
+		return ApiResponseUtil.ok(sysUserService.delete(id).orElse(null));
+	}
+
+	@PreAuthorize("@pms.any('sys:user:view')")
 	@GetMapping("/page")
-	@Operation(summary = "分页",
-			parameters = {
-					@Parameter(name = CrudConstant.QRY_PAGE_INDEX, in = ParameterIn.QUERY, description = "页码,从1开始"),
-					@Parameter(name = CrudConstant.QRY_PAGE_SIZE, in = ParameterIn.QUERY, description = "记录数量"),
-					@Parameter(name = CrudConstant.QRY_PAGE_ORDER_PROP, in = ParameterIn.QUERY, description = "排序字段"),
-					@Parameter(name = CrudConstant.QRY_PAGE_ORDER_ASC, in = ParameterIn.QUERY, description = "是否升序"),
-					@Parameter(name = "username", in = ParameterIn.QUERY, description = "用户名,支持模糊查询"),
-					@Parameter(name = "status", in = ParameterIn.QUERY, description = "状态"),
-					@Parameter(name = "createIn", in = ParameterIn.QUERY, description = "创建日期范围", example = "2020-01-01,2020-12-31")})
+	@Operation(summary = "分页", parameters = {
+			@Parameter(name = CrudConstant.QRY_PAGE_INDEX, in = ParameterIn.QUERY, description = "页码,从1开始"),
+			@Parameter(name = CrudConstant.QRY_PAGE_SIZE, in = ParameterIn.QUERY, description = "记录数量"),
+			@Parameter(name = CrudConstant.QRY_PAGE_ORDER_PROP, in = ParameterIn.QUERY, description = "排序字段"),
+			@Parameter(name = CrudConstant.QRY_PAGE_ORDER_ASC, in = ParameterIn.QUERY, description = "是否升序"),
+			@Parameter(name = "username", in = ParameterIn.QUERY, description = "用户名,支持模糊查询"),
+			@Parameter(name = "status", in = ParameterIn.QUERY, description = "状态"), @Parameter(name = "createIn",
+					in = ParameterIn.QUERY, description = "创建日期范围", example = "2020-01-01,2020-12-31") })
 	public ApiResponse<PageData<SysUserDTO>> page(@Parameter(hidden = true) PageRequest page,
 			@Parameter(hidden = true) SearchSysUserVO param) {
 		return ApiResponseUtil.ok(sysUserService.selectPage(page, param));
@@ -84,15 +113,12 @@ public class SysUserController extends CrudController<SysUserDTO, SysUser>
 		return ApiResponseUtil.ok(sysUserService.countUsername(username, excludeId));
 	}
 
-
 	@GetMapping("/{username}/roles")
 	@Operation(summary = "用户的角色列表")
 	public ApiResponse<List<SysRoleDTO>> getRoleList(@Parameter(description = "用户名") @PathVariable String username,
-													 @Parameter(description = "授权类型") @RequestParam(required = false) String grantType) {
-		List<SysRoleDTO> data = sysRoleService.listForUser(username,grantType)
-				.stream()
-				.map(o -> BeanUtil.toBean(o,SysRoleDTO.class))
-				.collect(Collectors.toList());
+			@Parameter(description = "授权类型") @RequestParam(required = false) String grantType) {
+		List<SysRoleDTO> data = sysRoleService.listForUser(username, grantType).stream()
+				.map(o -> BeanUtil.toBean(o, SysRoleDTO.class)).collect(Collectors.toList());
 		return ApiResponseUtil.ok(data);
 	}
 

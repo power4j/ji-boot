@@ -20,7 +20,7 @@
 
   <groupId>com.power4j.kit</groupId>
   <artifactId>flygon-bom</artifactId>
-  <version>1.0.1-SNAPSHOT</version>
+  <version>0.2.1</version>
   <name>${project.artifactId}</name>
   <packaging>pom</packaging>
 
@@ -29,8 +29,8 @@
 
   <licenses>
     <license>
-      <name>GNU LESSER GENERAL PUBLIC LICENSE 3.0</name>
-      <url>http://www.gnu.org/licenses/lgpl-3.0.html</url>
+      <name>APACHE LICENSE, VERSION 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
@@ -59,23 +59,36 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <!-- versions -->
-    <flygon.version>0.0.1-SNAPSHOT</flygon.version>
+    <!-- dependencies -->
+    <flygon.version>0.2.1</flygon.version>
     <druid.version>1.1.21</druid.version>
     <hutool.version>5.4.7</hutool.version>
     <knife4j.version>3.0.2</knife4j.version>
+    <caffeine.version>2.8.8</caffeine.version>
+    <checker-qual.version>3.7.0</checker-qual.version>
     <esc-pos.version>1.0.1</esc-pos.version>
     <sequence.version>1.4.0</sequence.version>
+    <easy-captcha.version>1.6.2</easy-captcha.version>
     <friendly-id.version>1.1.0</friendly-id.version>
     <mybatis-plus.version>3.4.0</mybatis-plus.version>
     <springdoc-openapi.version>1.5.2</springdoc-openapi.version>
-    <transmittable-thread-local.version>2.11.2</transmittable-thread-local.version>
+    <transmittable-thread-local.version>2.12.0</transmittable-thread-local.version>
     <hibernate-validator-test-utils.version>6.1.6.Final</hibernate-validator-test-utils.version>
   </properties>
 
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>org.checkerframework</groupId>
+        <artifactId>checker-qual</artifactId>
+        <version>${checker-qual.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.github.whvcse</groupId>
+        <artifactId>easy-captcha</artifactId>
+        <version>${easy-captcha.version}</version>
+      </dependency>
       <dependency>
         <groupId>com.alibaba</groupId>
         <artifactId>druid-spring-boot-starter</artifactId>
@@ -113,6 +126,17 @@
         <version>${hutool.version}</version>
       </dependency>
       <dependency>
+        <groupId>com.github.ben-manes.caffeine</groupId>
+        <artifactId>caffeine</artifactId>
+        <version>${caffeine.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.checkerframework</groupId>
+            <artifactId>checker-qual</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
         <groupId>com.power4j.kit</groupId>
         <artifactId>esc-pos</artifactId>
         <version>${esc-pos.version}</version>
@@ -145,12 +169,22 @@
       </dependency>
       <dependency>
         <groupId>com.power4j</groupId>
-        <artifactId>flygon-common-open-api</artifactId>
+        <artifactId>flygon-common-open-doc</artifactId>
         <version>${flygon.version}</version>
       </dependency>
       <dependency>
         <groupId>com.power4j</groupId>
         <artifactId>flygon-common-security</artifactId>
+        <version>${flygon.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.power4j</groupId>
+        <artifactId>flygon-common-cache</artifactId>
+        <version>${flygon.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.power4j</groupId>
+        <artifactId>flygon-common-captcha</artifactId>
         <version>${flygon.version}</version>
       </dependency>
       <!-- test -->

@@ -20,7 +20,7 @@
   <parent>
     <groupId>com.power4j</groupId>
     <artifactId>flygon</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.2.1</version>
   </parent>
   <artifactId>flygon-common</artifactId>
   <packaging>pom</packaging>
@@ -28,7 +28,9 @@
   <modules>
     <module>flygon-common-core</module>
     <module>flygon-common-data</module>
-    <module>flygon-common-open-api</module>
+    <module>flygon-common-cache</module>
+    <module>flygon-common-captcha</module>
+    <module>flygon-common-open-doc</module>
     <module>flygon-common-security</module>
   </modules>
 </project>

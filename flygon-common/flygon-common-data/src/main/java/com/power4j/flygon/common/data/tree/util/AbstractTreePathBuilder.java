@@ -1,3 +1,19 @@
+/*
+ * Copyright 2020 ChenJun (power4j@outlook.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.power4j.flygon.common.data.tree.util;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
@@ -100,7 +116,6 @@ public abstract class AbstractTreePathBuilder<T extends TreePath, M extends Base
 	 */
 	protected abstract Wrapper<T> getLoadDescendantsWrapper(Serializable id, int distanceMin, int distanceMax);
 
-
 	/**
 	 * 后代查询条件
 	 * @param ids
@@ -108,7 +123,8 @@ public abstract class AbstractTreePathBuilder<T extends TreePath, M extends Base
 	 * @param distanceMax 最大距离,从0开始, -1 表示无限制
 	 * @return
 	 */
-	protected abstract Wrapper<T> getLoadDescendantsWrapper(Collection<Serializable> ids, int distanceMin, int distanceMax);
+	protected abstract Wrapper<T> getLoadDescendantsWrapper(Collection<Serializable> ids, int distanceMin,
+			int distanceMax);
 
 	/**
 	 * 加载某个节点的后代
@@ -120,7 +136,6 @@ public abstract class AbstractTreePathBuilder<T extends TreePath, M extends Base
 	public List<T> loadDescendants(Serializable id, int distanceMin, int distanceMax) {
 		return dao.selectList(getLoadDescendantsWrapper(id, distanceMin, distanceMax));
 	}
-
 
 	/**
 	 * 加载节点的后代

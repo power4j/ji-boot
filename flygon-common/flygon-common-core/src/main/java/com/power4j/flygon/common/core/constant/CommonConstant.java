@@ -28,4 +28,8 @@ public interface CommonConstant {
 
 	String PROPERTY_PREFIX = "flygon";
 
+	String MDC_REQUEST_ID = "requestId";
+
+	String MDC_ACCOUNT_ID = "accountId";
+
 }

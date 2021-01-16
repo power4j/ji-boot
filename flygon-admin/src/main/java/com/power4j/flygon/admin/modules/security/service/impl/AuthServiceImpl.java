@@ -1,12 +1,29 @@
+/*
+ * Copyright 2020 ChenJun (power4j@outlook.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.power4j.flygon.admin.modules.security.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import cn.hutool.core.util.StrUtil;
 import com.power4j.flygon.admin.modules.security.service.AuthService;
-import com.power4j.flygon.admin.modules.sys.dao.SysRoleMapper;
-import com.power4j.flygon.admin.modules.sys.dao.SysUserMapper;
-import com.power4j.flygon.admin.modules.sys.entity.SysRole;
-import com.power4j.flygon.admin.modules.sys.entity.SysUser;
+import com.power4j.flygon.admin.modules.sys.constant.DictConstant;
+import com.power4j.flygon.admin.modules.sys.dto.SysUserDTO;
+import com.power4j.flygon.admin.modules.sys.service.SysResourceService;
+import com.power4j.flygon.admin.modules.sys.service.SysRoleService;
+import com.power4j.flygon.admin.modules.sys.service.SysUserService;
+import com.power4j.flygon.common.core.constant.SecurityConstant;
 import com.power4j.flygon.common.security.LoginUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +33,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -29,25 +48,36 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-	private final SysUserMapper sysUserMapper;
-	private final SysRoleMapper sysRoleMapper;
+	private final SysUserService sysUserService;
+
+	private final SysRoleService sysRoleService;
+
+	private final SysResourceService sysResourceService;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Wrapper<SysUser> wrapper = new QueryWrapper<SysUser>().lambda().eq(SysUser::getUsername, username);
-		SysUser entity = sysUserMapper.selectOne(wrapper);
-		if (entity == null) {
+
+		SysUserDTO userDTO = sysUserService.getByUsername(username).orElse(null);
+		if (userDTO == null) {
 			log.debug("用户不存在:{}", username);
 			throw new UsernameNotFoundException(String.format("用户不存在:%s", username));
 		}
-		List<SysRole> roles = sysRoleMapper.selectByUserId(entity.getId(),null);
-		List<GrantedAuthority> authorityList = roles
-				.stream()
-				.map(o -> new SimpleGrantedAuthority(o.getCode()))
+		Set<String> roles = sysRoleService.listForUser(username, null).stream()
+				.filter(o -> DictConstant.Role.STATUS_NORMAL.equals(o.getStatus())).map(o -> o.getCode())
+				.collect(Collectors.toSet());
+
+		Set<String> resources = sysResourceService.listForRoles(roles).stream()
+				.filter(o -> StrUtil.isNotBlank(o.getPermission())).map(o -> o.getPermission())
+				.collect(Collectors.toSet());
+
+		List<String> authorityCodes = new ArrayList<>(32);
+		authorityCodes.addAll(roles.stream().map(o -> SecurityConstant.ROLE_PREFIX + o).collect(Collectors.toList()));
+		authorityCodes.addAll(resources);
+		List<GrantedAuthority> authorityList = authorityCodes.stream().map(o -> new SimpleGrantedAuthority(o))
 				.collect(Collectors.toList());
-		LoginUser loginUser = new LoginUser(entity.getUsername(), entity.getPassword(), authorityList);
-		loginUser.setUid(entity.getId());
-		loginUser.setName(entity.getName());
+		LoginUser loginUser = new LoginUser(userDTO.getUsername(), userDTO.getPassword(), authorityList);
+		loginUser.setUid(userDTO.getId());
+		loginUser.setName(userDTO.getName());
 		return loginUser;
 	}
 

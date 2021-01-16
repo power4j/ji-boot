@@ -62,7 +62,7 @@ public class TreeUtil {
 	 * @param predicate
 	 * @return
 	 */
-	public List<Node> simpleSearch(Collection<? extends Node> nodes, final Predicate<? super Node> predicate) {
+	public List<Node> simpleSearch(Collection<? extends Node> nodes, Predicate<? super Node> predicate) {
 		return nodes.stream().filter(predicate::test).collect(Collectors.toList());
 	}
 
@@ -75,16 +75,16 @@ public class TreeUtil {
 	 * @param predicate 断言,返回true表示该节点需要保留
 	 * @return
 	 */
-	public <T extends Node> List<T> filterNode(List<T> nodes, final Predicate<? super T> predicate) {
-		if(nodes == null || nodes.isEmpty()){
+	public <T extends Node> List<T> filterNode(List<T> nodes, Predicate<? super T> predicate) {
+		if (nodes == null || nodes.isEmpty()) {
 			return nodes;
 		}
 		List<T> ret = new ArrayList<>();
 		nodes.forEach(node -> {
-			if(predicate.test(node)){
+			if (predicate.test(node)) {
 				ret.add(node);
-				if(node.getNextNodes() != null && !node.getNextNodes().isEmpty()){
-					node.setNextNodes(filterNode(node.getNextNodes(),predicate));
+				if (node.getNextNodes() != null && !node.getNextNodes().isEmpty()) {
+					node.setNextNodes(filterNode(node.getNextNodes(), predicate));
 				}
 			}
 		});
@@ -98,8 +98,7 @@ public class TreeUtil {
 	 * @param out 集合容器，保存过滤结果
 	 * @return
 	 */
-	public <T extends Node> Collection<T> filter(T root, final Predicate<? super T> predicate,
-												 Collection<T> out) {
+	public <T extends Node> Collection<T> filter(T root, Predicate<? super T> predicate, Collection<T> out) {
 		if (predicate.test(root)) {
 			out.add(root);
 		}
@@ -119,8 +118,8 @@ public class TreeUtil {
 	 * @param out
 	 * @return
 	 */
-	public <T extends Node> Collection<? extends T> filter(Collection<T> nodes,
-														   final Predicate<? super T> predicate, Collection<T> out) {
+	public <T extends Node> Collection<? extends T> filter(Collection<T> nodes, Predicate<? super T> predicate,
+			Collection<T> out) {
 		nodes.forEach(o -> filter(o, predicate, out));
 		return out;
 	}

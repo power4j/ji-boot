@@ -18,6 +18,7 @@ package com.power4j.flygon.common.core.util;
 
 import com.power4j.flygon.common.core.constant.SysErrorCodes;
 import com.power4j.flygon.common.core.model.ApiResponse;
+import org.springframework.lang.Nullable;
 
 import java.util.Optional;
 
@@ -38,7 +39,7 @@ public class ApiResponseUtil {
 	 * @param <E>
 	 * @return
 	 */
-	public static <E> ApiResponse<E> ok(String msg, E data) {
+	public static <E> ApiResponse<E> ok(@Nullable String msg, @Nullable E data) {
 		return ApiResponse.of(SysErrorCodes.E_OK, msg, data);
 	}
 
@@ -48,7 +49,7 @@ public class ApiResponseUtil {
 	 * @param <E>
 	 * @return
 	 */
-	public static <E> ApiResponse<E> ok(E data) {
+	public static <E> ApiResponse<E> ok(@Nullable E data) {
 		return ok(null, data);
 	}
 
@@ -67,7 +68,7 @@ public class ApiResponseUtil {
 	 * @param <E>
 	 * @return
 	 */
-	public static <E> ApiResponse<E> fail(String msg) {
+	public static <E> ApiResponse<E> fail(@Nullable String msg) {
 		return ApiResponse.of(SysErrorCodes.E_FAIL, msg, null);
 	}
 
@@ -86,7 +87,7 @@ public class ApiResponseUtil {
 	 * @param <E>
 	 * @return
 	 */
-	public static <E> ApiResponse<E> nullAsFail(E data) {
+	public static <E> ApiResponse<E> nullAsFail(@Nullable E data) {
 		return data == null ? fail() : ok(null, data);
 	}
 
@@ -100,31 +101,31 @@ public class ApiResponseUtil {
 		return data.map(o -> ok(o)).orElse(fail(null));
 	}
 
-	public static <E> ApiResponse<E> badRequest(String msg) {
+	public static <E> ApiResponse<E> badRequest(@Nullable String msg) {
 		return ApiResponse.of(SysErrorCodes.E_BAD_REQUEST, msg);
 	}
 
-	public static <E> ApiResponse<E> unauthorized(String msg) {
+	public static <E> ApiResponse<E> unauthorized(@Nullable String msg) {
 		return ApiResponse.of(SysErrorCodes.E_UNAUTHORIZED, msg);
 	}
 
-	public static <E> ApiResponse<E> forbidden(String msg) {
+	public static <E> ApiResponse<E> forbidden(@Nullable String msg) {
 		return ApiResponse.of(SysErrorCodes.E_FORBIDDEN, msg);
 	}
 
-	public static <E> ApiResponse<E> notFound(String msg) {
+	public static <E> ApiResponse<E> notFound(@Nullable String msg) {
 		return ApiResponse.of(SysErrorCodes.E_NOT_FOUND, msg);
 	}
 
-	public static <E> ApiResponse<E> nullAsNotFound(E data, String msg) {
+	public static <E> ApiResponse<E> nullAsNotFound(@Nullable E data, String msg) {
 		return data == null ? notFound(msg) : ok(data);
 	}
 
-	public static <E> ApiResponse<E> conflict(String msg) {
+	public static <E> ApiResponse<E> conflict(@Nullable String msg) {
 		return ApiResponse.of(SysErrorCodes.E_CONFLICT, msg);
 	}
 
-	public static <E> ApiResponse<E> serverError(String msg) {
+	public static <E> ApiResponse<E> serverError(@Nullable String msg) {
 		return ApiResponse.of(SysErrorCodes.E_SERVER_ERROR, msg);
 	}
 

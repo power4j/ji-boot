@@ -39,7 +39,7 @@ public class SearchSysUserVO implements Serializable {
 	@Schema(description = "创建日期范围", example = "[\"2020-01-01\",\"2020-12-31\"]")
 	private LocalDate[] createIn;
 
-	@Schema(description = "用户名", example = "admin")
+	@Schema(description = "用户名,支持模糊查询", example = "admin")
 	private String username;
 
 	@Schema(description = "状态", example = "0")

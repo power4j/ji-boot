@@ -20,6 +20,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.springframework.lang.Nullable;
 
 import java.io.Serializable;
 import java.util.function.Function;
@@ -45,16 +46,18 @@ public class ApiResponse<T> implements Serializable {
 	private Integer code;
 
 	@Schema(title = "提示信息")
+	@Nullable
 	private String msg;
 
 	@Schema(title = "业务数据")
+	@Nullable
 	private T data;
 
-	public static <E> ApiResponse<E> of(int code, String msg, E data) {
+	public static <E> ApiResponse<E> of(int code, @Nullable String msg, @Nullable E data) {
 		return new ApiResponse<E>().setCode(code).setMsg(msg).setData(data);
 	}
 
-	public static <E> ApiResponse<E> of(int code, String msg) {
+	public static <E> ApiResponse<E> of(int code, @Nullable String msg) {
 		return of(code, msg, null);
 	}
 

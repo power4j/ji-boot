@@ -20,7 +20,7 @@
   <parent>
     <groupId>com.power4j</groupId>
     <artifactId>flygon-common</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.2.1</version>
   </parent>
 
   <artifactId>flygon-common-core</artifactId>
@@ -29,6 +29,10 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.checkerframework</groupId>
+      <artifactId>checker-qual</artifactId>
     </dependency>
     <dependency>
       <groupId>cn.hutool</groupId>
@@ -45,6 +49,10 @@
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jsr310</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>transmittable-thread-local</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

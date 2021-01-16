@@ -1,13 +1,31 @@
+/*
+ * Copyright 2020 ChenJun (power4j@outlook.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.power4j.flygon.common.security.util;
 
+import cn.hutool.core.util.StrUtil;
+import com.power4j.flygon.common.core.constant.SecurityConstant;
 import com.power4j.flygon.common.security.LoginUser;
 import lombok.experimental.UtilityClass;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -50,12 +68,22 @@ public class SecurityUtil {
 	}
 
 	/**
+	 * 当前登录用户的权限列表
+	 * @return
+	 */
+	public Set<String> getLoginUserAuthorities() {
+		return getLoginUser().map(
+				loginUser -> loginUser.getAuthorities().stream().map(o -> o.getAuthority()).collect(Collectors.toSet()))
+				.orElse(Collections.emptySet());
+	}
+
+	/**
 	 * 当前登录用户的角色列表
 	 * @return
 	 */
-	public List<String> getLoginUserRoles() {
-		return getLoginUser()
-				.map(loginUser -> loginUser.getAuthorities().stream().map(o -> o.getAuthority()).collect(Collectors.toList()))
-				.orElse(Collections.emptyList());
+	public Set<String> getLoginUserRoles() {
+		return getLoginUserAuthorities().stream().filter(o -> o.startsWith(SecurityConstant.ROLE_PREFIX))
+				.map(o -> StrUtil.removePrefix(o, SecurityConstant.ROLE_PREFIX)).collect(Collectors.toSet());
 	}
+
 }

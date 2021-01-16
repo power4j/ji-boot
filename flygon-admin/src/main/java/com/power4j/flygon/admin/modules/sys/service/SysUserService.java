@@ -24,12 +24,21 @@ import com.power4j.flygon.common.core.model.PageRequest;
 import com.power4j.flygon.common.data.crud.service.CrudService;
 import org.springframework.lang.Nullable;
 
+import java.util.Optional;
+
 /**
  * @author CJ (power4j@outlook.com)
  * @date 2020-11-19
  * @since 1.0
  */
 public interface SysUserService extends CrudService<SysUserDTO, SysUser> {
+
+	/**
+	 * 根据用户名查询
+	 * @param username
+	 * @return
+	 */
+	Optional<SysUserDTO> getByUsername(String username);
 
 	/**
 	 * 分页查询

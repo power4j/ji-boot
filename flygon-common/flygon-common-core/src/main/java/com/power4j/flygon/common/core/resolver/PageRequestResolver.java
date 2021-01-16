@@ -57,10 +57,11 @@ public class PageRequestResolver implements HandlerMethodArgumentResolver {
 		pageRequest.setPage(NumUtil.parseInt(page, 1));
 		pageRequest.setSize(NumUtil.parseInt(size, 20));
 
-		if(orderProp != null && !orderProp.isEmpty()){
-			if(Boolean.FALSE.toString().equalsIgnoreCase(asc)){
+		if (orderProp != null && !orderProp.isEmpty()) {
+			if (Boolean.FALSE.toString().equalsIgnoreCase(asc)) {
 				pageRequest.setDesc(Arrays.asList(orderProp));
-			} else {
+			}
+			else {
 				pageRequest.setAsc(Arrays.asList(orderProp));
 			}
 		}

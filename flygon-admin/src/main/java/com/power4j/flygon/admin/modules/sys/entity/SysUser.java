@@ -76,7 +76,7 @@ public class SysUser extends BaseEntity implements Serializable {
 	/**
 	 * 状态 0 有效 1 停用
 	 */
-	private Integer status;
+	private String status;
 
 	/**
 	 * 创建人

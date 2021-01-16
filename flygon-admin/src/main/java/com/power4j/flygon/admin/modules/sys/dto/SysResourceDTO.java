@@ -1,3 +1,19 @@
+/*
+ * Copyright 2020 ChenJun (power4j@outlook.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.power4j.flygon.admin.modules.sys.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -8,6 +24,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -34,18 +51,18 @@ public class SysResourceDTO extends BaseDTO implements Node<SysResourceDTO>, Ser
 	private String type;
 
 	/**
-	 * 资源代码
+	 * 路由名称
 	 */
-	@Schema(description = "资源名称", example = "home-page")
-	@NotNull(groups = { Groups.Default.class })
-	@Size(min = 1, max = 20, groups = { Groups.Default.class })
+	@Schema(description = "路由名称", example = "home-page")
+	@NotBlank(groups = { Groups.Default.class })
+	@Size(min = 1, max = 240, groups = { Groups.Default.class })
 	private String name;
 
 	/**
 	 * 显示名称
 	 */
 	@Schema(description = "显示名称", example = "home-page")
-	@NotNull(groups = { Groups.Default.class })
+	@NotBlank(groups = { Groups.Default.class })
 	@Size(min = 1, max = 20, groups = { Groups.Default.class })
 	private String title;
 

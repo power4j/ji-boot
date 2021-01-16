@@ -1,3 +1,19 @@
+/*
+ * Copyright 2020 ChenJun (power4j@outlook.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.power4j.flygon.common.data.crud.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
@@ -28,8 +44,8 @@ import java.util.Optional;
  * @date 2020/11/20
  * @since 1.0
  */
-public abstract class AbstractCrudService<M extends BaseMapper<T>, D extends Unique, T extends Unique> extends BaseServiceImpl<M, T>
-		implements CrudService<D, T> {
+public abstract class AbstractCrudService<M extends BaseMapper<T>, D extends Unique, T extends Unique>
+		extends BaseServiceImpl<M, T> implements CrudService<D, T> {
 
 	@Getter
 	private Class<D> dtoClass = (Class<D>) ReflectionKit.getSuperClassGenericType(getClass(), 1);
@@ -92,6 +108,11 @@ public abstract class AbstractCrudService<M extends BaseMapper<T>, D extends Uni
 	}
 
 	@Override
+	public <S extends Serializable> List<D> readList(Collection<S> idList) {
+		return toDtoList(getBaseMapper().selectBatchIds(idList));
+	}
+
+	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public D put(D dto) {
 		updateById(toEntity(prePutHandle(dto)));
@@ -99,15 +120,10 @@ public abstract class AbstractCrudService<M extends BaseMapper<T>, D extends Uni
 	}
 
 	@Override
-	public List<D> readList(Collection<Serializable> idList) {
-		return toDtoList(getBaseMapper().selectBatchIds(idList));
-	}
-
-	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public Optional<D> delete(Serializable id) {
 		T entity = preDeleteHandle(id);
-		if(entity != null){
+		if (entity != null) {
 			removeById(id);
 			return Optional.of(toDto(entity));
 		}
@@ -119,7 +135,7 @@ public abstract class AbstractCrudService<M extends BaseMapper<T>, D extends Uni
 	 * @param dto
 	 * @return 返回处理后的对象
 	 */
-	protected D prePostHandle(D dto){
+	protected D prePostHandle(D dto) {
 		return dto;
 	}
 
@@ -128,12 +144,12 @@ public abstract class AbstractCrudService<M extends BaseMapper<T>, D extends Uni
 	 * @param dto
 	 * @return 返回处理后的对象
 	 */
-	protected D prePutHandle(D dto){
+	protected D prePutHandle(D dto) {
 		T entity = getById(dto.getOnlyId());
 		if (entity == null) {
 			throw new BizException(SysErrorCodes.E_CONFLICT, String.format("数据不存在"));
 		}
-		checkSysCtlNot(entity,SysCtlFlagEnum.SYS_LOCKED.getValue(),"系统数据不允许修改");
+		checkSysCtlNot(entity, SysCtlFlagEnum.SYS_LOCKED.getValue(), "系统数据不允许修改");
 		return dto;
 	}
 
@@ -142,11 +158,12 @@ public abstract class AbstractCrudService<M extends BaseMapper<T>, D extends Uni
 	 * @param id
 	 * @return 返回数据库中当前值
 	 */
-	protected T preDeleteHandle(Serializable id){
+	protected T preDeleteHandle(Serializable id) {
 		T entity = getById(id);
-		if(entity != null){
-			checkSysCtlNot(entity,SysCtlFlagEnum.SYS_LOCKED.getValue(),"系统数据不允许删除");
+		if (entity != null) {
+			checkSysCtlNot(entity, SysCtlFlagEnum.SYS_LOCKED.getValue(), "系统数据不允许删除");
 		}
 		return entity;
 	}
+
 }

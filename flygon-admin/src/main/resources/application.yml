@@ -1,5 +1,11 @@
 server:
   port: 8081
+  undertow:
+    buffer-size: 1024
+    threads:
+      io: 16
+      worker: 2000
+    direct-buffers: true
   servlet:
     context-path: /api
 
@@ -8,6 +14,18 @@ spring:
     active: dev
   application:
     name: "@project.artifactId@"
+  # 使用 Caffeine 缓存
+  cache:
+    type: caffeine
+    caffeine:
+      spec: "expireAfterWrite=24h,maximumSize=100000"
+  dinger:
+    project-id: ${spring.application.name}
+    dingers:
+      # 使用钉钉机器人, 请根据自己机器人配置信息进行修改
+      dingtalk:
+        tokenId: ${DING_TALK_TOKEN:4ef4bee34d2b37d40e60b6d9f2abad82062ffa3cdefce1ec87389b63867a902a}
+        secret: ${DING_TALK_SECRET}
 
 springdoc:
   version: "@project.version@"
@@ -17,8 +35,9 @@ springdoc:
   swagger-ui:
     #path: /swagger-ui.html
     #disable-swagger-default-url: true
+    persist-authorization: true
     display-request-duration: true
-    groups-order: DESC
+    groups-order: ASC
     apisSorter: alpha
     operationsSorter: method
     tagsSorter: alpha
@@ -30,10 +49,10 @@ springdoc:
   #  tokenUrl: http://localhost:8083/auth/realms/springdoc/protocol/openid-connect/token
   show-actuator: true
   group-configs:
-    - group: token 管理
-      paths-to-match: /token/**
     - group: sys 系统管理
       paths-to-match: /sys/**
+    - group: 模拟测试
+      paths-to-match: /mock/**
     - group: 监控
       paths-to-match: /actuator/**
 
@@ -51,23 +70,54 @@ mybatis-plus:
 flygon:
   doc:
     global-security-scheme:
+      # 开启后能在swagger页面设置api-token,这样才能以用户的身份调用后端接口
+      enabled: false
+  notify:
+    # 钉钉消息通知
+    ding-talk:
       enabled: true
+    # 公众号消息通知
+    wx-mp:
+      enabled: true
+      app-id: ${WX_MP_APPID:wxc6222bd36479c057}
+      secret: ${WX_MP_SECRET}
+      subscribers: oiwtWuMNNa6njL3bE7_9ADOKMEWc
+  # 自定义验证码产生地址和消费地址
+  captcha:
+    service-url: '/code'
+    consumer: '/login'
   security:
+    # 可自定义登录、注销地址
+    login-url: '/login'
+    logout-url: '/logout'
+    # 可自定义安全访问控制
     access:
       enabled: true
+      # 静态资源,放行
       ignore:
-        patterns:
-          - '/static/**,/webjars/**'
-      http-accesses:
+        patterns: "/static/**,/webjars/**,/favicon.ico"
+      filters:
+        # 只允许特定IP访问监控端点
         - patterns: '/actuator/**'
           methods: GET,POST
           access: 'hasIpAddress("127.0.0.1")'
+        # swagger 放行
         - patterns: '/swagger-ui/**,/swagger-ui.html,/swagger-resources'
           methods: GET
           access: permitAll
+        # knife4j 放行
         - patterns: '/doc.html'
           methods: GET
           access: permitAll
+        # OpenAPI端点 放行
         - patterns: '/v3/api-docs/**'
           methods: GET
+          access: permitAll
+        # 验证码服务放行
+        - patterns: ${flygon.captcha.service-url}
+          methods: GET
+          access: permitAll
+        # druid 监控放行
+        - patterns: '/druid/**'
+          methods: GET,POST
           access: permitAll

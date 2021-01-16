@@ -19,9 +19,17 @@ package com.power4j.flygon.common.core.util;
 import cn.hutool.core.util.StrUtil;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.lang.Nullable;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.RequestContextListener;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
+import java.util.Enumeration;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 /**
  * HttpServletRequest Util
@@ -48,11 +56,17 @@ public class HttpServletRequestUtil {
 	public final static String HTTP_X_FORWARDED_FOR = "HTTP_X_FORWARDED_FOR";
 
 	/**
+	 * 获取当前请求
+	 * @see RequestContextListener
+	 * @return
+	 */
+	public Optional<HttpServletRequest> getCurrentRequest() {
+		return Optional.ofNullable(RequestContextHolder.getRequestAttributes()).map(x -> (ServletRequestAttributes) x)
+				.map(ServletRequestAttributes::getRequest);
+	}
+
+	/**
 	 * 获取IP地址
-	 * <ul>
-	 * <li>用Nginx等反向代理软件时，不能通过request.getRemoteAddr()获取IP地址</li>
-	 * <li>如果使用了多级反向代理的话，X-Forwarded-For的值并不止一个，而是一串IP地址，X-Forwarded-For中第一个非unknown的有效IP字符串，则为真实IP地址</li>
-	 * </ul>
 	 * @see <a href=
 	 * "https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/X-Forwarded-For">X-Forwarded-For</a>
 	 * @param request
@@ -85,8 +99,50 @@ public class HttpServletRequestUtil {
 	 * @param defaultValue
 	 * @return
 	 */
-	public static String getRemoteAddr(HttpServletRequest request, String defaultValue) {
+	@Nullable
+	public static String getRemoteAddr(HttpServletRequest request, @Nullable String defaultValue) {
 		return getRemoteAddr(request).orElse(defaultValue);
+	}
+
+	/**
+	 * 提取http头
+	 * @param request
+	 * @param names
+	 * @return
+	 */
+	public HttpHeaders pickupHeaders(HttpServletRequest request, Collection<String> names) {
+		return pickupHeaders(request, name -> names.contains(name));
+	}
+
+	/**
+	 * 提取http头
+	 * @param request
+	 * @param predicate
+	 * @return
+	 */
+	public HttpHeaders pickupHeaders(HttpServletRequest request, Predicate<String> predicate) {
+		HttpHeaders headers = new HttpHeaders();
+		Enumeration<String> headerNames = request.getHeaderNames();
+		if (headerNames == null) {
+			return headers;
+		}
+		while (headerNames.hasMoreElements()) {
+			String name = headerNames.nextElement();
+			if (predicate.test(name)) {
+				headers.add(name, request.getHeader(name));
+			}
+		}
+		return headers;
+	}
+
+	/**
+	 * 获取Header
+	 * @param request
+	 * @param name
+	 * @return
+	 */
+	public Optional<String> getHeader(HttpServletRequest request, String name) {
+		return Optional.ofNullable(request.getHeader(name));
 	}
 
 }

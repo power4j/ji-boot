@@ -41,7 +41,7 @@ public interface SysErrorCodes {
 	int E_FAIL = 1;
 
 	/**
-	 * 无效请求
+	 * 请求错误
 	 */
 	int E_BAD_REQUEST = 400;
 

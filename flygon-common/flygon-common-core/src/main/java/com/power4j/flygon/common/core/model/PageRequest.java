@@ -20,6 +20,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -44,17 +45,21 @@ public class PageRequest implements Serializable {
 
 	@Schema(title = "页码，从1开始", defaultValue = "1", example = "1")
 	@Min(value = 1)
+	@Nullable
 	private Integer page;
 
 	@Schema(title = "每页条数", defaultValue = "10", example = "20")
 	@Min(value = 1)
 	@Max(value = 500)
+	@Nullable
 	private Integer size;
 
 	@Schema(title = "升序字段", example = "[]")
+	@Nullable
 	private List<String> asc;
 
 	@Schema(title = "降序字段", example = "[]")
+	@Nullable
 	private List<String> desc;
 
 }
