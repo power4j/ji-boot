@@ -91,7 +91,7 @@ public abstract class AbstractCrudService<M extends BaseMapper<T>, D extends Uni
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public D post(D dto) {
-		T entity = toEntity(dto);
+		T entity = toEntity(prePostHandle(dto));
 		save(entity);
 		return toDto(entity);
 	}
