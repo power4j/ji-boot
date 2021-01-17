@@ -18,8 +18,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.power4j</groupId>
-  <artifactId>flygon</artifactId>
+  <groupId>com.power4j.ji</groupId>
+  <artifactId>ji-boot</artifactId>
   <version>0.2.1</version>
   <name>${project.artifactId}</name>
   <packaging>pom</packaging>
@@ -41,9 +41,9 @@
   </organization>
 
   <scm>
-    <url>https://github.com/power4j/flygon-server</url>
-    <connection>scm:git:git://github.com/power4j/flygon-server.git</connection>
-    <developerConnection>scm:git:https://github.com/power4j/flygon-server.git</developerConnection>
+    <url>https://github.com/power4j/ji-admin</url>
+    <connection>scm:git:git://github.com/power4j/ji-admin.git</connection>
+    <developerConnection>scm:git:https://github.com/power4j/ji-admin.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
 
@@ -63,7 +63,7 @@
     <spring-javaformat.plugin.version>0.0.25</spring-javaformat.plugin.version>
     <git.commit.plugin.version>2.2.5</git.commit.plugin.version>
     <spring-boot.version>2.3.5.RELEASE</spring-boot.version>
-    <flygon-bom.version>0.2.1</flygon-bom.version>
+    <ji-bom.version>0.2.1</ji-bom.version>
   </properties>
 
   <dependencies>
@@ -85,9 +85,9 @@
   </dependencies>
 
   <modules>
-    <module>flygon-bom</module>
-    <module>flygon-common</module>
-    <module>flygon-admin</module>
+    <module>ji-bom</module>
+    <module>ji-common</module>
+    <module>ji-admin</module>
   </modules>
 
   <dependencyManagement>
@@ -101,8 +101,8 @@
       </dependency>
       <dependency>
         <groupId>com.power4j.kit</groupId>
-        <artifactId>flygon-bom</artifactId>
-        <version>${flygon-bom.version}</version>
+        <artifactId>ji-bom</artifactId>
+        <version>${ji-bom.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>

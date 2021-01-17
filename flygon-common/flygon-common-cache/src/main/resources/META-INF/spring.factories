@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.power4j.flygon.common.cache.config.CacheAutoConfig,\
-  com.power4j.flygon.common.cache.caffeine.CaffeineCacheManagerPostProcessor

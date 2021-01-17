@@ -1,8 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.power4j.flygon.common.core.formatter.FormatterConfig,\
-  com.power4j.flygon.common.core.resolver.ArgumentResolverConfig,\
-  com.power4j.flygon.common.core.jackson.JacksonConfig,\
-  com.power4j.flygon.common.core.translator.GlobalExcetionConfig,\
-  com.power4j.flygon.common.core.servlet.ServletListenerConfig,\
-  com.power4j.flygon.common.core.context.FlygonContextConfig,\
-  com.power4j.flygon.common.core.config.FlygonConfig

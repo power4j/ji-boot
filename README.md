@@ -1,4 +1,4 @@
-# Flygon - 基于Spring Boot 2 的前后端分离权限管理系统
+# 极(Ji) - 基于Spring Boot 2 的前后端分离权限管理系统
 
 - 使用 Spring Boot 最新版本
 - 基于Spring Security 的 RBAC权限控制，访问控制可配置，也可以注解
@@ -12,11 +12,11 @@
 变成你自己的`starter`脚手架。
 
 
-> 体验地址 http://flygon-demo.etcd.ltd/
+> 体验地址 http://ji-boot-demo.etcd.ltd/
 > 
 >用户名/密码: `admin/admin`
 >
-> 如需本地部署体验，请使用`flygon-docker`项目
+> 如需本地部署体验，请使用`ji-boot-docker`项目
 
 
 注意事项：本项目使用`spring-javaformat`插件来统一代码风格，项目打包报错请执行`mvn spring-javaformat:apply`一键修复。
@@ -49,7 +49,7 @@
 ## 配置项
 
 ```yaml
-flygon:
+ji-boot:
   doc:
     global-security-scheme: 
       # 开启后能在swagger页面设置api-token,这样才能以用户的身份调用后端接口

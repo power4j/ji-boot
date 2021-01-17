@@ -1,4 +1,4 @@
-USE flygon;
+USE ji_boot;
 SET NAMES utf8mb4;
 
 CREATE TABLE `t_sys_user`

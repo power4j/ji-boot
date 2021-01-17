@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.power4j.flygon.common.data.mybatis.config.MybatisPlusConfig,\
-  com.power4j.flygon.common.data.error.DataAccessExceptionTranslator

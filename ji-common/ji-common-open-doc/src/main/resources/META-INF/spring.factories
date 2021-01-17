@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.power4j.ji.common.openapi.config.OpenApiAutoConfiguration,\
+  com.power4j.ji.common.openapi.config.SecuritySchemePostProcessor
