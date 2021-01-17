@@ -18,11 +18,14 @@ package com.power4j.flygon.common.security.config;
 
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.power4j.flygon.common.core.context.RequestContext;
 import com.power4j.flygon.common.security.filter.SignInFilter;
 import com.power4j.flygon.common.security.handler.SignInFailureHandler;
 import com.power4j.flygon.common.security.handler.SignInSuccessHandler;
 import com.power4j.flygon.common.security.handler.SignOutHandler;
 import com.power4j.flygon.common.security.handler.SignOutSuccessHandler;
+import com.power4j.flygon.common.security.listener.AuthenticationFailureListener;
+import com.power4j.flygon.common.security.listener.AuthenticationSuccessListener;
 import com.power4j.flygon.common.security.service.PermissionService;
 import com.power4j.flygon.common.security.service.TokenService;
 import com.power4j.flygon.common.security.token.ApiTokenAuthenticationEntryPoint;
@@ -115,6 +118,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		filter.setAuthenticationSuccessHandler(signInSuccessHandler);
 		filter.setAuthenticationFailureHandler(signInFailureHandler);
 		return filter;
+	}
+
+	@Bean
+	public AuthenticationSuccessListener authenticationSuccessListener(RequestContext requestContext) {
+		return new AuthenticationSuccessListener(requestContext);
+	}
+
+	@Bean
+	public AuthenticationFailureListener authenticationFailureListener() {
+		return new AuthenticationFailureListener();
 	}
 
 	@Override

@@ -43,6 +43,14 @@ public class RequestContext {
 		return Optional.ofNullable(getHeaders().getFirst(contextProperties.getHeaderMapping().getAccountId()));
 	}
 
+	public void setRequestId(String val) {
+		getHeaders().set(contextProperties.getHeaderMapping().getRequestId(), val);
+	}
+
+	public void setAccountId(String val) {
+		getHeaders().set(contextProperties.getHeaderMapping().getAccountId(), val);
+	}
+
 	protected HttpHeaders getHeaders() {
 		return ThreadStore.get(REQUEST_CONTEXT_KEY, () -> loadHeader()).get();
 	}

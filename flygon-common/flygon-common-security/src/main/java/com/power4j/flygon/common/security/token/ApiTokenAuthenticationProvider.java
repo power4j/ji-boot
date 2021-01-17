@@ -74,6 +74,7 @@ public class ApiTokenAuthenticationProvider implements AuthenticationProvider {
 		UserDetails userDetails = userDetailsService.loadUserByUsername(apiToken.getUsername());
 		PreAuthenticatedAuthenticationToken preAuthenticatedAuthenticationToken = new PreAuthenticatedAuthenticationToken(
 				userDetails, tokenValue, userDetails.getAuthorities());
+		preAuthenticatedAuthenticationToken.setDetails(apiToken);
 		preAuthenticatedAuthenticationToken.setAuthenticated(true);
 		return preAuthenticatedAuthenticationToken;
 	}

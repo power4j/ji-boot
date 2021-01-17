@@ -15,6 +15,7 @@ bin/
 
 ### IntelliJ IDEA ###
 .idea
+!.idea/copyright/*.xml
 *.iws
 *.iml
 *.ipr

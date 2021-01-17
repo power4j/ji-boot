@@ -58,7 +58,7 @@ public class DingMessagePusher implements ApplicationListener<PayloadApplication
 
 		// @formatter:off
 
-		final String msgTemplate = "" + StrUtil.CR +
+		final String msgTemplate = "" + StrUtil.CR + StrUtil.CR +
 				"## 请求信息" + StrUtil.CR +
 				"- 时间(UTC): `%s`" + StrUtil.CR +
 				"- 请求ID: `%s`" + StrUtil.CR +
@@ -73,9 +73,15 @@ public class DingMessagePusher implements ApplicationListener<PayloadApplication
 				"%s" + StrUtil.CR +
 				"```" + StrUtil.CR;
 
-		return String.format(msgTemplate, DATE_TIME_FORMATTER.format(event.getTimeUtc()), event.getRequestId(),
-				event.getRequestUri(), event.getRequestMethod(), event.getRequestQueryString(), event.getEx(),
-				event.getExMsg(), StrUtil.maxLength(event.getExStack(), 500));
+		return String.format(msgTemplate,
+				DATE_TIME_FORMATTER.format(event.getTimeUtc()),
+				event.getRequestId(),
+				event.getRequestUri(),
+				event.getRequestMethod(),
+				event.getRequestQueryString(),
+				event.getEx(),
+				event.getExMsg(),
+				StrUtil.maxLength(event.getExStack(), 500));
 
 		// @formatter:on
 	}

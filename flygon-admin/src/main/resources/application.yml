@@ -24,7 +24,7 @@ spring:
     dingers:
       # 使用钉钉机器人, 请根据自己机器人配置信息进行修改
       dingtalk:
-        tokenId: ${DING_TALK_TOKEN:4ef4bee34d2b37d40e60b6d9f2abad82062ffa3cdefce1ec87389b63867a902a}
+        tokenId: ${DING_TALK_TOKEN}
         secret: ${DING_TALK_SECRET}
 
 springdoc:
@@ -79,7 +79,7 @@ flygon:
     # 公众号消息通知
     wx-mp:
       enabled: true
-      app-id: ${WX_MP_APPID:wxc6222bd36479c057}
+      app-id: ${WX_MP_APPID}
       secret: ${WX_MP_SECRET}
       subscribers: oiwtWuMNNa6njL3bE7_9ADOKMEWc
   # 自定义验证码产生地址和消费地址

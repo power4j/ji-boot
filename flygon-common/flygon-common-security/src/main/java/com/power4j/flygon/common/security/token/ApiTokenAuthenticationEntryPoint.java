@@ -18,6 +18,7 @@ package com.power4j.flygon.common.security.token;
 
 import cn.hutool.http.HttpStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.power4j.flygon.common.core.constant.SysErrorCodes;
 import com.power4j.flygon.common.core.model.ApiResponse;
 import com.power4j.flygon.common.core.util.ApiResponseUtil;
 import com.power4j.flygon.common.security.msg.SecurityMessageSource;
@@ -58,7 +59,7 @@ public class ApiTokenAuthenticationEntryPoint implements AuthenticationEntryPoin
 		log.debug("Handling {} : {} {}", authException.getClass().getSimpleName(), authException.getMessage(), reqUrl);
 		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-		ApiResponse<Object> result = ApiResponseUtil.fail(authException.getMessage());
+		ApiResponse<Object> result = ApiResponse.of(SysErrorCodes.E_UNAUTHORIZED, authException.getMessage());
 		result.setData(reqUrl);
 
 		if (authException instanceof InsufficientAuthenticationException) {

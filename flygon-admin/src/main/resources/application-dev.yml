@@ -55,7 +55,7 @@ logging:
   level:
     org:
       springframework:
-        security: info
+        security: debug
     com:
       power4j:
         flygon:
