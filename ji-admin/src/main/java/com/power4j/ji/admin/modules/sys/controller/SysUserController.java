@@ -116,7 +116,7 @@ public class SysUserController implements CrudApi<Long, SysUserDTO> {
 	@GetMapping("/{username}/roles")
 	@Operation(summary = "用户的角色列表")
 	public ApiResponse<List<SysRoleDTO>> getRoleList(@Parameter(description = "用户名") @PathVariable String username,
-													 @Parameter(description = "授权类型") @RequestParam(required = false) String grantType) {
+			@Parameter(description = "授权类型") @RequestParam(required = false) String grantType) {
 		List<SysRoleDTO> data = sysRoleService.listForUser(username, grantType).stream()
 				.map(o -> BeanUtil.toBean(o, SysRoleDTO.class)).collect(Collectors.toList());
 		return ApiResponseUtil.ok(data);
