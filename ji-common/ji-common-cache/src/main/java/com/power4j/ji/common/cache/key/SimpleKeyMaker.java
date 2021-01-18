@@ -16,6 +16,8 @@
 
 package com.power4j.ji.common.cache.key;
 
+import org.springframework.lang.Nullable;
+
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -33,7 +35,7 @@ public class SimpleKeyMaker {
 	 * @param params
 	 * @return
 	 */
-	public String makeKeyStr(Collection<Object> params) {
+	public String makeKeyStr(@Nullable Collection<Object> params) {
 		if (params == null || params.isEmpty()) {
 			return "";
 		}

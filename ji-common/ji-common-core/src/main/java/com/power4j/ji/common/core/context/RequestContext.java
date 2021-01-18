@@ -20,6 +20,7 @@ import com.power4j.ji.common.core.util.HttpServletRequestUtil;
 import com.power4j.ji.common.core.util.ThreadStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.lang.Nullable;
 
 import java.util.Optional;
 
@@ -43,11 +44,11 @@ public class RequestContext {
 		return Optional.ofNullable(getHeaders().getFirst(contextProperties.getHeaderMapping().getAccountId()));
 	}
 
-	public void setRequestId(String val) {
+	public void setRequestId(@Nullable String val) {
 		getHeaders().set(contextProperties.getHeaderMapping().getRequestId(), val);
 	}
 
-	public void setAccountId(String val) {
+	public void setAccountId(@Nullable String val) {
 		getHeaders().set(contextProperties.getHeaderMapping().getAccountId(), val);
 	}
 

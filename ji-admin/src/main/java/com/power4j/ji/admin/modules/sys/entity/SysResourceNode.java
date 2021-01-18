@@ -19,6 +19,7 @@ package com.power4j.ji.admin.modules.sys.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.power4j.ji.common.data.tree.entity.TreePath;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
@@ -29,6 +30,7 @@ import java.io.Serializable;
  * @since 1.0
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 @TableName("t_resource_node")
 @NoArgsConstructor
 public class SysResourceNode extends TreePath implements Serializable {

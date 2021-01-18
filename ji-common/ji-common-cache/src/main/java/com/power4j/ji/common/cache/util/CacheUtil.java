@@ -20,7 +20,8 @@ import com.power4j.ji.common.cache.constant.CommonCacheConstant;
 import com.power4j.ji.common.core.util.NumUtil;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 import java.time.Duration;
 import java.util.Optional;
@@ -37,7 +38,7 @@ public class CacheUtil {
 
 	private final static int POS_INVALID = -1;
 
-	public TimeUnit parseTimeUnit(@Nullable String str, TimeUnit defVal) {
+	public TimeUnit parseTimeUnit(@Nullable String str, @Nullable TimeUnit defVal) {
 		char lastChar = Character.toLowerCase(str.charAt(str.length() - 1));
 		switch (lastChar) {
 		case 'd':
