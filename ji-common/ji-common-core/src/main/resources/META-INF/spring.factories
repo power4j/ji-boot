@@ -1,4 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.power4j.ji.common.core.util.SpringContextUtil,\
   com.power4j.ji.common.core.formatter.FormatterConfig,\
   com.power4j.ji.common.core.resolver.ArgumentResolverConfig,\
   com.power4j.ji.common.core.jackson.JacksonConfig,\

@@ -181,6 +181,11 @@
         <artifactId>ji-common-captcha</artifactId>
         <version>${ji.version}</version>
       </dependency>
+      <dependency>
+        <groupId>com.power4j.ji</groupId>
+        <artifactId>ji-common-quartz</artifactId>
+        <version>${ji.version}</version>
+      </dependency>
       <!-- test -->
       <dependency>
         <groupId>org.hibernate.validator</groupId>

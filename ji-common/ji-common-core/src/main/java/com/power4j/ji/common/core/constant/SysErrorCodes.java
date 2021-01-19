@@ -105,4 +105,9 @@ public interface SysErrorCodes {
 	 */
 	int E_MEDIA_TYPE_NOT_SUPPORTED = 10107;
 
+	/**
+	 * 后台作业执行错误
+	 */
+	int E_JOB_FAIL = 10201;
+
 }

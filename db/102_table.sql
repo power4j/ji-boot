@@ -22,7 +22,7 @@ CREATE TABLE `t_sys_user`
   UNIQUE KEY `uk_username` (`username`)
 ) ENGINE = InnoDB CHARSET = `utf8mb4` COMMENT ='用户';
 
-ALTER TABLE `t_sys_user` ADD INDEX `idx_op_flag` (`sys_flag`);
+ALTER TABLE `t_sys_user` ADD INDEX `idx_sys_flag` (`sys_flag`);
 ALTER TABLE `t_sys_user` ADD INDEX `idx_del_flag` (`del_flag`);
 ALTER TABLE `t_sys_user` ADD INDEX `idx_create_at` (`create_at`);
 
@@ -149,3 +149,26 @@ CREATE TABLE `t_sys_role_grantee`
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_user_role` (`user_id`,`role_id`)
 ) ENGINE = InnoDB CHARSET = `utf8mb4` COMMENT ='角色授权';
+
+CREATE TABLE `t_sys_job`
+(
+    `id`          BIGINT      NOT NULL COMMENT '主健',
+    `sys_flag`    TINYINT     NOT NULL DEFAULT 0 COMMENT '数据标记 0 普通数据, 1 系统保护数据',
+    `del_flag`    DATETIME    NULL COMMENT '删除标志',
+    `create_at`   DATETIME COMMENT '创建时间',
+    `update_at`   DATETIME COMMENT '更新时间',
+    `group_name`  VARCHAR(20) COMMENT '作业组',
+    `cron`        VARCHAR(40) NOT NULL COMMENT 'Cron 表达式',
+    `task_bean`   VARCHAR(255) COMMENT 'bean名称',
+    `param`       VARCHAR(255) COMMENT '任务参数',
+    `remarks`     VARCHAR(20) COMMENT '备注',
+    `status`      CHAR(1) NOT NULL DEFAULT '0' COMMENT '状态 0 正常 1 停止调度',
+    `mis_fire_policy` CHAR(1) NOT NULL DEFAULT '0' COMMENT '调度丢失补救策略',
+    `fail_recover`   tinyint NOT NULL DEFAULT '0' COMMENT '是否允许失败重试',
+    `create_by`   VARCHAR(20) COMMENT '创建人',
+    `update_by`   VARCHAR(20) COMMENT '更新人',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB CHARSET = `utf8mb4` COMMENT ='任务调度';
+
+ALTER TABLE `t_sys_job` ADD INDEX `idx_sys_flag` (`sys_flag`);
+ALTER TABLE `t_sys_job` ADD INDEX `idx_del_flag` (`del_flag`);

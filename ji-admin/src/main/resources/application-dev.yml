@@ -10,6 +10,11 @@ management:
     git:
       mode: full
 
+ji-boot:
+  security:
+    api:
+      permit-all: true
+
 spring:
   datasource:
     druid:
@@ -63,3 +68,4 @@ logging:
             modules: debug
           common:
             security: info
+            schedule: debug

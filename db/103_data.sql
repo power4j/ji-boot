@@ -165,6 +165,8 @@ insert  into `t_sys_dict`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`co
 insert  into `t_sys_dict`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`code`,`name`,`remarks`) values (1000003,1,NULL,'2020-12-13 17:08:40',NULL,'sys_param_status','参数状态',NULL);
 insert  into `t_sys_dict`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`code`,`name`,`remarks`) values (1000004,1,NULL,'2020-12-13 17:08:40',NULL,'sys_role_status','角色状态',NULL);
 insert  into `t_sys_dict`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`code`,`name`,`remarks`) values (1000005,1,NULL,'2020-12-13 17:08:40',NULL,'sys_role_grant_type','角色授权类型',NULL);
+insert  into `t_sys_dict`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`code`,`name`,`remarks`) values (1000006,1,NULL,'2020-12-13 17:08:40',NULL,'sys_job_status','作业调度状态',NULL);
+insert  into `t_sys_dict`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`code`,`name`,`remarks`) values (1000007,1,NULL,'2020-12-13 17:08:40',NULL,'sys_job_mf_policy','调度补偿策略',NULL);
 
 /*Data for the table `t_sys_dict_item` */
 
@@ -181,6 +183,11 @@ insert  into `t_sys_dict_item`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at
 insert  into `t_sys_dict_item`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`dict_id`,`value`,`label`,`remarks`) values (2004002,1,NULL,'2020-12-13 17:08:40',NULL,1000004,'1','禁用',NULL);
 insert  into `t_sys_dict_item`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`dict_id`,`value`,`label`,`remarks`) values (2005001,1,NULL,'2020-12-13 17:08:40',NULL,1000005,'0','普通',NULL);
 insert  into `t_sys_dict_item`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`dict_id`,`value`,`label`,`remarks`) values (2005002,1,NULL,'2020-12-13 17:08:40',NULL,1000005,'1','管理员','可授予、回收');
+insert  into `t_sys_dict_item`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`dict_id`,`value`,`label`,`remarks`) values (2006001,1,NULL,'2020-12-13 17:08:40',NULL,1000006,'0','正常',NULL);
+insert  into `t_sys_dict_item`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`dict_id`,`value`,`label`,`remarks`) values (2006002,1,NULL,'2020-12-13 17:08:40',NULL,1000006,'1','停止',NULL);
+insert  into `t_sys_dict_item`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`dict_id`,`value`,`label`,`remarks`) values (2007001,1,NULL,'2020-12-13 17:08:40',NULL,1000007,'0','立即执行一次,然后开始正常调度',NULL);
+insert  into `t_sys_dict_item`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`dict_id`,`value`,`label`,`remarks`) values (2007002,1,NULL,'2020-12-13 17:08:40',NULL,1000007,'1','立即执行所有丢失的触发点,然后开始正常调度',NULL);
+insert  into `t_sys_dict_item`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`dict_id`,`value`,`label`,`remarks`) values (2007003,1,NULL,'2020-12-13 17:08:40',NULL,1000007,'2','不处理,正常调度',NULL);
 
 /*Data for the table `t_sys_param` */
 

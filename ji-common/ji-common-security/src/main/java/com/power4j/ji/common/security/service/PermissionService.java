@@ -17,9 +17,12 @@
 package com.power4j.ji.common.security.service;
 
 import cn.hutool.core.collection.CollectionUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Set;
@@ -30,7 +33,11 @@ import java.util.stream.Collectors;
  * @date 2020/12/30
  * @since 1.0
  */
+@Slf4j
 public class PermissionService {
+
+	@Value("${ji-boot.security.api.permit-all:false}")
+	private Boolean permitAll;
 
 	/**
 	 * 拥有其中一项权限
@@ -38,6 +45,10 @@ public class PermissionService {
 	 * @return
 	 */
 	boolean any(String... permissions) {
+		if(permitAll){
+			log.warn("警告:接口权限已经停用");
+			return true;
+		}
 		return CollectionUtil.containsAny(getPermissions(), Arrays.asList(permissions));
 	}
 
@@ -47,6 +58,10 @@ public class PermissionService {
 	 * @return
 	 */
 	boolean all(String... permissions) {
+		if(permitAll){
+			log.warn("警告:接口权限已经停用");
+			return true;
+		}
 		return getPermissions().containsAll(Arrays.asList(permissions));
 	}
 
