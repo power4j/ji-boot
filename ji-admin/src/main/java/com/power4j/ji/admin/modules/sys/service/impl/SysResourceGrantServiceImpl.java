@@ -24,6 +24,7 @@ import com.power4j.ji.admin.modules.sys.dao.SysResourceGranteeMapper;
 import com.power4j.ji.admin.modules.sys.entity.SysResourceGrantee;
 import com.power4j.ji.admin.modules.sys.service.SysResourceGrantService;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,7 +69,9 @@ public class SysResourceGrantServiceImpl extends ServiceImpl<SysResourceGranteeM
 		return list;
 	}
 
-	@CacheEvict(cacheNames = { CacheConstant.Name.RESOURCE_TREE }, allEntries = true)
+	@Caching(evict = {
+			@CacheEvict(cacheNames = { CacheConstant.Name.ROLE_CODES_TO_RESOURCE_TREE }, allEntries = true),
+			@CacheEvict(cacheNames = { CacheConstant.Name.ROLE_CODES_TO_RESOURCES }, allEntries = true)})
 	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public List<SysResourceGrantee> setResources(Long roleId, Collection<Long> resourceIds) {

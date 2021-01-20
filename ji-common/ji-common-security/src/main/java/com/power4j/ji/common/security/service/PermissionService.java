@@ -44,9 +44,9 @@ public class PermissionService {
 	 * @param permissions
 	 * @return
 	 */
-	boolean any(String... permissions) {
+	public boolean any(String... permissions) {
 		if(permitAll){
-			log.warn("警告:接口权限已经停用");
+			log.warn("警告:接口鉴权已经停用");
 			return true;
 		}
 		return CollectionUtil.containsAny(getPermissions(), Arrays.asList(permissions));
@@ -57,9 +57,9 @@ public class PermissionService {
 	 * @param permissions
 	 * @return
 	 */
-	boolean all(String... permissions) {
+	public boolean all(String... permissions) {
 		if(permitAll){
-			log.warn("警告:接口权限已经停用");
+			log.warn("警告:接口鉴权已经停用");
 			return true;
 		}
 		return getPermissions().containsAll(Arrays.asList(permissions));

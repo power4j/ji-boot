@@ -14,45 +14,25 @@
  * limitations under the License.
  */
 
-package com.power4j.ji.admin.modules.sys.service;
+package com.power4j.ji.admin.modules.manager.service;
 
+import com.power4j.ji.admin.modules.sys.dto.SysResourceDTO;
 import com.power4j.ji.admin.modules.sys.dto.SysRoleDTO;
+import com.power4j.ji.admin.modules.sys.entity.SysResource;
 import com.power4j.ji.admin.modules.sys.entity.SysRole;
-import com.power4j.ji.common.data.crud.service.CrudService;
-import org.springframework.lang.Nullable;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author CJ (power4j@outlook.com)
- * @date 2020/12/10
+ * @date 2021/1/20
  * @since 1.0
  */
-public interface SysRoleService extends CrudService<SysRoleDTO, SysRole> {
-
+public interface ManagementService {
 	/**
-	 * 统计编码使用次数
-	 * @param code
-	 * @param ignoreId 排除的ID
+	 * 将所有缺失的资源权限授予角色
+	 * @param role
 	 * @return
 	 */
-	int countRoleCode(String code, @Nullable Long ignoreId);
-
-	/**
-	 * 角色列表
-	 * @param username
-	 * @param grantType
-	 * @return
-	 */
-	List<SysRole> listForUser(String username, @Nullable String grantType);
-
-
-
-	/**
-	 * 读取
-	 * @param code
-	 * @return
-	 */
-	Optional<SysRoleDTO> readByCode(String code);
+	List<SysResourceDTO> permitAnyLeakedResource(SysRoleDTO role);
 }

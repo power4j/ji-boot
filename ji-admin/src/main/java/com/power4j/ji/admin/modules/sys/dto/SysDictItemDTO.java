@@ -58,7 +58,7 @@ public class SysDictItemDTO extends BaseDTO implements Serializable {
 	 */
 	@Schema(description = "标签", example = "red color")
 	@NotBlank(groups = { Groups.Default.class })
-	@Size(max = 20, groups = { Groups.Default.class })
+	@Size(max = 250, groups = { Groups.Default.class })
 	private String label;
 
 	/**

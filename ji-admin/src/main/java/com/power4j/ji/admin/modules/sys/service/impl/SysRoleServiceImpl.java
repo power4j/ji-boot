@@ -16,7 +16,9 @@
 
 package com.power4j.ji.admin.modules.sys.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.power4j.ji.admin.modules.sys.constant.CacheConstant;
 import com.power4j.ji.admin.modules.sys.dao.SysRoleMapper;
 import com.power4j.ji.admin.modules.sys.dao.SysUserMapper;
@@ -60,6 +62,12 @@ public class SysRoleServiceImpl extends AbstractCrudService<SysRoleMapper, SysRo
 	public List<SysRole> listForUser(String username, String grantType) {
 		SysUser user = sysUserMapper.selectOne(new QueryWrapper<SysUser>().lambda().eq(SysUser::getUsername, username));
 		return user == null ? Collections.emptyList() : getBaseMapper().selectByUserId(user.getId(), grantType);
+	}
+
+	@Override
+	public Optional<SysRoleDTO> readByCode(String code) {
+		Wrapper<SysRole> wrapper = Wrappers.<SysRole>lambdaQuery().eq(SysRole::getCode,code);
+		return Optional.ofNullable(toDto(getBaseMapper().selectOne(wrapper)));
 	}
 
 	@Override

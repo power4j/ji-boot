@@ -78,6 +78,8 @@ springdoc:
   group-configs:
     - group: sys 系统管理
       paths-to-match: /sys/**
+    - group: 控制台
+      paths-to-match: /am/**
     - group: 模拟测试
       paths-to-match: /mock/**
     - group: 监控
@@ -127,6 +129,9 @@ ji-boot:
         # 只允许特定IP访问监控端点
         - patterns: '/actuator/**'
           methods: GET,POST
+          access: 'hasIpAddress("127.0.0.1")'
+        # 应用管理接口,不允许外部访问
+        - patterns: '/am/**'
           access: 'hasIpAddress("127.0.0.1")'
         # swagger 放行
         - patterns: '/swagger-ui/**,/swagger-ui.html,/swagger-resources'

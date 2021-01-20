@@ -60,7 +60,7 @@ logging:
   level:
     org:
       springframework:
-        security: debug
+        security: info
     com:
       power4j:
         ji:

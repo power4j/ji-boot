@@ -60,6 +60,12 @@ public interface SysResourceService extends CrudService<SysResourceDTO, SysResou
 	List<SysResource> listForRoles(Collection<String> roleCodes);
 
 	/**
+	 * 全部数据
+	 * @return
+	 */
+	List<SysResource> listAll();
+
+	/**
 	 * 查询角色的资源,并构建为树
 	 * @param roleCodes
 	 * @return

@@ -149,6 +149,11 @@ public class SysResourceServiceImpl extends AbstractCrudService<SysResourceMappe
 		return getBaseMapper().selectByRoles(roleCodes);
 	}
 
+	@Override
+	public List<SysResource> listAll() {
+		return list(null);
+	}
+
 	@Cacheable(cacheNames = CacheConstant.Name.ROLE_CODES_TO_RESOURCE_TREE, key = "@keyMaker.makeKeyStr(#roleCodes)")
 	@Transactional(rollbackFor = Exception.class)
 	@Override
