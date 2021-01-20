@@ -16,57 +16,21 @@
 
 package com.power4j.ji.common.schedule.job;
 
-import lombok.Data;
-import org.springframework.lang.Nullable;
-
-import java.io.Serializable;
-
 /**
  * @author CJ (power4j@outlook.com)
- * @date 2021/1/19
+ * @date 2021/1/20
  * @since 1.0
  */
-@Data
-public class ExecutionPlan implements Plan, Serializable {
-
-	private final static long serialVersionUID = 1L;
-
-	private Long planId;
+public interface Plan {
+	/**
+	 * ID
+	 * @return
+	 */
+	Long getPlanId();
 
 	/**
-	 * 分组
+	 * 分组名称
+	 * @return
 	 */
-	@Nullable
-	private String groupName;
-
-	/**
-	 * Cron 表达式
-	 */
-	private String cron;
-
-	/**
-	 * bean名称
-	 */
-	private String taskBean;
-
-	/**
-	 * 任务参数
-	 */
-	private String param;
-
-	/**
-	 * 描述
-	 */
-	@Nullable
-	private String description;
-
-	private PlanStatusEnum status;
-
-	private MisFirePolicyEnum misFirePolicy;
-
-	/**
-	 * 允许失败重试
-	 */
-	private Boolean failRecover;
-
+	String getGroupName();
 }

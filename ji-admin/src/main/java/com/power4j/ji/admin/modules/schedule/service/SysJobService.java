@@ -39,4 +39,24 @@ public interface SysJobService extends CrudService<SysJobDTO, SysJob> {
 	 */
 	PageData<SysJobDTO> selectPage(PageRequest pageRequest, @Nullable SearchSysJobVO param);
 
+	/**
+	 * 立即调度
+	 * @param jobId
+	 * @return 返回调度ID
+	 */
+	String scheduleNow(Long jobId);
+
+	/**
+	 * 停止调度
+	 * @param jobId
+	 * @return 返回调度ID
+	 */
+	void pauseJob(Long jobId);
+
+	/**
+	 * 恢复调度
+	 * @param jobId
+	 * @return 返回调度ID
+	 */
+	void resumeJob(Long jobId);
 }

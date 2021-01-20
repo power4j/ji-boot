@@ -16,6 +16,7 @@
 
 package com.power4j.ji.admin.modules.schedule.service.impl;
 
+import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -26,12 +27,15 @@ import com.power4j.ji.admin.modules.schedule.dao.SysJobMapper;
 import com.power4j.ji.admin.modules.schedule.dto.SysJobDTO;
 import com.power4j.ji.admin.modules.schedule.entity.SysJob;
 import com.power4j.ji.admin.modules.schedule.service.SysJobService;
+import com.power4j.ji.admin.modules.schedule.util.ScheduleUtil;
 import com.power4j.ji.admin.modules.schedule.vo.SearchSysJobVO;
 import com.power4j.ji.common.core.constant.SysErrorCodes;
 import com.power4j.ji.common.core.exception.BizException;
 import com.power4j.ji.common.core.model.PageData;
 import com.power4j.ji.common.core.model.PageRequest;
+import com.power4j.ji.common.core.util.ApiResponseUtil;
 import com.power4j.ji.common.core.util.SpringContextUtil;
+import com.power4j.ji.common.data.crud.constant.SysCtlFlagEnum;
 import com.power4j.ji.common.data.crud.service.impl.AbstractCrudService;
 import com.power4j.ji.common.data.crud.util.CrudUtil;
 import com.power4j.ji.common.schedule.job.ExecutionPlan;
@@ -43,8 +47,10 @@ import com.power4j.ji.common.schedule.quartz.util.QuartzUtil;
 import com.power4j.ji.common.security.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.quartz.Scheduler;
+import org.springframework.cache.CacheManager;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 
@@ -70,7 +76,7 @@ public class SysJobServiceImpl extends AbstractCrudService<SysJobMapper, SysJobD
 	@Override
 	public SysJobDTO post(SysJobDTO dto) {
 		SysJobDTO ret = super.post(dto);
-		QuartzUtil.createPlan(scheduler, toExecutionPlan(ret));
+		QuartzUtil.createPlan(scheduler, ScheduleUtil.toExecutionPlan(ret));
 		return ret;
 	}
 
@@ -78,14 +84,23 @@ public class SysJobServiceImpl extends AbstractCrudService<SysJobMapper, SysJobD
 	protected SysJobDTO prePutHandle(SysJobDTO dto) {
 		validateTaskBean(dto.getTaskBean());
 		validateCron(dto.getCron());
+
+		SysJob entity = getById(dto.getOnlyId());
+		if (entity == null) {
+			throw new BizException(SysErrorCodes.E_CONFLICT, String.format("数据不存在"));
+		}
+		checkSysCtlNot(entity, SysCtlFlagEnum.SYS_LOCKED.getValue(), "系统数据不允许修改");
+		if (PlanStatusEnum.NORMAL.getValue().equals(entity.getStatus())) {
+			throw new BizException(SysErrorCodes.E_CONFLICT, String.format("请先停止调度该任务"));
+		}
 		dto.setUpdateBy(SecurityUtil.getLoginUsername().orElse(null));
-		return super.prePutHandle(dto);
+		return dto;
 	}
 
 	@Override
 	public SysJobDTO put(SysJobDTO dto) {
 		SysJobDTO ret = super.put(dto);
-		QuartzUtil.updatePlan(scheduler, toExecutionPlan(ret));
+		QuartzUtil.updatePlan(scheduler, ScheduleUtil.toExecutionPlan(ret));
 		return ret;
 	}
 
@@ -102,20 +117,42 @@ public class SysJobServiceImpl extends AbstractCrudService<SysJobMapper, SysJobD
 		return CrudUtil.toPageData(page).map(o -> toDto(o));
 	}
 
-	protected ExecutionPlan toExecutionPlan(SysJobDTO sysJob) {
-		ExecutionPlan executionPlan = new ExecutionPlan();
-		executionPlan.setPlanId(sysJob.getId());
-		executionPlan.setGroupName(sysJob.getGroupName());
-		executionPlan.setCron(sysJob.getCron());
-		executionPlan.setTaskBean(sysJob.getTaskBean());
-		executionPlan.setParam(sysJob.getParam());
-		executionPlan.setDescription(sysJob.getRemarks());
-		executionPlan.setStatus(PlanStatusEnum.parse(sysJob.getStatus()));
-		executionPlan.setMisFirePolicy(MisFirePolicyEnum.parse(sysJob.getMisFirePolicy()));
-		executionPlan.setFailRecover(sysJob.getFailRecover());
+	@Override
+	public String scheduleNow(Long jobId) {
+		SysJobDTO job = require(jobId);
+		if(!PlanStatusEnum.NORMAL.getValue().equals(job.getStatus())){
+			throw new BizException(SysErrorCodes.E_CONFLICT,"任务已停止调度,请先恢复调度");
+		}
+		// FIXME: 限制频率
+		QuartzUtil.triggerNow(scheduler,ScheduleUtil.toExecutionPlan(job));
+		// FIXME: 调度ID
+		return UUID.fastUUID().toString();
+	}
 
-		return executionPlan;
+	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public void pauseJob(Long jobId) {
+		SysJobDTO job = require(jobId);
+		if(!PlanStatusEnum.PAUSE.getValue().equals(job.getStatus())){
+			QuartzUtil.pausePlan(scheduler,job.getId(),job.getGroupName());
+			job.setStatus(PlanStatusEnum.PAUSE.getValue());
+			put(job);
+		}
+	}
 
+	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public void resumeJob(Long jobId) {
+		SysJobDTO job = require(jobId);
+		if(!PlanStatusEnum.NORMAL.getValue().equals(job.getStatus())){
+			QuartzUtil.resumePlan(scheduler,job.getId(),job.getGroupName());
+			job.setStatus(PlanStatusEnum.NORMAL.getValue());
+			put(job);
+		}
+	}
+
+	protected SysJobDTO require(Long jobId){
+		return read(jobId).orElseThrow(() -> new BizException(SysErrorCodes.E_NOT_FOUND,"任务不存在"));
 	}
 
 	protected void validateTaskBean(String beanName) {
