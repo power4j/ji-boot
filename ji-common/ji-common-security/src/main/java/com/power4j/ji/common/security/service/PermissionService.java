@@ -45,7 +45,7 @@ public class PermissionService {
 	 * @return
 	 */
 	public boolean any(String... permissions) {
-		if(permitAll){
+		if (permitAll) {
 			log.warn("警告:接口鉴权已经停用");
 			return true;
 		}
@@ -58,7 +58,7 @@ public class PermissionService {
 	 * @return
 	 */
 	public boolean all(String... permissions) {
-		if(permitAll){
+		if (permitAll) {
 			log.warn("警告:接口鉴权已经停用");
 			return true;
 		}

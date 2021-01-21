@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.power4j.ji.common.schedule.job;
+package com.power4j.ji.common.schedule.quartz.job;
 
 import lombok.Data;
 import org.springframework.lang.Nullable;
@@ -65,8 +65,13 @@ public class ExecutionPlan implements Plan, Serializable {
 	private MisFirePolicyEnum misFirePolicy;
 
 	/**
-	 * 允许失败重试
+	 * 允许故障转移
 	 */
 	private Boolean failRecover;
+
+	/**
+	 * 允许失败重试
+	 */
+	private Boolean errorRetry;
 
 }

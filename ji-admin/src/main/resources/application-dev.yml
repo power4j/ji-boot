@@ -13,7 +13,7 @@ management:
 ji-boot:
   security:
     api:
-      permit-all: true
+      permit-all: false
 
 spring:
   datasource:
@@ -65,7 +65,9 @@ logging:
       power4j:
         ji:
           admin:
-            modules: debug
+            modules: info
           common:
             security: info
-            schedule: debug
+            schedule:
+              quartz:
+                listener: debug

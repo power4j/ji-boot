@@ -24,6 +24,9 @@ import com.power4j.ji.common.core.model.PageRequest;
 import com.power4j.ji.common.data.crud.service.CrudService;
 import org.springframework.lang.Nullable;
 
+import java.time.LocalDateTime;
+import java.util.Optional;
+
 /**
  * @author CJ (power4j@outlook.com)
  * @date 2021/1/20
@@ -49,14 +52,14 @@ public interface SysJobService extends CrudService<SysJobDTO, SysJob> {
 	/**
 	 * 停止调度
 	 * @param jobId
-	 * @return 返回调度ID
 	 */
 	void pauseJob(Long jobId);
 
 	/**
 	 * 恢复调度
 	 * @param jobId
-	 * @return 返回调度ID
+	 * @return 返回下一次计划执行时间
 	 */
-	void resumeJob(Long jobId);
+	Optional<LocalDateTime> resumeJob(Long jobId);
+
 }

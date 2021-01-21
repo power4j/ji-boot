@@ -17,9 +17,9 @@
 package com.power4j.ji.admin.modules.schedule.util;
 
 import com.power4j.ji.admin.modules.schedule.dto.SysJobDTO;
-import com.power4j.ji.common.schedule.job.ExecutionPlan;
-import com.power4j.ji.common.schedule.job.MisFirePolicyEnum;
-import com.power4j.ji.common.schedule.job.PlanStatusEnum;
+import com.power4j.ji.common.schedule.quartz.job.ExecutionPlan;
+import com.power4j.ji.common.schedule.quartz.job.MisFirePolicyEnum;
+import com.power4j.ji.common.schedule.quartz.job.PlanStatusEnum;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -46,8 +46,10 @@ public class ScheduleUtil {
 		executionPlan.setStatus(PlanStatusEnum.parse(sysJob.getStatus()));
 		executionPlan.setMisFirePolicy(MisFirePolicyEnum.parse(sysJob.getMisFirePolicy()));
 		executionPlan.setFailRecover(sysJob.getFailRecover());
+		executionPlan.setErrorRetry(sysJob.getErrorRetry());
 
 		return executionPlan;
 
 	}
+
 }

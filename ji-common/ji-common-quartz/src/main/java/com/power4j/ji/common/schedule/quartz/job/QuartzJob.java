@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-package com.power4j.ji.common.schedule.job;
+package com.power4j.ji.common.schedule.quartz.job;
 
 import com.power4j.ji.common.core.util.SpringContextUtil;
-import com.power4j.ji.common.schedule.job.ExecutionPlan;
-import com.power4j.ji.common.schedule.job.Task;
 import com.power4j.ji.common.schedule.quartz.constant.QuartzConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.DisallowConcurrentExecution;
@@ -37,8 +35,9 @@ public class QuartzJob extends QuartzJobBean {
 
 	@Override
 	protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
-		ExecutionPlan executionPlan = (ExecutionPlan) context.getMergedJobDataMap().get(QuartzConstant.TASK_PLAN);
-		Task task = SpringContextUtil.getBean(executionPlan.getTaskBean(), Task.class);
+		final ExecutionPlan executionPlan = (ExecutionPlan) context.getMergedJobDataMap().get(QuartzConstant.KEY_TASK_PLAN);
+		ITask task = SpringContextUtil.getBean(executionPlan.getTaskBean(), ITask.class)
+				.orElseThrow(() -> new IllegalStateException("No task bean found"));
 		try {
 			if (log.isDebugEnabled()) {
 				log.debug("Executing task plan id = {},bean = {}({})", executionPlan.getPlanId(),
@@ -48,6 +47,10 @@ public class QuartzJob extends QuartzJobBean {
 		}
 		catch (Exception e) {
 			log.error(e.getMessage());
+			if (Boolean.TRUE.equals(executionPlan.getErrorRetry())){
+				throw new JobExecutionException(e,true);
+			}
+			throw e;
 		}
 	}
 

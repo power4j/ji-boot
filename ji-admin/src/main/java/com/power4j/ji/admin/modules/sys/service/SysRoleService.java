@@ -47,12 +47,11 @@ public interface SysRoleService extends CrudService<SysRoleDTO, SysRole> {
 	 */
 	List<SysRole> listForUser(String username, @Nullable String grantType);
 
-
-
 	/**
 	 * 读取
 	 * @param code
 	 * @return
 	 */
 	Optional<SysRoleDTO> readByCode(String code);
+
 }

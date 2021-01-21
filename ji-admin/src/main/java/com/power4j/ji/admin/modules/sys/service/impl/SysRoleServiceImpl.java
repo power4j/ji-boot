@@ -66,7 +66,7 @@ public class SysRoleServiceImpl extends AbstractCrudService<SysRoleMapper, SysRo
 
 	@Override
 	public Optional<SysRoleDTO> readByCode(String code) {
-		Wrapper<SysRole> wrapper = Wrappers.<SysRole>lambdaQuery().eq(SysRole::getCode,code);
+		Wrapper<SysRole> wrapper = Wrappers.<SysRole>lambdaQuery().eq(SysRole::getCode, code);
 		return Optional.ofNullable(toDto(getBaseMapper().selectOne(wrapper)));
 	}
 

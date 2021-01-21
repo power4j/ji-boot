@@ -14,27 +14,9 @@
  * limitations under the License.
  */
 
-package com.power4j.ji.admin.modules.manager.service;
+@NonNullApi
+@NonNullFields
+package com.power4j.ji.admin.modules.schedule.util;
 
-import com.power4j.ji.admin.modules.sys.dto.SysResourceDTO;
-import com.power4j.ji.admin.modules.sys.dto.SysRoleDTO;
-import com.power4j.ji.admin.modules.sys.entity.SysResource;
-import com.power4j.ji.admin.modules.sys.entity.SysRole;
-
-import java.util.List;
-
-/**
- * @author CJ (power4j@outlook.com)
- * @date 2021/1/20
- * @since 1.0
- */
-public interface ManagementService {
-
-	/**
-	 * 将所有缺失的资源权限授予角色
-	 * @param role
-	 * @return
-	 */
-	List<SysResourceDTO> permitAnyLeakedResource(SysRoleDTO role);
-
-}
+import org.springframework.lang.NonNullApi;
+import org.springframework.lang.NonNullFields;

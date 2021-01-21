@@ -23,6 +23,7 @@ import com.power4j.flygon.common.captcha.model.CodeValidateRequest;
 import com.power4j.ji.common.core.constant.SysErrorCodes;
 import com.power4j.ji.common.core.model.ApiResponse;
 import com.power4j.ji.common.core.util.ApiResponseUtil;
+import com.power4j.ji.common.core.util.DateTimeUtil;
 import com.power4j.ji.common.core.util.HttpServletResponseUtil;
 import com.wf.captcha.SpecCaptcha;
 import lombok.Data;
@@ -197,7 +198,7 @@ public class CaptchaFilter extends OncePerRequestFilter implements Ordered {
 	protected final CodeInfo createCodeInfo(String code) {
 		CodeInfo codeInfo = new CodeInfo();
 		codeInfo.setCode(code);
-		codeInfo.setCreateTime(LocalDateTime.now(ZoneOffset.UTC));
+		codeInfo.setCreateTime(DateTimeUtil.utcNow());
 		return codeInfo;
 	}
 
@@ -213,7 +214,7 @@ public class CaptchaFilter extends OncePerRequestFilter implements Ordered {
 			return false;
 		}
 		return codeInfo.getCode().equalsIgnoreCase(code)
-				&& Duration.between(codeInfo.getCreateTime(), LocalDateTime.now(ZoneOffset.UTC)).getSeconds() <= ttl;
+				&& Duration.between(codeInfo.getCreateTime(), DateTimeUtil.utcNow()).getSeconds() <= ttl;
 	}
 
 	@Override

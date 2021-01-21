@@ -14,19 +14,9 @@
  * limitations under the License.
  */
 
-package com.power4j.ji.common.schedule.job;
+@NonNullApi
+@NonNullFields
+package com.power4j.ji.common.schedule.quartz.job;
 
-/**
- * @author CJ (power4j@outlook.com)
- * @date 2021/1/18
- * @since 1.0
- */
-public interface Task {
-
-	/**
-	 * 运行任务
-	 * @param param
-	 */
-	void run(String param);
-
-}
+import org.springframework.lang.NonNullApi;
+import org.springframework.lang.NonNullFields;

@@ -14,23 +14,21 @@
  * limitations under the License.
  */
 
-package com.power4j.ji.common.schedule.job;
+package com.power4j.ji.common.schedule.quartz.job;
+
+import org.springframework.lang.Nullable;
 
 /**
  * @author CJ (power4j@outlook.com)
- * @date 2021/1/20
+ * @date 2021/1/18
  * @since 1.0
  */
-public interface Plan {
-	/**
-	 * ID
-	 * @return
-	 */
-	Long getPlanId();
+public interface ITask {
 
 	/**
-	 * 分组名称
-	 * @return
+	 * 运行任务
+	 * @param param
 	 */
-	String getGroupName();
+	void run(@Nullable String param);
+
 }

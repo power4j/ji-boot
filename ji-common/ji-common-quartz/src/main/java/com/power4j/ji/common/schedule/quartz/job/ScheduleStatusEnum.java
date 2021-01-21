@@ -14,29 +14,25 @@
  * limitations under the License.
  */
 
-package com.power4j.ji.common.schedule.job;
+package com.power4j.ji.common.schedule.quartz.job;
 
 import java.util.function.Function;
 
 /**
  * @author CJ (power4j@outlook.com)
- * @date 2021/1/19
+ * @date 2021/1/18
  * @since 1.0
  */
-public enum PlanStatusEnum {
+public enum ScheduleStatusEnum {
 
 	/**
-	 * 正常
+	 * 休眠
 	 */
-	NORMAL("0"),
-	/**
-	 * 暂停
-	 */
-	PAUSE("1");
+	SLEEP("0"), QUEUED("1"), PREPARE("2"), RUNNING("3"), END_SUCCESS("4"), END_ERROR("5");
 
 	private final String value;
 
-	PlanStatusEnum(String value) {
+	ScheduleStatusEnum(String value) {
 		this.value = value;
 	}
 
@@ -50,11 +46,11 @@ public enum PlanStatusEnum {
 	 * @param defValue 默认值
 	 * @return 如果解析失败返回默认值
 	 */
-	public static PlanStatusEnum parseOrDefault(final String value, final PlanStatusEnum defValue) {
+	public static ScheduleStatusEnum parseOrDefault(final String value, final ScheduleStatusEnum defValue) {
 		if (value == null) {
 			return defValue;
 		}
-		for (PlanStatusEnum o : PlanStatusEnum.values()) {
+		for (ScheduleStatusEnum o : ScheduleStatusEnum.values()) {
 			if (o.getValue().equals(value)) {
 				return o;
 			}
@@ -67,7 +63,7 @@ public enum PlanStatusEnum {
 	 * @param value 被解析的数据
 	 * @return 如果解析失败返回 null
 	 */
-	public static PlanStatusEnum parseOrNull(final String value) {
+	public static ScheduleStatusEnum parseOrNull(final String value) {
 		return parseOrDefault(value, null);
 	}
 
@@ -77,8 +73,8 @@ public enum PlanStatusEnum {
 	 * @param thrower 异常抛出器
 	 * @return 如果解析失败抛出异常
 	 */
-	public static PlanStatusEnum parseOrThrow(final String value, Function<String, RuntimeException> thrower) {
-		PlanStatusEnum o = parseOrDefault(value, null);
+	public static ScheduleStatusEnum parseOrThrow(final String value, Function<String, RuntimeException> thrower) {
+		ScheduleStatusEnum o = parseOrDefault(value, null);
 		if (o == null) {
 			throw thrower.apply(value);
 		}
@@ -90,7 +86,7 @@ public enum PlanStatusEnum {
 	 * @param value 被解析的数据
 	 * @return 如果解析失败抛出 IllegalArgumentException
 	 */
-	public static PlanStatusEnum parse(final String value) throws IllegalArgumentException {
+	public static ScheduleStatusEnum parse(final String value) throws IllegalArgumentException {
 		return parseOrThrow(value, (v) -> new IllegalArgumentException("Invalid value : " + v));
 	}
 

@@ -23,9 +23,11 @@ package com.power4j.ji.common.schedule.quartz.constant;
  */
 public interface QuartzConstant {
 
-	String TASK_PLAN = "QUARTZ_TASK";
+	String KEY_TASK_PLAN = "QUARTZ_TASK";
 
-	String DEFAULT_JOB_GROUP = "DEFAULT_GROUP_";
+	String KEY_TASK_EXEC_ID = "EXECUTION_ID";
+
+	String DEFAULT_JOB_GROUP = "DEFAULT";
 
 	String JOB_NAME_PREFIX = "job_";
 

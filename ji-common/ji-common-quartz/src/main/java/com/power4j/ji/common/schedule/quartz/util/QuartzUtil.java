@@ -16,14 +16,17 @@
 
 package com.power4j.ji.common.schedule.quartz.util;
 
+import cn.hutool.core.lang.Pair;
 import com.power4j.ji.common.core.constant.SysErrorCodes;
 import com.power4j.ji.common.core.exception.BizException;
-import com.power4j.ji.common.schedule.job.ExecutionPlan;
-import com.power4j.ji.common.schedule.job.MisFirePolicyEnum;
-import com.power4j.ji.common.schedule.job.PlanStatusEnum;
-import com.power4j.ji.common.schedule.job.QuartzJob;
+import com.power4j.ji.common.core.util.DateTimeUtil;
+import com.power4j.ji.common.schedule.quartz.job.ExecutionPlan;
+import com.power4j.ji.common.schedule.quartz.job.MisFirePolicyEnum;
+import com.power4j.ji.common.schedule.quartz.job.PlanStatusEnum;
+import com.power4j.ji.common.schedule.quartz.job.QuartzJob;
 import com.power4j.ji.common.schedule.quartz.constant.QuartzConstant;
 import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;
 import org.quartz.JobBuilder;
@@ -36,6 +39,7 @@ import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
 import org.springframework.lang.Nullable;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
@@ -43,6 +47,7 @@ import java.util.Optional;
  * @date 2021/1/19
  * @since 1.0
  */
+@Slf4j
 @UtilityClass
 public class QuartzUtil {
 
@@ -66,6 +71,31 @@ public class QuartzUtil {
 	public final TriggerKey makeTriggerKey(Object planId, @Nullable String planGroup) {
 		return TriggerKey.triggerKey(QuartzConstant.TRIGGER_NAME_PREFIX + planId,
 				Optional.ofNullable(planGroup).orElse(QuartzConstant.DEFAULT_JOB_GROUP));
+	}
+
+	/**
+	 * 构建 JobDetail CronTrigger
+	 * @param plan
+	 * @return
+	 */
+	protected Pair<JobDetail,CronTrigger> buildCronPlan(ExecutionPlan plan){
+		JobDetail jobDetail = JobBuilder.newJob(QuartzJob.class)
+				.withIdentity(makeJobKey(plan.getPlanId(), plan.getGroupName()))
+				.requestRecovery(plan.getFailRecover()).build();
+
+		jobDetail.getJobDataMap().put(QuartzConstant.KEY_TASK_PLAN, plan);
+		return Pair.of(jobDetail,buildCronTrigger(plan));
+	}
+
+	protected CronTrigger buildCronTrigger(ExecutionPlan plan){
+		CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(plan.getCron());
+		applyMisFirePolicy(scheduleBuilder, plan.getMisFirePolicy());
+
+		CronTrigger trigger = TriggerBuilder.newTrigger()
+				.withIdentity(makeTriggerKey(plan.getPlanId(), plan.getGroupName()))
+				.withSchedule(scheduleBuilder)
+				.build();
+		return trigger;
 	}
 
 	public CronScheduleBuilder applyMisFirePolicy(CronScheduleBuilder cronScheduleBuilder, MisFirePolicyEnum policy) {
@@ -103,28 +133,41 @@ public class QuartzUtil {
 	}
 
 	/**
+	 * 返回下一次(应该)执行的时间,null表示不会执行
+	 * @param scheduler
+	 * @param planId
+	 * @param planGroup
+	 * @return
+	 */
+	public Optional<LocalDateTime> getNextScheduleTime(Scheduler scheduler, Object planId, @Nullable String planGroup) {
+		CronTrigger trigger = getCronTrigger(scheduler, planId, planGroup);
+		if (trigger == null) {
+			return Optional.empty();
+		}
+		return Optional.ofNullable(trigger.getNextFireTime()).map(DateTimeUtil::toLocalDateTime);
+	}
+
+	/**
 	 * 创建调度计划
 	 * @param scheduler
 	 * @param plan
+	 * @return 返回下一次(应该)执行的时间,null表示不会执行
 	 */
-	public void createPlan(Scheduler scheduler, ExecutionPlan plan) {
+	public Optional<LocalDateTime> createPlan(Scheduler scheduler, ExecutionPlan plan) {
 		try {
-			JobDetail jobDetail = JobBuilder.newJob(QuartzJob.class)
-					.withIdentity(makeJobKey(plan.getPlanId(), plan.getGroupName()))
-					.requestRecovery(plan.getFailRecover()).build();
 
-			CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(plan.getCron());
-			applyMisFirePolicy(scheduleBuilder, plan.getMisFirePolicy());
-
-			CronTrigger trigger = TriggerBuilder.newTrigger()
-					.withIdentity(makeTriggerKey(plan.getPlanId(), plan.getGroupName())).withSchedule(scheduleBuilder)
-					.build();
-
-			jobDetail.getJobDataMap().put(QuartzConstant.TASK_PLAN, plan);
-			scheduler.scheduleJob(jobDetail, trigger);
+			Pair<JobDetail,CronTrigger> entry = buildCronPlan(plan);
+			scheduler.scheduleJob(entry.getKey(), entry.getValue());
 			if (PlanStatusEnum.PAUSE.equals(plan.getStatus())) {
 				pausePlan(scheduler, plan.getPlanId(), plan.getGroupName());
 			}
+			Optional<LocalDateTime> nextRun = Optional.ofNullable(entry.getValue().getNextFireTime())
+					.map(DateTimeUtil::toLocalDateTime);
+			if (log.isDebugEnabled()) {
+				log.debug("Job #{}({}) 的下一次计划执行时间为:{}", plan.getPlanId(), plan.getDescription(),
+						DateTimeUtil.forLogging(nextRun.orElse(null)));
+			}
+			return nextRun;
 		}
 		catch (SchedulerException e) {
 			throw new BizException(SysErrorCodes.E_JOB_FAIL, e);
@@ -134,16 +177,41 @@ public class QuartzUtil {
 	/**
 	 * @param scheduler
 	 * @param plan
+	 * @return 返回下一次计划执行时间
+	 * @deprecated
 	 */
-	public void updatePlan(Scheduler scheduler, ExecutionPlan plan) {
+	public Optional<LocalDateTime> updatePlan(Scheduler scheduler, ExecutionPlan plan) {
 		try {
 			final JobKey jobKey = makeJobKey(plan.getPlanId(), plan.getGroupName());
 			scheduler.deleteJob(jobKey);
-			createPlan(scheduler, plan);
+			return createPlan(scheduler, plan);
 		}
 		catch (SchedulerException e) {
 			throw new BizException(SysErrorCodes.E_JOB_FAIL, e);
 		}
+	}
+
+	/**
+	 * 重新调度已经存在的作业
+	 * @param scheduler
+	 * @param plan
+	 * @return
+	 */
+	public Optional<LocalDateTime> reschedulePlan(Scheduler scheduler, ExecutionPlan plan){
+		TriggerKey triggerKey = makeTriggerKey(plan.getPlanId(),plan.getGroupName());
+		CronTrigger newTrigger = buildCronTrigger(plan);
+		try {
+			scheduler.rescheduleJob(triggerKey,newTrigger);
+		} catch (SchedulerException e) {
+			throw new BizException(SysErrorCodes.E_JOB_FAIL, e);
+		}
+		Optional<LocalDateTime> nextRun = Optional.ofNullable(newTrigger.getNextFireTime())
+				.map(DateTimeUtil::toLocalDateTime);
+		if (log.isDebugEnabled()) {
+			log.debug("Job #{}({}) 的下一次计划执行时间为:{}", plan.getPlanId(), plan.getDescription(),
+					DateTimeUtil.forLogging(nextRun.orElse(null)));
+		}
+		return nextRun;
 	}
 
 	/**
@@ -155,7 +223,7 @@ public class QuartzUtil {
 		try {
 			// 参数
 			JobDataMap dataMap = new JobDataMap();
-			dataMap.put(QuartzConstant.TASK_PLAN, plan);
+			dataMap.put(QuartzConstant.KEY_TASK_PLAN, plan);
 
 			scheduler.triggerJob(makeJobKey(plan.getPlanId(), plan.getGroupName()), dataMap);
 		}
@@ -184,10 +252,17 @@ public class QuartzUtil {
 	 * @param scheduler
 	 * @param planId
 	 * @param planGroup
+	 * @return 返回下一次计划执行时间
 	 */
-	public void resumePlan(Scheduler scheduler, Object planId, @Nullable String planGroup) {
+	public Optional<LocalDateTime> resumePlan(Scheduler scheduler, Object planId, @Nullable String planGroup) {
 		try {
 			scheduler.resumeJob(makeJobKey(planId, planGroup));
+			Optional<LocalDateTime> nextRun = getNextScheduleTime(scheduler, planId, planGroup);
+			if (log.isDebugEnabled()) {
+				log.debug("Job #{}({}) 的下一次计划执行时间为:{}", planId, planGroup,
+						DateTimeUtil.forLogging(nextRun.orElse(null)));
+			}
+			return nextRun;
 		}
 		catch (SchedulerException e) {
 			throw new BizException(SysErrorCodes.E_JOB_FAIL, e);

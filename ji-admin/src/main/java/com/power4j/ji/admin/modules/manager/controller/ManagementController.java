@@ -48,14 +48,15 @@ import java.util.List;
 public class ManagementController {
 
 	private final SysRoleService sysRoleService;
+
 	private final ManagementService managementService;
 
 	@PostMapping("/role/{roleCode}/resources/permit-all")
 	@Operation(summary = "授予角色全部资源")
 	public ApiResponse<List<SysResourceDTO>> permitAllResource(@PathVariable("roleCode") String roleCode) {
 		SysRoleDTO role = sysRoleService.readByCode(roleCode).orElse(null);
-		if(role == null){
-			return ApiResponseUtil.ok("角色不存在",Collections.emptyList());
+		if (role == null) {
+			return ApiResponseUtil.ok("角色不存在", Collections.emptyList());
 		}
 		return ApiResponseUtil.ok(managementService.permitAnyLeakedResource(role));
 	}

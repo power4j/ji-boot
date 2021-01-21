@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+
 /**
  * @author CJ (power4j@outlook.com)
  * @date 2021/1/20
@@ -44,14 +46,14 @@ public class JobActionController {
 	@Operation(summary = "立即调度")
 	@PreAuthorize("@pms.any('sys:job:action')")
 	@PostMapping("/{jobId}/action/trigger")
-	public ApiResponse<String> runNow(@PathVariable("jobId") Long jobId){
+	public ApiResponse<String> runNow(@PathVariable("jobId") Long jobId) {
 		return ApiResponseUtil.ok(sysJobService.scheduleNow(jobId));
 	}
 
 	@Operation(summary = "停止调度")
 	@PreAuthorize("@pms.any('sys:job:action')")
 	@PostMapping("/{jobId}/action/pause")
-	public ApiResponse<String> pause(@PathVariable("jobId") Long jobId){
+	public ApiResponse<Void> pause(@PathVariable("jobId") Long jobId) {
 		sysJobService.pauseJob(jobId);
 		return ApiResponseUtil.ok();
 	}
@@ -59,8 +61,8 @@ public class JobActionController {
 	@Operation(summary = "恢复调度")
 	@PreAuthorize("@pms.any('sys:job:action')")
 	@PostMapping("/{jobId}/action/resume")
-	public ApiResponse<String> resume(@PathVariable("jobId") Long jobId){
-		sysJobService.resumeJob(jobId);
-		return ApiResponseUtil.ok();
+	public ApiResponse<LocalDateTime> resume(@PathVariable("jobId") Long jobId) {
+		return ApiResponseUtil.ok(sysJobService.resumeJob(jobId).orElse(null));
 	}
+
 }

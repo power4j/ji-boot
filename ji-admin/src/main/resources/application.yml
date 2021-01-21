@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 18081
   undertow:
     buffer-size: 1024
     threads:
@@ -27,7 +27,8 @@ spring:
         tokenId: ${DING_TALK_TOKEN}
         secret: ${DING_TALK_SECRET}
   quartz:
-    trace: false # 启用 trace 日志, 默认 false
+    trace: true # 启用 trace 日志, 默认 false
+    startup-delay: 10s
     auto-startup: true # 自动启动调度器 默认 true
     job-store-type: jdbc #数据库方式
     wait-for-jobs-to-complete-on-shutdown: true # 应用关闭时,是否等待作业完成，默认 false

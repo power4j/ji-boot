@@ -16,17 +16,11 @@
 
 package com.power4j.ji.admin.modules.demo.job;
 
-import com.power4j.ji.common.schedule.job.MisFirePolicyEnum;
-import com.power4j.ji.common.schedule.job.ExecutionPlan;
-import com.power4j.ji.common.schedule.job.PlanStatusEnum;
-import com.power4j.ji.common.schedule.quartz.util.QuartzUtil;
-import lombok.SneakyThrows;
+import com.power4j.ji.common.schedule.quartz.job.MisFirePolicyEnum;
+import com.power4j.ji.common.schedule.quartz.job.ExecutionPlan;
+import com.power4j.ji.common.schedule.quartz.job.PlanStatusEnum;
 import lombok.extern.slf4j.Slf4j;
-import org.quartz.Scheduler;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
 
 /**
  * @author CJ (power4j@outlook.com)
@@ -37,26 +31,20 @@ import javax.annotation.PostConstruct;
 @Component
 public class InitDemoTask {
 
-	/*@Autowired
-	private Scheduler scheduler;
-
-	@SneakyThrows
-	@PostConstruct
-	public void init() {
-		ExecutionPlan plan = new ExecutionPlan();
-		plan.setPlanId(1L);
-		plan.setCron("3/5 * * * * ? *");
-		plan.setTaskBean("demoTask");
-		plan.setParam("123");
-		plan.setDescription("demo");
-		plan.setStatus(PlanStatusEnum.NORMAL);
-		plan.setMisFirePolicy(MisFirePolicyEnum.RESCUE_ALL);
-		plan.setFailRecover(true);
-
-		if (!scheduler.checkExists(QuartzUtil.makeTriggerKey(plan.getPlanId(), plan.getGroupName()))) {
-			log.info("创建演示任务");
-			QuartzUtil.createPlan(scheduler, plan);
-		}
-	}*/
+	/*
+	 * @Autowired private Scheduler scheduler;
+	 *
+	 * @SneakyThrows
+	 *
+	 * @PostConstruct public void init() { ExecutionPlan plan = new ExecutionPlan();
+	 * plan.setPlanId(1L); plan.setCron("3/5 * * * * ? *"); plan.setTaskBean("demoTask");
+	 * plan.setParam("123"); plan.setDescription("demo");
+	 * plan.setStatus(PlanStatusEnum.NORMAL);
+	 * plan.setMisFirePolicy(MisFirePolicyEnum.RESCUE_ALL); plan.setFailRecover(true);
+	 *
+	 * if (!scheduler.checkExists(QuartzUtil.makeTriggerKey(plan.getPlanId(),
+	 * plan.getGroupName()))) { log.info("创建演示任务"); QuartzUtil.createPlan(scheduler,
+	 * plan); } }
+	 */
 
 }

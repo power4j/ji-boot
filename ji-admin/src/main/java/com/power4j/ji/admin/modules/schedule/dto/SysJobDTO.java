@@ -44,13 +44,14 @@ public class SysJobDTO extends BaseDTO implements Serializable {
 	 * 作业组
 	 */
 	@Schema(description = "作业组", example = "Test")
+	@NotBlank(groups = { Groups.Default.class })
 	@Size(max = 40, groups = { Groups.Default.class })
 	private String groupName;
 
 	/**
 	 * Cron 表达式
 	 */
-	@Schema(description = "Cron", example = "5/30 * * * * ? *")
+	@Schema(description = "Cron", example = "0 5/30 * * * ? *")
 	@NotBlank(groups = { Groups.Default.class })
 	@Size(max = 40, groups = { Groups.Default.class })
 	private String cron;
@@ -94,11 +95,18 @@ public class SysJobDTO extends BaseDTO implements Serializable {
 	private String misFirePolicy;
 
 	/**
-	 * 允许失败重试
+	 * 允许故障转移
 	 */
-	@Schema(description = "失败重试", example = "false")
+	@Schema(description = "允许故障转移", example = "false")
 	@NotNull(groups = { Groups.Default.class })
 	private Boolean failRecover;
+
+	/**
+	 * 允许失败重试
+	 */
+	@Schema(description = "允许失败重试", example = "false")
+	@NotNull(groups = { Groups.Default.class })
+	private Boolean errorRetry;
 
 	/**
 	 * 创建人

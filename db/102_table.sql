@@ -164,7 +164,8 @@ CREATE TABLE `t_sys_job`
     `remarks`     VARCHAR(20) COMMENT '备注',
     `status`      CHAR(1) NOT NULL DEFAULT '0' COMMENT '状态 0 正常 1 停止调度',
     `mis_fire_policy` CHAR(1) NOT NULL DEFAULT '0' COMMENT '调度丢失补救策略',
-    `fail_recover`   tinyint NOT NULL DEFAULT '0' COMMENT '是否允许失败重试',
+    `fail_recover`  tinyint NOT NULL DEFAULT '0' COMMENT '允许故障转移',
+    `error_retry`   tinyint NOT NULL DEFAULT '0' COMMENT '是否允许失败重试',
     `create_by`   VARCHAR(20) COMMENT '创建人',
     `update_by`   VARCHAR(20) COMMENT '更新人',
     PRIMARY KEY (`id`)

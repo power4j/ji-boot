@@ -71,9 +71,14 @@ public class SysJob extends BaseEntity implements Serializable {
 	private String misFirePolicy;
 
 	/**
-	 * 允许失败重试
+	 * 允许故障转移
 	 */
 	private Boolean failRecover;
+
+	/**
+	 * 允许失败重试
+	 */
+	private Boolean errorRetry;
 
 	/**
 	 * 创建人

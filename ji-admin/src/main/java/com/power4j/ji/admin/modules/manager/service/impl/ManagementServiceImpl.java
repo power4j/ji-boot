@@ -44,24 +44,22 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ManagementServiceImpl implements ManagementService {
+
 	private final SysResourceService sysResourceService;
+
 	private final SysResourceGrantService sysResourceGrantService;
 
-
-	@Caching(evict = {
-			@CacheEvict(cacheNames = { CacheConstant.Name.ROLE_CODES_TO_RESOURCE_TREE }, allEntries = true),
-			@CacheEvict(cacheNames = { CacheConstant.Name.ROLE_CODES_TO_RESOURCES }, allEntries = true)})
+	@Caching(evict = { @CacheEvict(cacheNames = { CacheConstant.Name.ROLE_CODES_TO_RESOURCE_TREE }, allEntries = true),
+			@CacheEvict(cacheNames = { CacheConstant.Name.ROLE_CODES_TO_RESOURCES }, allEntries = true) })
 	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public List<SysResourceDTO> permitAnyLeakedResource(SysRoleDTO role) {
 		List<SysResource> resources = sysResourceService.listAll();
-		List<Long> idList = resources
-				.stream()
-				.map(SysResource::getId)
-				.collect(Collectors.toList());
-		if(!idList.isEmpty()){
-			sysResourceGrantService.setResources(role.getId(),idList);
+		List<Long> idList = resources.stream().map(SysResource::getId).collect(Collectors.toList());
+		if (!idList.isEmpty()) {
+			sysResourceGrantService.setResources(role.getId(), idList);
 		}
 		return sysResourceService.toDtoList(resources);
 	}
+
 }

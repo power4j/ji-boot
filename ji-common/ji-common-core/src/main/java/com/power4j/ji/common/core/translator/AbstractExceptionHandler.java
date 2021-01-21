@@ -20,6 +20,7 @@ import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.lang.UUID;
 import com.power4j.ji.common.core.config.FlygonProperties;
 import com.power4j.ji.common.core.context.RequestContext;
+import com.power4j.ji.common.core.util.DateTimeUtil;
 import com.power4j.ji.common.core.util.HttpServletRequestUtil;
 import org.springframework.context.ApplicationEventPublisher;
 
@@ -51,7 +52,7 @@ public abstract class AbstractExceptionHandler {
 		ErrorEvent errorEvent = new ErrorEvent();
 		errorEvent.setId(UUID.fastUUID().toString());
 		errorEvent.setAppName(flygonProperties.getEnvironment().getProperty("spring.application.name", "未知应用"));
-		errorEvent.setTimeUtc(LocalDateTime.now(ZoneOffset.UTC));
+		errorEvent.setTimeUtc(DateTimeUtil.utcNow());
 		errorEvent.setEx(e.getClass().getName());
 		errorEvent.setExMsg(e.getMessage());
 		errorEvent.setExStack(ExceptionUtil.stacktraceToString(e, 5000));

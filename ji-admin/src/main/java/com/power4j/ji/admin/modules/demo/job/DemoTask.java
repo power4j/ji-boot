@@ -16,9 +16,11 @@
 
 package com.power4j.ji.admin.modules.demo.job;
 
-import com.power4j.ji.common.schedule.job.Task;
+import com.power4j.ji.common.schedule.quartz.job.ITask;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author CJ (power4j@outlook.com)
@@ -27,11 +29,17 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component("demoTask")
-public class DemoTask implements Task {
+public class DemoTask implements ITask {
+	private static final AtomicInteger counter = new AtomicInteger();
+	private static final int THROW_ERR = 5;
 
 	@Override
 	public void run(String param) {
-		log.info("demo task with param {}", param);
+		final int val = counter.incrementAndGet();
+		log.info("demo task with param {},counter = #{} ",param, val);
+		if(0 == (val % THROW_ERR)){
+			throw new RuntimeException("模拟任务异常");
+		}
 	}
 
 }

@@ -33,32 +33,33 @@ import com.power4j.ji.common.core.constant.SysErrorCodes;
 import com.power4j.ji.common.core.exception.BizException;
 import com.power4j.ji.common.core.model.PageData;
 import com.power4j.ji.common.core.model.PageRequest;
-import com.power4j.ji.common.core.util.ApiResponseUtil;
+import com.power4j.ji.common.core.util.DateTimeUtil;
 import com.power4j.ji.common.core.util.SpringContextUtil;
 import com.power4j.ji.common.data.crud.constant.SysCtlFlagEnum;
 import com.power4j.ji.common.data.crud.service.impl.AbstractCrudService;
 import com.power4j.ji.common.data.crud.util.CrudUtil;
-import com.power4j.ji.common.schedule.job.ExecutionPlan;
-import com.power4j.ji.common.schedule.job.MisFirePolicyEnum;
-import com.power4j.ji.common.schedule.job.PlanStatusEnum;
-import com.power4j.ji.common.schedule.job.Task;
+import com.power4j.ji.common.schedule.quartz.job.PlanStatusEnum;
+import com.power4j.ji.common.schedule.quartz.job.ITask;
 import com.power4j.ji.common.schedule.quartz.util.CronUtil;
 import com.power4j.ji.common.schedule.quartz.util.QuartzUtil;
 import com.power4j.ji.common.security.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.quartz.Scheduler;
-import org.springframework.cache.CacheManager;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Optional;
 
 /**
  * @author CJ (power4j@outlook.com)
  * @date 2021/1/20
  * @since 1.0
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SysJobServiceImpl extends AbstractCrudService<SysJobMapper, SysJobDTO, SysJob> implements SysJobService {
@@ -76,7 +77,10 @@ public class SysJobServiceImpl extends AbstractCrudService<SysJobMapper, SysJobD
 	@Override
 	public SysJobDTO post(SysJobDTO dto) {
 		SysJobDTO ret = super.post(dto);
-		QuartzUtil.createPlan(scheduler, ScheduleUtil.toExecutionPlan(ret));
+		Optional<LocalDateTime> nextRun = QuartzUtil.createPlan(scheduler, ScheduleUtil.toExecutionPlan(ret));
+		if (log.isDebugEnabled()) {
+			log.debug("Job #{} 的下一次计划执行为:{}", ret.getId(), DateTimeUtil.forLogging(nextRun.orElse(null)));
+		}
 		return ret;
 	}
 
@@ -100,7 +104,7 @@ public class SysJobServiceImpl extends AbstractCrudService<SysJobMapper, SysJobD
 	@Override
 	public SysJobDTO put(SysJobDTO dto) {
 		SysJobDTO ret = super.put(dto);
-		QuartzUtil.updatePlan(scheduler, ScheduleUtil.toExecutionPlan(ret));
+		QuartzUtil.reschedulePlan(scheduler, ScheduleUtil.toExecutionPlan(ret));
 		return ret;
 	}
 
@@ -120,11 +124,11 @@ public class SysJobServiceImpl extends AbstractCrudService<SysJobMapper, SysJobD
 	@Override
 	public String scheduleNow(Long jobId) {
 		SysJobDTO job = require(jobId);
-		if(!PlanStatusEnum.NORMAL.getValue().equals(job.getStatus())){
-			throw new BizException(SysErrorCodes.E_CONFLICT,"任务已停止调度,请先恢复调度");
+		if (!PlanStatusEnum.NORMAL.getValue().equals(job.getStatus())) {
+			throw new BizException(SysErrorCodes.E_CONFLICT, "任务已停止调度,请先恢复调度");
 		}
 		// FIXME: 限制频率
-		QuartzUtil.triggerNow(scheduler,ScheduleUtil.toExecutionPlan(job));
+		QuartzUtil.triggerNow(scheduler, ScheduleUtil.toExecutionPlan(job));
 		// FIXME: 调度ID
 		return UUID.fastUUID().toString();
 	}
@@ -133,37 +137,46 @@ public class SysJobServiceImpl extends AbstractCrudService<SysJobMapper, SysJobD
 	@Override
 	public void pauseJob(Long jobId) {
 		SysJobDTO job = require(jobId);
-		if(!PlanStatusEnum.PAUSE.getValue().equals(job.getStatus())){
-			QuartzUtil.pausePlan(scheduler,job.getId(),job.getGroupName());
+		if (!PlanStatusEnum.PAUSE.getValue().equals(job.getStatus())) {
 			job.setStatus(PlanStatusEnum.PAUSE.getValue());
-			put(job);
+			job.setUpdateBy(SecurityUtil.getLoginUsername().orElse(null));
+			updateById(toEntity(job));
+			QuartzUtil.pausePlan(scheduler, job.getId(), job.getGroupName());
 		}
 	}
 
 	@Transactional(rollbackFor = Exception.class)
 	@Override
-	public void resumeJob(Long jobId) {
+	public Optional<LocalDateTime> resumeJob(Long jobId) {
 		SysJobDTO job = require(jobId);
-		if(!PlanStatusEnum.NORMAL.getValue().equals(job.getStatus())){
-			QuartzUtil.resumePlan(scheduler,job.getId(),job.getGroupName());
+		if (!PlanStatusEnum.NORMAL.getValue().equals(job.getStatus())) {
 			job.setStatus(PlanStatusEnum.NORMAL.getValue());
-			put(job);
+			job.setUpdateBy(SecurityUtil.getLoginUsername().orElse(null));
+			updateById(toEntity(job));
+			return QuartzUtil.resumePlan(scheduler, job.getId(), job.getGroupName());
 		}
+		return QuartzUtil.getNextScheduleTime(scheduler, job.getId(), job.getGroupName());
 	}
 
-	protected SysJobDTO require(Long jobId){
-		return read(jobId).orElseThrow(() -> new BizException(SysErrorCodes.E_NOT_FOUND,"任务不存在"));
+	protected void updateStatus(Long id, String status, @Nullable String updateBy) {
+		SysJob job = new SysJob();
+		job.setId(id);
+		job.setUpdateBy(updateBy);
+		job.setStatus(status);
+		updateById(job);
+	}
+
+	protected SysJobDTO require(Long jobId) {
+		return read(jobId).orElseThrow(() -> new BizException(SysErrorCodes.E_NOT_FOUND, "任务不存在"));
 	}
 
 	protected void validateTaskBean(String beanName) {
 
-		Object bean = SpringContextUtil.getBean(beanName);
-		if (bean == null) {
-			throw new BizException(SysErrorCodes.E_PARAM_INVALID, String.format("Bean不存在:{}", beanName));
-		}
-		if (!(bean instanceof Task)) {
+		Object bean = SpringContextUtil.getBean(beanName).orElseThrow(() -> new BizException(SysErrorCodes.E_PARAM_INVALID, String.format("Bean不存在:{}", beanName)));
+
+		if (!(bean instanceof ITask)) {
 			throw new BizException(SysErrorCodes.E_PARAM_INVALID,
-					String.format("{}不是{}的子类", beanName, Task.class.getSimpleName()));
+					String.format("{}不是{}的子类", beanName, ITask.class.getSimpleName()));
 		}
 	}
 

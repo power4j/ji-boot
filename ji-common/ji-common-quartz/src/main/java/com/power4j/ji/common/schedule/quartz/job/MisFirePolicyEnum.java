@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.power4j.ji.common.schedule.job;
+package com.power4j.ji.common.schedule.quartz.job;
 
 import java.util.function.Function;
 

@@ -37,14 +37,14 @@ public class QuartzJobListener implements JobListener {
 	@Override
 	public void jobToBeExecuted(JobExecutionContext context) {
 		if (log.isDebugEnabled()) {
-			log.debug("{} to be executed", context.getJobDetail().getJobClass().getSimpleName());
+			log.debug("[QTZ_JB] [FireInstance {}] [JobKey {}] to be executed", context.getFireInstanceId(), context.getJobDetail().getKey().toString());
 		}
 	}
 
 	@Override
 	public void jobExecutionVetoed(JobExecutionContext context) {
 		if (log.isDebugEnabled()) {
-			log.debug("{} execution vetoed", context.getJobDetail().getJobClass().getSimpleName());
+			log.debug("[QTZ_JB] [FireInstance {}] [JobKey {}] execution vetoed", context.getFireInstanceId(), context.getJobDetail().getKey().toString());
 		}
 
 	}
@@ -52,7 +52,7 @@ public class QuartzJobListener implements JobListener {
 	@Override
 	public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException) {
 		if (log.isDebugEnabled()) {
-			log.debug("{} was executed,ex = {}", context.getJobDetail().getJobClass().getSimpleName(),
+			log.debug("[QTZ_JB] [FireInstance {}] [JobKey {}] was executed,ex = {}", context.getFireInstanceId(), context.getJobDetail().getKey().toString(),
 					jobException == null ? "null" : jobException.getMessage());
 		}
 	}

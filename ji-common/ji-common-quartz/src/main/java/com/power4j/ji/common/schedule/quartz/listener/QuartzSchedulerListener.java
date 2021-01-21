@@ -16,6 +16,8 @@
 
 package com.power4j.ji.common.schedule.quartz.listener;
 
+import com.power4j.ji.common.schedule.quartz.constant.QuartzConstant;
+import lombok.extern.slf4j.Slf4j;
 import org.quartz.JobDetail;
 import org.quartz.JobKey;
 import org.quartz.SchedulerException;
@@ -23,111 +25,155 @@ import org.quartz.SchedulerListener;
 import org.quartz.Trigger;
 import org.quartz.TriggerKey;
 
+import java.util.Optional;
+
 /**
  * @author CJ (power4j@outlook.com)
  * @date 2021/1/19
  * @since 1.0
  */
+@Slf4j
 public class QuartzSchedulerListener implements SchedulerListener {
 
 	@Override
 	public void jobScheduled(Trigger trigger) {
-		// Ignore
+		if(log.isDebugEnabled()){
+			log.debug("[QTZ_SC] jobScheduled:{},{}",trigger.getJobKey(),trigger.getDescription());
+		}
 	}
 
 	@Override
 	public void jobUnscheduled(TriggerKey triggerKey) {
-		// Ignore
+		if(log.isDebugEnabled()){
+			log.debug("[QTZ_SC] jobUnscheduled:{},{}",triggerKey.getName(),triggerKey.getGroup());
+		}
 	}
 
 	@Override
 	public void triggerFinalized(Trigger trigger) {
-		// Ignore
+		if(log.isDebugEnabled()){
+			log.debug("[QTZ_SC] triggerFinalized:{},{}",trigger.getJobKey(),trigger.getDescription());
+		}
 	}
 
 	@Override
 	public void triggerPaused(TriggerKey triggerKey) {
-		// Ignore
+		if(log.isDebugEnabled()){
+			log.debug("[QTZ_SC] triggerPaused:{},{}",triggerKey.getName(),triggerKey.getGroup());
+		}
 	}
 
 	@Override
 	public void triggersPaused(String triggerGroup) {
-		// Ignore
+		if(log.isDebugEnabled()){
+			log.debug("[QTZ_SC] triggersPaused:{},{}",triggerGroup);
+		}
 	}
 
 	@Override
 	public void triggerResumed(TriggerKey triggerKey) {
-		// Ignore
+		if(log.isDebugEnabled()){
+			log.debug("[QTZ_SC] triggerResumed:{},{}",triggerKey.getName(),triggerKey.getGroup());
+		}
 	}
 
 	@Override
 	public void triggersResumed(String triggerGroup) {
-		// Ignore
+		if(log.isDebugEnabled()){
+			log.debug("[QTZ_SC] triggersResumed:{}",triggerGroup);
+		}
 	}
 
 	@Override
 	public void jobAdded(JobDetail jobDetail) {
-		// Ignore
+		if(log.isDebugEnabled()){
+			log.debug("[QTZ_SC] jobAdded:{},{}",jobDetail.getJobClass().getName(), jobDetail.getKey().toString());
+		}
 	}
 
 	@Override
 	public void jobDeleted(JobKey jobKey) {
-		// Ignore
+		if(log.isDebugEnabled()){
+			log.debug("[QTZ_SC] jobDeleted:{},{}",jobKey.getName(),jobKey.toString());
+		}
 	}
 
 	@Override
 	public void jobPaused(JobKey jobKey) {
-		// Ignore
+		if(log.isDebugEnabled()){
+			log.debug("[QTZ_SC] jobPaused:{},{}",jobKey.getName(),jobKey.toString());
+		}
 	}
 
 	@Override
 	public void jobsPaused(String jobGroup) {
-		// Ignore
+		if(log.isDebugEnabled()){
+			log.debug("[QTZ_SC] jobsPaused:{}",jobGroup);
+		}
 	}
 
 	@Override
 	public void jobResumed(JobKey jobKey) {
-		// Ignore
+		if(log.isDebugEnabled()){
+			log.debug("[QTZ_SC] jobResumed:{},{}",jobKey.getName(),jobKey.toString());
+		}
 	}
 
 	@Override
 	public void jobsResumed(String jobGroup) {
-		// Ignore
+		if(log.isDebugEnabled()){
+			log.debug("[QTZ_SC] jobsResumed,jobGroup:{}",jobGroup);
+		}
 	}
 
 	@Override
 	public void schedulerError(String msg, SchedulerException cause) {
-		// Ignore
+		if(log.isDebugEnabled()){
+			log.debug("[QTZ_SC] schedulerError: msg = {},cause ={},UnderlyingException = {}",msg,cause.getClass().getSimpleName(),
+					Optional.ofNullable(cause.getUnderlyingException()).map(e -> e.getClass().getName()).orElse(null));
+		}
 	}
 
 	@Override
 	public void schedulerInStandbyMode() {
-		// Ignore
+		if(log.isDebugEnabled()){
+			log.debug("[QTZ_SC] schedulerInStandbyMode");
+		}
 	}
 
 	@Override
 	public void schedulerStarted() {
-		// Ignore
+		if(log.isDebugEnabled()){
+			log.debug("[QTZ_SC] schedulerStarted");
+		}
 	}
 
 	@Override
 	public void schedulerStarting() {
-		// Ignore
+		if(log.isDebugEnabled()){
+			log.debug("[QTZ_SC] schedulerStarting");
+		}
 	}
 
 	@Override
 	public void schedulerShutdown() {
-		// Ignore
+		if(log.isDebugEnabled()){
+			log.debug("[QTZ_SC] schedulerShutdown");
+		}
 	}
 
 	@Override
 	public void schedulerShuttingdown() {
-		// Ignore
+		if(log.isDebugEnabled()){
+			log.debug("[QTZ_SC] scheduler Shuttingdown");
+		}
 	}
 
 	@Override
 	public void schedulingDataCleared() {
-		// Ignore
+		if(log.isDebugEnabled()){
+			log.debug("[QTZ_SC] schedulingData Cleared");
+		}
 	}
 
 }

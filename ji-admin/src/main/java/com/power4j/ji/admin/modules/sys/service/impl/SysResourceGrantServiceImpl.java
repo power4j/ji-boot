@@ -69,9 +69,8 @@ public class SysResourceGrantServiceImpl extends ServiceImpl<SysResourceGranteeM
 		return list;
 	}
 
-	@Caching(evict = {
-			@CacheEvict(cacheNames = { CacheConstant.Name.ROLE_CODES_TO_RESOURCE_TREE }, allEntries = true),
-			@CacheEvict(cacheNames = { CacheConstant.Name.ROLE_CODES_TO_RESOURCES }, allEntries = true)})
+	@Caching(evict = { @CacheEvict(cacheNames = { CacheConstant.Name.ROLE_CODES_TO_RESOURCE_TREE }, allEntries = true),
+			@CacheEvict(cacheNames = { CacheConstant.Name.ROLE_CODES_TO_RESOURCES }, allEntries = true) })
 	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public List<SysResourceGrantee> setResources(Long roleId, Collection<Long> resourceIds) {

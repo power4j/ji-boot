@@ -23,6 +23,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.lang.Nullable;
 
+import java.util.Optional;
+
 /**
  * @author CJ (power4j@outlook.com)
  * @date 2021/1/19
@@ -37,33 +39,30 @@ public class SpringContextUtil implements ApplicationContextAware {
 		SpringContextUtil.applicationContext = applicationContext;
 	}
 
-	@Nullable
-	public static Object getBean(String name) {
+	public static Optional<Object> getBean(String name) {
 		try {
-			return applicationContext.getBean(name);
+			return Optional.of(applicationContext.getBean(name));
 		}
 		catch (NoSuchBeanDefinitionException e) {
-			return null;
+			return Optional.empty();
 		}
 	}
 
-	@Nullable
-	public static <T> T getBean(Class<T> requiredType) {
+	public static <T> Optional<T> getBean(Class<T> requiredType) {
 		try {
-			return applicationContext.getBean(requiredType);
+			return Optional.of(applicationContext.getBean(requiredType));
 		}
 		catch (NoSuchBeanDefinitionException | BeanNotOfRequiredTypeException e) {
-			return null;
+			return Optional.empty();
 		}
 	}
 
-	@Nullable
-	public static <T> T getBean(String name, Class<T> requiredType) {
+	public static <T> Optional<T> getBean(String name, Class<T> requiredType) {
 		try {
-			return applicationContext.getBean(name, requiredType);
+			return Optional.of(applicationContext.getBean(name, requiredType));
 		}
 		catch (NoSuchBeanDefinitionException | BeanNotOfRequiredTypeException e) {
-			return null;
+			return Optional.empty();
 		}
 
 	}
