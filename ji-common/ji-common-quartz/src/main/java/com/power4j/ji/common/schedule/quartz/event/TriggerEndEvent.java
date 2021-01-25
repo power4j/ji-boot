@@ -19,8 +19,6 @@ package com.power4j.ji.common.schedule.quartz.event;
 import lombok.Data;
 import org.quartz.Trigger;
 
-import java.time.LocalDateTime;
-
 /**
  * @author CJ (power4j@outlook.com)
  * @date 2021/1/25

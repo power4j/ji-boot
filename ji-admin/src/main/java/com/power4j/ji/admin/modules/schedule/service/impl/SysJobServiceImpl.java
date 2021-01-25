@@ -16,7 +16,6 @@
 
 package com.power4j.ji.admin.modules.schedule.service.impl;
 
-import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;

@@ -17,17 +17,14 @@
 package com.power4j.ji.admin.modules.manager.controller;
 
 import com.power4j.ji.admin.modules.manager.service.ManagementService;
-import com.power4j.ji.admin.modules.schedule.dto.SysJobDTO;
 import com.power4j.ji.admin.modules.sys.dto.SysResourceDTO;
 import com.power4j.ji.admin.modules.sys.dto.SysRoleDTO;
-import com.power4j.ji.admin.modules.sys.entity.SysRole;
 import com.power4j.ji.admin.modules.sys.service.SysRoleService;
 import com.power4j.ji.common.core.model.ApiResponse;
 import com.power4j.ji.common.core.util.ApiResponseUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

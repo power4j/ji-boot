@@ -17,7 +17,6 @@
 package com.power4j.ji.common.core.util;
 
 import com.power4j.ji.common.core.constant.DateTimePattern;
-import com.sun.org.apache.regexp.internal.RE;
 import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
 

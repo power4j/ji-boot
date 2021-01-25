@@ -21,18 +21,14 @@ import com.power4j.ji.admin.modules.sys.constant.CacheConstant;
 import com.power4j.ji.admin.modules.sys.dto.SysResourceDTO;
 import com.power4j.ji.admin.modules.sys.dto.SysRoleDTO;
 import com.power4j.ji.admin.modules.sys.entity.SysResource;
-import com.power4j.ji.admin.modules.sys.entity.SysRole;
 import com.power4j.ji.admin.modules.sys.service.SysResourceGrantService;
 import com.power4j.ji.admin.modules.sys.service.SysResourceService;
-import com.power4j.ji.admin.modules.sys.service.SysRoleService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 

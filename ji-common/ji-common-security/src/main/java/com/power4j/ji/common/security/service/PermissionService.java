@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Set;

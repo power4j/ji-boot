@@ -18,8 +18,6 @@ package com.power4j.ji.admin.modules.manager.service;
 
 import com.power4j.ji.admin.modules.sys.dto.SysResourceDTO;
 import com.power4j.ji.admin.modules.sys.dto.SysRoleDTO;
-import com.power4j.ji.admin.modules.sys.entity.SysResource;
-import com.power4j.ji.admin.modules.sys.entity.SysRole;
 
 import java.util.List;
 

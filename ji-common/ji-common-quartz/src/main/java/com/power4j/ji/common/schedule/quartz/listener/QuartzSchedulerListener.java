@@ -16,7 +16,6 @@
 
 package com.power4j.ji.common.schedule.quartz.listener;
 
-import com.power4j.ji.common.schedule.quartz.constant.QuartzConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.JobDetail;
 import org.quartz.JobKey;

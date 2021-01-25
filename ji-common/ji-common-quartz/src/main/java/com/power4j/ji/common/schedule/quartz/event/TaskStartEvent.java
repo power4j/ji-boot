@@ -17,7 +17,6 @@
 package com.power4j.ji.common.schedule.quartz.event;
 
 import lombok.Data;
-import org.springframework.lang.Nullable;
 
 import java.time.LocalDateTime;
 

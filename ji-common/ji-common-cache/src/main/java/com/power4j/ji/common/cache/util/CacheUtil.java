@@ -20,7 +20,6 @@ import com.power4j.ji.common.cache.constant.CommonCacheConstant;
 import com.power4j.ji.common.core.util.NumUtil;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
 import java.time.Duration;
