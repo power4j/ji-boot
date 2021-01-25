@@ -16,7 +16,10 @@
 
 package com.power4j.ji.admin.modules.schedule.util;
 
+import cn.hutool.core.util.StrUtil;
 import com.power4j.ji.admin.modules.schedule.dto.SysJobDTO;
+import com.power4j.ji.admin.modules.schedule.entity.SysJobLog;
+import com.power4j.ji.common.schedule.quartz.event.TaskEndEvent;
 import com.power4j.ji.common.schedule.quartz.job.ExecutionPlan;
 import com.power4j.ji.common.schedule.quartz.job.MisFirePolicyEnum;
 import com.power4j.ji.common.schedule.quartz.job.PlanStatusEnum;
@@ -31,7 +34,7 @@ import lombok.experimental.UtilityClass;
 public class ScheduleUtil {
 
 	/**
-	 * 转换
+	 * SysJobDTO 转换
 	 * @param sysJob
 	 * @return
 	 */
@@ -42,7 +45,7 @@ public class ScheduleUtil {
 		executionPlan.setCron(sysJob.getCron());
 		executionPlan.setTaskBean(sysJob.getTaskBean());
 		executionPlan.setParam(sysJob.getParam());
-		executionPlan.setDescription(sysJob.getRemarks());
+		executionPlan.setDescription(sysJob.getShortDescription());
 		executionPlan.setStatus(PlanStatusEnum.parse(sysJob.getStatus()));
 		executionPlan.setMisFirePolicy(MisFirePolicyEnum.parse(sysJob.getMisFirePolicy()));
 		executionPlan.setFailRecover(sysJob.getFailRecover());
@@ -50,6 +53,27 @@ public class ScheduleUtil {
 
 		return executionPlan;
 
+	}
+
+	/**
+	 * TaskEndEvent 转换
+	 * @param event
+	 * @return
+	 */
+	public SysJobLog toSysJobLog(TaskEndEvent event) {
+		SysJobLog jobLog = new SysJobLog();
+		jobLog.setJobId(event.getPlan().getPlanId());
+		jobLog.setExecutionId(event.getExecutionId());
+		jobLog.setGroupName(event.getPlan().getGroupName());
+		jobLog.setTaskBean(event.getPlan().getTaskBean());
+		jobLog.setShortDescription(event.getPlan().getDescription());
+		jobLog.setStartTime(event.getStartTime());
+		jobLog.setEndTime(event.getEndTime());
+		jobLog.setExecuteMs(event.getElapsed().toMillis());
+		jobLog.setSuccess(event.getSuccess());
+		jobLog.setEx(StrUtil.maxLength(event.getCauseBy(), 255));
+		jobLog.setExMsg(StrUtil.maxLength(event.getCauseByMsg(), 255));
+		return jobLog;
 	}
 
 }

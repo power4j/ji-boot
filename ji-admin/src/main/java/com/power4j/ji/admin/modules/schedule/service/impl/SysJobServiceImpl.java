@@ -38,8 +38,8 @@ import com.power4j.ji.common.core.util.SpringContextUtil;
 import com.power4j.ji.common.data.crud.constant.SysCtlFlagEnum;
 import com.power4j.ji.common.data.crud.service.impl.AbstractCrudService;
 import com.power4j.ji.common.data.crud.util.CrudUtil;
-import com.power4j.ji.common.schedule.quartz.job.PlanStatusEnum;
 import com.power4j.ji.common.schedule.quartz.job.ITask;
+import com.power4j.ji.common.schedule.quartz.job.PlanStatusEnum;
 import com.power4j.ji.common.schedule.quartz.util.CronUtil;
 import com.power4j.ji.common.schedule.quartz.util.QuartzUtil;
 import com.power4j.ji.common.security.util.SecurityUtil;
@@ -50,8 +50,10 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -74,6 +76,7 @@ public class SysJobServiceImpl extends AbstractCrudService<SysJobMapper, SysJobD
 		return super.prePostHandle(dto);
 	}
 
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public SysJobDTO post(SysJobDTO dto) {
 		SysJobDTO ret = super.post(dto);
@@ -101,11 +104,24 @@ public class SysJobServiceImpl extends AbstractCrudService<SysJobMapper, SysJobD
 		return dto;
 	}
 
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public SysJobDTO put(SysJobDTO dto) {
 		SysJobDTO ret = super.put(dto);
 		QuartzUtil.reschedulePlan(scheduler, ScheduleUtil.toExecutionPlan(ret));
 		return ret;
+	}
+
+	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public Optional<SysJobDTO> delete(Serializable id) {
+		SysJob sysJob = preDeleteHandle(id);
+		if (sysJob != null) {
+			removeById(id);
+			QuartzUtil.deletePlan(scheduler, sysJob.getId(), sysJob.getGroupName());
+			return Optional.of(toDto(sysJob));
+		}
+		return Optional.empty();
 	}
 
 	@Override
@@ -128,9 +144,7 @@ public class SysJobServiceImpl extends AbstractCrudService<SysJobMapper, SysJobD
 			throw new BizException(SysErrorCodes.E_CONFLICT, "任务已停止调度,请先恢复调度");
 		}
 		// FIXME: 限制频率
-		QuartzUtil.triggerNow(scheduler, ScheduleUtil.toExecutionPlan(job));
-		// FIXME: 调度ID
-		return UUID.fastUUID().toString();
+		return QuartzUtil.triggerNow(scheduler, ScheduleUtil.toExecutionPlan(job));
 	}
 
 	@Transactional(rollbackFor = Exception.class)
@@ -158,12 +172,9 @@ public class SysJobServiceImpl extends AbstractCrudService<SysJobMapper, SysJobD
 		return QuartzUtil.getNextScheduleTime(scheduler, job.getId(), job.getGroupName());
 	}
 
-	protected void updateStatus(Long id, String status, @Nullable String updateBy) {
-		SysJob job = new SysJob();
-		job.setId(id);
-		job.setUpdateBy(updateBy);
-		job.setStatus(status);
-		updateById(job);
+	@Override
+	public List<SysJobDTO> listAll() {
+		return toDtoList(getBaseMapper().selectList(null));
 	}
 
 	protected SysJobDTO require(Long jobId) {
@@ -172,7 +183,8 @@ public class SysJobServiceImpl extends AbstractCrudService<SysJobMapper, SysJobD
 
 	protected void validateTaskBean(String beanName) {
 
-		Object bean = SpringContextUtil.getBean(beanName).orElseThrow(() -> new BizException(SysErrorCodes.E_PARAM_INVALID, String.format("Bean不存在:{}", beanName)));
+		Object bean = SpringContextUtil.getBean(beanName).orElseThrow(
+				() -> new BizException(SysErrorCodes.E_PARAM_INVALID, String.format("Bean不存在:{}", beanName)));
 
 		if (!(bean instanceof ITask)) {
 			throw new BizException(SysErrorCodes.E_PARAM_INVALID,

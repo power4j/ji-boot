@@ -33,4 +33,7 @@ values (2000, 1, NULL, NULL, NOW(), NULL, NULL, 'ops', '$2a$10$WNiWpSGX64Z3toh8z
 insert  into `t_api_token`(`id`, `token`, `uuid`, `username`, `expire_in`, `create_at`, `update_at`)
 values (1, '1234567890abcdef', '2000', 'ops', '2030-01-13 17:20:33', '2020-11-30 15:25:06', NULL);
 
+insert  into `t_sys_job`(`id`, `sys_flag`, `del_flag`, `create_at`, `update_at`, `group_name`, `cron`, `task_bean`, `param`, `short_description`, `status`, `mis_fire_policy`, `fail_recover`, `create_by`, `update_by`, `error_retry`)
+values (1352319388749946882, 1, NULL, '2021-01-22 02:17:22', '2021-01-26 01:52:14', '测试', '0 5/30 * * * ? *', 'demoTask', 'abc123', '演示任务', '1', '0', 1, 'admin', 'admin', 0001);
+
 SET FOREIGN_KEY_CHECKS = 1;

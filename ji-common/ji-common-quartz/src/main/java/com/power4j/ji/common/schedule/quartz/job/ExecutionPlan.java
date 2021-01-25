@@ -60,8 +60,14 @@ public class ExecutionPlan implements Plan, Serializable {
 	@Nullable
 	private String description;
 
+	/**
+	 * 状态
+	 */
 	private PlanStatusEnum status;
 
+	/**
+	 * 失火策略
+	 */
 	private MisFirePolicyEnum misFirePolicy;
 
 	/**
@@ -73,5 +79,20 @@ public class ExecutionPlan implements Plan, Serializable {
 	 * 允许失败重试
 	 */
 	private Boolean errorRetry;
+
+	public static ExecutionPlan copyOf(ExecutionPlan other) {
+		ExecutionPlan copy = new ExecutionPlan();
+		copy.setPlanId(other.getPlanId());
+		copy.setGroupName(other.getGroupName());
+		copy.setCron(other.getCron());
+		copy.setTaskBean(other.getTaskBean());
+		copy.setParam(other.getParam());
+		copy.setDescription(other.getDescription());
+		copy.setStatus(other.getStatus());
+		copy.setMisFirePolicy(other.getMisFirePolicy());
+		copy.setFailRecover(other.getFailRecover());
+		copy.setErrorRetry(other.getErrorRetry());
+		return copy;
+	}
 
 }

@@ -72,11 +72,12 @@ public class SysJobDTO extends BaseDTO implements Serializable {
 	private String param;
 
 	/**
-	 * 备注
+	 * 任务说明
 	 */
-	@Schema(description = "备注")
+	@Schema(description = "任务说明")
+	@NotBlank(groups = { Groups.Default.class })
 	@Size(max = 20, groups = { Groups.Default.class })
-	private String remarks;
+	private String shortDescription;
 
 	/**
 	 * 状态 0 正常 1 停止调度

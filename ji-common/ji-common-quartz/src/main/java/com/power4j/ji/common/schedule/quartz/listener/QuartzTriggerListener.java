@@ -16,8 +16,17 @@
 
 package com.power4j.ji.common.schedule.quartz.listener;
 
+import com.power4j.ji.common.core.util.SpringContextUtil;
+import com.power4j.ji.common.schedule.quartz.event.ExecutionStageEnum;
+
+import com.power4j.ji.common.schedule.quartz.event.TriggerEndEvent;
+import com.power4j.ji.common.schedule.quartz.job.ExecutionPlan;
+import com.power4j.ji.common.schedule.quartz.job.PlanStatusEnum;
+import com.power4j.ji.common.schedule.quartz.util.EventHelper;
+
 import cn.hutool.core.util.IdUtil;
 import com.power4j.ji.common.core.util.DateTimeUtil;
+import com.power4j.ji.common.schedule.quartz.event.TriggerStartEvent;
 import com.power4j.ji.common.schedule.quartz.constant.QuartzConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.JobExecutionContext;
@@ -39,16 +48,17 @@ public class QuartzTriggerListener implements TriggerListener {
 
 	@Override
 	public void triggerFired(Trigger trigger, JobExecutionContext context) {
-		Object runId = context.get(QuartzConstant.KEY_TASK_EXEC_ID);
-		if (runId == null){
-			runId = IdUtil.objectId();
-			context.put(QuartzConstant.KEY_TASK_EXEC_ID, runId);
+		Object executionId = context.get(QuartzConstant.KEY_TASK_EXEC_ID);
+		if (executionId == null) {
+			executionId = IdUtil.objectId();
+			context.put(QuartzConstant.KEY_TASK_EXEC_ID, executionId);
 		}
+
 		// @formatter:off
 
 		if (log.isDebugEnabled()) {
 			log.debug("[QTZ_TG] {} [FireInstance {}] [TriggerKey {}] trigger fired{},previous fire time : {}",
-					runId,
+					executionId,
 					context.getFireInstanceId(),
 					trigger.getKey().toString(),
 					context.isRecovering()?"(For recovering Job)":"",
@@ -56,11 +66,35 @@ public class QuartzTriggerListener implements TriggerListener {
 		}
 
 		// @formatter:on
+
+		final ExecutionPlan executionPlan = (ExecutionPlan) context.getMergedJobDataMap()
+				.get(QuartzConstant.KEY_TASK_PLAN);
+		TriggerStartEvent triggerStartEvent = new TriggerStartEvent();
+		EventHelper.fillValues(triggerStartEvent, trigger, context, executionPlan);
+		triggerStartEvent.setExecutionId(executionId.toString());
+		triggerStartEvent.setStage(ExecutionStageEnum.TRIGGER_START);
+		SpringContextUtil.publishEvent(triggerStartEvent);
 	}
 
 	@Override
 	public boolean vetoJobExecution(Trigger trigger, JobExecutionContext context) {
-		return false;
+		final ExecutionPlan executionPlan = (ExecutionPlan) context.getMergedJobDataMap()
+				.get(QuartzConstant.KEY_TASK_PLAN);
+		final Object executionId = context.get(QuartzConstant.KEY_TASK_EXEC_ID);
+		final boolean reject = !PlanStatusEnum.NORMAL.equals(executionPlan.getStatus());
+
+		// @formatter:off
+
+		if (log.isDebugEnabled()) {
+			log.debug("[QTZ_TG] {} [FireInstance {}] [TriggerKey {}] job vetoed {}",
+					executionId,
+					context.getFireInstanceId(),
+					trigger.getKey().toString(),
+					reject);
+		}
+
+		// @formatter:on
+		return reject;
 	}
 
 	@Override
@@ -78,12 +112,13 @@ public class QuartzTriggerListener implements TriggerListener {
 	@Override
 	public void triggerComplete(Trigger trigger, JobExecutionContext context,
 			Trigger.CompletedExecutionInstruction triggerInstructionCode) {
+		final Object executionId = context.get(QuartzConstant.KEY_TASK_EXEC_ID);
+
 		// @formatter:off
 
-		Object runId = context.get(QuartzConstant.KEY_TASK_EXEC_ID);
 		if (log.isDebugEnabled()) {
 			log.debug("[QTZ_TG] {} [FireInstance {}] [TriggerKey {}] trigger complete with instruction :{}, next fire time : {}",
-					runId,
+					executionId,
 					context.getFireInstanceId(),
 					trigger.getKey().toString(),
 					triggerInstructionCode.name(),
@@ -91,6 +126,15 @@ public class QuartzTriggerListener implements TriggerListener {
 		}
 
 		// @formatter:on
+
+		final ExecutionPlan executionPlan = (ExecutionPlan) context.getMergedJobDataMap()
+				.get(QuartzConstant.KEY_TASK_PLAN);
+		TriggerEndEvent triggerEndEvent = new TriggerEndEvent();
+		EventHelper.fillValues(triggerEndEvent, trigger, context, executionPlan);
+		triggerEndEvent.setExecutionId(executionId.toString());
+		triggerEndEvent.setInstructionCode(triggerInstructionCode);
+		triggerEndEvent.setStage(ExecutionStageEnum.TRIGGER_END);
+		SpringContextUtil.publishEvent(triggerEndEvent);
 	}
 
 }

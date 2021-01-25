@@ -16,24 +16,40 @@
 
 package com.power4j.ji.admin.modules.schedule.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.power4j.ji.common.data.crud.entity.BaseEntity;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * @author CJ (power4j@outlook.com)
- * @date 2021/1/20
+ * @date 2021/1/22
  * @since 1.0
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@TableName("t_sys_job")
-public class SysJob extends BaseEntity implements Serializable {
+@TableName("t_sys_job_log")
+public class SysJobLog implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 主健
+	 */
+	@TableId(type = IdType.ASSIGN_ID)
+	private Long id;
+
+	/**
+	 * 执行ID
+	 */
+	private String executionId;
+
+	/**
+	 * 作业ID
+	 */
+	private Long jobId;
 
 	/**
 	 * 作业组
@@ -41,19 +57,9 @@ public class SysJob extends BaseEntity implements Serializable {
 	private String groupName;
 
 	/**
-	 * Cron 表达式
-	 */
-	private String cron;
-
-	/**
 	 * bean名称
 	 */
 	private String taskBean;
-
-	/**
-	 * 任务参数
-	 */
-	private String param;
 
 	/**
 	 * 任务描述
@@ -61,33 +67,33 @@ public class SysJob extends BaseEntity implements Serializable {
 	private String shortDescription;
 
 	/**
-	 * 状态 0 正常 1 停止调度
+	 * 执行开始时间
 	 */
-	private String status;
+	private LocalDateTime startTime;
 
 	/**
-	 * 调度丢失补救策略
+	 * 执行结束时间
 	 */
-	private String misFirePolicy;
+	private LocalDateTime endTime;
 
 	/**
-	 * 允许故障转移
+	 * 执行耗时(毫秒)
 	 */
-	private Boolean failRecover;
+	private Long executeMs;
 
 	/**
-	 * 允许失败重试
+	 * 是否成功
 	 */
-	private Boolean errorRetry;
+	private Boolean success;
 
 	/**
-	 * 创建人
+	 * 异常
 	 */
-	private String createBy;
+	private String ex;
 
 	/**
-	 * 更新人
+	 * 异常信息
 	 */
-	private String updateBy;
+	private String exMsg;
 
 }

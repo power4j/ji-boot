@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.power4j.ji.common.security.config.WebSecurityConfig
+  com.power4j.ji.common.security.config.WebSecurityConfig,\
+  com.power4j.ji.common.security.translator.SecurityExceptionTranslator

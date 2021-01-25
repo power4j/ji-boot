@@ -60,6 +60,24 @@ public class DateTimeUtil {
 	}
 
 	/**
+	 * UTC 时间
+	 * @return
+	 */
+	@Nullable
+	public LocalDateTime ofUtc(@Nullable LocalDateTime dateTime) {
+		return dateTime == null ? null : dateTime.atZone(ZoneOffset.UTC).toLocalDateTime();
+	}
+
+	/**
+	 * UTC 时间
+	 * @return
+	 */
+	@Nullable
+	public LocalDateTime ofUtc(@Nullable Date date) {
+		return ofUtc(toLocalDateTime(date));
+	}
+
+	/**
 	 * 日志友好的格式
 	 * @param localDateTime
 	 * @return

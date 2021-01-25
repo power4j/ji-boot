@@ -16,24 +16,34 @@
 
 package com.power4j.ji.admin.modules.schedule.service;
 
-import com.power4j.ji.admin.modules.schedule.dto.SysJobDTO;
-import com.power4j.ji.admin.modules.schedule.entity.SysJob;
-import com.power4j.ji.admin.modules.schedule.vo.SearchSysJobVO;
+import com.power4j.ji.admin.modules.schedule.dto.SysJobLogDTO;
+import com.power4j.ji.admin.modules.schedule.entity.SysJobLog;
+import com.power4j.ji.admin.modules.schedule.vo.SearchSysJobLogVO;
 import com.power4j.ji.common.core.model.PageData;
 import com.power4j.ji.common.core.model.PageRequest;
-import com.power4j.ji.common.data.crud.service.CrudService;
 import org.springframework.lang.Nullable;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author CJ (power4j@outlook.com)
- * @date 2021/1/20
+ * @date 2021/1/25
  * @since 1.0
  */
-public interface SysJobService extends CrudService<SysJobDTO, SysJob> {
+public interface SysJobLogService {
+
+	/**
+	 * 插入记录
+	 * @param jobLog
+	 * @return
+	 */
+	SysJobLog insertJobLog(SysJobLog jobLog);
+
+	/**
+	 * 批量删除
+	 * @param idList
+	 */
+	void deleteBatch(List<Long> idList);
 
 	/**
 	 * 分页查询
@@ -41,32 +51,6 @@ public interface SysJobService extends CrudService<SysJobDTO, SysJob> {
 	 * @param param
 	 * @return
 	 */
-	PageData<SysJobDTO> selectPage(PageRequest pageRequest, @Nullable SearchSysJobVO param);
-
-	/**
-	 * 立即调度
-	 * @param jobId
-	 * @return 返回调度ID
-	 */
-	String scheduleNow(Long jobId);
-
-	/**
-	 * 停止调度
-	 * @param jobId
-	 */
-	void pauseJob(Long jobId);
-
-	/**
-	 * 恢复调度
-	 * @param jobId
-	 * @return 返回下一次计划执行时间
-	 */
-	Optional<LocalDateTime> resumeJob(Long jobId);
-
-	/**
-	 * 查询全部数据
-	 * @return
-	 */
-	List<SysJobDTO> listAll();
+	PageData<SysJobLogDTO> selectPage(PageRequest pageRequest, @Nullable SearchSysJobLogVO param);
 
 }

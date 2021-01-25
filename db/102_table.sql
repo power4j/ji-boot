@@ -116,7 +116,7 @@ CREATE TABLE `t_sys_param`
 CREATE TABLE `t_sys_role`
 (
     `id`          BIGINT      NOT NULL COMMENT '主健',
-    `sys_flag`     TINYINT     NOT NULL DEFAULT 0 COMMENT '数据标记 0 普通数据, 1 系统保护数据',
+    `sys_flag`    TINYINT     NOT NULL DEFAULT 0 COMMENT '数据标记 0 普通数据, 1 系统保护数据',
     `del_flag`    DATETIME    NULL COMMENT '删除标志',
     `create_at`   DATETIME COMMENT '创建时间',
     `update_at`   DATETIME COMMENT '更新时间',
@@ -159,9 +159,9 @@ CREATE TABLE `t_sys_job`
     `update_at`   DATETIME COMMENT '更新时间',
     `group_name`  VARCHAR(20) COMMENT '作业组',
     `cron`        VARCHAR(40) NOT NULL COMMENT 'Cron 表达式',
-    `task_bean`   VARCHAR(255) COMMENT 'bean名称',
+    `task_bean`   VARCHAR(255) NOT NULL  COMMENT 'bean名称',
     `param`       VARCHAR(255) COMMENT '任务参数',
-    `remarks`     VARCHAR(20) COMMENT '备注',
+    `short_description`     VARCHAR(20) COMMENT '任务说明',
     `status`      CHAR(1) NOT NULL DEFAULT '0' COMMENT '状态 0 正常 1 停止调度',
     `mis_fire_policy` CHAR(1) NOT NULL DEFAULT '0' COMMENT '调度丢失补救策略',
     `fail_recover`  tinyint NOT NULL DEFAULT '0' COMMENT '允许故障转移',
@@ -173,3 +173,22 @@ CREATE TABLE `t_sys_job`
 
 ALTER TABLE `t_sys_job` ADD INDEX `idx_sys_flag` (`sys_flag`);
 ALTER TABLE `t_sys_job` ADD INDEX `idx_del_flag` (`del_flag`);
+
+CREATE TABLE `t_sys_job_log`
+(
+    `id`          BIGINT      NOT NULL COMMENT '主健',
+    `job_id`      BIGINT      NOT NULL COMMENT '作业ID',
+    `execution_id` VARCHAR(40) NOT NULL COMMENT '执行ID',
+    `group_name`   VARCHAR(20) COMMENT '作业组',
+    `task_bean`    VARCHAR(255) COMMENT 'bean名称',
+    `short_description`  VARCHAR(20) COMMENT '任务说明',
+    `start_time`   DATETIME NOT NULL COMMENT '执行开始时间',
+    `end_time`     DATETIME NOT NULL COMMENT '执行结束时间',
+    `execute_ms`   BIGINT NOT NULL DEFAULT '0' COMMENT '执行耗时',
+    `success`      tinyint NOT NULL DEFAULT '0' COMMENT '是否成功',
+    `ex`       VARCHAR(255) COMMENT '异常',
+    `ex_msg`   VARCHAR(255) COMMENT '异常信息',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB CHARSET = `utf8mb4` COMMENT ='任务执行日志';
+
+ALTER TABLE `t_sys_job_log` ADD INDEX `idx_1` (`task_bean`,`success`,`ex`,`start_time`);

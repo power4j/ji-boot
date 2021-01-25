@@ -17,6 +17,7 @@
 package com.power4j.ji.common.schedule.quartz.util;
 
 import cn.hutool.core.lang.Pair;
+import cn.hutool.core.util.IdUtil;
 import com.power4j.ji.common.core.constant.SysErrorCodes;
 import com.power4j.ji.common.core.exception.BizException;
 import com.power4j.ji.common.core.util.DateTimeUtil;
@@ -78,22 +79,21 @@ public class QuartzUtil {
 	 * @param plan
 	 * @return
 	 */
-	protected Pair<JobDetail,CronTrigger> buildCronPlan(ExecutionPlan plan){
+	protected Pair<JobDetail, CronTrigger> buildCronPlan(ExecutionPlan plan) {
 		JobDetail jobDetail = JobBuilder.newJob(QuartzJob.class)
-				.withIdentity(makeJobKey(plan.getPlanId(), plan.getGroupName()))
-				.requestRecovery(plan.getFailRecover()).build();
+				.withIdentity(makeJobKey(plan.getPlanId(), plan.getGroupName())).requestRecovery(plan.getFailRecover())
+				.build();
 
 		jobDetail.getJobDataMap().put(QuartzConstant.KEY_TASK_PLAN, plan);
-		return Pair.of(jobDetail,buildCronTrigger(plan));
+		return Pair.of(jobDetail, buildCronTrigger(plan));
 	}
 
-	protected CronTrigger buildCronTrigger(ExecutionPlan plan){
+	protected CronTrigger buildCronTrigger(ExecutionPlan plan) {
 		CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(plan.getCron());
 		applyMisFirePolicy(scheduleBuilder, plan.getMisFirePolicy());
 
 		CronTrigger trigger = TriggerBuilder.newTrigger()
-				.withIdentity(makeTriggerKey(plan.getPlanId(), plan.getGroupName()))
-				.withSchedule(scheduleBuilder)
+				.withIdentity(makeTriggerKey(plan.getPlanId(), plan.getGroupName())).withSchedule(scheduleBuilder)
 				.build();
 		return trigger;
 	}
@@ -156,7 +156,7 @@ public class QuartzUtil {
 	public Optional<LocalDateTime> createPlan(Scheduler scheduler, ExecutionPlan plan) {
 		try {
 
-			Pair<JobDetail,CronTrigger> entry = buildCronPlan(plan);
+			Pair<JobDetail, CronTrigger> entry = buildCronPlan(plan);
 			scheduler.scheduleJob(entry.getKey(), entry.getValue());
 			if (PlanStatusEnum.PAUSE.equals(plan.getStatus())) {
 				pausePlan(scheduler, plan.getPlanId(), plan.getGroupName());
@@ -192,18 +192,39 @@ public class QuartzUtil {
 	}
 
 	/**
+	 * 创建或更新
+	 * @param scheduler
+	 * @param plan
+	 * @return
+	 */
+	public boolean createMissingPlan(Scheduler scheduler, ExecutionPlan plan) {
+		final CronTrigger cronTrigger = getCronTrigger(scheduler, plan.getPlanId(), plan.getGroupName());
+		if (cronTrigger == null) {
+			createPlan(scheduler, plan);
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	/**
 	 * 重新调度已经存在的作业
 	 * @param scheduler
 	 * @param plan
 	 * @return
 	 */
-	public Optional<LocalDateTime> reschedulePlan(Scheduler scheduler, ExecutionPlan plan){
-		TriggerKey triggerKey = makeTriggerKey(plan.getPlanId(),plan.getGroupName());
+	public Optional<LocalDateTime> reschedulePlan(Scheduler scheduler, ExecutionPlan plan) {
+		TriggerKey triggerKey = makeTriggerKey(plan.getPlanId(), plan.getGroupName());
 		CronTrigger newTrigger = buildCronTrigger(plan);
 		try {
-			scheduler.rescheduleJob(triggerKey,newTrigger);
-		} catch (SchedulerException e) {
+			scheduler.rescheduleJob(triggerKey, newTrigger);
+		}
+		catch (SchedulerException e) {
 			throw new BizException(SysErrorCodes.E_JOB_FAIL, e);
+		}
+		if (PlanStatusEnum.PAUSE.equals(plan.getStatus())) {
+			pausePlan(scheduler, plan.getPlanId(), plan.getGroupName());
 		}
 		Optional<LocalDateTime> nextRun = Optional.ofNullable(newTrigger.getNextFireTime())
 				.map(DateTimeUtil::toLocalDateTime);
@@ -218,14 +239,17 @@ public class QuartzUtil {
 	 * 立即触发任务
 	 * @param scheduler
 	 * @param plan
+	 * @return 返回执行ID
 	 */
-	public void triggerNow(Scheduler scheduler, ExecutionPlan plan) {
+	public String triggerNow(Scheduler scheduler, ExecutionPlan plan) {
+		final String executionId = IdUtil.objectId();
 		try {
 			// 参数
 			JobDataMap dataMap = new JobDataMap();
 			dataMap.put(QuartzConstant.KEY_TASK_PLAN, plan);
-
+			dataMap.put(QuartzConstant.KEY_TASK_EXEC_ID, executionId);
 			scheduler.triggerJob(makeJobKey(plan.getPlanId(), plan.getGroupName()), dataMap);
+			return executionId;
 		}
 		catch (SchedulerException e) {
 			throw new BizException(SysErrorCodes.E_JOB_FAIL, e);

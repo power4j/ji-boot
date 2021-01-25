@@ -65,7 +65,7 @@ logging:
       power4j:
         ji:
           admin:
-            modules: info
+            modules: debug
           common:
             security: info
             schedule:

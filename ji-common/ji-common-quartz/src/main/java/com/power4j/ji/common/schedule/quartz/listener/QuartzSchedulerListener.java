@@ -37,141 +37,142 @@ public class QuartzSchedulerListener implements SchedulerListener {
 
 	@Override
 	public void jobScheduled(Trigger trigger) {
-		if(log.isDebugEnabled()){
-			log.debug("[QTZ_SC] jobScheduled:{},{}",trigger.getJobKey(),trigger.getDescription());
+		if (log.isDebugEnabled()) {
+			log.debug("[QTZ_SC] jobScheduled:{},{}", trigger.getJobKey(), trigger.getDescription());
 		}
 	}
 
 	@Override
 	public void jobUnscheduled(TriggerKey triggerKey) {
-		if(log.isDebugEnabled()){
-			log.debug("[QTZ_SC] jobUnscheduled:{},{}",triggerKey.getName(),triggerKey.getGroup());
+		if (log.isDebugEnabled()) {
+			log.debug("[QTZ_SC] jobUnscheduled:{},{}", triggerKey.getName(), triggerKey.getGroup());
 		}
 	}
 
 	@Override
 	public void triggerFinalized(Trigger trigger) {
-		if(log.isDebugEnabled()){
-			log.debug("[QTZ_SC] triggerFinalized:{},{}",trigger.getJobKey(),trigger.getDescription());
+		if (log.isDebugEnabled()) {
+			log.debug("[QTZ_SC] triggerFinalized:{},{}", trigger.getJobKey(), trigger.getDescription());
 		}
 	}
 
 	@Override
 	public void triggerPaused(TriggerKey triggerKey) {
-		if(log.isDebugEnabled()){
-			log.debug("[QTZ_SC] triggerPaused:{},{}",triggerKey.getName(),triggerKey.getGroup());
+		if (log.isDebugEnabled()) {
+			log.debug("[QTZ_SC] triggerPaused:{},{}", triggerKey.getName(), triggerKey.getGroup());
 		}
 	}
 
 	@Override
 	public void triggersPaused(String triggerGroup) {
-		if(log.isDebugEnabled()){
-			log.debug("[QTZ_SC] triggersPaused:{},{}",triggerGroup);
+		if (log.isDebugEnabled()) {
+			log.debug("[QTZ_SC] triggersPaused:{},{}", triggerGroup);
 		}
 	}
 
 	@Override
 	public void triggerResumed(TriggerKey triggerKey) {
-		if(log.isDebugEnabled()){
-			log.debug("[QTZ_SC] triggerResumed:{},{}",triggerKey.getName(),triggerKey.getGroup());
+		if (log.isDebugEnabled()) {
+			log.debug("[QTZ_SC] triggerResumed:{},{}", triggerKey.getName(), triggerKey.getGroup());
 		}
 	}
 
 	@Override
 	public void triggersResumed(String triggerGroup) {
-		if(log.isDebugEnabled()){
-			log.debug("[QTZ_SC] triggersResumed:{}",triggerGroup);
+		if (log.isDebugEnabled()) {
+			log.debug("[QTZ_SC] triggersResumed:{}", triggerGroup);
 		}
 	}
 
 	@Override
 	public void jobAdded(JobDetail jobDetail) {
-		if(log.isDebugEnabled()){
-			log.debug("[QTZ_SC] jobAdded:{},{}",jobDetail.getJobClass().getName(), jobDetail.getKey().toString());
+		if (log.isDebugEnabled()) {
+			log.debug("[QTZ_SC] jobAdded:{},{}", jobDetail.getJobClass().getName(), jobDetail.getKey().toString());
 		}
 	}
 
 	@Override
 	public void jobDeleted(JobKey jobKey) {
-		if(log.isDebugEnabled()){
-			log.debug("[QTZ_SC] jobDeleted:{},{}",jobKey.getName(),jobKey.toString());
+		if (log.isDebugEnabled()) {
+			log.debug("[QTZ_SC] jobDeleted:{},{}", jobKey.getName(), jobKey.toString());
 		}
 	}
 
 	@Override
 	public void jobPaused(JobKey jobKey) {
-		if(log.isDebugEnabled()){
-			log.debug("[QTZ_SC] jobPaused:{},{}",jobKey.getName(),jobKey.toString());
+		if (log.isDebugEnabled()) {
+			log.debug("[QTZ_SC] jobPaused:{},{}", jobKey.getName(), jobKey.toString());
 		}
 	}
 
 	@Override
 	public void jobsPaused(String jobGroup) {
-		if(log.isDebugEnabled()){
-			log.debug("[QTZ_SC] jobsPaused:{}",jobGroup);
+		if (log.isDebugEnabled()) {
+			log.debug("[QTZ_SC] jobsPaused:{}", jobGroup);
 		}
 	}
 
 	@Override
 	public void jobResumed(JobKey jobKey) {
-		if(log.isDebugEnabled()){
-			log.debug("[QTZ_SC] jobResumed:{},{}",jobKey.getName(),jobKey.toString());
+		if (log.isDebugEnabled()) {
+			log.debug("[QTZ_SC] jobResumed:{},{}", jobKey.getName(), jobKey.toString());
 		}
 	}
 
 	@Override
 	public void jobsResumed(String jobGroup) {
-		if(log.isDebugEnabled()){
-			log.debug("[QTZ_SC] jobsResumed,jobGroup:{}",jobGroup);
+		if (log.isDebugEnabled()) {
+			log.debug("[QTZ_SC] jobsResumed,jobGroup:{}", jobGroup);
 		}
 	}
 
 	@Override
 	public void schedulerError(String msg, SchedulerException cause) {
-		if(log.isDebugEnabled()){
-			log.debug("[QTZ_SC] schedulerError: msg = {},cause ={},UnderlyingException = {}",msg,cause.getClass().getSimpleName(),
+		if (log.isDebugEnabled()) {
+			log.debug("[QTZ_SC] schedulerError: msg = {},cause ={},UnderlyingException = {}", msg,
+					cause.getClass().getSimpleName(),
 					Optional.ofNullable(cause.getUnderlyingException()).map(e -> e.getClass().getName()).orElse(null));
 		}
 	}
 
 	@Override
 	public void schedulerInStandbyMode() {
-		if(log.isDebugEnabled()){
+		if (log.isDebugEnabled()) {
 			log.debug("[QTZ_SC] schedulerInStandbyMode");
 		}
 	}
 
 	@Override
 	public void schedulerStarted() {
-		if(log.isDebugEnabled()){
+		if (log.isDebugEnabled()) {
 			log.debug("[QTZ_SC] schedulerStarted");
 		}
 	}
 
 	@Override
 	public void schedulerStarting() {
-		if(log.isDebugEnabled()){
+		if (log.isDebugEnabled()) {
 			log.debug("[QTZ_SC] schedulerStarting");
 		}
 	}
 
 	@Override
 	public void schedulerShutdown() {
-		if(log.isDebugEnabled()){
+		if (log.isDebugEnabled()) {
 			log.debug("[QTZ_SC] schedulerShutdown");
 		}
 	}
 
 	@Override
 	public void schedulerShuttingdown() {
-		if(log.isDebugEnabled()){
+		if (log.isDebugEnabled()) {
 			log.debug("[QTZ_SC] scheduler Shuttingdown");
 		}
 	}
 
 	@Override
 	public void schedulingDataCleared() {
-		if(log.isDebugEnabled()){
+		if (log.isDebugEnabled()) {
 			log.debug("[QTZ_SC] schedulingData Cleared");
 		}
 	}

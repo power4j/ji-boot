@@ -35,7 +35,8 @@ public class QuartzJob extends QuartzJobBean {
 
 	@Override
 	protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
-		final ExecutionPlan executionPlan = (ExecutionPlan) context.getMergedJobDataMap().get(QuartzConstant.KEY_TASK_PLAN);
+		final ExecutionPlan executionPlan = (ExecutionPlan) context.getMergedJobDataMap()
+				.get(QuartzConstant.KEY_TASK_PLAN);
 		ITask task = SpringContextUtil.getBean(executionPlan.getTaskBean(), ITask.class)
 				.orElseThrow(() -> new IllegalStateException("No task bean found"));
 		try {
@@ -47,8 +48,8 @@ public class QuartzJob extends QuartzJobBean {
 		}
 		catch (Exception e) {
 			log.error(e.getMessage());
-			if (Boolean.TRUE.equals(executionPlan.getErrorRetry())){
-				throw new JobExecutionException(e,true);
+			if (Boolean.TRUE.equals(executionPlan.getErrorRetry())) {
+				throw new JobExecutionException(e, true);
 			}
 			throw e;
 		}

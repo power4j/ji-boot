@@ -14,18 +14,21 @@
  * limitations under the License.
  */
 
-package com.power4j.ji.common.core.translator;
+package com.power4j.ji.common.schedule.quartz.event;
 
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import lombok.Data;
+import org.quartz.Trigger;
+
+import java.time.LocalDateTime;
 
 /**
  * @author CJ (power4j@outlook.com)
- * @date 2021/1/16
+ * @date 2021/1/25
  * @since 1.0
  */
-@Configuration
-@Import({ ExceptionTranslator.class, RestExceptionTranslator.class })
-public class GlobalExcetionConfig {
+@Data
+public class TriggerEndEvent extends TriggerEvent {
+
+	private Trigger.CompletedExecutionInstruction instructionCode;
 
 }

@@ -30,14 +30,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Slf4j
 @Component("demoTask")
 public class DemoTask implements ITask {
+
 	private static final AtomicInteger counter = new AtomicInteger();
+
 	private static final int THROW_ERR = 5;
 
 	@Override
 	public void run(String param) {
 		final int val = counter.incrementAndGet();
-		log.info("demo task with param {},counter = #{} ",param, val);
-		if(0 == (val % THROW_ERR)){
+		log.info("demo task with param {},counter = #{} ", param, val);
+		if (0 == (val % THROW_ERR)) {
 			throw new RuntimeException("模拟任务异常");
 		}
 	}
