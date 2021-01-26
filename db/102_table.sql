@@ -63,7 +63,7 @@ CREATE TABLE `t_sys_dict_item`
     `update_at`   DATETIME COMMENT '更新时间',
     `dict_id`     BIGINT      NOT NULL COMMENT '字典ID',
     `value`       VARCHAR(255) NOT NULL COMMENT '值',
-    `label`       VARCHAR(20) NOT NULL COMMENT '标签',
+    `label`       VARCHAR(255) NOT NULL COMMENT '标签',
     `remarks`     VARCHAR(40) COMMENT '备注',
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_dict_val` (`dict_id`,`value`)
