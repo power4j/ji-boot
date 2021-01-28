@@ -16,6 +16,11 @@
 
 package com.power4j.ji.common.data.crud.constant;
 
+import com.power4j.ji.common.data.dict.annotation.DictValue;
+import com.power4j.ji.common.data.dict.annotation.Label;
+import com.power4j.ji.common.data.dict.annotation.MapDict;
+import com.power4j.ji.common.data.dict.annotation.Styled;
+
 import java.util.function.Function;
 
 /**
@@ -23,17 +28,23 @@ import java.util.function.Function;
  * @date 2020/11/27
  * @since 1.0
  */
+@MapDict(code = "sys_ctl_flag", name = "数据标识")
 public enum SysCtlFlagEnum {
 
 	/**
 	 * 普通数据
 	 */
+	@Label("普通")
+	@Styled("success")
 	NORMAL(0),
 	/**
 	 * 系统保护数据
 	 */
+	@Label("系统")
+	@Styled("danger")
 	SYS_LOCKED(1);
 
+	@DictValue
 	private final int value;
 
 	SysCtlFlagEnum(int value) {

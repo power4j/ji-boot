@@ -14,53 +14,39 @@
  * limitations under the License.
  */
 
-package com.power4j.ji.common.schedule.quartz.job;
+package com.power4j.ji.admin.modules.demo.job;
 
 import com.power4j.ji.common.data.dict.annotation.DictValue;
-import com.power4j.ji.common.data.dict.annotation.Label;
+import com.power4j.ji.common.data.dict.annotation.Item;
 import com.power4j.ji.common.data.dict.annotation.MapDict;
-import com.power4j.ji.common.data.dict.annotation.Remarks;
-import com.power4j.ji.common.data.dict.annotation.Styled;
 
 import java.util.function.Function;
 
 /**
- * CronSchedule MisFire 处理策略
  * @author CJ (power4j@outlook.com)
- * @date 2021/1/19
+ * @date 2021/1/27
  * @since 1.0
  */
-@MapDict(code = "mis_fire_policy", name = "调度丢失处理策略")
-public enum MisFirePolicyEnum {
+@MapDict(
+		items = { @Item(value = "1", label = "一", style = "info"), @Item(value = "2", label = "二", style = "warning") })
+public enum DemoTypeEnum {
 
 	/**
-	 * 立即执行一次,然后开始正常调度
+	 * One
 	 */
-	@Label("立即执行一次,然后开始正常调度")
-	@Styled("success")
-	@Remarks("适用一般使用场景")
-	RESCUE_ONE("0"),
+	One("one"),
 	/**
-	 * 立即执行所有丢失的触发点,然后开始正常调度
+	 * Two
 	 */
-	@Label("立即执行所有丢失的触发点,然后开始正常调度")
-	@Styled("warning")
-	@Remarks("服务长时间停机后启动,可能会引起大量任务调度")
-	RESCUE_ALL("1"),
-	/**
-	 * 不处理,正常调度
-	 */
-	@Label("不处理,正常调度")
-	@Styled("info")
-	RESCUE_NONE("2");
+	Two("two");
 
-	@DictValue
 	private final String value;
 
-	MisFirePolicyEnum(String value) {
+	DemoTypeEnum(String value) {
 		this.value = value;
 	}
 
+	@DictValue
 	public String getValue() {
 		return value;
 	}
@@ -71,11 +57,11 @@ public enum MisFirePolicyEnum {
 	 * @param defValue 默认值
 	 * @return 如果解析失败返回默认值
 	 */
-	public static MisFirePolicyEnum parseOrDefault(final String value, final MisFirePolicyEnum defValue) {
+	public static DemoTypeEnum parseOrDefault(final String value, final DemoTypeEnum defValue) {
 		if (value == null) {
 			return defValue;
 		}
-		for (MisFirePolicyEnum o : MisFirePolicyEnum.values()) {
+		for (DemoTypeEnum o : DemoTypeEnum.values()) {
 			if (o.getValue().equals(value)) {
 				return o;
 			}
@@ -88,7 +74,7 @@ public enum MisFirePolicyEnum {
 	 * @param value 被解析的数据
 	 * @return 如果解析失败返回 null
 	 */
-	public static MisFirePolicyEnum parseOrNull(final String value) {
+	public static DemoTypeEnum parseOrNull(final String value) {
 		return parseOrDefault(value, null);
 	}
 
@@ -98,8 +84,8 @@ public enum MisFirePolicyEnum {
 	 * @param thrower 异常抛出器
 	 * @return 如果解析失败抛出异常
 	 */
-	public static MisFirePolicyEnum parseOrThrow(final String value, Function<String, RuntimeException> thrower) {
-		MisFirePolicyEnum o = parseOrDefault(value, null);
+	public static DemoTypeEnum parseOrThrow(final String value, Function<String, RuntimeException> thrower) {
+		DemoTypeEnum o = parseOrDefault(value, null);
 		if (o == null) {
 			throw thrower.apply(value);
 		}
@@ -111,7 +97,7 @@ public enum MisFirePolicyEnum {
 	 * @param value 被解析的数据
 	 * @return 如果解析失败抛出 IllegalArgumentException
 	 */
-	public static MisFirePolicyEnum parse(final String value) throws IllegalArgumentException {
+	public static DemoTypeEnum parse(final String value) throws IllegalArgumentException {
 		return parseOrThrow(value, (v) -> new IllegalArgumentException("Invalid value : " + v));
 	}
 

@@ -112,6 +112,9 @@ ji-boot:
       app-id: ${WX_MP_APPID}
       secret: ${WX_MP_SECRET}
       subscribers: oiwtWuMNNa6njL3bE7_9ADOKMEWc
+  dict:
+    scan-packages: com.power4j.ji
+    endpoint-base-url: /sys/immutable-dictionaries
   # 自定义验证码产生地址和消费地址
   captcha:
     service-url: '/code'

@@ -31,9 +31,19 @@ public interface CrudConstant {
 	String QRY_PAGE_INDEX = "current";
 
 	/**
+	 * 默认页码
+	 */
+	int DEFAULT_PAGE_INDEX = 1;
+
+	/**
 	 * 分页查询: 页大小
 	 */
 	String QRY_PAGE_SIZE = "size";
+
+	/**
+	 * 默认页大小
+	 */
+	int DEFAULT_PAGE_SIZE = 20;
 
 	/**
 	 * 分页查询: 总条数

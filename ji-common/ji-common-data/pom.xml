@@ -31,6 +31,10 @@
       <artifactId>ji-common-core</artifactId>
     </dependency>
     <dependency>
+      <groupId>com.power4j.ji</groupId>
+      <artifactId>ji-common-dict</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.baomidou</groupId>
       <artifactId>mybatis-plus-boot-starter</artifactId>
     </dependency>

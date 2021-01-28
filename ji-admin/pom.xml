@@ -110,6 +110,10 @@
       <artifactId>ji-common-quartz</artifactId>
     </dependency>
     <dependency>
+      <groupId>com.power4j.ji</groupId>
+      <artifactId>ji-common-dict</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>

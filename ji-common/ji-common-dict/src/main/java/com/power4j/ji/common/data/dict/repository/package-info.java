@@ -14,16 +14,9 @@
  * limitations under the License.
  */
 
-package com.power4j.ji.admin.modules.sys.manager;
+@NonNullApi
+@NonNullFields
+package com.power4j.ji.common.data.dict.repository;
 
-/**
- * Manager Layer
- * <p>
- *
- * @author CJ (power4j@outlook.com)
- * @date 2020-11-19
- * @since 1.0
- */
-public interface SysUserManager {
-
-}
+import org.springframework.lang.NonNullApi;
+import org.springframework.lang.NonNullFields;

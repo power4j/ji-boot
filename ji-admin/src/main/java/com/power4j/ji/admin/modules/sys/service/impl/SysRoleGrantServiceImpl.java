@@ -20,7 +20,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.power4j.ji.admin.modules.sys.constant.CacheConstant;
-import com.power4j.ji.admin.modules.sys.constant.DictConstant;
+import com.power4j.ji.admin.modules.sys.constant.RoleGrantEnum;
 import com.power4j.ji.admin.modules.sys.dao.SysRoleGranteeMapper;
 import com.power4j.ji.admin.modules.sys.dto.SysRoleGrantDTO;
 import com.power4j.ji.admin.modules.sys.entity.SysRoleGrant;
@@ -83,7 +83,7 @@ public class SysRoleGrantServiceImpl extends AbstractCrudService<SysRoleGranteeM
 		if (SecurityUtil.getLoginUserId().get().equals(obj.getUserId())) {
 			throw new BizException(SysErrorCodes.E_FORBIDDEN, "不能修改自己的权限");
 		}
-		long count = getByUser(obj.getUserId(), DictConstant.Role.GRANT_TYPE_PERMITTED).stream()
+		long count = getByUser(obj.getUserId(), RoleGrantEnum.ADMIN.getValue()).stream()
 				.filter(o -> o.getRoleId().equals(obj.getRoleId())).count();
 		if (count <= 0) {
 			throw new BizException(SysErrorCodes.E_FORBIDDEN, String.format("无权限对角色%s进行授权", obj.getRoleId()));

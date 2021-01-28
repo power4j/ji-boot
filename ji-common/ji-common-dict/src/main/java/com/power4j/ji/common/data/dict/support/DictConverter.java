@@ -14,37 +14,24 @@
  * limitations under the License.
  */
 
-package com.power4j.ji.admin.modules.sys.constant;
+package com.power4j.ji.common.data.dict.support;
+
+import com.power4j.ji.common.data.dict.model.Dict;
 
 /**
  * @author CJ (power4j@outlook.com)
- * @date 2020/12/20
+ * @date 2021/1/28
  * @since 1.0
  */
-public interface DictConstant {
+public interface DictConverter<T> {
 
-	interface Role {
+	DictConverter<?> AS_IS = (o -> o);
 
-		/**
-		 * 角色授权类型:普通
-		 */
-		String GRANT_TYPE_NORMAL = "0";
-
-		/**
-		 * 角色授权类型:管理员
-		 */
-		String GRANT_TYPE_PERMITTED = "1";
-
-		/**
-		 * 状态 普通
-		 */
-		String STATUS_NORMAL = "0";
-
-		/**
-		 * 状态 已禁用
-		 */
-		String STATUS_DISABLED = "1";
-
-	}
+	/**
+	 * 转换
+	 * @param src
+	 * @return
+	 */
+	T convert(Dict src);
 
 }

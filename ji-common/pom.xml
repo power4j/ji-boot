@@ -28,6 +28,7 @@
   <modules>
     <module>ji-common-core</module>
     <module>ji-common-data</module>
+    <module>ji-common-dict</module>
     <module>ji-common-cache</module>
     <module>ji-common-quartz</module>
     <module>ji-common-captcha</module>

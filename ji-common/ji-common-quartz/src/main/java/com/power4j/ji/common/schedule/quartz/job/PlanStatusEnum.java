@@ -16,6 +16,11 @@
 
 package com.power4j.ji.common.schedule.quartz.job;
 
+import com.power4j.ji.common.data.dict.annotation.DictValue;
+import com.power4j.ji.common.data.dict.annotation.Label;
+import com.power4j.ji.common.data.dict.annotation.MapDict;
+import com.power4j.ji.common.data.dict.annotation.Styled;
+
 import java.util.function.Function;
 
 /**
@@ -23,17 +28,23 @@ import java.util.function.Function;
  * @date 2021/1/19
  * @since 1.0
  */
+@MapDict(code = "schedule_status", name = "调度状态")
 public enum PlanStatusEnum {
 
 	/**
 	 * 正常
 	 */
+	@Label("正常")
+	@Styled("success")
 	NORMAL("0"),
 	/**
 	 * 暂停
 	 */
+	@Label("暂停")
+	@Styled("warning")
 	PAUSE("1");
 
+	@DictValue
 	private final String value;
 
 	PlanStatusEnum(String value) {

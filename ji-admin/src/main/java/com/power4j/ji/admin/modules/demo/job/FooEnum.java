@@ -14,25 +14,40 @@
  * limitations under the License.
  */
 
-package com.power4j.ji.common.schedule.quartz.job;
+package com.power4j.ji.admin.modules.demo.job;
+
+import com.power4j.ji.common.data.dict.annotation.DictValue;
+import com.power4j.ji.common.data.dict.annotation.Label;
+import com.power4j.ji.common.data.dict.annotation.MapDict;
+import com.power4j.ji.common.data.dict.annotation.Styled;
 
 import java.util.function.Function;
 
 /**
  * @author CJ (power4j@outlook.com)
- * @date 2021/1/18
+ * @date 2021/1/28
  * @since 1.0
  */
-public enum ScheduleStatusEnum {
+@MapDict(code = "test_enum", name = "测试")
+public enum FooEnum {
 
 	/**
-	 * 休眠
+	 * One
 	 */
-	SLEEP("0"), QUEUED("1"), PREPARE("2"), RUNNING("3"), END_SUCCESS("4"), END_ERROR("5");
+	@Label("第1种方案")
+	@Styled("success")
+	One("one"),
+	/**
+	 * Two
+	 */
+	@Label("第2种方案")
+	@Styled("warning")
+	Two("two");
 
+	@DictValue
 	private final String value;
 
-	ScheduleStatusEnum(String value) {
+	FooEnum(String value) {
 		this.value = value;
 	}
 
@@ -46,11 +61,11 @@ public enum ScheduleStatusEnum {
 	 * @param defValue 默认值
 	 * @return 如果解析失败返回默认值
 	 */
-	public static ScheduleStatusEnum parseOrDefault(final String value, final ScheduleStatusEnum defValue) {
+	public static FooEnum parseOrDefault(final String value, final FooEnum defValue) {
 		if (value == null) {
 			return defValue;
 		}
-		for (ScheduleStatusEnum o : ScheduleStatusEnum.values()) {
+		for (FooEnum o : FooEnum.values()) {
 			if (o.getValue().equals(value)) {
 				return o;
 			}
@@ -63,7 +78,7 @@ public enum ScheduleStatusEnum {
 	 * @param value 被解析的数据
 	 * @return 如果解析失败返回 null
 	 */
-	public static ScheduleStatusEnum parseOrNull(final String value) {
+	public static FooEnum parseOrNull(final String value) {
 		return parseOrDefault(value, null);
 	}
 
@@ -73,8 +88,8 @@ public enum ScheduleStatusEnum {
 	 * @param thrower 异常抛出器
 	 * @return 如果解析失败抛出异常
 	 */
-	public static ScheduleStatusEnum parseOrThrow(final String value, Function<String, RuntimeException> thrower) {
-		ScheduleStatusEnum o = parseOrDefault(value, null);
+	public static FooEnum parseOrThrow(final String value, Function<String, RuntimeException> thrower) {
+		FooEnum o = parseOrDefault(value, null);
 		if (o == null) {
 			throw thrower.apply(value);
 		}
@@ -86,7 +101,7 @@ public enum ScheduleStatusEnum {
 	 * @param value 被解析的数据
 	 * @return 如果解析失败抛出 IllegalArgumentException
 	 */
-	public static ScheduleStatusEnum parse(final String value) throws IllegalArgumentException {
+	public static FooEnum parse(final String value) throws IllegalArgumentException {
 		return parseOrThrow(value, (v) -> new IllegalArgumentException("Invalid value : " + v));
 	}
 

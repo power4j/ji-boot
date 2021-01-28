@@ -54,8 +54,8 @@ public class PageRequestResolver implements HandlerMethodArgumentResolver {
 		String size = request.getParameter(CrudConstant.QRY_PAGE_SIZE);
 
 		PageRequest pageRequest = new PageRequest();
-		pageRequest.setPage(NumUtil.parseInt(page, 1));
-		pageRequest.setSize(NumUtil.parseInt(size, 20));
+		pageRequest.setPage(NumUtil.parseInt(page, CrudConstant.DEFAULT_PAGE_INDEX));
+		pageRequest.setSize(NumUtil.parseInt(size, CrudConstant.DEFAULT_PAGE_SIZE));
 
 		if (orderProp != null && !orderProp.isEmpty()) {
 			if (Boolean.FALSE.toString().equalsIgnoreCase(asc)) {

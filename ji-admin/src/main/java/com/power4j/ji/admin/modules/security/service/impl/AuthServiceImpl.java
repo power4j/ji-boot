@@ -18,7 +18,7 @@ package com.power4j.ji.admin.modules.security.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.power4j.ji.admin.modules.security.service.AuthService;
-import com.power4j.ji.admin.modules.sys.constant.DictConstant;
+import com.power4j.ji.admin.modules.sys.constant.StatusEnum;
 import com.power4j.ji.admin.modules.sys.dto.SysUserDTO;
 import com.power4j.ji.admin.modules.sys.service.SysResourceService;
 import com.power4j.ji.admin.modules.sys.service.SysRoleService;
@@ -63,7 +63,7 @@ public class AuthServiceImpl implements AuthService {
 			throw new UsernameNotFoundException(String.format("用户不存在:%s", username));
 		}
 		Set<String> roles = sysRoleService.listForUser(username, null).stream()
-				.filter(o -> DictConstant.Role.STATUS_NORMAL.equals(o.getStatus())).map(o -> o.getCode())
+				.filter(o -> StatusEnum.NORMAL.getValue().equals(o.getStatus())).map(o -> o.getCode())
 				.collect(Collectors.toSet());
 
 		Set<String> resources = sysResourceService.listForRoles(roles).stream()
