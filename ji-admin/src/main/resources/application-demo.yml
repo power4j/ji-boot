@@ -48,6 +48,13 @@ spring:
           enabled: true
         encoding:
           enabled: true
+ji-boot:
+  security:
+    api-token:
+      # 过期时间,秒
+      expire-sec: 86400
+      # 每个用户的最大有效token
+      max-user-token: 20
 
 logging:
   level:

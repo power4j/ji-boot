@@ -22,7 +22,7 @@ CREATE TABLE `t_sys_user`
   UNIQUE KEY `uk_username` (`username`)
 ) ENGINE = InnoDB CHARSET = `utf8mb4` COMMENT ='用户';
 
-ALTER TABLE `t_sys_user` ADD INDEX `idx_sys_flag` (`sys_flag`);
+ALTER TABLE `t_sys_user` ADD INDEX `idx_1` (`sys_flag`);
 ALTER TABLE `t_sys_user` ADD INDEX `idx_del_flag` (`del_flag`);
 ALTER TABLE `t_sys_user` ADD INDEX `idx_create_at` (`create_at`);
 
@@ -36,9 +36,9 @@ CREATE TABLE `t_api_token`
     `create_at`   DATETIME COMMENT '创建时间',
     `update_at`   DATETIME COMMENT '更新时间',
     PRIMARY KEY (`id`),
-    UNIQUE KEY `uk_token` (`token`),
-    UNIQUE KEY `uk_uuid` (`uuid`)
+    UNIQUE KEY `uk_token` (`token`)
 ) ENGINE = InnoDB CHARSET = `utf8mb4` COMMENT ='访问令牌';
+ALTER TABLE `t_api_token` ADD INDEX `idx_1` (`uuid`,`expire_in`,`username`);
 
 CREATE TABLE `t_sys_dict`
 (

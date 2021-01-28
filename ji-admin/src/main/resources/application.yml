@@ -128,6 +128,11 @@ ji-boot:
     # 可自定义登录、注销地址
     login-url: '/login'
     logout-url: '/logout'
+    api-token:
+      # 过期时间,秒
+      expire-sec: 86400
+      # 每个用户的最大有效token
+      max-user-token: 1
     # 可自定义安全访问控制
     access:
       enabled: true

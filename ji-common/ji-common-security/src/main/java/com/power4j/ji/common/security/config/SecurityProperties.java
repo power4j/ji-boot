@@ -51,7 +51,12 @@ public class SecurityProperties {
 		/**
 		 * 发布者
 		 */
-		private String issueBy = "power4j.com";
+		private String issueBy = "00700-7616F11";
+
+		/**
+		 * 每个用户的并发登录控制
+		 */
+		private Integer maxUserToken = 1;
 
 	}
 

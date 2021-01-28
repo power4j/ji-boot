@@ -82,7 +82,12 @@ ji-boot:
     # 可自定义登录、注销地址
     login-url: '/login'
     logout-url: '/logout'
-    # 可自定义安全访问控制
+    api-token:
+      # 过期时间,秒
+      expire-sec: 86400
+      # 每个用户的并发登录控制
+      max-user-token: 2
+    # 自定义安全访问控制
     access:
       enabled: true
       # 静态资源,放行
