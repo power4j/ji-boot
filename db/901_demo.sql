@@ -27,6 +27,13 @@ insert  into `t_sys_user`(`id`,`sys_flag`,`del_flag`,`create_by`,`create_at`,`up
 values (1339613299839381505,0,NULL,'admin','2020-12-18 00:47:54','admin','2021-01-02 15:56:04','admin2','$2a$10$WNiWpSGX64Z3toh8z1Ba9OVGXq9jLb.3PRb9UXts0L1oTXXUv44sC',NULL,'测试235','','18081020301',NULL,'0');
 
 
+insert  into `t_sys_dict`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`code`,`name`,`remarks`) values (9000000,1,NULL,'2020-12-30 13:57:19',NULL,'sys_flag','技术等级',NULL);
+insert  into `t_sys_dict_item`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`dict_id`,`value`,`label`,`remarks`) values (9000001,1,NULL,'2020-12-30 13:57:19',NULL,9000000,'1','普通',NULL);
+insert  into `t_sys_dict_item`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`dict_id`,`value`,`label`,`remarks`) values (9000002,1,NULL,'2020-12-30 13:57:19',NULL,9000000,'2','高级',NULL);
+insert  into `t_sys_dict_item`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`dict_id`,`value`,`label`,`remarks`) values (9000003,1,NULL,'2020-12-30 13:57:19',NULL,9000000,'3','面向产品编程',NULL);
+insert  into `t_sys_dict_item`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`dict_id`,`value`,`label`,`remarks`) values (9000004,1,NULL,'2020-12-30 13:57:19',NULL,9000000,'4','面向百度编程',NULL);
+insert  into `t_sys_dict_item`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`dict_id`,`value`,`label`,`remarks`) values (9000005,1,NULL,'2020-12-30 13:57:19',NULL,9000000,'5','看脸',NULL);
+
 insert  into `t_sys_user`(`id`, `sys_flag`, `del_flag`, `create_by`, `create_at`, `update_by`, `update_at`, `username`, `password`, `salt`, `name`, `mail`, `mobile_phone`, `remarks`, `status`)
 values (2000, 1, NULL, NULL, NOW(), NULL, NULL, 'ops', '$2a$10$WNiWpSGX64Z3toh8z1Ba9OVGXq9jLb.3PRb9UXts0L1oTXXUv44sC', NULL, '集成测试账号', 'dev@power4j.com', '18088888888', '祝你好运', '0');
 
