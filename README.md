@@ -27,10 +27,11 @@
 - [x] 资源管理：负责管理UI资源，如菜单、按钮
 - [x] 权限管理：用户、角色、资源授权、角色授权
 - [x] 公共参数、数据字典
+- [x] 常量字典: 消除硬编码,前后端统一维护字典数据
 - [x] 服务异常报: 微信、钉钉
+- [x] 任务调度
 - [ ] 登录日志、接口审计日志
 - [ ] 数据权限
-- [ ] 任务调度
 - [ ] 报表功能
 - [ ] 公众号、小程序登录认证
 - [ ] 支付宝、微信支付
@@ -65,6 +66,14 @@ ji-boot:
       secret: ${WX_MP_SECRET}
       # 消息订阅者
       subscribers: oiwtWuMNNa6njL3bE7_9ADOKMEWc
+  # 常量字典
+  dict:
+    # 需要扫描项目以外的包
+    scan-packages: com.power4j.ji
+    # 启用内建的API接口
+    enable-endpoint: true
+    # 接口URL
+    endpoint-base-url: /sys/immutable-dictionaries
   # 自定义验证码产生地址和消费地址
   captcha:
     service-url: '/code'
