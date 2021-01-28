@@ -1,6 +1,6 @@
 #!/bin/bash
 
-read -p "Build and push? " -n 1 -r
+read -p "Build and push? [yN]" -n 1 -r
 echo    # (optional) move to a new line
 if [[ ! $REPLY =~ ^[Yy]$ ]]
 then
