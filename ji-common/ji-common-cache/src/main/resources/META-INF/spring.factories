@@ -1,3 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.power4j.ji.common.cache.config.CacheAutoConfig,\
-  com.power4j.ji.common.cache.caffeine.CaffeineCacheManagerPostProcessor
+  com.power4j.ji.common.cache.config.CacheAutoConfig

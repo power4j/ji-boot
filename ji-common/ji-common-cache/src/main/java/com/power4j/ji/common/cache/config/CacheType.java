@@ -13,9 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-@NonNullApi
-@NonNullFields
-package com.power4j.ji.common.cache;
 
-import org.springframework.lang.NonNullApi;
-import org.springframework.lang.NonNullFields;
+package com.power4j.ji.common.cache.config;
+
+/**
+ * @author CJ (power4j@outlook.com)
+ * @date 2021/1/29
+ * @since 1.0
+ */
+public enum CacheType {
+
+	/**
+	 * No caching.
+	 */
+	NONE,
+	/**
+	 * Caffeine caching.
+	 */
+	CAFFEINE,
+
+	/**
+	 * Redis caching.
+	 */
+	REDISSON
+
+}

@@ -17,11 +17,16 @@
 package com.power4j.ji.common.cache.config;
 
 import com.power4j.ji.common.cache.key.SimpleKeyMaker;
-import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.ImportSelector;
+import org.springframework.core.type.AnnotationMetadata;
 
 /**
  * @author CJ (power4j@outlook.com)
@@ -30,12 +35,29 @@ import org.springframework.context.annotation.Configuration;
  */
 @EnableCaching
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnClass(CacheAutoConfiguration.class)
+@ConditionalOnClass(CacheManager.class)
+@EnableConfigurationProperties(CacheProperties.class)
+@Import({ CacheAutoConfig.CacheConfigurationImportSelector.class })
 public class CacheAutoConfig {
 
 	@Bean("keyMaker")
+	@ConditionalOnBean(CacheManager.class)
 	public SimpleKeyMaker simpleKeyMaker() {
 		return new SimpleKeyMaker();
+	}
+
+	public static class CacheConfigurationImportSelector implements ImportSelector {
+
+		@Override
+		public String[] selectImports(AnnotationMetadata importingClassMetadata) {
+			CacheType[] types = CacheType.values();
+			String[] imports = new String[types.length];
+			for (int i = 0; i < types.length; i++) {
+				imports[i] = CacheConfigurations.getConfigurationClass(types[i]);
+			}
+			return imports;
+		}
+
 	}
 
 }

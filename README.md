@@ -55,6 +55,16 @@ ji-boot:
     global-security-scheme: 
       # 开启后能在swagger页面设置api-token,这样才能以用户的身份调用后端接口
       enabled: false
+  # 缓存配置
+  cache:
+    # redisson caffeine none
+    type: redisson
+    caffeine:
+      spec: "expireAfterWrite=24h,maximumSize=100000"
+    redisson:
+      ttl: 86400000
+      max-idle-time: 36000
+      max-size: 0
   notify:
     # 钉钉消息通知
     ding-talk:
@@ -76,7 +86,7 @@ ji-boot:
     endpoint-base-url: /sys/immutable-dictionaries
   # 自定义验证码产生地址和消费地址
   captcha:
-    service-url: '/code'
+    code-url: '/code'
     consumer: '/login'
   security:
     # 可自定义登录、注销地址
