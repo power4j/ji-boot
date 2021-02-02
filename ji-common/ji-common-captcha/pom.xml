@@ -35,8 +35,8 @@
       <artifactId>ji-common-cache</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.github.whvcse</groupId>
-      <artifactId>easy-captcha</artifactId>
+      <groupId>com.power4j.kit</groupId>
+      <artifactId>ez-captcha</artifactId>
     </dependency>
   </dependencies>
 

@@ -71,6 +71,7 @@ public class DictScannerConfigurer
 	@Setter
 	private Class<? extends Annotation> annotationClass;
 
+	@Nullable
 	private ApplicationContext applicationContext;
 
 	@Override
@@ -91,6 +92,7 @@ public class DictScannerConfigurer
 		DictResolver dictResolver = new DefaultDictResolver();
 		beanDefinitionSet.forEach(bds -> {
 			try {
+				@SuppressWarnings("unchecked")
 				Class<Enum<?>> enumClass = (Class<Enum<?>>) Class.forName(bds.getBeanClassName());
 				Dict dict = dictResolver.resolve(enumClass).orElse(null);
 				if (dict != null) {

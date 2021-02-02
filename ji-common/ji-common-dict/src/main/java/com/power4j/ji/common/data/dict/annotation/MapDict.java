@@ -32,13 +32,11 @@ public @interface MapDict {
 
 	/**
 	 * 字典编码,必须唯一
-	 * @return
 	 */
 	String code() default "";
 
 	/**
 	 * 字典名称,方便前端展示
-	 * @return
 	 */
 	String name() default "";
 
@@ -49,7 +47,6 @@ public @interface MapDict {
 
 	/**
 	 * 字典项,不能为空
-	 * @return
 	 */
 	Item[] items() default {};
 

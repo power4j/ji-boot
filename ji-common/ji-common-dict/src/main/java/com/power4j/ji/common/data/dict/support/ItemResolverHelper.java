@@ -61,12 +61,16 @@ public class ItemResolverHelper {
 
 	private final Map<Object, Object> remarksMap = new HashMap<>(8);
 
+	@Nullable
 	private Function<Enum<?>, Object> labelFunc;
 
+	@Nullable
 	private Function<Enum<?>, Object> valueFunc;
 
+	@Nullable
 	private Function<Enum<?>, Object> styleFunc;
 
+	@Nullable
 	private Function<Enum<?>, Object> remarksFunc;
 
 	public static DictItem createDictItem(String value, @Nullable String label, @Nullable String style,

@@ -25,7 +25,7 @@ import com.power4j.ji.common.core.model.ApiResponse;
 import com.power4j.ji.common.core.util.ApiResponseUtil;
 import com.power4j.ji.common.core.util.DateTimeUtil;
 import com.power4j.ji.common.core.util.HttpServletResponseUtil;
-import com.wf.captcha.SpecCaptcha;
+import com.power4j.kit.captcha.SpecCaptcha;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

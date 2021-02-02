@@ -14,22 +14,10 @@
  * limitations under the License.
  */
 
+
+@NonNullApi
+@NonNullFields
 package com.power4j.ji.common.data.dict.config;
 
-import com.power4j.ji.common.data.dict.repository.DictRepository;
-
-/**
- * @author CJ (power4j@outlook.com)
- * @date 2021/1/27
- * @since 1.0
- */
-@FunctionalInterface
-public interface DictRepositoryCustomizer {
-
-	/**
-	 * Customizer for DictRepository
-	 * @param dictRepository
-	 */
-	void customize(DictRepository dictRepository);
-
-}
+import org.springframework.lang.NonNullApi;
+import org.springframework.lang.NonNullFields;

@@ -38,6 +38,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotationMetadata;
+import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
@@ -75,8 +76,10 @@ public class DictMapperAutoConfig {
 	public static class DictMapperScannerRegistrar
 			implements EnvironmentAware, BeanFactoryAware, ImportBeanDefinitionRegistrar {
 
+		@Nullable
 		private BeanFactory beanFactory;
 
+		@Nullable
 		private Environment environment;
 
 		@Override

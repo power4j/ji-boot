@@ -80,7 +80,7 @@ public class DictEndpoint {
 		DictConverter<?> converter = dictConverters.getIfAvailable();
 		List<?> converted = data;
 		if (converter != null) {
-			converted = data.stream().map(o -> converter.convert(o)).collect(Collectors.toList());
+			converted = data.stream().map(converter::convert).collect(Collectors.toList());
 		}
 		return ResponseEntity
 				.ok(restResponseProcessors.getIfAvailable(() -> RestResponseProcessor.AS_IS).process(converted));
@@ -90,11 +90,11 @@ public class DictEndpoint {
 	@GetMapping("/code/{code}")
 	@Operation(summary = "字典项列表")
 	public ResponseEntity<?> listItems(@PathVariable("code") String code) {
-		List<DictItem> data = dictRepository.get(code).map(dict -> dict.getItems()).orElse(Collections.emptyList());
+		List<DictItem> data = dictRepository.get(code).map(Dict::getItems).orElse(Collections.emptyList());
 		DictItemConverter<?> converter = dictItemConverters.getIfAvailable();
 		List<?> converted = data;
 		if (converter != null) {
-			converted = data.stream().map(o -> converter.convert(o)).collect(Collectors.toList());
+			converted = data.stream().map(converter::convert).collect(Collectors.toList());
 		}
 
 		return ResponseEntity
@@ -102,8 +102,11 @@ public class DictEndpoint {
 	}
 
 	protected List<Dict> makeDictList() {
-		return dictRepository.getDictMap().values().stream().sorted(Comparator.comparing(Dict::getCode))
-				.collect(Collectors.toList());
+		if(dictRepository.getDictMap() != null){
+			return dictRepository.getDictMap().values().stream().sorted(Comparator.comparing(Dict::getCode))
+					.collect(Collectors.toList());
+		}
+		return Collections.emptyList();
 	}
 
 }
