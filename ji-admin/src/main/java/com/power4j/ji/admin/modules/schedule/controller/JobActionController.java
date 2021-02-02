@@ -47,7 +47,7 @@ public class JobActionController {
 	@PreAuthorize("@pms.any('sys:job:action')")
 	@PostMapping("/{jobId}/action/trigger")
 	public ApiResponse<String> runNow(@PathVariable("jobId") Long jobId) {
-		return ApiResponseUtil.ok(sysJobService.scheduleNow(jobId));
+		return ApiResponseUtil.ok(sysJobService.scheduleNow(jobId, true));
 	}
 
 	@Operation(summary = "停止调度")

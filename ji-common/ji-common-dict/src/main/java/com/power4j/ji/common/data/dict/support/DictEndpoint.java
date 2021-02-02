@@ -102,7 +102,7 @@ public class DictEndpoint {
 	}
 
 	protected List<Dict> makeDictList() {
-		if(dictRepository.getDictMap() != null){
+		if (dictRepository.getDictMap() != null) {
 			return dictRepository.getDictMap().values().stream().sorted(Comparator.comparing(Dict::getCode))
 					.collect(Collectors.toList());
 		}

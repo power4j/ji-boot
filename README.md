@@ -3,7 +3,7 @@
 - 使用 Spring Boot 最新版本
 - 基于Spring Security 的 RBAC权限控制，访问控制可配置，也可以注解
 - 菜单、按钮权限动态控制，且有越权控制
-- 可选择使用`Redis`、`Caffeine`、`EhCache`等各种缓存
+- 可选择使用`Redis`、`Caffeine`作为缓存，可以满足集群、单机部署需求。
 - 基于OpenAPI V3的API文档管理，支持`swagger`和`knife4j`
 - 公共模块组件化，方便独立维护，代码复用性高
 - 前后端采用开源框架`D2-Admin`，使用`d2-crud-plus`极大提高了UI开发效率

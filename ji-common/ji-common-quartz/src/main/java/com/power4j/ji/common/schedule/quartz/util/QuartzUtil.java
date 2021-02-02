@@ -117,15 +117,15 @@ public class QuartzUtil {
 	}
 
 	/**
-	 * 获取触发器
+	 * 获取已经存在的触发器
 	 * @param planId
 	 * @param planGroup
 	 * @return
 	 */
-	@Nullable
-	public CronTrigger getCronTrigger(Scheduler scheduler, Object planId, @Nullable String planGroup) {
+	public Optional<CronTrigger> getCronTrigger(Scheduler scheduler, Object planId, @Nullable String planGroup) {
 		try {
-			return (CronTrigger) scheduler.getTrigger(makeTriggerKey(planId, planGroup));
+			return Optional.ofNullable(scheduler.getTrigger(makeTriggerKey(planId, planGroup)))
+					.map(o -> (CronTrigger) o);
 		}
 		catch (SchedulerException e) {
 			throw new BizException(SysErrorCodes.E_JOB_FAIL, e);
@@ -140,7 +140,7 @@ public class QuartzUtil {
 	 * @return
 	 */
 	public Optional<LocalDateTime> getNextScheduleTime(Scheduler scheduler, Object planId, @Nullable String planGroup) {
-		CronTrigger trigger = getCronTrigger(scheduler, planId, planGroup);
+		CronTrigger trigger = getCronTrigger(scheduler, planId, planGroup).orElse(null);
 		if (trigger == null) {
 			return Optional.empty();
 		}
@@ -155,7 +155,6 @@ public class QuartzUtil {
 	 */
 	public Optional<LocalDateTime> createPlan(Scheduler scheduler, ExecutionPlan plan) {
 		try {
-
 			Pair<JobDetail, CronTrigger> entry = buildCronPlan(plan);
 			scheduler.scheduleJob(entry.getKey(), entry.getValue());
 			if (PlanStatusEnum.PAUSE.equals(plan.getStatus())) {
@@ -175,12 +174,12 @@ public class QuartzUtil {
 	}
 
 	/**
+	 * 重新创建
 	 * @param scheduler
 	 * @param plan
 	 * @return 返回下一次计划执行时间
-	 * @deprecated
 	 */
-	public Optional<LocalDateTime> updatePlan(Scheduler scheduler, ExecutionPlan plan) {
+	public Optional<LocalDateTime> reCreatPlan(Scheduler scheduler, ExecutionPlan plan) {
 		try {
 			final JobKey jobKey = makeJobKey(plan.getPlanId(), plan.getGroupName());
 			scheduler.deleteJob(jobKey);
@@ -197,26 +196,26 @@ public class QuartzUtil {
 	 * @param plan
 	 * @return
 	 */
-	public boolean createMissingPlan(Scheduler scheduler, ExecutionPlan plan) {
-		final CronTrigger cronTrigger = getCronTrigger(scheduler, plan.getPlanId(), plan.getGroupName());
+	public Optional<LocalDateTime> sync(Scheduler scheduler, ExecutionPlan plan) {
+		final CronTrigger cronTrigger = getCronTrigger(scheduler, plan.getPlanId(), plan.getGroupName()).orElse(null);
 		if (cronTrigger == null) {
-			createPlan(scheduler, plan);
-			return true;
+			return createPlan(scheduler, plan);
 		}
 		else {
-			return false;
+			return updatePlan(scheduler, plan);
 		}
 	}
 
 	/**
-	 * 重新调度已经存在的作业
+	 * 更新已经存在的作业
 	 * @param scheduler
 	 * @param plan
 	 * @return
 	 */
-	public Optional<LocalDateTime> reschedulePlan(Scheduler scheduler, ExecutionPlan plan) {
+	public Optional<LocalDateTime> updatePlan(Scheduler scheduler, ExecutionPlan plan) {
 		TriggerKey triggerKey = makeTriggerKey(plan.getPlanId(), plan.getGroupName());
 		CronTrigger newTrigger = buildCronTrigger(plan);
+		newTrigger.getJobDataMap().put(QuartzConstant.KEY_TASK_PLAN, plan);
 		try {
 			scheduler.rescheduleJob(triggerKey, newTrigger);
 		}
@@ -239,15 +238,17 @@ public class QuartzUtil {
 	 * 立即触发任务
 	 * @param scheduler
 	 * @param plan
+	 * @param force
 	 * @return 返回执行ID
 	 */
-	public String triggerNow(Scheduler scheduler, ExecutionPlan plan) {
+	public String triggerNow(Scheduler scheduler, ExecutionPlan plan, boolean force) {
 		final String executionId = IdUtil.objectId();
 		try {
 			// 参数
 			JobDataMap dataMap = new JobDataMap();
 			dataMap.put(QuartzConstant.KEY_TASK_PLAN, plan);
 			dataMap.put(QuartzConstant.KEY_TASK_EXEC_ID, executionId);
+			dataMap.put(QuartzConstant.KEY_EXEC_FORCE, force);
 			scheduler.triggerJob(makeJobKey(plan.getPlanId(), plan.getGroupName()), dataMap);
 			return executionId;
 		}

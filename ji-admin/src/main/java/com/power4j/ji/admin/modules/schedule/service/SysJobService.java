@@ -46,9 +46,10 @@ public interface SysJobService extends CrudService<SysJobDTO, SysJob> {
 	/**
 	 * 立即调度
 	 * @param jobId
+	 * @param force
 	 * @return 返回调度ID
 	 */
-	String scheduleNow(Long jobId);
+	String scheduleNow(Long jobId, boolean force);
 
 	/**
 	 * 停止调度

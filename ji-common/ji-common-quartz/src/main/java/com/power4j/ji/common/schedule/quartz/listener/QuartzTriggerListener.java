@@ -31,6 +31,8 @@ import org.quartz.JobExecutionContext;
 import org.quartz.Trigger;
 import org.quartz.TriggerListener;
 
+import java.util.Optional;
+
 /**
  * @author CJ (power4j@outlook.com)
  * @date 2021/1/19
@@ -51,9 +53,7 @@ public class QuartzTriggerListener implements TriggerListener {
 			executionId = IdUtil.objectId();
 			context.put(QuartzConstant.KEY_TASK_EXEC_ID, executionId);
 		}
-
 		// @formatter:off
-
 		if (log.isDebugEnabled()) {
 			log.debug("[QTZ_TG] {} [FireInstance {}] [TriggerKey {}] trigger fired{},previous fire time : {}",
 					executionId,
@@ -62,9 +62,7 @@ public class QuartzTriggerListener implements TriggerListener {
 					context.isRecovering()?"(For recovering Job)":"",
 					DateTimeUtil.forLogging(DateTimeUtil.toLocalDateTime(context.getPreviousFireTime())));
 		}
-
 		// @formatter:on
-
 		final ExecutionPlan executionPlan = (ExecutionPlan) context.getMergedJobDataMap()
 				.get(QuartzConstant.KEY_TASK_PLAN);
 		TriggerStartEvent triggerStartEvent = new TriggerStartEvent();
@@ -78,32 +76,32 @@ public class QuartzTriggerListener implements TriggerListener {
 	public boolean vetoJobExecution(Trigger trigger, JobExecutionContext context) {
 		final ExecutionPlan executionPlan = (ExecutionPlan) context.getMergedJobDataMap()
 				.get(QuartzConstant.KEY_TASK_PLAN);
+		final boolean runForce = Optional
+				.ofNullable((Boolean) context.getMergedJobDataMap().get(QuartzConstant.KEY_EXEC_FORCE)).orElse(false);
 		final Object executionId = context.get(QuartzConstant.KEY_TASK_EXEC_ID);
-		final boolean reject = !PlanStatusEnum.NORMAL.equals(executionPlan.getStatus());
+		final boolean accept = runForce || PlanStatusEnum.NORMAL.equals(executionPlan.getStatus());
 
-		// @formatter:off
-
-		if (log.isDebugEnabled()) {
-			log.debug("[QTZ_TG] {} [FireInstance {}] [TriggerKey {}] job vetoed {}",
+		if (!accept) {
+			// @formatter:off
+			log.info("[QTZ_TG] {} [FireInstance {}] [TriggerKey {}] job vetoed,runForce = {},plan status = {}",
 					executionId,
 					context.getFireInstanceId(),
 					trigger.getKey().toString(),
-					reject);
+					runForce,
+					executionPlan.getStatus());
+			// @formatter:on
 		}
 
-		// @formatter:on
-		return reject;
+		return !accept;
 	}
 
 	@Override
 	public void triggerMisfired(Trigger trigger) {
 		// @formatter:off
-
 		log.warn("[QTZ_TG] [TriggerKey {}] trigger misfired,next fire time : {}",
 				trigger.getKey().toString(),
 				DateTimeUtil.forLogging(DateTimeUtil.toLocalDateTime(trigger.getNextFireTime()))
 		);
-
 		// @formatter:on
 	}
 
@@ -113,7 +111,6 @@ public class QuartzTriggerListener implements TriggerListener {
 		final Object executionId = context.get(QuartzConstant.KEY_TASK_EXEC_ID);
 
 		// @formatter:off
-
 		if (log.isDebugEnabled()) {
 			log.debug("[QTZ_TG] {} [FireInstance {}] [TriggerKey {}] trigger complete with instruction :{}, next fire time : {}",
 					executionId,
@@ -122,7 +119,6 @@ public class QuartzTriggerListener implements TriggerListener {
 					triggerInstructionCode.name(),
 					DateTimeUtil.forLogging(DateTimeUtil.toLocalDateTime(trigger.getNextFireTime())));
 		}
-
 		// @formatter:on
 
 		final ExecutionPlan executionPlan = (ExecutionPlan) context.getMergedJobDataMap()

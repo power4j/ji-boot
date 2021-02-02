@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 @NonNullApi
 @NonNullFields
 package com.power4j.ji.common.data.dict.config;

@@ -43,8 +43,7 @@ public class ScheduleInit {
 	@PostConstruct
 	public void init() {
 		List<SysJobDTO> jobList = sysJobService.listAll();
-		jobList.stream().map(ScheduleUtil::toExecutionPlan)
-				.forEach(plan -> QuartzUtil.createMissingPlan(scheduler, plan));
+		jobList.stream().map(ScheduleUtil::toExecutionPlan).forEach(plan -> QuartzUtil.sync(scheduler, plan));
 	}
 
 }

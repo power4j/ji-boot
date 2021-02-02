@@ -27,6 +27,8 @@ public interface QuartzConstant {
 
 	String KEY_TASK_EXEC_ID = "EXECUTION_ID";
 
+	String KEY_EXEC_FORCE = "EXEC_FORCE";
+
 	String DEFAULT_JOB_GROUP = "DEFAULT";
 
 	String JOB_NAME_PREFIX = "job_";

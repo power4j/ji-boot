@@ -32,7 +32,6 @@ import com.power4j.ji.common.core.constant.SysErrorCodes;
 import com.power4j.ji.common.core.exception.BizException;
 import com.power4j.ji.common.core.model.PageData;
 import com.power4j.ji.common.core.model.PageRequest;
-import com.power4j.ji.common.core.util.DateTimeUtil;
 import com.power4j.ji.common.core.util.SpringContextUtil;
 import com.power4j.ji.common.data.crud.constant.SysCtlFlagEnum;
 import com.power4j.ji.common.data.crud.service.impl.AbstractCrudService;
@@ -79,10 +78,7 @@ public class SysJobServiceImpl extends AbstractCrudService<SysJobMapper, SysJobD
 	@Override
 	public SysJobDTO post(SysJobDTO dto) {
 		SysJobDTO ret = super.post(dto);
-		Optional<LocalDateTime> nextRun = QuartzUtil.createPlan(scheduler, ScheduleUtil.toExecutionPlan(ret));
-		if (log.isDebugEnabled()) {
-			log.debug("Job #{} 的下一次计划执行为:{}", ret.getId(), DateTimeUtil.forLogging(nextRun.orElse(null)));
-		}
+		QuartzUtil.createPlan(scheduler, ScheduleUtil.toExecutionPlan(ret));
 		return ret;
 	}
 
@@ -93,11 +89,11 @@ public class SysJobServiceImpl extends AbstractCrudService<SysJobMapper, SysJobD
 
 		SysJob entity = getById(dto.getOnlyId());
 		if (entity == null) {
-			throw new BizException(SysErrorCodes.E_CONFLICT, String.format("数据不存在"));
+			throw new BizException(SysErrorCodes.E_CONFLICT, "数据不存在");
 		}
 		checkSysCtlNot(entity, SysCtlFlagEnum.SYS_LOCKED.getValue(), "系统数据不允许修改");
 		if (PlanStatusEnum.NORMAL.getValue().equals(entity.getStatus())) {
-			throw new BizException(SysErrorCodes.E_CONFLICT, String.format("请先停止调度该任务"));
+			throw new BizException(SysErrorCodes.E_CONFLICT, "请先停止调度该任务");
 		}
 		dto.setUpdateBy(SecurityUtil.getLoginUsername().orElse(null));
 		return dto;
@@ -107,7 +103,7 @@ public class SysJobServiceImpl extends AbstractCrudService<SysJobMapper, SysJobD
 	@Override
 	public SysJobDTO put(SysJobDTO dto) {
 		SysJobDTO ret = super.put(dto);
-		QuartzUtil.reschedulePlan(scheduler, ScheduleUtil.toExecutionPlan(ret));
+		QuartzUtil.updatePlan(scheduler, ScheduleUtil.toExecutionPlan(ret));
 		return ret;
 	}
 
@@ -137,13 +133,13 @@ public class SysJobServiceImpl extends AbstractCrudService<SysJobMapper, SysJobD
 	}
 
 	@Override
-	public String scheduleNow(Long jobId) {
+	public String scheduleNow(Long jobId, boolean force) {
 		SysJobDTO job = require(jobId);
-		if (!PlanStatusEnum.NORMAL.getValue().equals(job.getStatus())) {
-			throw new BizException(SysErrorCodes.E_CONFLICT, "任务已停止调度,请先恢复调度");
+		if (!PlanStatusEnum.NORMAL.getValue().equals(job.getStatus()) && !force) {
+			throw new BizException(SysErrorCodes.E_CONFLICT, "任务已停止调度,请先恢复调度或者强制执行");
 		}
 		// FIXME: 限制频率
-		return QuartzUtil.triggerNow(scheduler, ScheduleUtil.toExecutionPlan(job));
+		return QuartzUtil.triggerNow(scheduler, ScheduleUtil.toExecutionPlan(job), force);
 	}
 
 	@Transactional(rollbackFor = Exception.class)
@@ -183,7 +179,7 @@ public class SysJobServiceImpl extends AbstractCrudService<SysJobMapper, SysJobD
 	protected void validateTaskBean(String beanName) {
 
 		Object bean = SpringContextUtil.getBean(beanName).orElseThrow(
-				() -> new BizException(SysErrorCodes.E_PARAM_INVALID, String.format("Bean不存在:{}", beanName)));
+				() -> new BizException(SysErrorCodes.E_PARAM_INVALID, String.format("Bean不存在:%s", beanName)));
 
 		if (!(bean instanceof ITask)) {
 			throw new BizException(SysErrorCodes.E_PARAM_INVALID,
@@ -193,7 +189,7 @@ public class SysJobServiceImpl extends AbstractCrudService<SysJobMapper, SysJobD
 
 	protected void validateCron(String cron) {
 		CronUtil.parse(cron).orElseThrow(
-				() -> new BizException(SysErrorCodes.E_PARAM_INVALID, String.format("不是有效的Cron表达式:{}", cron)));
+				() -> new BizException(SysErrorCodes.E_PARAM_INVALID, String.format("不是有效的Cron表达式:%s", cron)));
 	}
 
 }
