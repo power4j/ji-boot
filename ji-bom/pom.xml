@@ -59,8 +59,8 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <!-- dependencies -->
     <ji.version>0.2.1</ji.version>
+    <!-- dependencies -->
     <druid.version>1.1.21</druid.version>
     <hutool.version>5.5.8</hutool.version>
     <knife4j.version>3.0.2</knife4j.version>
@@ -70,7 +70,7 @@
     <ez-captcha.version>0.1.1</ez-captcha.version>
     <friendly-id.version>1.1.0</friendly-id.version>
     <mybatis-plus.version>3.4.0</mybatis-plus.version>
-    <springdoc-openapi.version>1.5.2</springdoc-openapi.version>
+    <springdoc-openapi.version>1.5.3</springdoc-openapi.version>
     <transmittable-thread-local.version>2.12.0</transmittable-thread-local.version>
     <hibernate-validator-test-utils.version>6.1.6.Final</hibernate-validator-test-utils.version>
   </properties>
