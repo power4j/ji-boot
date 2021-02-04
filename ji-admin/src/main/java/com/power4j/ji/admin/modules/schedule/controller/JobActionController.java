@@ -19,6 +19,7 @@ package com.power4j.ji.admin.modules.schedule.controller;
 import com.power4j.ji.admin.modules.schedule.service.SysJobService;
 import com.power4j.ji.common.core.model.ApiResponse;
 import com.power4j.ji.common.core.util.ApiResponseUtil;
+import com.power4j.ji.common.security.util.SecurityUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +48,7 @@ public class JobActionController {
 	@PreAuthorize("@pms.any('sys:job:action')")
 	@PostMapping("/{jobId}/action/trigger")
 	public ApiResponse<String> runNow(@PathVariable("jobId") Long jobId) {
-		return ApiResponseUtil.ok(sysJobService.scheduleNow(jobId, true));
+		return ApiResponseUtil.ok(sysJobService.scheduleNow(jobId, true, SecurityUtil.getLoginUsername().get()));
 	}
 
 	@Operation(summary = "停止调度")

@@ -36,20 +36,26 @@ public class SysJobLogDTO implements Unique, Serializable {
 	/**
 	 * 主健
 	 */
-	@Schema(description = "作业组")
+	@Schema(description = "ID")
 	private Long id;
-
-	/**
-	 * 作业ID
-	 */
-	@Schema(description = "作业组")
-	private Long jobId;
 
 	/**
 	 * 执行ID
 	 */
 	@Schema(description = "执行ID")
 	private String executionId;
+
+	/**
+	 * 触发者,null表示由系统触发
+	 */
+	@Schema(description = "触发者")
+	private String fireBy;
+
+	/**
+	 * 作业ID
+	 */
+	@Schema(description = "作业ID")
+	private Long jobId;
 
 	/**
 	 * 作业组

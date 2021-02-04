@@ -62,8 +62,9 @@ public class ScheduleUtil {
 	 */
 	public SysJobLog toSysJobLog(TaskEndEvent event) {
 		SysJobLog jobLog = new SysJobLog();
-		jobLog.setJobId(event.getPlan().getPlanId());
 		jobLog.setExecutionId(event.getExecutionId());
+		jobLog.setJobId(event.getPlan().getPlanId());
+		jobLog.setFireBy(event.getFireBy());
 		jobLog.setGroupName(event.getPlan().getGroupName());
 		jobLog.setTaskBean(event.getPlan().getTaskBean());
 		jobLog.setShortDescription(event.getPlan().getDescription());

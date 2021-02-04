@@ -177,8 +177,9 @@ ALTER TABLE `t_sys_job` ADD INDEX `idx_del_flag` (`del_flag`);
 CREATE TABLE `t_sys_job_log`
 (
     `id`          BIGINT      NOT NULL COMMENT '主健',
-    `job_id`      BIGINT      NOT NULL COMMENT '作业ID',
     `execution_id` VARCHAR(40) NOT NULL COMMENT '执行ID',
+    `fire_by`      VARCHAR(100) COMMENT '触发者',
+    `job_id`       BIGINT      NOT NULL COMMENT '作业ID',
     `group_name`   VARCHAR(20) COMMENT '作业组',
     `task_bean`    VARCHAR(255) COMMENT 'bean名称',
     `short_description`  VARCHAR(20) COMMENT '任务说明',

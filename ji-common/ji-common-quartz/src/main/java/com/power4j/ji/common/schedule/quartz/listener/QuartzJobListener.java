@@ -59,6 +59,7 @@ public class QuartzJobListener implements JobListener {
 		}
 		// @formatter:on
 
+		final String fireBy = context.getMergedJobDataMap().getString(QuartzConstant.KEY_EXEC_FIRE_BY);
 		final ExecutionPlan executionPlan = (ExecutionPlan) context.getMergedJobDataMap()
 				.get(QuartzConstant.KEY_TASK_PLAN);
 		TaskStartEvent event = new TaskStartEvent();
@@ -66,6 +67,7 @@ public class QuartzJobListener implements JobListener {
 		event.setExecutionId(executionId.toString());
 		event.setStage(ExecutionStageEnum.TASK_START);
 		event.setStartTime(DateTimeUtil.utcNow());
+		event.setFireBy(fireBy);
 		SpringContextUtil.publishEvent(event);
 
 	}
@@ -98,10 +100,11 @@ public class QuartzJobListener implements JobListener {
 		}
 		// @formatter:on
 
+		final String fireBy = context.getMergedJobDataMap().getString(QuartzConstant.KEY_EXEC_FIRE_BY);
 		final ExecutionPlan executionPlan = (ExecutionPlan) context.getMergedJobDataMap()
 				.get(QuartzConstant.KEY_TASK_PLAN);
 		final Optional<JobExecutionException> ex = Optional.ofNullable(jobException);
-		final Optional<Throwable> causeBy = ex.map(r -> r.getCause());
+		final Optional<Throwable> causeBy = ex.map(Throwable::getCause);
 		final LocalDateTime utcNow = DateTimeUtil.utcNow();
 		TaskEndEvent event = new TaskEndEvent();
 		EventHelper.fillValues(event, context, executionPlan);
@@ -111,9 +114,10 @@ public class QuartzJobListener implements JobListener {
 		event.setEndTime(utcNow);
 		event.setElapsed(Duration.ofMillis(context.getJobRunTime()));
 		event.setSuccess(jobException == null);
-		event.setErrMsg(ex.map(r -> r.getMessage()).orElse(null));
+		event.setErrMsg(ex.map(Throwable::getMessage).orElse(null));
 		event.setCauseBy(causeBy.map(r -> r.getClass().getName()).orElse(null));
-		event.setCauseByMsg(causeBy.map(r -> r.getMessage()).orElse(null));
+		event.setCauseByMsg(causeBy.map(Throwable::getMessage).orElse(null));
+		event.setFireBy(fireBy);
 		SpringContextUtil.publishEvent(event);
 	}
 

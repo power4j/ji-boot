@@ -19,6 +19,7 @@ package com.power4j.ji.common.schedule.quartz.event;
 import com.power4j.ji.common.schedule.quartz.job.ExecutionPlan;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.lang.Nullable;
 
 import java.time.LocalDateTime;
 
@@ -41,5 +42,11 @@ public abstract class ExecutionEvent {
 	 * UTC时间
 	 */
 	private LocalDateTime happenAt;
+
+	/**
+	 * Null 表示由调度器触发
+	 */
+	@Nullable
+	private String fireBy;
 
 }

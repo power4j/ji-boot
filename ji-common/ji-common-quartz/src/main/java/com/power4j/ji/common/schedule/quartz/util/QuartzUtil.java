@@ -241,7 +241,7 @@ public class QuartzUtil {
 	 * @param force
 	 * @return 返回执行ID
 	 */
-	public String triggerNow(Scheduler scheduler, ExecutionPlan plan, boolean force) {
+	public String triggerNow(Scheduler scheduler, ExecutionPlan plan, boolean force, String fireBy) {
 		final String executionId = IdUtil.objectId();
 		try {
 			// 参数
@@ -249,6 +249,7 @@ public class QuartzUtil {
 			dataMap.put(QuartzConstant.KEY_TASK_PLAN, plan);
 			dataMap.put(QuartzConstant.KEY_TASK_EXEC_ID, executionId);
 			dataMap.put(QuartzConstant.KEY_EXEC_FORCE, force);
+			dataMap.put(QuartzConstant.KEY_EXEC_FIRE_BY, fireBy);
 			scheduler.triggerJob(makeJobKey(plan.getPlanId(), plan.getGroupName()), dataMap);
 			return executionId;
 		}

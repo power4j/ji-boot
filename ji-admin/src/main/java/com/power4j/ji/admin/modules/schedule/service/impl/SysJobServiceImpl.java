@@ -133,13 +133,13 @@ public class SysJobServiceImpl extends AbstractCrudService<SysJobMapper, SysJobD
 	}
 
 	@Override
-	public String scheduleNow(Long jobId, boolean force) {
+	public String scheduleNow(Long jobId, boolean force, String fireBy) {
 		SysJobDTO job = require(jobId);
 		if (!PlanStatusEnum.NORMAL.getValue().equals(job.getStatus()) && !force) {
 			throw new BizException(SysErrorCodes.E_CONFLICT, "任务已停止调度,请先恢复调度或者强制执行");
 		}
 		// FIXME: 限制频率
-		return QuartzUtil.triggerNow(scheduler, ScheduleUtil.toExecutionPlan(job), force);
+		return QuartzUtil.triggerNow(scheduler, ScheduleUtil.toExecutionPlan(job), force, fireBy);
 	}
 
 	@Transactional(rollbackFor = Exception.class)

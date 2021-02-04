@@ -29,6 +29,8 @@ public interface QuartzConstant {
 
 	String KEY_EXEC_FORCE = "EXEC_FORCE";
 
+	String KEY_EXEC_FIRE_BY = "EXEC_FIRE_BY";
+
 	String DEFAULT_JOB_GROUP = "DEFAULT";
 
 	String JOB_NAME_PREFIX = "job_";

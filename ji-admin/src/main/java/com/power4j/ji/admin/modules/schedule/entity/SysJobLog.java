@@ -47,6 +47,11 @@ public class SysJobLog implements Serializable {
 	private String executionId;
 
 	/**
+	 * 触发者,null表示由系统触发
+	 */
+	private String fireBy;
+
+	/**
 	 * 作业ID
 	 */
 	private Long jobId;

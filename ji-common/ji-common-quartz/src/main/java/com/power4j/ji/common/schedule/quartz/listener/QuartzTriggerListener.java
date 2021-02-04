@@ -53,14 +53,16 @@ public class QuartzTriggerListener implements TriggerListener {
 			executionId = IdUtil.objectId();
 			context.put(QuartzConstant.KEY_TASK_EXEC_ID, executionId);
 		}
+		final String fireBy = context.getMergedJobDataMap().getString(QuartzConstant.KEY_EXEC_FIRE_BY);
 		// @formatter:off
 		if (log.isDebugEnabled()) {
-			log.debug("[QTZ_TG] {} [FireInstance {}] [TriggerKey {}] trigger fired{},previous fire time : {}",
+			log.debug("[QTZ_TG] {} [FireInstance {}] [TriggerKey {}] trigger fired {},previous fire time : {},fire by {}",
 					executionId,
 					context.getFireInstanceId(),
 					trigger.getKey().toString(),
 					context.isRecovering()?"(For recovering Job)":"",
-					DateTimeUtil.forLogging(DateTimeUtil.toLocalDateTime(context.getPreviousFireTime())));
+					DateTimeUtil.forLogging(DateTimeUtil.toLocalDateTime(context.getPreviousFireTime())),
+					fireBy);
 		}
 		// @formatter:on
 		final ExecutionPlan executionPlan = (ExecutionPlan) context.getMergedJobDataMap()
@@ -69,6 +71,7 @@ public class QuartzTriggerListener implements TriggerListener {
 		EventHelper.fillValues(triggerStartEvent, trigger, context, executionPlan);
 		triggerStartEvent.setExecutionId(executionId.toString());
 		triggerStartEvent.setStage(ExecutionStageEnum.TRIGGER_START);
+		triggerStartEvent.setFireBy(fireBy);
 		SpringContextUtil.publishEvent(triggerStartEvent);
 	}
 
@@ -121,6 +124,7 @@ public class QuartzTriggerListener implements TriggerListener {
 		}
 		// @formatter:on
 
+		final String fireBy = context.getMergedJobDataMap().getString(QuartzConstant.KEY_EXEC_FIRE_BY);
 		final ExecutionPlan executionPlan = (ExecutionPlan) context.getMergedJobDataMap()
 				.get(QuartzConstant.KEY_TASK_PLAN);
 		TriggerEndEvent triggerEndEvent = new TriggerEndEvent();
@@ -128,6 +132,7 @@ public class QuartzTriggerListener implements TriggerListener {
 		triggerEndEvent.setExecutionId(executionId.toString());
 		triggerEndEvent.setInstructionCode(triggerInstructionCode);
 		triggerEndEvent.setStage(ExecutionStageEnum.TRIGGER_END);
+		triggerEndEvent.setFireBy(fireBy);
 		SpringContextUtil.publishEvent(triggerEndEvent);
 	}
 
