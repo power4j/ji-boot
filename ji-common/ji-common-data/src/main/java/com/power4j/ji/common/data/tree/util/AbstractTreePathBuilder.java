@@ -17,6 +17,7 @@
 package com.power4j.ji.common.data.tree.util;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.power4j.ji.common.data.tree.entity.TreePath;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +32,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
- * TreePath帮助类
- * <p/>
- * 由于目前MP不支持泛型Lambda,因此查询条件需由子类实现
- *
- * @see <a href="https://github.com/baomidou/mybatis-plus/issues/2086">mybatis-plus
- * #2086</a>
+ * TreePath数据维护
  * @author CJ (power4j@outlook.com)
  * @date 2020/11/30
  * @since 1.0
@@ -45,6 +41,12 @@ public abstract class AbstractTreePathBuilder<T extends TreePath, M extends Base
 
 	@Autowired
 	private M dao;
+
+	/**
+	 * 创建 {@code Wrapper} 对象
+	 * @return
+	 */
+	protected abstract QueryWrapper<T> createWrapper();
 
 	/**
 	 * 创建对象
@@ -65,13 +67,6 @@ public abstract class AbstractTreePathBuilder<T extends TreePath, M extends Base
 	}
 
 	/**
-	 * 查询条件
-	 * @param id
-	 * @return
-	 */
-	protected abstract Wrapper<T> getRemoveNodeWrapper(Serializable id);
-
-	/**
 	 * 删除节点路径
 	 * @param id
 	 */
@@ -88,15 +83,6 @@ public abstract class AbstractTreePathBuilder<T extends TreePath, M extends Base
 	}
 
 	/**
-	 * 祖先查询条件
-	 * @param id
-	 * @param distanceMin 最小距离,从0开始, -1 表示无限制
-	 * @param distanceMax 最大距离,从0开始, -1 表示无限制
-	 * @return
-	 */
-	protected abstract Wrapper<T> getLoadAncestorsWrapper(Serializable id, int distanceMin, int distanceMax);
-
-	/**
 	 * 加载某个节点的祖先
 	 * @param id
 	 * @param distanceMin 最小距离,从0开始, -1 表示无限制
@@ -109,22 +95,19 @@ public abstract class AbstractTreePathBuilder<T extends TreePath, M extends Base
 
 	/**
 	 * 后代查询条件
-	 * @param id
-	 * @param distanceMin 最小距离,从0开始, -1 表示无限制
-	 * @param distanceMax 最大距离,从0开始, -1 表示无限制
-	 * @return
-	 */
-	protected abstract Wrapper<T> getLoadDescendantsWrapper(Serializable id, int distanceMin, int distanceMax);
-
-	/**
-	 * 后代查询条件
 	 * @param ids
 	 * @param distanceMin 最小距离,从0开始, -1 表示无限制
 	 * @param distanceMax 最大距离,从0开始, -1 表示无限制
 	 * @return
 	 */
-	protected abstract Wrapper<T> getLoadDescendantsWrapper(Collection<Serializable> ids, int distanceMin,
-			int distanceMax);
+	protected Wrapper<T> getLoadDescendantsWrapper(Collection<Serializable> ids, int distanceMin,
+			int distanceMax){
+		QueryWrapper<T>  wrapper = createWrapper();
+		wrapper.in("ancestor", ids)
+				.ge(distanceMin >= 0, "distance", distanceMin)
+				.le(distanceMax >= 0, "distance", distanceMax);
+		return wrapper;
+	}
 
 	/**
 	 * 加载某个节点的后代
@@ -147,13 +130,6 @@ public abstract class AbstractTreePathBuilder<T extends TreePath, M extends Base
 	public List<T> loadDescendants(Collection<Serializable> ids, int distanceMin, int distanceMax) {
 		return dao.selectList(getLoadDescendantsWrapper(ids, distanceMin, distanceMax));
 	}
-
-	/**
-	 * 距离查询条件
-	 * @param distance 距离
-	 * @return
-	 */
-	protected abstract Wrapper<T> getLoadByDistanceWrapper(int distance);
 
 	/**
 	 * 加载距离关系
@@ -189,7 +165,7 @@ public abstract class AbstractTreePathBuilder<T extends TreePath, M extends Base
 
 	public List<T> sortByDistance(@Nullable List<T> list, boolean asc) {
 		if (list != null && !list.isEmpty()) {
-			Comparator comparator = Comparator.comparing(TreePath::getDistance);
+			Comparator<T> comparator = Comparator.comparing(TreePath::getDistance);
 			list.sort(asc ? comparator : comparator.reversed());
 		}
 		return list;
@@ -212,4 +188,59 @@ public abstract class AbstractTreePathBuilder<T extends TreePath, M extends Base
 		return filtered;
 	}
 
+	//------------------------------------------------------------------------------------
+	//~ Wrappers
+
+	/**
+	 * 距离查询条件
+	 * @param distance 距离
+	 * @return
+	 */
+	protected Wrapper<T> getLoadByDistanceWrapper(int distance){
+		QueryWrapper<T>  wrapper = createWrapper();
+		wrapper.eq("distance", distance);
+		return wrapper;
+	}
+
+
+	/**
+	 * 祖先查询条件
+	 * @param id
+	 * @param distanceMin 最小距离,从0开始, -1 表示无限制
+	 * @param distanceMax 最大距离,从0开始, -1 表示无限制
+	 * @return
+	 */
+	protected Wrapper<T> getLoadAncestorsWrapper(Serializable id, int distanceMin, int distanceMax) {
+		QueryWrapper<T>  wrapper = createWrapper();
+		wrapper.eq("descendant", id)
+				.ge(distanceMin >= 0, "distance", distanceMin)
+				.le(distanceMax >= 0, "distance", distanceMax);
+		return wrapper;
+	}
+
+	/**
+	 * 后代查询条件
+	 * @param id
+	 * @param distanceMin 最小距离,从0开始, -1 表示无限制
+	 * @param distanceMax 最大距离,从0开始, -1 表示无限制
+	 * @return
+	 */
+	protected Wrapper<T> getLoadDescendantsWrapper(Serializable id, int distanceMin, int distanceMax){
+		QueryWrapper<T>  wrapper = createWrapper();
+		wrapper.eq("ancestor", id)
+				.ge(distanceMin >= 0, "distance", distanceMin)
+				.le(distanceMax >= 0, "distance", distanceMax);
+		return wrapper;
+	}
+
+	/**
+	 * 查询条件
+	 * @param id
+	 * @return
+	 */
+	protected Wrapper<T> getRemoveNodeWrapper(Serializable id){
+		QueryWrapper<T>  wrapper = createWrapper();
+		wrapper.eq("descendant", id);
+		return wrapper;
+	}
 }
