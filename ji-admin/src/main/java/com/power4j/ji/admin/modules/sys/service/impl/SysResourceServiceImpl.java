@@ -71,10 +71,13 @@ public class SysResourceServiceImpl extends AbstractCrudService<SysResourceMappe
 		return dto;
 	}
 
-	@Caching(evict = { @CacheEvict(cacheNames = { CacheConstant.Name.RESOURCE_TREE }, allEntries = true),
+	@Caching(evict = {
+			// @formatter:off
+			@CacheEvict(cacheNames = { CacheConstant.Name.RESOURCE_TREE }, allEntries = true),
 			@CacheEvict(cacheNames = { CacheConstant.Name.ROLE_CODES_TO_RESOURCES }, allEntries = true),
-			@CacheEvict(cacheNames = { CacheConstant.Name.ROLE_CODES_TO_RESOURCE_TREE }, allEntries = true,
-					condition = "#result != null") })
+			@CacheEvict(cacheNames = { CacheConstant.Name.ROLE_CODES_TO_RESOURCE_TREE }, allEntries = true,condition = "#result != null")
+			// @formatter:on
+	})
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public SysResourceDTO put(SysResourceDTO dto) {
@@ -91,12 +94,12 @@ public class SysResourceServiceImpl extends AbstractCrudService<SysResourceMappe
 	}
 
 	@Caching(evict = {
-			@CacheEvict(cacheNames = { CacheConstant.Name.RESOURCE_TREE }, allEntries = true,
-					condition = "#result != null"),
-			@CacheEvict(cacheNames = { CacheConstant.Name.ROLE_CODES_TO_RESOURCE_TREE }, allEntries = true,
-					condition = "#result != null"),
-			@CacheEvict(cacheNames = { CacheConstant.Name.ROLE_CODES_TO_RESOURCES }, allEntries = true,
-					condition = "#result != null") })
+			// @formatter:off
+			@CacheEvict(cacheNames = { CacheConstant.Name.RESOURCE_TREE }, allEntries = true,condition = "#result != null"),
+			@CacheEvict(cacheNames = { CacheConstant.Name.ROLE_CODES_TO_RESOURCE_TREE }, allEntries = true,condition = "#result != null"),
+			@CacheEvict(cacheNames = { CacheConstant.Name.ROLE_CODES_TO_RESOURCES }, allEntries = true,condition = "#result != null")
+			// @formatter:on
+	})
 	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public Optional<SysResourceDTO> delete(Serializable id) {

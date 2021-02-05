@@ -70,10 +70,10 @@ public class SysUserServiceImpl extends AbstractCrudService<SysUserMapper, SysUs
 
 	@Override
 	public PageData<SysUserDTO> selectPage(PageRequest pageRequest, SearchSysUserVO param) {
-		LocalDate start = ArrayUtil.get(param.getCreateIn(), 0);
-		LocalDate end = ArrayUtil.get(param.getCreateIn(), 1);
 		Wrapper<SysUser> wrapper = new QueryWrapper<>();
 		if (param != null) {
+			LocalDate start = ArrayUtil.get(param.getCreateIn(), 0);
+			LocalDate end = ArrayUtil.get(param.getCreateIn(), 1);
 			wrapper = new QueryWrapper<SysUser>().lambda()
 					.eq(StrUtil.isNotBlank(param.getStatus()), SysUser::getStatus, param.getStatus())
 					.likeRight(StrUtil.isNotEmpty(param.getUsername()), SysUser::getUsername, param.getUsername())

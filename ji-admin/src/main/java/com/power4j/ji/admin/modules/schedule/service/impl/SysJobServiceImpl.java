@@ -33,7 +33,6 @@ import com.power4j.ji.common.core.exception.BizException;
 import com.power4j.ji.common.core.model.PageData;
 import com.power4j.ji.common.core.model.PageRequest;
 import com.power4j.ji.common.core.util.SpringContextUtil;
-import com.power4j.ji.common.data.crud.constant.SysCtlFlagEnum;
 import com.power4j.ji.common.data.crud.service.impl.AbstractCrudService;
 import com.power4j.ji.common.data.crud.util.CrudUtil;
 import com.power4j.ji.common.schedule.quartz.job.ITask;
@@ -87,11 +86,8 @@ public class SysJobServiceImpl extends AbstractCrudService<SysJobMapper, SysJobD
 		validateTaskBean(dto.getTaskBean());
 		validateCron(dto.getCron());
 
-		SysJob entity = getById(dto.getOnlyId());
-		if (entity == null) {
-			throw new BizException(SysErrorCodes.E_CONFLICT, "数据不存在");
-		}
-		checkSysCtlNot(entity, SysCtlFlagEnum.SYS_LOCKED.getValue(), "系统数据不允许修改");
+		SysJob entity = checkExists(dto.getOnlyId());
+		checkEditable(entity);
 		if (PlanStatusEnum.NORMAL.getValue().equals(entity.getStatus())) {
 			throw new BizException(SysErrorCodes.E_CONFLICT, "请先停止调度该任务");
 		}

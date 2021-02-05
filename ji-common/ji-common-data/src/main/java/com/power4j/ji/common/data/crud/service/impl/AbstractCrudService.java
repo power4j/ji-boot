@@ -32,12 +32,14 @@ import com.power4j.ji.common.data.crud.service.CrudService;
 import com.power4j.ji.common.data.crud.util.CrudUtil;
 import com.power4j.ji.common.data.crud.util.Unique;
 import lombok.Getter;
+import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 /**
  * @author CJ (power4j@outlook.com)
@@ -47,11 +49,13 @@ import java.util.Optional;
 public abstract class AbstractCrudService<M extends BaseMapper<T>, D extends Unique, T extends Unique>
 		extends BaseServiceImpl<M, T> implements CrudService<D, T> {
 
+	@SuppressWarnings("unchecked")
 	@Getter
-	private Class<D> dtoClass = (Class<D>) ReflectionKit.getSuperClassGenericType(getClass(), 1);
+	private final Class<D> dtoClass = (Class<D>) ReflectionKit.getSuperClassGenericType(getClass(), 1);
 
+	@SuppressWarnings("unchecked")
 	@Getter
-	private Class<T> entityClass = (Class<T>) ReflectionKit.getSuperClassGenericType(getClass(), 2);
+	private final Class<T> entityClass = (Class<T>) ReflectionKit.getSuperClassGenericType(getClass(), 2);
 
 	/**
 	 * 分页查询 QueryWrapper
@@ -131,7 +135,7 @@ public abstract class AbstractCrudService<M extends BaseMapper<T>, D extends Uni
 	}
 
 	/**
-	 * 前置检查,并对入参进行处理
+	 * 简单前置检查,并对入参进行处理
 	 * @param dto
 	 * @return 返回处理后的对象
 	 */
@@ -140,17 +144,13 @@ public abstract class AbstractCrudService<M extends BaseMapper<T>, D extends Uni
 	}
 
 	/**
-	 * 前置检查,并对入参进行处理
+	 * 简单前置检查,并对入参进行处理
 	 * @param dto
 	 * @return 返回处理后的对象
 	 */
 	protected D prePutHandle(D dto) {
-		T entity = getById(dto.getOnlyId());
-		if (entity == null) {
-			throw new BizException(SysErrorCodes.E_CONFLICT, String.format("数据不存在"));
-		}
-		checkSysCtlNot(entity, SysCtlFlagEnum.SYS_LOCKED.getValue(), "系统数据不允许修改");
-		return dto;
+		checkExists(dto.getOnlyId());
+		return checkEditable(dto);
 	}
 
 	/**
@@ -159,11 +159,39 @@ public abstract class AbstractCrudService<M extends BaseMapper<T>, D extends Uni
 	 * @return 返回数据库中当前值
 	 */
 	protected T preDeleteHandle(Serializable id) {
-		T entity = getById(id);
-		if (entity != null) {
-			checkSysCtlNot(entity, SysCtlFlagEnum.SYS_LOCKED.getValue(), "系统数据不允许删除");
+		return checkDeletable(() -> getById(id), null);
+	}
+
+	protected T checkExists(Serializable id) {
+		return checkExists(() -> getById(id), null);
+	}
+
+	protected T checkExists(Supplier<? extends T> supplier, @Nullable String msg) {
+		T entity = supplier.get();
+		if (entity == null) {
+			throw new BizException(SysErrorCodes.E_NOT_FOUND, msg != null ? msg : "资源不存在");
 		}
 		return entity;
+	}
+
+	protected <U> U checkEditable(U data) {
+		return checkEditable(() -> data, null);
+	}
+
+	protected <U> U checkEditable(Supplier<? extends U> supplier, @Nullable String msg) {
+		U data = supplier.get();
+		checkSysCtlNot(data, SysCtlFlagEnum.SYS_LOCKED.getValue(), msg != null ? msg : "系统数据不允许修改");
+		return data;
+	}
+
+	protected <U> U checkDeletable(U data) {
+		return checkDeletable(() -> data, null);
+	}
+
+	protected <U> U checkDeletable(Supplier<? extends U> supplier, @Nullable String msg) {
+		U data = supplier.get();
+		checkSysCtlNot(data, SysCtlFlagEnum.SYS_LOCKED.getValue(), msg != null ? msg : "系统数据不允许删除");
+		return data;
 	}
 
 }

@@ -37,7 +37,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -64,10 +64,10 @@ public class SysJobLogServiceImpl extends ServiceImpl<SysJobLogMapper, SysJobLog
 
 	@Override
 	public PageData<SysJobLogDTO> selectPage(PageRequest pageRequest, @Nullable SearchSysJobLogVO param) {
-		LocalDate start = ArrayUtil.get(param.getStartTimeIn(), 0);
-		LocalDate end = ArrayUtil.get(param.getStartTimeIn(), 1);
 		Wrapper<SysJobLog> wrapper = new QueryWrapper<>();
 		if (param != null) {
+			LocalDate start = ArrayUtil.get(param.getStartTimeIn(), 0);
+			LocalDate end = ArrayUtil.get(param.getStartTimeIn(), 1);
 			wrapper = new QueryWrapper<SysJobLog>().lambda()
 					.eq(StrUtil.isNotBlank(param.getTaskBean()), SysJobLog::getTaskBean, param.getTaskBean())
 					.eq(param.getSuccess() != null, SysJobLog::getSuccess, param.getSuccess())
@@ -75,8 +75,8 @@ public class SysJobLogServiceImpl extends ServiceImpl<SysJobLogMapper, SysJobLog
 					.ge(null != start, SysJobLog::getStartTime, CrudUtil.dayStart(start))
 					.le(null != end, SysJobLog::getStartTime, CrudUtil.dayEnd(end));
 		}
-		Page<SysJobLog> page = getBaseMapper()
-				.selectPage(CrudUtil.toPage(pageRequest, Arrays.asList(new OrderItem("id", false))), wrapper);
+		Page<SysJobLog> page = getBaseMapper().selectPage(
+				CrudUtil.toPage(pageRequest, Collections.singletonList(new OrderItem("id", false))), wrapper);
 		return CrudUtil.toPageData(page).map(o -> BeanUtil.toBean(o, SysJobLogDTO.class));
 	}
 
