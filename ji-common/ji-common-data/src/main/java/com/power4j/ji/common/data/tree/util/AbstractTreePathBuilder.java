@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
 
 /**
  * TreePath数据维护
+ *
  * @author CJ (power4j@outlook.com)
  * @date 2020/11/30
  * @since 1.0
@@ -100,12 +101,10 @@ public abstract class AbstractTreePathBuilder<T extends TreePath, M extends Base
 	 * @param distanceMax 最大距离,从0开始, -1 表示无限制
 	 * @return
 	 */
-	protected Wrapper<T> getLoadDescendantsWrapper(Collection<Serializable> ids, int distanceMin,
-			int distanceMax){
-		QueryWrapper<T>  wrapper = createWrapper();
-		wrapper.in("ancestor", ids)
-				.ge(distanceMin >= 0, "distance", distanceMin)
-				.le(distanceMax >= 0, "distance", distanceMax);
+	protected Wrapper<T> getLoadDescendantsWrapper(Collection<Serializable> ids, int distanceMin, int distanceMax) {
+		QueryWrapper<T> wrapper = createWrapper();
+		wrapper.in("ancestor", ids).ge(distanceMin >= 0, "distance", distanceMin).le(distanceMax >= 0, "distance",
+				distanceMax);
 		return wrapper;
 	}
 
@@ -188,20 +187,19 @@ public abstract class AbstractTreePathBuilder<T extends TreePath, M extends Base
 		return filtered;
 	}
 
-	//------------------------------------------------------------------------------------
-	//~ Wrappers
+	// ------------------------------------------------------------------------------------
+	// ~ Wrappers
 
 	/**
 	 * 距离查询条件
 	 * @param distance 距离
 	 * @return
 	 */
-	protected Wrapper<T> getLoadByDistanceWrapper(int distance){
-		QueryWrapper<T>  wrapper = createWrapper();
+	protected Wrapper<T> getLoadByDistanceWrapper(int distance) {
+		QueryWrapper<T> wrapper = createWrapper();
 		wrapper.eq("distance", distance);
 		return wrapper;
 	}
-
 
 	/**
 	 * 祖先查询条件
@@ -211,10 +209,9 @@ public abstract class AbstractTreePathBuilder<T extends TreePath, M extends Base
 	 * @return
 	 */
 	protected Wrapper<T> getLoadAncestorsWrapper(Serializable id, int distanceMin, int distanceMax) {
-		QueryWrapper<T>  wrapper = createWrapper();
-		wrapper.eq("descendant", id)
-				.ge(distanceMin >= 0, "distance", distanceMin)
-				.le(distanceMax >= 0, "distance", distanceMax);
+		QueryWrapper<T> wrapper = createWrapper();
+		wrapper.eq("descendant", id).ge(distanceMin >= 0, "distance", distanceMin).le(distanceMax >= 0, "distance",
+				distanceMax);
 		return wrapper;
 	}
 
@@ -225,11 +222,10 @@ public abstract class AbstractTreePathBuilder<T extends TreePath, M extends Base
 	 * @param distanceMax 最大距离,从0开始, -1 表示无限制
 	 * @return
 	 */
-	protected Wrapper<T> getLoadDescendantsWrapper(Serializable id, int distanceMin, int distanceMax){
-		QueryWrapper<T>  wrapper = createWrapper();
-		wrapper.eq("ancestor", id)
-				.ge(distanceMin >= 0, "distance", distanceMin)
-				.le(distanceMax >= 0, "distance", distanceMax);
+	protected Wrapper<T> getLoadDescendantsWrapper(Serializable id, int distanceMin, int distanceMax) {
+		QueryWrapper<T> wrapper = createWrapper();
+		wrapper.eq("ancestor", id).ge(distanceMin >= 0, "distance", distanceMin).le(distanceMax >= 0, "distance",
+				distanceMax);
 		return wrapper;
 	}
 
@@ -238,9 +234,10 @@ public abstract class AbstractTreePathBuilder<T extends TreePath, M extends Base
 	 * @param id
 	 * @return
 	 */
-	protected Wrapper<T> getRemoveNodeWrapper(Serializable id){
-		QueryWrapper<T>  wrapper = createWrapper();
+	protected Wrapper<T> getRemoveNodeWrapper(Serializable id) {
+		QueryWrapper<T> wrapper = createWrapper();
 		wrapper.eq("descendant", id);
 		return wrapper;
 	}
+
 }

@@ -40,36 +40,4 @@ public class SysResourcePathBuilder extends AbstractTreePathBuilder<SysResourceN
 		return new SysResourceNode(ancestor, descendant, distance);
 	}
 
-	/*@Override
-	protected Wrapper<SysResourceNode> getRemoveNodeWrapper(Serializable id) {
-		return Wrappers.<SysResourceNode>lambdaQuery().eq(SysResourceNode::getDescendant, id);
-	}*/
-
-	/*@Override
-	protected Wrapper<SysResourceNode> getLoadAncestorsWrapper(Serializable id, int distanceMin, int distanceMax) {
-		return Wrappers.<SysResourceNode>lambdaQuery().eq(SysResourceNode::getDescendant, id)
-				.ge(distanceMin >= 0, SysResourceNode::getDistance, distanceMin)
-				.le(distanceMax >= 0, SysResourceNode::getDistance, distanceMax);
-	}*/
-
-	/*@Override
-	protected Wrapper<SysResourceNode> getLoadDescendantsWrapper(Serializable id, int distanceMin, int distanceMax) {
-		return Wrappers.<SysResourceNode>lambdaQuery().eq(SysResourceNode::getAncestor, id)
-				.ge(distanceMin >= 0, SysResourceNode::getDistance, distanceMin)
-				.le(distanceMax >= 0, SysResourceNode::getDistance, distanceMax);
-	}*/
-
-	/*@Override
-	protected Wrapper<SysResourceNode> getLoadDescendantsWrapper(Collection<Serializable> ids, int distanceMin,
-			int distanceMax) {
-		return Wrappers.<SysResourceNode>lambdaQuery().in(SysResourceNode::getAncestor, ids)
-				.ge(distanceMin >= 0, SysResourceNode::getDistance, distanceMin)
-				.le(distanceMax >= 0, SysResourceNode::getDistance, distanceMax);
-	}*/
-
-	/*@Override
-	protected Wrapper<SysResourceNode> getLoadByDistanceWrapper(int distance) {
-		return Wrappers.<SysResourceNode>lambdaQuery().eq(SysResourceNode::getDistance, distance);
-	}*/
-
 }

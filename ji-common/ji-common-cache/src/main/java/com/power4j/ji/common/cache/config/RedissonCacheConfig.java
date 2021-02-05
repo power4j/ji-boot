@@ -44,14 +44,14 @@ public class RedissonCacheConfig {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public Codec jsonJacksonCodec(ObjectProvider<ObjectMapper> mappers){
+	public Codec jsonJacksonCodec(ObjectProvider<ObjectMapper> mappers) {
 		ObjectMapper objectMapper = mappers.getIfAvailable();
-		return  objectMapper == null ? new JsonJacksonCodec() : new JsonJacksonCodec(objectMapper);
+		return objectMapper == null ? new JsonJacksonCodec() : new JsonJacksonCodec(objectMapper);
 	}
 
 	@Bean
 	@ConditionalOnBean(Codec.class)
-	public RedissonAutoConfigurationCustomizer redissonAutoConfigurationCustomizer(Codec codec){
+	public RedissonAutoConfigurationCustomizer redissonAutoConfigurationCustomizer(Codec codec) {
 		return (configuration -> configuration.setCodec(codec));
 	}
 

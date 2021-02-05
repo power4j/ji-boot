@@ -88,7 +88,8 @@ public class CacheProperties {
 		private int maxSize = 0;
 
 		/**
-		 * 配置文件位置,比如 {@code classpath:/cache-config.yaml}<p/>
+		 * 配置文件位置,比如 {@code classpath:/cache-config.yaml}
+		 * <p/>
 		 * 文件内容为 {@code Map<String,CacheConfig>},可以针对每一个缓存单独配置
 		 */
 		@Nullable
