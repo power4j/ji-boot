@@ -19,7 +19,9 @@ package com.power4j.ji.admin.modules.security.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.power4j.ji.admin.modules.security.service.AuthService;
 import com.power4j.ji.admin.modules.sys.constant.StatusEnum;
-import com.power4j.ji.admin.modules.sys.dto.SysUserDTO;
+import com.power4j.ji.admin.modules.sys.entity.SysResource;
+import com.power4j.ji.admin.modules.sys.entity.SysRole;
+import com.power4j.ji.admin.modules.sys.entity.SysUser;
 import com.power4j.ji.admin.modules.sys.service.SysResourceService;
 import com.power4j.ji.admin.modules.sys.service.SysRoleService;
 import com.power4j.ji.admin.modules.sys.service.SysUserService;
@@ -57,27 +59,27 @@ public class AuthServiceImpl implements AuthService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-		SysUserDTO userDTO = sysUserService.getByUsername(username).orElse(null);
-		if (userDTO == null) {
+		SysUser user = sysUserService.getByUsername(username).orElse(null);
+		if (user == null) {
 			log.debug("用户不存在:{}", username);
 			throw new UsernameNotFoundException(String.format("用户不存在:%s", username));
 		}
 		Set<String> roles = sysRoleService.listForUser(username, null).stream()
-				.filter(o -> StatusEnum.NORMAL.getValue().equals(o.getStatus())).map(o -> o.getCode())
+				.filter(o -> StatusEnum.NORMAL.getValue().equals(o.getStatus())).map(SysRole::getCode)
 				.collect(Collectors.toSet());
 
 		Set<String> resources = sysResourceService.listForRoles(roles).stream()
-				.filter(o -> StrUtil.isNotBlank(o.getPermission())).map(o -> o.getPermission())
+				.filter(o -> StrUtil.isNotBlank(o.getPermission())).map(SysResource::getPermission)
 				.collect(Collectors.toSet());
 
 		List<String> authorityCodes = new ArrayList<>(32);
 		authorityCodes.addAll(roles.stream().map(o -> SecurityConstant.ROLE_PREFIX + o).collect(Collectors.toList()));
 		authorityCodes.addAll(resources);
-		List<GrantedAuthority> authorityList = authorityCodes.stream().map(o -> new SimpleGrantedAuthority(o))
+		List<GrantedAuthority> authorityList = authorityCodes.stream().map(SimpleGrantedAuthority::new)
 				.collect(Collectors.toList());
-		LoginUser loginUser = new LoginUser(userDTO.getUsername(), userDTO.getPassword(), authorityList);
-		loginUser.setUid(userDTO.getId());
-		loginUser.setName(userDTO.getName());
+		LoginUser loginUser = new LoginUser(user.getUsername(), user.getPassword(), authorityList);
+		loginUser.setUid(user.getId());
+		loginUser.setName(user.getName());
 		return loginUser;
 	}
 

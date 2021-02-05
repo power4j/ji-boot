@@ -38,7 +38,7 @@ public interface SysUserService extends CrudService<SysUserDTO, SysUser> {
 	 * @param username
 	 * @return
 	 */
-	Optional<SysUserDTO> getByUsername(String username);
+	Optional<SysUser> getByUsername(String username);
 
 	/**
 	 * 分页查询

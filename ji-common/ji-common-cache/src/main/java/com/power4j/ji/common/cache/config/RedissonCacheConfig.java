@@ -16,12 +16,17 @@
 
 package com.power4j.ji.common.cache.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.power4j.ji.common.cache.redisson.RedissonAutoCacheManager;
 import org.redisson.api.RedissonClient;
 import org.redisson.client.codec.Codec;
+import org.redisson.codec.JsonJacksonCodec;
 import org.redisson.spring.cache.CacheConfig;
+import org.redisson.spring.starter.RedissonAutoConfigurationCustomizer;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
@@ -38,10 +43,23 @@ import org.springframework.context.annotation.Configuration;
 public class RedissonCacheConfig {
 
 	@Bean
+	@ConditionalOnMissingBean
+	public Codec jsonJacksonCodec(ObjectProvider<ObjectMapper> mappers){
+		ObjectMapper objectMapper = mappers.getIfAvailable();
+		return  objectMapper == null ? new JsonJacksonCodec() : new JsonJacksonCodec(objectMapper);
+	}
+
+	@Bean
+	@ConditionalOnBean(Codec.class)
+	public RedissonAutoConfigurationCustomizer redissonAutoConfigurationCustomizer(Codec codec){
+		return (configuration -> configuration.setCodec(codec));
+	}
+
+	@Bean
 	public CacheManager cacheManager(CacheProperties cacheProperties, RedissonClient redissonClient,
 			ObjectProvider<Codec> codecs) {
-		CacheConfig config = new CacheConfig(cacheProperties.getRedisson().getTtl(),
-				cacheProperties.getRedisson().getMaxIdleTime());
+		CacheConfig config = new CacheConfig(cacheProperties.getRedisson().getTtl().toMillis(),
+				cacheProperties.getRedisson().getMaxIdleTime().toMillis());
 		config.setMaxSize(cacheProperties.getRedisson().getMaxSize());
 		RedissonAutoCacheManager cacheManager = new RedissonAutoCacheManager(redissonClient,
 				cacheProperties.getRedisson().getConfigFile());

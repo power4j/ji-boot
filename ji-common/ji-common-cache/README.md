@@ -82,10 +82,12 @@ ji-boot:
   cache:
     type: redisson
     redisson:
-      ttl: 28800000
-      max-idle-time: 36000
+      ttl: 12h
+      max-idle-time: 2h
       max-size: 0
 ```
+
+redisson 配置参考: [redisson wiki](https://github.com/redisson/redisson/wiki/2.-%E9%85%8D%E7%BD%AE%E6%96%B9%E6%B3%95)
 
 ## 无缓存 配置
 

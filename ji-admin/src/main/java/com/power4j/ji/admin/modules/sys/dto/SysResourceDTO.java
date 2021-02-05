@@ -16,7 +16,6 @@
 
 package com.power4j.ji.admin.modules.sys.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.power4j.ji.common.core.model.Node;
 import com.power4j.ji.common.core.validate.Groups;
 import com.power4j.ji.common.data.crud.dto.BaseDTO;
@@ -111,14 +110,12 @@ public class SysResourceDTO extends BaseDTO implements Node<SysResourceDTO>, Ser
 	 * 是否包含子节点
 	 */
 	@Schema(description = "是否包含子节点", accessMode = Schema.AccessMode.READ_ONLY)
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private Boolean hasChildren;
 
 	/**
 	 * 子节点
 	 */
 	@Schema(description = "子节点", accessMode = Schema.AccessMode.READ_ONLY)
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private List<SysResourceDTO> children;
 
 	@Override

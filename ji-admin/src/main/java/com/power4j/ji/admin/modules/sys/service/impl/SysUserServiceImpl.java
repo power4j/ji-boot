@@ -62,10 +62,10 @@ public class SysUserServiceImpl extends AbstractCrudService<SysUserMapper, SysUs
 
 	@Cacheable(cacheNames = CacheConstant.Name.USERNAME_TO_USER, key = "#username")
 	@Override
-	public Optional<SysUserDTO> getByUsername(String username) {
+	public Optional<SysUser> getByUsername(String username) {
 		Wrapper<SysUser> wrapper = new QueryWrapper<SysUser>().lambda().eq(SysUser::getUsername, username);
 		SysUser entity = getBaseMapper().selectOne(wrapper);
-		return Optional.ofNullable(toDto(entity));
+		return Optional.ofNullable(entity);
 	}
 
 	@Override

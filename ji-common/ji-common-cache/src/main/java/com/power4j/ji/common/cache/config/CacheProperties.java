@@ -22,6 +22,7 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.lang.Nullable;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,14 +73,14 @@ public class CacheProperties {
 	public static class Redisson {
 
 		/**
-		 * ttl 默认值(毫秒)
+		 * ttl 默认值
 		 */
-		private long ttl = 0;
+		private Duration ttl = Duration.ZERO;
 
 		/**
-		 * maxIdleTime 默认值(毫秒)
+		 * maxIdleTime 默认值
 		 */
-		private long maxIdleTime = 0;
+		private Duration maxIdleTime = Duration.ZERO;
 
 		/**
 		 * maxSize 默认值
@@ -87,7 +88,8 @@ public class CacheProperties {
 		private int maxSize = 0;
 
 		/**
-		 * 配置文件位置,比如 {@code classpath:/cache-config.yaml}
+		 * 配置文件位置,比如 {@code classpath:/cache-config.yaml}<p/>
+		 * 文件内容为 {@code Map<String,CacheConfig>},可以针对每一个缓存单独配置
 		 */
 		@Nullable
 		private String configFile;

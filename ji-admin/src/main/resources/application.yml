@@ -20,6 +20,9 @@ spring:
     port: ${REDIS_PORT:6379}
     timeout: 5s
     ssl: false
+    #redisson:
+    #  file: classpath:redisson/redisson.yaml
+
   dinger:
     project-id: ${spring.application.name}
     dingers:
@@ -110,9 +113,10 @@ ji-boot:
     caffeine:
       spec: "expireAfterWrite=24h,maximumSize=100000"
     redisson:
-      ttl: 86400000
-      max-idle-time: 36000
+      ttl: 12h
+      max-idle-time: 2h
       max-size: 0
+      #config-file: classpath:redisson/cache.yaml
   notify:
     # 钉钉消息通知
     ding-talk:
