@@ -1,0 +1,77 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+  info:
+    git:
+      mode: full
+
+ji-boot:
+  security:
+    api:
+      permit-all: false
+
+spring:
+  datasource:
+    druid:
+      #Oracle
+      driver-class-name: oracle.jdbc.OracleDriver
+      url: jdbc:oracle:thin:@${ORACLE_HOST:10.11.12.77}:${ORACLE_PORT:1521}:${ORACLE_SID:orcl}
+      username: ${ORACLE_USER:jiboot}
+      password: ${ORACLE_PWD:jiboot}
+      initial-size: 10
+      max-active: 100
+      min-idle: 10
+      max-wait: 6000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        login-username: admin
+        login-password: admin
+      filter:
+        stat:
+          enabled: true
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: false
+        wall:
+          enabled: true
+          config:
+            multi-statement-allow: true
+        config:
+          enabled: true
+        slf4j:
+          enabled: true
+        encoding:
+          enabled: true
+
+logging:
+  level:
+    org:
+      springframework:
+        security: info
+        boot:
+          autoconfigure:
+            logging: debug
+    com:
+      power4j:
+        ji:
+          admin:
+            modules: debug
+          common:
+            security: info
+            schedule:
+              quartz:
+                listener: debug

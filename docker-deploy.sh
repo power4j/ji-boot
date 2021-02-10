@@ -8,7 +8,7 @@ then
 fi
 
 
-docker build -t registry.cn-hangzhou.aliyuncs.com/power4j/ji-admin-db ./db
+docker build -t registry.cn-hangzhou.aliyuncs.com/power4j/ji-admin-db ./db/mysql
 docker push registry.cn-hangzhou.aliyuncs.com/power4j/ji-admin-db
 docker build -t registry.cn-hangzhou.aliyuncs.com/power4j/ji-admin-server ./ji-admin
 docker push registry.cn-hangzhou.aliyuncs.com/power4j/ji-admin-server
