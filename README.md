@@ -1,5 +1,7 @@
 # 极(Ji) - 基于Spring Boot 2 的前后端分离权限管理系统
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ed364ed75f234c7c9ae26e3862849aa3)](https://app.codacy.com/gh/power4j/ji-boot?utm_source=github.com&utm_medium=referral&utm_content=power4j/ji-boot&utm_campaign=Badge_Grade)
+
 - 使用 Spring Boot 最新版本
 - 基于Spring Security 的 RBAC权限控制，访问控制可配置，也可以注解
 - 菜单、按钮权限动态控制，且有越权控制
