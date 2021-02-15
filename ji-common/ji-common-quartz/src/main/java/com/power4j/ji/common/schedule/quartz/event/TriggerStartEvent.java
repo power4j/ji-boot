@@ -17,6 +17,7 @@
 package com.power4j.ji.common.schedule.quartz.event;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author CJ (power4j@outlook.com)
@@ -24,6 +25,7 @@ import lombok.Data;
  * @since 1.0
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class TriggerStartEvent extends TriggerEvent {
 
 }

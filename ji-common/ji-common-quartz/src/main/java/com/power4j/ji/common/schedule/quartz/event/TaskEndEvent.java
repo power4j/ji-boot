@@ -17,6 +17,7 @@
 package com.power4j.ji.common.schedule.quartz.event;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.lang.Nullable;
 
 import java.time.Duration;
@@ -28,6 +29,7 @@ import java.time.LocalDateTime;
  * @since 1.0
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class TaskEndEvent extends TaskEvent {
 
 	private LocalDateTime startTime;

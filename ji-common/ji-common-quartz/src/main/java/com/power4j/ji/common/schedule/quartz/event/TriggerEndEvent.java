@@ -17,6 +17,7 @@
 package com.power4j.ji.common.schedule.quartz.event;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.quartz.Trigger;
 
 /**
@@ -25,6 +26,7 @@ import org.quartz.Trigger;
  * @since 1.0
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class TriggerEndEvent extends TriggerEvent {
 
 	private Trigger.CompletedExecutionInstruction instructionCode;
