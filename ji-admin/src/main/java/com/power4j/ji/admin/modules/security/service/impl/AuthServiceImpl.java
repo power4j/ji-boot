@@ -16,7 +16,7 @@
 
 package com.power4j.ji.admin.modules.security.service.impl;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import com.power4j.ji.admin.modules.security.service.AuthService;
 import com.power4j.ji.admin.modules.sys.constant.StatusEnum;
 import com.power4j.ji.admin.modules.sys.entity.SysResource;
@@ -69,7 +69,7 @@ public class AuthServiceImpl implements AuthService {
 				.collect(Collectors.toSet());
 
 		Set<String> resources = sysResourceService.listForRoles(roles).stream()
-				.filter(o -> StrUtil.isNotBlank(o.getPermission())).map(SysResource::getPermission)
+				.filter(o -> CharSequenceUtil.isNotBlank(o.getPermission())).map(SysResource::getPermission)
 				.collect(Collectors.toSet());
 
 		List<String> authorityCodes = new ArrayList<>(32);

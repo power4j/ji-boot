@@ -16,7 +16,7 @@
 
 package com.power4j.ji.common.security.util;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import com.power4j.ji.common.core.constant.SecurityConstant;
 import com.power4j.ji.common.security.LoginUser;
 import lombok.experimental.UtilityClass;
@@ -83,7 +83,7 @@ public class SecurityUtil {
 	 */
 	public Set<String> getLoginUserRoles() {
 		return getLoginUserAuthorities().stream().filter(o -> o.startsWith(SecurityConstant.ROLE_PREFIX))
-				.map(o -> StrUtil.removePrefix(o, SecurityConstant.ROLE_PREFIX)).collect(Collectors.toSet());
+				.map(o -> CharSequenceUtil.removePrefix(o, SecurityConstant.ROLE_PREFIX)).collect(Collectors.toSet());
 	}
 
 }

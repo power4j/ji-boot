@@ -16,7 +16,7 @@
 
 package com.power4j.ji.common.security.config;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.power4j.ji.common.core.context.RequestContext;
 import com.power4j.ji.common.security.filter.SignInFilter;
@@ -193,14 +193,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 							.filter(m -> m != null).collect(Collectors.toSet());
 					for (HttpMethod m : methodSet) {
 						log.info("Add access {} : [{}] {}", httpAccess.getAccess(), m.name(),
-								StrUtil.join(", ", httpAccess.getPatterns()));
+								CharSequenceUtil.join(", ", httpAccess.getPatterns()));
 						registry.antMatchers(m, httpAccess.getPatterns().toArray(new String[0]))
 								.access(httpAccess.getAccess());
 					}
 				}
 				else {
 					log.info("add access {} : [{}] {}", httpAccess.getAccess(), "*",
-							StrUtil.join(", ", httpAccess.getPatterns()));
+							CharSequenceUtil.join(", ", httpAccess.getPatterns()));
 					registry.antMatchers(httpAccess.getPatterns().toArray(new String[0]))
 							.access(httpAccess.getAccess());
 				}

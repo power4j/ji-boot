@@ -16,9 +16,9 @@
 
 package com.power4j.ji.common.data.dict.support;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
-import cn.hutool.core.util.StrUtil;
 import com.power4j.ji.common.data.dict.annotation.DictValue;
 import com.power4j.ji.common.data.dict.annotation.Label;
 import com.power4j.ji.common.data.dict.annotation.Remarks;
@@ -181,7 +181,7 @@ public class ItemResolverHelper {
 				}
 				else {
 					Label label = field.getAnnotation(Label.class);
-					if (StrUtil.isNotEmpty(label.value())) {
+					if (CharSequenceUtil.isNotEmpty(label.value())) {
 						labelMap.put(makeEnumConstantKey(enumClass, field), label.value());
 					}
 					labelFunc = (o -> labelMap.get(makeEnumConstantKey(o)));
@@ -193,7 +193,7 @@ public class ItemResolverHelper {
 				}
 				else {
 					Styled styled = field.getAnnotation(Styled.class);
-					if (StrUtil.isNotEmpty(styled.value())) {
+					if (CharSequenceUtil.isNotEmpty(styled.value())) {
 						styleMap.put(makeEnumConstantKey(enumClass, field), styled.value());
 					}
 					styleFunc = (o -> styleMap.get(makeEnumConstantKey(o)));
@@ -205,7 +205,7 @@ public class ItemResolverHelper {
 				}
 				else {
 					Remarks remarks = field.getAnnotation(Remarks.class);
-					if (StrUtil.isNotEmpty(remarks.value())) {
+					if (CharSequenceUtil.isNotEmpty(remarks.value())) {
 						remarksMap.put(makeEnumConstantKey(enumClass, field), remarks.value());
 					}
 					remarksFunc = (o -> remarksMap.get(makeEnumConstantKey(o)));

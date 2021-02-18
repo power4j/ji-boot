@@ -16,8 +16,8 @@
 
 package com.power4j.ji.common.core.util;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.NumberUtil;
-import cn.hutool.core.util.StrUtil;
 import lombok.experimental.UtilityClass;
 import org.springframework.lang.Nullable;
 
@@ -38,7 +38,7 @@ public class NumUtil extends NumberUtil {
 	@Nullable
 	public Integer parseInt(@Nullable String str, @Nullable Integer defaultValue) {
 		try {
-			return StrUtil.isBlank(str) ? defaultValue : Integer.parseInt(str);
+			return CharSequenceUtil.isBlank(str) ? defaultValue : Integer.parseInt(str);
 		}
 		catch (NumberFormatException e) {
 			return defaultValue;
@@ -54,7 +54,7 @@ public class NumUtil extends NumberUtil {
 	@Nullable
 	public Long parseLong(@Nullable String str, @Nullable Long defaultValue) {
 		try {
-			return StrUtil.isBlank(str) ? defaultValue : Long.parseLong(str);
+			return CharSequenceUtil.isBlank(str) ? defaultValue : Long.parseLong(str);
 		}
 		catch (NumberFormatException e) {
 			return defaultValue;

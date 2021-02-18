@@ -16,7 +16,7 @@
 
 package com.power4j.ji.common.security.token;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import com.power4j.ji.common.security.model.ApiToken;
 import com.power4j.ji.common.security.msg.SecurityMessageSource;
 import com.power4j.ji.common.security.service.TokenService;
@@ -55,7 +55,7 @@ public class ApiTokenAuthenticationProvider implements AuthenticationProvider {
 			return authentication;
 		}
 		String tokenValue = authentication.getCredentials().toString();
-		if (StrUtil.isBlank(tokenValue)) {
+		if (CharSequenceUtil.isBlank(tokenValue)) {
 			log.debug("认证失败:token为空");
 			throw new BadCredentialsException(
 					messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "无效的凭据"));

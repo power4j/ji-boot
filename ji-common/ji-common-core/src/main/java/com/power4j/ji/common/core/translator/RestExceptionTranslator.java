@@ -16,6 +16,7 @@
 
 package com.power4j.ji.common.core.translator;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import com.power4j.ji.common.core.constant.SysErrorCodes;
 import com.power4j.ji.common.core.model.ApiResponse;
@@ -136,7 +137,7 @@ public class RestExceptionTranslator {
 	@ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
 	@ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
 	public ApiResponse<Object> handleException(HttpMediaTypeNotAcceptableException e) {
-		String message = e.getMessage() + " " + StrUtil.join(StrUtil.COMMA, e.getSupportedMediaTypes());
+		String message = e.getMessage() + " " + CharSequenceUtil.join(StrUtil.COMMA, e.getSupportedMediaTypes());
 		log.error("不接受的媒体类型:{}", message);
 		return ApiResponse.of(SysErrorCodes.E_METHOD_NOT_SUPPORTED, "不接受的媒体类型", String.format("支持的媒体类型为: %s",
 				e.getSupportedMediaTypes().stream().map(MediaType::toString).collect(Collectors.joining(","))));

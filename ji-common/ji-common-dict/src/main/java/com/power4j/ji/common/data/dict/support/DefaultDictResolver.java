@@ -16,7 +16,7 @@
 
 package com.power4j.ji.common.data.dict.support;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import com.power4j.ji.common.data.dict.annotation.DictValue;
 import com.power4j.ji.common.data.dict.annotation.Item;
 import com.power4j.ji.common.data.dict.annotation.MapDict;
@@ -46,10 +46,10 @@ public class DefaultDictResolver implements DictResolver {
 		dict.setCode(lookupDictCode(annotation, enumClass.getSimpleName()));
 		dict.setName(lookupDictName(annotation, dict.getCode()));
 		dict.setRemarks(lookupDictRemarks(annotation, ""));
-		if (StrUtil.isBlank(dict.getCode())) {
+		if (CharSequenceUtil.isBlank(dict.getCode())) {
 			dict.setCode(enumClass.getSimpleName());
 		}
-		if (StrUtil.isBlank(dict.getName())) {
+		if (CharSequenceUtil.isBlank(dict.getName())) {
 			dict.setCode(dict.getCode());
 		}
 		dict.setItems(lookupDictItems(annotation, enumClass));
@@ -61,15 +61,15 @@ public class DefaultDictResolver implements DictResolver {
 	}
 
 	protected String lookupDictCode(MapDict annotation, String defVal) {
-		return StrUtil.isEmpty(annotation.code()) ? defVal : annotation.code();
+		return CharSequenceUtil.isEmpty(annotation.code()) ? defVal : annotation.code();
 	}
 
 	protected String lookupDictName(MapDict annotation, String defVal) {
-		return StrUtil.isEmpty(annotation.name()) ? defVal : annotation.name();
+		return CharSequenceUtil.isEmpty(annotation.name()) ? defVal : annotation.name();
 	}
 
 	protected String lookupDictRemarks(MapDict annotation, String defVal) {
-		return StrUtil.isEmpty(annotation.remarks()) ? defVal : annotation.remarks();
+		return CharSequenceUtil.isEmpty(annotation.remarks()) ? defVal : annotation.remarks();
 	}
 
 	protected List<DictItem> lookupDictItems(MapDict annotation, Class<Enum<?>> enumClass) {

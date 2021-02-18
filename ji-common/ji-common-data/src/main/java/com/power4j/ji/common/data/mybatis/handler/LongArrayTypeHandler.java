@@ -16,6 +16,7 @@
 
 package com.power4j.ji.common.data.mybatis.handler;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.CharUtil;
 import cn.hutool.core.util.StrUtil;
@@ -64,10 +65,10 @@ public class LongArrayTypeHandler extends BaseTypeHandler<Long[]> {
 	}
 
 	private Long[] strToLongArray(String str) {
-		if (StrUtil.isEmpty(str)) {
+		if (CharSequenceUtil.isEmpty(str)) {
 			return new Long[0];
 		}
-		return StrUtil.split(str, CharUtil.COMMA).stream().map(Long::parseLong).toArray(Long[]::new);
+		return CharSequenceUtil.split(str, CharUtil.COMMA).stream().map(Long::parseLong).toArray(Long[]::new);
 	}
 
 }

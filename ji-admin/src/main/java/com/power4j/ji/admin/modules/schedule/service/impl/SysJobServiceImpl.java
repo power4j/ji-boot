@@ -16,7 +16,7 @@
 
 package com.power4j.ji.admin.modules.schedule.service.impl;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
@@ -120,8 +120,9 @@ public class SysJobServiceImpl extends AbstractCrudService<SysJobMapper, SysJobD
 		Wrapper<SysJob> wrapper = Wrappers.emptyWrapper();
 		if (param != null) {
 			wrapper = new QueryWrapper<SysJob>().lambda()
-					.eq(StrUtil.isNotBlank(param.getStatus()), SysJob::getStatus, param.getStatus())
-					.likeRight(StrUtil.isNotEmpty(param.getGroupName()), SysJob::getGroupName, param.getGroupName());
+					.eq(CharSequenceUtil.isNotBlank(param.getStatus()), SysJob::getStatus, param.getStatus())
+					.likeRight(CharSequenceUtil.isNotEmpty(param.getGroupName()), SysJob::getGroupName,
+							param.getGroupName());
 		}
 		Page<SysJob> page = getBaseMapper()
 				.selectPage(CrudUtil.toPage(pageRequest, Arrays.asList(new OrderItem("create_at", true))), wrapper);

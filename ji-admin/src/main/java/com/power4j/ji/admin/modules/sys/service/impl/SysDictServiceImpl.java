@@ -16,7 +16,7 @@
 
 package com.power4j.ji.admin.modules.sys.service.impl;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.power4j.ji.admin.modules.sys.constant.CacheConstant;
@@ -75,7 +75,7 @@ public class SysDictServiceImpl extends AbstractCrudService<SysDictMapper, SysDi
 		if (param == null) {
 			return Wrappers.emptyWrapper();
 		}
-		return Wrappers.<SysDict>lambdaQuery().like(StrUtil.isNotBlank(param.getName()), SysDict::getName,
+		return Wrappers.<SysDict>lambdaQuery().like(CharSequenceUtil.isNotBlank(param.getName()), SysDict::getName,
 				param.getName());
 	}
 

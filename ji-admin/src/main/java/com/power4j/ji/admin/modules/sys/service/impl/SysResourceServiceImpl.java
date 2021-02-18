@@ -17,7 +17,7 @@
 package com.power4j.ji.admin.modules.sys.service.impl;
 
 import cn.hutool.core.lang.Assert;
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import com.power4j.ji.admin.modules.sys.component.SysResourcePathBuilder;
 import com.power4j.ji.admin.modules.sys.constant.CacheConstant;
 import com.power4j.ji.admin.modules.sys.constant.ResourceTypeEnum;
@@ -68,7 +68,7 @@ public class SysResourceServiceImpl extends AbstractCrudService<SysResourceMappe
 	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public SysResourceDTO post(SysResourceDTO dto) {
-		if (StrUtil.isEmpty(dto.getPath()) && !ResourceTypeEnum.BUTTON.getValue().equals(dto.getType())) {
+		if (CharSequenceUtil.isEmpty(dto.getPath()) && !ResourceTypeEnum.BUTTON.getValue().equals(dto.getType())) {
 			throw new BizException(SysErrorCodes.E_BAD_REQUEST, "菜单和路由需要指定path");
 		}
 		dto = super.post(dto);
@@ -86,7 +86,7 @@ public class SysResourceServiceImpl extends AbstractCrudService<SysResourceMappe
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public SysResourceDTO put(SysResourceDTO dto) {
-		if (StrUtil.isEmpty(dto.getPath()) && !ResourceTypeEnum.BUTTON.getValue().equals(dto.getType())) {
+		if (CharSequenceUtil.isEmpty(dto.getPath()) && !ResourceTypeEnum.BUTTON.getValue().equals(dto.getType())) {
 			throw new BizException(SysErrorCodes.E_BAD_REQUEST, "菜单和路由需要指定path");
 		}
 		List<SysResourceNode> nodes = pathBuilder.loadAncestors(dto.getNodeId(), 1, 1);

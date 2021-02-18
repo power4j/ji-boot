@@ -16,7 +16,7 @@
 
 package com.power4j.ji.common.security.util;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import com.power4j.ji.common.core.constant.SecurityConstant;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +39,7 @@ public class ApiTokenUtil {
 	 */
 	public String getApiTokenValue(HttpServletRequest request) {
 		String value = request.getHeader(SecurityConstant.HEADER_TOKEN_KEY);
-		if (StrUtil.isNotBlank(value)) {
+		if (CharSequenceUtil.isNotBlank(value)) {
 			log.trace("请求头中的{}:{}", SecurityConstant.HEADER_TOKEN_KEY, value);
 			return value;
 		}

@@ -16,7 +16,7 @@
 
 package com.power4j.ji.admin.modules.sys.service.impl;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.power4j.ji.admin.modules.sys.dao.SysParamMapper;
@@ -60,8 +60,8 @@ public class SysParamServiceImpl extends AbstractCrudService<SysParamMapper, Sys
 			return Wrappers.emptyWrapper();
 		}
 		return Wrappers.<SysParam>lambdaQuery()
-				.eq(StrUtil.isNotBlank(param.getStatus()), SysParam::getStatus, param.getStatus())
-				.like(StrUtil.isNotBlank(param.getParamKey()), SysParam::getParamKey, param.getParamKey());
+				.eq(CharSequenceUtil.isNotBlank(param.getStatus()), SysParam::getStatus, param.getStatus())
+				.like(CharSequenceUtil.isNotBlank(param.getParamKey()), SysParam::getParamKey, param.getParamKey());
 	}
 
 	@Override

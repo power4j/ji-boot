@@ -17,8 +17,8 @@
 package com.power4j.ji.admin.modules.schedule.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
@@ -69,9 +69,9 @@ public class SysJobLogServiceImpl extends ServiceImpl<SysJobLogMapper, SysJobLog
 			LocalDate start = ArrayUtil.get(param.getStartTimeIn(), 0);
 			LocalDate end = ArrayUtil.get(param.getStartTimeIn(), 1);
 			wrapper = new QueryWrapper<SysJobLog>().lambda()
-					.eq(StrUtil.isNotBlank(param.getTaskBean()), SysJobLog::getTaskBean, param.getTaskBean())
+					.eq(CharSequenceUtil.isNotBlank(param.getTaskBean()), SysJobLog::getTaskBean, param.getTaskBean())
 					.eq(param.getSuccess() != null, SysJobLog::getSuccess, param.getSuccess())
-					.likeRight(StrUtil.isNotEmpty(param.getEx()), SysJobLog::getEx, param.getEx())
+					.likeRight(CharSequenceUtil.isNotEmpty(param.getEx()), SysJobLog::getEx, param.getEx())
 					.ge(null != start, SysJobLog::getStartTime, CrudUtil.dayStart(start))
 					.le(null != end, SysJobLog::getStartTime, CrudUtil.dayEnd(end));
 		}

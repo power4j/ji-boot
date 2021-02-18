@@ -38,14 +38,14 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, 
 
 	@SuppressWarnings("unchecked")
 	@Getter
-	private final Class<T> entityClass = (Class<T>) ReflectionKit.getSuperClassGenericType(getClass(), 2);
+	private final Class<T> tClass = (Class<T>) ReflectionKit.getSuperClassGenericType(getClass(), 2);
 
 	@Override
 	public int countById(Serializable id) {
-		TableInfo tableInfo = TableInfoHelper.getTableInfo(entityClass);
+		TableInfo tableInfo = TableInfoHelper.getTableInfo(tClass);
 		if (tableInfo == null) {
 			throw new IllegalStateException(
-					String.format("Can not find TableInfo for %s, check mybatis config", entityClass.getSimpleName()));
+					String.format("Can not find TableInfo for %s, check mybatis config", tClass.getSimpleName()));
 		}
 		QueryWrapper<T> wrapper = new QueryWrapper<>();
 		wrapper.eq(tableInfo.getKeyColumn(), id);
@@ -64,10 +64,10 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, 
 		QueryWrapper<T> wrapper = new QueryWrapper<>();
 		wrapper.allEq(columns);
 		if (ignoreId != null) {
-			TableInfo tableInfo = TableInfoHelper.getTableInfo(entityClass);
+			TableInfo tableInfo = TableInfoHelper.getTableInfo(tClass);
 			if (tableInfo == null) {
-				throw new IllegalStateException(String.format("Can not find TableInfo for %s, check mybatis config",
-						entityClass.getSimpleName()));
+				throw new IllegalStateException(
+						String.format("Can not find TableInfo for %s, check mybatis config", tClass.getSimpleName()));
 			}
 			wrapper.ne(tableInfo.getKeyColumn(), ignoreId);
 		}

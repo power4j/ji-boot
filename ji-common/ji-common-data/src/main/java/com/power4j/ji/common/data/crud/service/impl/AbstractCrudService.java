@@ -55,7 +55,7 @@ public abstract class AbstractCrudService<M extends BaseMapper<T>, D extends Uni
 
 	@SuppressWarnings("unchecked")
 	@Getter
-	private final Class<T> entityClass = (Class<T>) ReflectionKit.getSuperClassGenericType(getClass(), 2);
+	private final Class<T> entityType = (Class<T>) ReflectionKit.getSuperClassGenericType(getClass(), 2);
 
 	/**
 	 * 分页查询 QueryWrapper
@@ -75,7 +75,7 @@ public abstract class AbstractCrudService<M extends BaseMapper<T>, D extends Uni
 		if (dto == null) {
 			return null;
 		}
-		return BeanUtil.toBean(dto, entityClass);
+		return BeanUtil.toBean(dto, entityType);
 	}
 
 	@Override

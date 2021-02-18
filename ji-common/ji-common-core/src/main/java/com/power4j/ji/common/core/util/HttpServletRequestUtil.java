@@ -16,7 +16,7 @@
 
 package com.power4j.ji.common.core.util;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -74,22 +74,22 @@ public class HttpServletRequestUtil {
 	 */
 	public static Optional<String> getRemoteAddr(HttpServletRequest request) {
 		String address = request.getHeader(X_FORWARD_FOR);
-		if (StrUtil.isBlank(address) || UNKNOWN.equalsIgnoreCase(address)) {
+		if (CharSequenceUtil.isBlank(address) || UNKNOWN.equalsIgnoreCase(address)) {
 			address = request.getHeader(PROXY_CLIENT_IP);
 		}
-		if (StrUtil.isBlank(address) || UNKNOWN.equalsIgnoreCase(address)) {
+		if (CharSequenceUtil.isBlank(address) || UNKNOWN.equalsIgnoreCase(address)) {
 			address = request.getHeader(WL_Proxy_Client_IP);
 		}
-		if (StrUtil.isBlank(address) || UNKNOWN.equalsIgnoreCase(address)) {
+		if (CharSequenceUtil.isBlank(address) || UNKNOWN.equalsIgnoreCase(address)) {
 			address = request.getHeader(HTTP_CLIENT_IP);
 		}
-		if (StrUtil.isBlank(address) || UNKNOWN.equalsIgnoreCase(address)) {
+		if (CharSequenceUtil.isBlank(address) || UNKNOWN.equalsIgnoreCase(address)) {
 			address = request.getHeader(HTTP_X_FORWARDED_FOR);
 		}
-		if (StrUtil.isBlank(address) || UNKNOWN.equalsIgnoreCase(address)) {
+		if (CharSequenceUtil.isBlank(address) || UNKNOWN.equalsIgnoreCase(address)) {
 			address = request.getRemoteAddr();
 		}
-		return Optional.ofNullable(address).map(s -> StrUtil.split(s, ",")[0]);
+		return Optional.ofNullable(address).map(s -> CharSequenceUtil.split(s, ",")[0]);
 	}
 
 	/**

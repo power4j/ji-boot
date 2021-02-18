@@ -18,8 +18,8 @@ package com.power4j.ji.admin.modules.sys.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
@@ -75,8 +75,9 @@ public class SysUserServiceImpl extends AbstractCrudService<SysUserMapper, SysUs
 			LocalDate start = ArrayUtil.get(param.getCreateIn(), 0);
 			LocalDate end = ArrayUtil.get(param.getCreateIn(), 1);
 			wrapper = new QueryWrapper<SysUser>().lambda()
-					.eq(StrUtil.isNotBlank(param.getStatus()), SysUser::getStatus, param.getStatus())
-					.likeRight(StrUtil.isNotEmpty(param.getUsername()), SysUser::getUsername, param.getUsername())
+					.eq(CharSequenceUtil.isNotBlank(param.getStatus()), SysUser::getStatus, param.getStatus())
+					.likeRight(CharSequenceUtil.isNotEmpty(param.getUsername()), SysUser::getUsername,
+							param.getUsername())
 					.ge(null != start, SysUser::getCreateAt, CrudUtil.dayStart(start))
 					.le(null != end, SysUser::getCreateAt, CrudUtil.dayEnd(end));
 		}
@@ -112,7 +113,7 @@ public class SysUserServiceImpl extends AbstractCrudService<SysUserMapper, SysUs
 		}
 		dto.setPassword(null);
 		dto.setUpdateBy(SecurityUtil.getLoginUsername().orElse(null));
-		if (!StrUtil.isBlank(dto.getPassword())) {
+		if (!CharSequenceUtil.isBlank(dto.getPassword())) {
 			dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 		}
 		return super.prePutHandle(dto);

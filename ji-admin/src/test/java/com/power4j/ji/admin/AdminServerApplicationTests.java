@@ -16,6 +16,7 @@
 
 package com.power4j.ji.admin;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,7 +30,9 @@ class AdminServerApplicationTests {
 
 	@Test
 	void contextLoads() {
-		System.out.println(passwordEncoder.getClass().getName() + " - " + passwordEncoder.encode("admin"));
+		final String encoded = passwordEncoder.encode("admin");
+		System.out.println(passwordEncoder.getClass().getName() + " - " + encoded);
+		Assertions.assertNotNull(encoded);
 	}
 
 }

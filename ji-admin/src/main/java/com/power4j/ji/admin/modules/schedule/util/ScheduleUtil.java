@@ -16,7 +16,7 @@
 
 package com.power4j.ji.admin.modules.schedule.util;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import com.power4j.ji.admin.modules.schedule.dto.SysJobDTO;
 import com.power4j.ji.admin.modules.schedule.entity.SysJobLog;
 import com.power4j.ji.common.schedule.quartz.event.TaskEndEvent;
@@ -72,8 +72,8 @@ public class ScheduleUtil {
 		jobLog.setEndTime(event.getEndTime());
 		jobLog.setExecuteMs(event.getElapsed().toMillis());
 		jobLog.setSuccess(event.getSuccess());
-		jobLog.setEx(StrUtil.maxLength(event.getCauseBy(), 255));
-		jobLog.setExMsg(StrUtil.maxLength(event.getCauseByMsg(), 255));
+		jobLog.setEx(CharSequenceUtil.maxLength(event.getCauseBy(), 255));
+		jobLog.setExMsg(CharSequenceUtil.maxLength(event.getCauseByMsg(), 255));
 		return jobLog;
 	}
 

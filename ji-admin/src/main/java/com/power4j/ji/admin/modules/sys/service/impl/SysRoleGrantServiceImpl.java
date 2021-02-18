@@ -16,7 +16,7 @@
 
 package com.power4j.ji.admin.modules.sys.service.impl;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.power4j.ji.admin.modules.sys.constant.CacheConstant;
@@ -57,7 +57,7 @@ public class SysRoleGrantServiceImpl extends AbstractCrudService<SysRoleGranteeM
 	@Override
 	public List<SysRoleGrant> getByUser(Long userId, String grantType) {
 		Wrapper<SysRoleGrant> wrapper = Wrappers.<SysRoleGrant>lambdaQuery().eq(SysRoleGrant::getUserId, userId)
-				.eq(StrUtil.isNotEmpty(grantType), SysRoleGrant::getGrantType, grantType);
+				.eq(CharSequenceUtil.isNotEmpty(grantType), SysRoleGrant::getGrantType, grantType);
 		return list(wrapper);
 	}
 

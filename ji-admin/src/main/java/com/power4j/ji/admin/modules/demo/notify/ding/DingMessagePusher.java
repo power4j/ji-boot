@@ -16,6 +16,7 @@
 
 package com.power4j.ji.admin.modules.demo.notify.ding;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.jaemon.dinger.DingerSender;
 import com.github.jaemon.dinger.core.entity.DingerRequest;
@@ -81,7 +82,7 @@ public class DingMessagePusher implements ApplicationListener<PayloadApplication
 				event.getRequestQueryString(),
 				event.getEx(),
 				event.getExMsg(),
-				StrUtil.maxLength(event.getExStack(), 500));
+				CharSequenceUtil.maxLength(event.getExStack(), 500));
 
 		// @formatter:on
 	}

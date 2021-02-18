@@ -17,7 +17,7 @@
 package com.power4j.ji.common.data.dict.config;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import com.power4j.ji.common.core.util.ApiResponseUtil;
 import com.power4j.ji.common.data.dict.annotation.MapDict;
 import com.power4j.ji.common.data.dict.support.DictItemConverter;
@@ -95,8 +95,8 @@ public class DictMapperAutoConfig {
 			List<String> packages = AutoConfigurationPackages.get(this.beanFactory);
 			String[] scanPackages = environment.getProperty(DictMapperProperties.PREFIX + ".scan-packages",
 					String[].class, new String[0]);
-			packages.addAll(Arrays.asList(scanPackages).stream().flatMap(o -> StrUtil.splitTrim(o, ",").stream())
-					.collect(Collectors.toList()));
+			packages.addAll(Arrays.asList(scanPackages).stream()
+					.flatMap(o -> CharSequenceUtil.splitTrim(o, ",").stream()).collect(Collectors.toList()));
 			if (log.isDebugEnabled()) {
 				packages.forEach(pkg -> log.debug("Using auto-configuration base package '{}'", pkg));
 			}
