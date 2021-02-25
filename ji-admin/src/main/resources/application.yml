@@ -28,8 +28,8 @@ spring:
     dingers:
       # 使用钉钉机器人, 请根据自己机器人配置信息进行修改
       dingtalk:
-        tokenId: ${DING_TALK_TOKEN}
-        secret: ${DING_TALK_SECRET}
+        tokenId: ${DING_TALK_TOKEN:xxx}
+        secret: ${DING_TALK_SECRET:xxx}
   quartz:
     trace: true # 启用 trace 日志, 默认 false
     startup-delay: 10s
@@ -124,8 +124,8 @@ ji-boot:
     # 公众号消息通知
     wx-mp:
       enabled: true
-      app-id: ${WX_MP_APPID}
-      secret: ${WX_MP_SECRET}
+      app-id: ${WX_MP_APPID:xxx}
+      secret: ${WX_MP_SECRET:xxx}
       subscribers: oiwtWuMNNa6njL3bE7_9ADOKMEWc
   # 常量字典
   dict:
