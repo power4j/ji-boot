@@ -20,7 +20,7 @@
   <parent>
     <groupId>com.power4j.ji</groupId>
     <artifactId>ji-common</artifactId>
-    <version>0.2.2</version>
+    <version>0.3.1</version>
   </parent>
 
   <artifactId>ji-common-core</artifactId>

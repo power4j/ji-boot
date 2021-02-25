@@ -20,7 +20,7 @@
 
   <groupId>com.power4j.kit</groupId>
   <artifactId>ji-bom</artifactId>
-  <version>0.2.2</version>
+  <version>0.3.1</version>
   <name>${project.artifactId}</name>
   <packaging>pom</packaging>
 
@@ -59,7 +59,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <ji.version>0.2.2</ji.version>
+    <ji.version>0.3.1</ji.version>
     <!-- dependencies -->
     <druid.version>1.1.21</druid.version>
     <hutool.version>5.5.8</hutool.version>
