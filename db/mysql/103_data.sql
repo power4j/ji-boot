@@ -65,6 +65,11 @@ insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (0,135
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (0,1353690207405219841,3);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (0,1353690495163834370,4);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (0,1353716092061724673,4);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (0,1364886578686709761,3);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (0,1364888492400824322,3);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (0,1364889597423767554,4);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (0,1364889902488080385,4);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (0,1364890082616659970,4);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10010000001,10010000001,0);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10010000001,10020000001,1);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10010000001,10030000001,2);
@@ -113,6 +118,11 @@ insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10010
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10010000001,1353690207405219841,2);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10010000001,1353690495163834370,3);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10010000001,1353716092061724673,3);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10010000001,1364886578686709761,2);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10010000001,1364888492400824322,2);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10010000001,1364889597423767554,3);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10010000001,1364889902488080385,3);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10010000001,1364890082616659970,3);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10010000002,10010000002,0);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10010000002,1339141805648650242,1);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10010000002,1339141875248930817,1);
@@ -177,6 +187,10 @@ insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (13396
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1339615399885451265,1343870166128156674,2);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1339615399885451265,1343870278812327938,2);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1339615399885451265,1343870438585950210,2);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1339615399885451265,1364886578686709761,1);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1339615399885451265,1364889597423767554,2);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1339615399885451265,1364889902488080385,2);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1339615399885451265,1364890082616659970,2);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1340676892001431553,1340676892001431553,0);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1340676892001431553,1340701292788572161,1);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1340676892001431553,1340701705814269954,1);
@@ -268,10 +282,15 @@ insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (13536
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1353690207405219841,1353716092061724673,1);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1353690495163834370,1353690495163834370,0);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1353716092061724673,1353716092061724673,0);
-
-/*Data for the table `t_sys_param` */
-
-insert  into `t_sys_param`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`param_key`,`param_value`,`remarks`,`status`,`create_by`,`update_by`) values (1336568657526984706,1,NULL,'2020-12-09 15:09:35',NULL,'test','sfsdfsf','sdfdf','0','admin',NULL);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1364886578686709761,1364886578686709761,0);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1364886578686709761,1364888492400824322,1);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1364886578686709761,1364889597423767554,1);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1364886578686709761,1364889902488080385,1);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1364886578686709761,1364890082616659970,1);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1364888492400824322,1364888492400824322,0);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1364889597423767554,1364889597423767554,0);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1364889902488080385,1364889902488080385,0);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1364890082616659970,1364890082616659970,0);
 
 /*Data for the table `t_sys_resource` */
 
@@ -310,8 +329,8 @@ insert  into `t_sys_resource`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`
 insert  into `t_sys_resource`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`type`,`name`,`title`,`permission`,`path`,`component`,`icon`,`sort`) values (1343870278812327938,0,NULL,'2020-12-29 18:43:37','2020-12-29 18:44:43',2,'sys-dict-del','删除字典','sys:dict:del','','','',2);
 insert  into `t_sys_resource`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`type`,`name`,`title`,`permission`,`path`,`component`,`icon`,`sort`) values (1343870438585950210,0,NULL,'2020-12-29 18:44:15','2020-12-29 18:44:59',2,'sys-dict-view','查看字典','sys:dict:view','','','',4);
 insert  into `t_sys_resource`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`type`,`name`,`title`,`permission`,`path`,`component`,`icon`,`sort`) values (1348924458774077442,0,NULL,'2021-01-12 17:27:07','2021-01-20 13:30:45',1,'sys-doc','接口文档','','','layoutHeaderAside','map-o',1000);
-insert  into `t_sys_resource`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`type`,`name`,`title`,`permission`,`path`,`component`,`icon`,`sort`) values (1348925135726354433,0,NULL,'2021-01-12 17:29:49','2021-01-20 13:31:34',1,'doc-knife4j','knife4j-ui','','http://flygon-demo.etcd.ltd/api/doc.html','','share-square-o',1);
-insert  into `t_sys_resource`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`type`,`name`,`title`,`permission`,`path`,`component`,`icon`,`sort`) values (1348925793997201409,0,NULL,'2021-01-12 17:32:26','2021-01-20 13:31:50',1,'doc-swagger','swagger-ui','','http://flygon-demo.etcd.ltd/api/swagger-ui.html','','share-square-o',2);
+insert  into `t_sys_resource`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`type`,`name`,`title`,`permission`,`path`,`component`,`icon`,`sort`) values (1348925135726354433,0,NULL,'2021-01-12 17:29:49','2021-01-20 13:31:34',1,'doc-knife4j','knife4j-ui','','knife4j-doc','http://admin-demo.etcd.ltd/api/doc.html','share-square-o',1);
+insert  into `t_sys_resource`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`type`,`name`,`title`,`permission`,`path`,`component`,`icon`,`sort`) values (1348925793997201409,0,NULL,'2021-01-12 17:32:26','2021-01-20 13:31:50',1,'doc-swagger','swagger-ui','','swagger-doc','http://admin-demo.etcd.ltd/api/swagger-ui.html','share-square-o',2);
 insert  into `t_sys_resource`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`type`,`name`,`title`,`permission`,`path`,`component`,`icon`,`sort`) values (1351757595430363137,0,NULL,'2021-01-20 13:05:00','2021-01-20 13:39:50',1,'sys-schedule','任务调度','','sys/schedule','','clock-o',900);
 insert  into `t_sys_resource`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`type`,`name`,`title`,`permission`,`path`,`component`,`icon`,`sort`) values (1351758746280271873,0,NULL,'2021-01-20 13:09:34','2021-01-21 17:17:25',1,'schedule-job','任务管理','','/schedule/job','/schedule/views/job','calendar',0);
 insert  into `t_sys_resource`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`type`,`name`,`title`,`permission`,`path`,`component`,`icon`,`sort`) values (1351766782407352321,0,NULL,'2021-01-20 13:41:30','2021-01-20 13:43:40',2,'sys-job-add','新增','sys:job:add','','','',1);
@@ -322,6 +341,11 @@ insert  into `t_sys_resource`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`
 insert  into `t_sys_resource`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`type`,`name`,`title`,`permission`,`path`,`component`,`icon`,`sort`) values (1353690207405219841,0,NULL,'2021-01-25 21:04:30',NULL,1,'schedule-log','任务日志',NULL,'/schedule/job-log','/schedule/views/job-log','history',2);
 insert  into `t_sys_resource`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`type`,`name`,`title`,`permission`,`path`,`component`,`icon`,`sort`) values (1353690495163834370,0,NULL,'2021-01-25 21:05:39',NULL,2,'sys-joblog-view','查看','sys:job-log:view',NULL,NULL,'',4);
 insert  into `t_sys_resource`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`type`,`name`,`title`,`permission`,`path`,`component`,`icon`,`sort`) values (1353716092061724673,0,NULL,'2021-01-25 22:47:22',NULL,2,'sys-job-log-del','删除','sys:job-log:del',NULL,NULL,'',2);
+insert  into `t_sys_resource`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`type`,`name`,`title`,`permission`,`path`,`component`,`icon`,`sort`) values (1364886578686709761,0,NULL,'2021-02-25 18:34:53','2021-02-25 18:45:53',1,'ureport','报表管理','','/sys/ureport','/ureport/views/ureport-file','line-chart',500);
+insert  into `t_sys_resource`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`type`,`name`,`title`,`permission`,`path`,`component`,`icon`,`sort`) values (1364888492400824322,0,NULL,'2021-02-25 18:42:30',NULL,2,'sys-ureports-view','查看','sys:ureports:view','',NULL,'',4);
+insert  into `t_sys_resource`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`type`,`name`,`title`,`permission`,`path`,`component`,`icon`,`sort`) values (1364889597423767554,0,NULL,'2021-02-25 18:46:53','2021-02-25 18:47:02',2,'sys-ureports-design','报表设计','sys:ureports:design','','','',5);
+insert  into `t_sys_resource`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`type`,`name`,`title`,`permission`,`path`,`component`,`icon`,`sort`) values (1364889902488080385,0,NULL,'2021-02-25 18:48:06',NULL,2,'sys-ureports-del','删除','sys:ureports:del',NULL,NULL,'',2);
+insert  into `t_sys_resource`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`type`,`name`,`title`,`permission`,`path`,`component`,`icon`,`sort`) values (1364890082616659970,0,NULL,'2021-02-25 18:48:49',NULL,2,'sys-ureports-preview','预览','sys:ureports:preview',NULL,NULL,'',6);
 
 /*Data for the table `t_sys_resource_grantee` */
 
@@ -372,6 +396,11 @@ insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (133817864
 insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1338178645550809090,1353690207405219841);
 insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1338178645550809090,1353690495163834370);
 insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1338178645550809090,1353716092061724673);
+insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1338178645550809090,1364886578686709761);
+insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1338178645550809090,1364888492400824322);
+insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1338178645550809090,1364889597423767554);
+insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1338178645550809090,1364889902488080385);
+insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1338178645550809090,1364890082616659970);
 
 /*Data for the table `t_sys_role` */
 

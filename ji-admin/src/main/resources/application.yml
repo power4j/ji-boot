@@ -178,7 +178,16 @@ ji-boot:
         - patterns: ${ji.captcha.service-url}
           methods: GET
           access: permitAll
+        # UReportServlet 放行
+        - patterns: '/ureport/**'
+          access: permitAll
         # druid 监控放行
         - patterns: '/druid/**'
           methods: GET,POST
           access: permitAll
+
+ureport:
+  disableHttpSessionReportCache: false
+  disableFileProvider: true
+  fileStoreDir: /WEB-INF/ureportfiles
+  debug: true

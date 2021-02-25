@@ -19,21 +19,36 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.power4j.ji</groupId>
-    <artifactId>ji-boot</artifactId>
+    <artifactId>ji-common</artifactId>
     <version>0.2.2</version>
   </parent>
-  <artifactId>ji-common</artifactId>
-  <packaging>pom</packaging>
 
-  <modules>
-    <module>ji-common-core</module>
-    <module>ji-common-data</module>
-    <module>ji-common-dict</module>
-    <module>ji-common-cache</module>
-    <module>ji-common-quartz</module>
-    <module>ji-common-captcha</module>
-    <module>ji-common-open-doc</module>
-    <module>ji-common-security</module>
-    <module>ji-common-ureport</module>
-  </modules>
+  <artifactId>ji-common-ureport</artifactId>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.power4j.ji</groupId>
+      <artifactId>ji-common-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.bstek.ureport</groupId>
+      <artifactId>ureport2-console</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <configuration>
+          <skip>false</skip>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

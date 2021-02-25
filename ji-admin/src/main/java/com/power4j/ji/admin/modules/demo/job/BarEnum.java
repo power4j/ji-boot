@@ -32,11 +32,11 @@ public enum BarEnum {
 	/**
 	 * One
 	 */
-	One(1),
+	ONE(1),
 	/**
 	 * Two
 	 */
-	Two(2);
+	TWO(2);
 
 	private final int value;
 

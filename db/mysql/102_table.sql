@@ -193,3 +193,16 @@ CREATE TABLE `t_sys_job_log`
 ) ENGINE = InnoDB CHARSET = `utf8mb4` COMMENT ='任务执行日志';
 
 ALTER TABLE `t_sys_job_log` ADD INDEX `idx_1` (`task_bean`,`success`,`ex`,`start_time`);
+
+CREATE TABLE `t_ureport_data`
+(
+    `id`          BIGINT      NOT NULL COMMENT '主健',
+    `sys_flag`    TINYINT     NOT NULL DEFAULT 0 COMMENT '数据标记 0 普通数据, 1 系统保护数据',
+    `del_flag`    DATETIME    NULL COMMENT '删除标志',
+    `create_at`   DATETIME COMMENT '创建时间',
+    `update_at`   DATETIME COMMENT '更新时间',
+    `file`    VARCHAR(255) NOT NULL COMMENT '名称',
+    `data` MEDIUMBLOB NOT NULL COMMENT '数据',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uk_code` (`file`)
+) ENGINE = InnoDB CHARSET = `utf8mb4` COMMENT ='UR报表';

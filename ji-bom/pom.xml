@@ -65,6 +65,7 @@
     <hutool.version>5.5.8</hutool.version>
     <knife4j.version>3.0.2</knife4j.version>
     <redisson.version>3.15.0</redisson.version>
+    <ureport.version>2.2.9</ureport.version>
     <esc-pos.version>1.0.1</esc-pos.version>
     <sequence.version>1.4.0</sequence.version>
     <ez-captcha.version>0.1.1</ez-captcha.version>
@@ -128,6 +129,11 @@
         <version>${redisson.version}</version>
       </dependency>
       <dependency>
+        <groupId>com.bstek.ureport</groupId>
+        <artifactId>ureport2-console</artifactId>
+        <version>${ureport.version}</version>
+      </dependency>
+      <dependency>
         <groupId>com.power4j.kit</groupId>
         <artifactId>esc-pos</artifactId>
         <version>${esc-pos.version}</version>
@@ -186,6 +192,11 @@
       <dependency>
         <groupId>com.power4j.ji</groupId>
         <artifactId>ji-common-dict</artifactId>
+        <version>${ji.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.power4j.ji</groupId>
+        <artifactId>ji-common-ureport</artifactId>
         <version>${ji.version}</version>
       </dependency>
       <!-- test -->

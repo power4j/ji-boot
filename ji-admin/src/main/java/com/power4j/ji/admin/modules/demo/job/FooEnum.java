@@ -36,13 +36,13 @@ public enum FooEnum {
 	 */
 	@Label("第1种方案")
 	@Styled("success")
-	One("one"),
+	ONE("one"),
 	/**
 	 * Two
 	 */
 	@Label("第2种方案")
 	@Styled("warning")
-	Two("two");
+	TWO("two");
 
 	@DictValue
 	private final String value;

@@ -16,6 +16,7 @@
 
 package com.power4j.ji.admin.modules.demo.job;
 
+import cn.hutool.core.util.RandomUtil;
 import com.power4j.ji.common.schedule.quartz.job.ITask;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -31,14 +32,20 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Component("demoTask")
 public class DemoTask implements ITask {
 
-	private static final AtomicInteger counter = new AtomicInteger();
+	private static final AtomicInteger COUNTER = new AtomicInteger();
 
 	private static final int THROW_ERR = 5;
 
 	@Override
 	public void run(String param) {
-		final int val = counter.incrementAndGet();
+		final int val = COUNTER.incrementAndGet();
 		log.info("demo task with param {},counter = #{} ", param, val);
+		try {
+			Thread.sleep(RandomUtil.randomLong(5L, 500L));
+		}
+		catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+		}
 		if (0 == (val % THROW_ERR)) {
 			throw new RuntimeException("模拟任务异常");
 		}

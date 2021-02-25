@@ -125,6 +125,10 @@
       <groupId>com.power4j.ji</groupId>
       <artifactId>ji-common-dict</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.power4j.ji</groupId>
+      <artifactId>ji-common-ureport</artifactId>
+    </dependency>
   </dependencies>
 
   <build>

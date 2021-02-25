@@ -39,6 +39,19 @@ public class DateTimeUtil {
 
 	/**
 	 * 转换
+	 * @param localDateTime
+	 * @return
+	 */
+	@Nullable
+	public Date toDate(@Nullable LocalDateTime localDateTime) {
+		if (localDateTime == null) {
+			return null;
+		}
+		return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+	}
+
+	/**
+	 * 转换
 	 * @param date
 	 * @return
 	 */

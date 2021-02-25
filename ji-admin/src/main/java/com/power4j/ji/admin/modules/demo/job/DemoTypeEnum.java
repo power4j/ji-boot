@@ -34,11 +34,11 @@ public enum DemoTypeEnum {
 	/**
 	 * One
 	 */
-	One("one"),
+	ONE("one"),
 	/**
 	 * Two
 	 */
-	Two("two");
+	TWO("two");
 
 	private final String value;
 
