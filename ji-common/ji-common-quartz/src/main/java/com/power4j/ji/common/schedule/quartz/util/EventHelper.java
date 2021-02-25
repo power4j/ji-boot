@@ -24,6 +24,8 @@ import lombok.experimental.UtilityClass;
 import org.quartz.JobExecutionContext;
 import org.quartz.Trigger;
 
+import java.time.LocalDateTime;
+
 /**
  * @author CJ (power4j@outlook.com)
  * @date 2021/1/25
@@ -47,9 +49,9 @@ public class EventHelper {
 		obj.setJobKey(trigger.getJobKey());
 		obj.setPlan(ExecutionPlan.copyOf(executionPlan));
 		obj.setRefireCount(context.getRefireCount());
-		obj.setPreviousFireTime(DateTimeUtil.ofUtc(trigger.getPreviousFireTime()));
-		obj.setNextFireTime(DateTimeUtil.ofUtc(trigger.getNextFireTime()));
-		obj.setHappenAt(DateTimeUtil.utcNow());
+		obj.setPreviousFireTime(DateTimeUtil.toLocalDateTime(trigger.getPreviousFireTime()));
+		obj.setNextFireTime(DateTimeUtil.toLocalDateTime(trigger.getNextFireTime()));
+		obj.setHappenAt(LocalDateTime.now());
 		return obj;
 	}
 
@@ -63,7 +65,7 @@ public class EventHelper {
 	 */
 	public <T extends TaskEvent> T fillValues(T obj, JobExecutionContext context, ExecutionPlan executionPlan) {
 		obj.setPlan(ExecutionPlan.copyOf(executionPlan));
-		obj.setHappenAt(DateTimeUtil.utcNow());
+		obj.setHappenAt(LocalDateTime.now());
 		return obj;
 	}
 
