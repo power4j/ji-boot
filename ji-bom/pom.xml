@@ -73,7 +73,7 @@
     <mybatis-plus.version>3.4.2</mybatis-plus.version>
     <springdoc-openapi.version>1.5.4</springdoc-openapi.version>
     <transmittable-thread-local.version>2.12.1</transmittable-thread-local.version>
-    <hibernate-validator-test-utils.version>6.1.6.Final</hibernate-validator-test-utils.version>
+    <hibernate-validator-test-utils.version>7.0.1.Final</hibernate-validator-test-utils.version>
   </properties>
 
   <dependencyManagement>
