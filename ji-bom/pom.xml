@@ -71,7 +71,7 @@
     <ez-captcha.version>0.1.1</ez-captcha.version>
     <friendly-id.version>1.1.0</friendly-id.version>
     <mybatis-plus.version>3.4.2</mybatis-plus.version>
-    <springdoc-openapi.version>1.5.4</springdoc-openapi.version>
+    <springdoc-openapi.version>1.5.5</springdoc-openapi.version>
     <transmittable-thread-local.version>2.12.1</transmittable-thread-local.version>
     <hibernate-validator-test-utils.version>6.1.6.Final</hibernate-validator-test-utils.version>
   </properties>
