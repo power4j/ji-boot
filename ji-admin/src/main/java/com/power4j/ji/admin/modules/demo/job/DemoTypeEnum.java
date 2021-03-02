@@ -16,9 +16,9 @@
 
 package com.power4j.ji.admin.modules.demo.job;
 
-import com.power4j.ji.common.data.dict.annotation.DictValue;
-import com.power4j.ji.common.data.dict.annotation.Item;
-import com.power4j.ji.common.data.dict.annotation.MapDict;
+import com.power4j.kit.common.data.dict.annotation.DictValue;
+import com.power4j.kit.common.data.dict.annotation.Item;
+import com.power4j.kit.common.data.dict.annotation.MapDict;
 
 import java.util.function.Function;
 

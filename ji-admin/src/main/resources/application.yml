@@ -127,14 +127,6 @@ ji-boot:
       app-id: ${WX_MP_APPID:xxx}
       secret: ${WX_MP_SECRET:xxx}
       subscribers: oiwtWuMNNa6njL3bE7_9ADOKMEWc
-  # 常量字典
-  dict:
-    # 需要扫描项目以外的包
-    scan-packages: com.power4j.ji
-    # 启用内建的API接口
-    enable-endpoint: true
-    # 接口URL
-    endpoint-base-url: /sys/immutable-dictionaries
   # 自定义验证码产生地址和消费地址
   captcha:
     code-url: '/code'
@@ -191,3 +183,12 @@ ureport:
   disableFileProvider: true
   fileStoreDir: /WEB-INF/ureportfiles
   debug: true
+
+# 常量字典
+dict-mapper:
+    # 需要扫描项目以外的包
+    scan-packages: com.power4j.ji
+    # 启用内建的API接口
+    enable-endpoint: true
+    # 接口URL
+    endpoint-base-url: /sys/immutable-dictionaries

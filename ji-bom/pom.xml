@@ -69,6 +69,7 @@
     <esc-pos.version>1.0.1</esc-pos.version>
     <sequence.version>1.4.0</sequence.version>
     <ez-captcha.version>0.1.1</ez-captcha.version>
+    <dict-mapper.version>0.1.2</dict-mapper.version>
     <friendly-id.version>1.1.0</friendly-id.version>
     <mybatis-plus.version>3.4.2</mybatis-plus.version>
     <springdoc-openapi.version>1.5.4</springdoc-openapi.version>
@@ -152,6 +153,11 @@
         <groupId>com.alibaba</groupId>
         <artifactId>transmittable-thread-local</artifactId>
         <version>${transmittable-thread-local.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.power4j.kit</groupId>
+        <artifactId>dict-mapper-spring-boot-starter</artifactId>
+        <version>${dict-mapper.version}</version>
       </dependency>
       <!-- flygon libs -->
       <dependency>

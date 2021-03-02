@@ -16,10 +16,10 @@
 
 package com.power4j.ji.common.data.crud.constant;
 
-import com.power4j.ji.common.data.dict.annotation.DictValue;
-import com.power4j.ji.common.data.dict.annotation.Label;
-import com.power4j.ji.common.data.dict.annotation.MapDict;
-import com.power4j.ji.common.data.dict.annotation.Styled;
+import com.power4j.kit.common.data.dict.annotation.DictValue;
+import com.power4j.kit.common.data.dict.annotation.Label;
+import com.power4j.kit.common.data.dict.annotation.MapDict;
+import com.power4j.kit.common.data.dict.annotation.Styled;
 
 import java.util.function.Function;
 

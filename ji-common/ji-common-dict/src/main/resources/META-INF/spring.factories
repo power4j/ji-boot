@@ -1,3 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.power4j.ji.common.data.dict.config.DictMapperAutoConfig,\
-  com.power4j.ji.common.data.dict.support.DictEndpoint
+  com.power4j.ji.common.data.dict.config.DictMapperAutoConfig

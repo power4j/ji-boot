@@ -34,6 +34,10 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.power4j.kit</groupId>
+      <artifactId>dict-mapper-spring-boot-starter</artifactId>
+    </dependency>
   </dependencies>
 
   <build>
