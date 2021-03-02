@@ -52,7 +52,7 @@ public class SignInSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 			Authentication authentication) throws IOException, ServletException {
 		log.debug("Authentication success : {}", authentication.getName());
 		ApiToken token = tokenService.createToken(authentication);
-		HttpServletResponseUtil.writeJson(objectMapper, response, ApiResponseUtil.ok(token), HttpStatus.OK);
+		HttpServletResponseUtil.writeJson(response, objectMapper, ApiResponseUtil.ok(token), HttpStatus.OK);
 
 		clearAuthenticationAttributes(request);
 	}

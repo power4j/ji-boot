@@ -143,20 +143,20 @@ public class CaptchaFilter extends OncePerRequestFilter implements Ordered {
 
 	protected boolean handleCodeValidate(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (!HttpMethod.POST.name().equalsIgnoreCase(request.getMethod())) {
-			HttpServletResponseUtil.writeJson(objectMapper, response, ApiResponseUtil.fail("不支持该HTTP方法"),
+			HttpServletResponseUtil.writeJson(response, objectMapper, ApiResponseUtil.fail("不支持该HTTP方法"),
 					HttpStatus.OK);
 			return false;
 		}
 		CodeValidateRequest codeValidateRequest = getCodeValidateRequest(request);
 		if (codeValidateRequest == null || codeValidateRequest.getReqToken() == null
 				|| codeValidateRequest.getCode() == null) {
-			HttpServletResponseUtil.writeJson(objectMapper, response,
+			HttpServletResponseUtil.writeJson(response, objectMapper,
 					ApiResponse.of(SysErrorCodes.E_PARAM_MISS, "验证码参数不正确"), HttpStatus.OK);
 			return false;
 		}
 		CodeInfo codeInfo = retrieveCodeInfo(codeValidateRequest.getReqToken()).orElse(null);
 		if (!validateCode(codeInfo, codeValidateRequest.getCode(), expireSeconds)) {
-			HttpServletResponseUtil.writeJson(objectMapper, response,
+			HttpServletResponseUtil.writeJson(response, objectMapper,
 					ApiResponseUtil.fail("验证码错误:" + codeValidateRequest.getCode()), HttpStatus.OK);
 			return false;
 		}

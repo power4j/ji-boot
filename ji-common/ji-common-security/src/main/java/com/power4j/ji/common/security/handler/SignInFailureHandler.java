@@ -72,7 +72,7 @@ public class SignInFailureHandler extends SimpleUrlAuthenticationFailureHandler 
 		else {
 			data = ApiResponseUtil.fail("认证失败:" + exception.getLocalizedMessage());
 		}
-		HttpServletResponseUtil.writeJson(objectMapper, response, data, HttpStatus.OK);
+		HttpServletResponseUtil.writeJson(response, objectMapper, data, HttpStatus.OK);
 	}
 
 }

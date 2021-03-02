@@ -70,7 +70,7 @@ public class SignOutHandler implements LogoutHandler {
 				data = ApiResponseUtil.badRequest("Bad token : " + tokenValue);
 			}
 		}
-		HttpServletResponseUtil.writeJson(objectMapper, response, data, HttpStatus.OK);
+		HttpServletResponseUtil.writeJson(response, objectMapper, data, HttpStatus.OK);
 	}
 
 }

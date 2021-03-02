@@ -16,8 +16,11 @@
 
 package com.power4j.ji.common.core.util;
 
+import cn.hutool.core.io.IoUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.power4j.ji.common.core.exception.RtException;
 import lombok.experimental.UtilityClass;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -26,6 +29,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
@@ -40,7 +45,7 @@ public class HttpServletResponseUtil {
 	private final static ObjectMapper DEFAULT_OBJECT_MAPPER = new ObjectMapper();
 
 	public static void writeJson(HttpServletResponse response, Object payload, HttpStatus status) throws IOException {
-		writeJson(DEFAULT_OBJECT_MAPPER, response, payload, status);
+		writeJson(response, DEFAULT_OBJECT_MAPPER, payload, status);
 	}
 
 	/**
@@ -53,7 +58,7 @@ public class HttpServletResponseUtil {
 				.map(ServletRequestAttributes::getResponse);
 	}
 
-	public static void writeJson(ObjectMapper objectMapper, HttpServletResponse response, Object payload,
+	public static void writeJson(HttpServletResponse response, ObjectMapper objectMapper, Object payload,
 			HttpStatus status) throws IOException {
 		response.setStatus(status.value());
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -68,4 +73,15 @@ public class HttpServletResponseUtil {
 		response.setDateHeader("Expires", 0);
 	}
 
+	public void writeAttachment(HttpServletResponse response, byte[] data, String fileName,boolean closeOutputStream) throws IOException {
+		response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+		try {
+			fileName = URLEncoder.encode(fileName, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			throw new RtException(e.getMessage(),e);
+		}
+		response.setHeader(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment;filename=%s",fileName));
+		IoUtil.write(response.getOutputStream(),closeOutputStream,data);
+	}
 }
