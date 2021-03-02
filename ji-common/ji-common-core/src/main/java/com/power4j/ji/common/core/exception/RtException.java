@@ -14,25 +14,23 @@
  * limitations under the License.
  */
 
-package com.power4j.ji.admin;
+package com.power4j.ji.common.core.exception;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-@SpringBootTest
-class AdminServerApplicationTests {
-
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-
-	@Test
-	void contextLoads() {
-		final String encoded = passwordEncoder.encode("admin");
-		System.out.println(passwordEncoder.getClass().getName() + " - " + encoded);
-		Assertions.assertNotNull(encoded);
+/**
+ * @author CJ (power4j@outlook.com)
+ * @date 2021/3/2
+ * @since 1.0
+ */
+public class RtException extends RuntimeException {
+	public RtException(String message) {
+		super(message);
 	}
 
+	public RtException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
+	public RtException(Throwable cause) {
+		super(cause);
+	}
 }

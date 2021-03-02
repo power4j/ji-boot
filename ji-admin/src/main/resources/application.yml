@@ -105,7 +105,7 @@ ji-boot:
   doc:
     global-security-scheme:
       # 开启后能在swagger页面设置api-token,这样才能以用户的身份调用后端接口
-      enabled: false
+      enabled: true
   # 缓存配置
   cache:
     # redisson caffeine none

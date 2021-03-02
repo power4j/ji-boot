@@ -42,6 +42,13 @@ public interface UrFileService extends CrudService<UrFileDTO, UrData> {
 	int countFileName(String file, @Nullable Long ignoreId);
 
 	/**
+	 * 查询
+	 * @param file
+	 * @return
+	 */
+	Optional<UrData> findByName(String file);
+
+	/**
 	 * 删除
 	 * @param file
 	 * @return

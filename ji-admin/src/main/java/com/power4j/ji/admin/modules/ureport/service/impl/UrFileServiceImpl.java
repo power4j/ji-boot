@@ -57,12 +57,16 @@ public class UrFileServiceImpl extends AbstractCrudService<UrFileMapper, UrFileD
 		return countByColumn("file", file, ignoreId);
 	}
 
+	@Override
+	public Optional<UrData> findByName(String file) {
+		return Optional.ofNullable(getBaseMapper().selectOne(Wrappers.<UrData>lambdaQuery().eq(UrData::getFile, file)));
+	}
+
 	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public Optional<UrFileDTO> deleteByFileName(String file) {
 		daoReportProvider.deleteReport(file);
-		Optional<UrData> urData = Optional
-				.ofNullable(getBaseMapper().selectOne(Wrappers.<UrData>lambdaQuery().eq(UrData::getFile, file)));
+		Optional<UrData> urData = findByName(file);
 		urData.ifPresent(o -> getBaseMapper().deleteById(o));
 		return urData.map(o -> BeanUtil.toBean(o, UrFileDTO.class));
 	}
