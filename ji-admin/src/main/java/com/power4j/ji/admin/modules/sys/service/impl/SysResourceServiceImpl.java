@@ -36,6 +36,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -181,6 +182,11 @@ public class SysResourceServiceImpl extends AbstractCrudService<SysResourceMappe
 	@Override
 	public int countResourceName(String name, Long ignoreId) {
 		return countByColumn("name", name, ignoreId);
+	}
+
+	@Override
+	public int countResourcePath(String path, @Nullable Long ignoreId) {
+		return countByColumn("path", path, ignoreId);
 	}
 
 	protected void buildTree(SysResourceDTO node) {

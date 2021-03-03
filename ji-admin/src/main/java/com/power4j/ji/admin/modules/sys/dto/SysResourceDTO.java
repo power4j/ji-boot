@@ -46,7 +46,7 @@ public class SysResourceDTO extends BaseDTO implements Node<SysResourceDTO>, Ser
 	 */
 	@Schema(description = "菜单类型", example = "1")
 	@NotNull(groups = { Groups.Default.class })
-	@Pattern(regexp = "1|2|3", message = "菜单类型只能是 1,2,3", groups = { Groups.Default.class })
+	@Pattern(regexp = "[123]", message = "菜单类型只能是 1,2,3", groups = { Groups.Default.class })
 	private String type;
 
 	/**
@@ -85,6 +85,13 @@ public class SysResourceDTO extends BaseDTO implements Node<SysResourceDTO>, Ser
 	@Schema(description = "路由组件", example = "layoutHeaderAside")
 	@Size(max = 240, groups = { Groups.Default.class })
 	private String component;
+
+	/**
+	 * 路由缓冲
+	 */
+	@Schema(description = "路由缓冲", example = "false")
+	@NotNull(groups = { Groups.Default.class })
+	private Boolean cache;
 
 	/**
 	 * 图标

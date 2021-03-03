@@ -67,6 +67,11 @@ public class SysResource extends BaseEntity implements Serializable {
 	private String component;
 
 	/**
+	 * 路由缓冲
+	 */
+	private Boolean cache;
+
+	/**
 	 * 图标
 	 */
 	private String icon;

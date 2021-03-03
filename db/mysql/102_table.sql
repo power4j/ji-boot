@@ -72,7 +72,7 @@ CREATE TABLE `t_sys_dict_item`
 CREATE TABLE `t_sys_resource`
 (
     `id`          BIGINT      NOT NULL COMMENT '主健',
-    `sys_flag`     TINYINT     NOT NULL DEFAULT 0 COMMENT '数据标记 0 普通数据, 1 系统保护数据',
+    `sys_flag`    TINYINT     NOT NULL DEFAULT 0 COMMENT '数据标记 0 普通数据, 1 系统保护数据',
     `del_flag`    DATETIME    NULL COMMENT '删除标志',
     `create_at`   DATETIME COMMENT '创建时间',
     `update_at`   DATETIME COMMENT '更新时间',
@@ -80,8 +80,9 @@ CREATE TABLE `t_sys_resource`
     `name`        VARCHAR(255) NOT NULL COMMENT '路由名称',
     `title`       VARCHAR(20) NOT NULL COMMENT '显示名称',
     `permission`  VARCHAR(255) NULL COMMENT '权限代码',
-    `path`        VARCHAR(255) NULL COMMENT '前端路径',
-    `component`   VARCHAR(255) NULL COMMENT '前端组件路径',
+    `path`        VARCHAR(255) NULL COMMENT '路由地址',
+    `component`   VARCHAR(255) NULL COMMENT 'UI组件',
+    `cache`       TINYINT NOT NULL DEFAULT '0' COMMENT '路由缓冲',
     `icon`        VARCHAR(40)  NULL COMMENT '图标',
     `sort`        INT NOT NULL DEFAULT 0 COMMENT '排序',
     PRIMARY KEY (`id`)
@@ -99,7 +100,7 @@ CREATE TABLE `t_resource_node`
 CREATE TABLE `t_sys_param`
 (
     `id`          BIGINT      NOT NULL COMMENT '主健',
-    `sys_flag`     TINYINT     NOT NULL DEFAULT 0 COMMENT '数据标记 0 普通数据, 1 系统保护数据',
+    `sys_flag`    TINYINT     NOT NULL DEFAULT 0 COMMENT '数据标记 0 普通数据, 1 系统保护数据',
     `del_flag`    DATETIME    NULL COMMENT '删除标志',
     `create_at`   DATETIME COMMENT '创建时间',
     `update_at`   DATETIME COMMENT '更新时间',
@@ -186,7 +187,7 @@ CREATE TABLE `t_sys_job_log`
     `start_time`   DATETIME NOT NULL COMMENT '执行开始时间',
     `end_time`     DATETIME NOT NULL COMMENT '执行结束时间',
     `execute_ms`   BIGINT NOT NULL DEFAULT '0' COMMENT '执行耗时',
-    `success`      tinyint NOT NULL DEFAULT '0' COMMENT '是否成功',
+    `success`      TINYINT NOT NULL DEFAULT '0' COMMENT '是否成功',
     `ex`       VARCHAR(255) COMMENT '异常',
     `ex_msg`   VARCHAR(255) COMMENT '异常信息',
     PRIMARY KEY (`id`)

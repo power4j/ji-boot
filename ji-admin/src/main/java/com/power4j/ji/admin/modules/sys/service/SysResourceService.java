@@ -80,4 +80,12 @@ public interface SysResourceService extends CrudService<SysResourceDTO, SysResou
 	 */
 	int countResourceName(String name, @Nullable Long ignoreId);
 
+	/**
+	 * 统计使用次数
+	 * @param path
+	 * @param ignoreId 排除的ID
+	 * @return
+	 */
+	int countResourcePath(String path, @Nullable Long ignoreId);
+
 }
