@@ -78,10 +78,11 @@ public class UrFileController {
 	@Operation(summary = "导出报表")
 	public void exportByFileName(@PathVariable String fileName, HttpServletResponse response) throws IOException {
 		UrData urData = urFileService.findByName(fileName).orElse(null);
-		if(urData == null){
+		if (urData == null) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			return;
 		}
-		HttpServletResponseUtil.writeAttachment(response,urData.getData(),urData.getFile(),false);
+		HttpServletResponseUtil.writeAttachment(response, urData.getData(), urData.getFile(), false);
 	}
+
 }

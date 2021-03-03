@@ -73,15 +73,18 @@ public class HttpServletResponseUtil {
 		response.setDateHeader("Expires", 0);
 	}
 
-	public void writeAttachment(HttpServletResponse response, byte[] data, String fileName,boolean closeOutputStream) throws IOException {
+	public void writeAttachment(HttpServletResponse response, byte[] data, String fileName, boolean closeOutputStream)
+			throws IOException {
 		response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
 		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 		try {
 			fileName = URLEncoder.encode(fileName, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			throw new RtException(e.getMessage(),e);
 		}
-		response.setHeader(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment;filename=%s",fileName));
-		IoUtil.write(response.getOutputStream(),closeOutputStream,data);
+		catch (UnsupportedEncodingException e) {
+			throw new RtException(e.getMessage(), e);
+		}
+		response.setHeader(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment;filename=%s", fileName));
+		IoUtil.write(response.getOutputStream(), closeOutputStream, data);
 	}
+
 }

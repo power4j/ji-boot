@@ -22,6 +22,7 @@ package com.power4j.ji.common.core.exception;
  * @since 1.0
  */
 public class RtException extends RuntimeException {
+
 	public RtException(String message) {
 		super(message);
 	}
@@ -33,4 +34,5 @@ public class RtException extends RuntimeException {
 	public RtException(Throwable cause) {
 		super(cause);
 	}
+
 }
