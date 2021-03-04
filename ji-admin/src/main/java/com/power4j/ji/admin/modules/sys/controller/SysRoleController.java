@@ -43,7 +43,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotEmpty;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -85,11 +84,11 @@ public class SysRoleController implements CrudApi<Long, SysRoleDTO> {
 		return ApiResponseUtil.ok(sysRoleService.searchList(null));
 	}
 
-	@GetMapping("/counter/code/{code}")
+	@GetMapping("/counter/code")
 	@Operation(summary = "统计角色编码", description = "返回统计值,可用于唯一性检查")
-	public ApiResponse<Integer> countOfCode(@PathVariable("code") @NotEmpty String code,
+	public ApiResponse<Integer> countOfCode(@RequestParam String value,
 			@Parameter(description = "排除的ID") @RequestParam(required = false) Long excludeId) {
-		return ApiResponseUtil.ok(sysRoleService.countRoleCode(code, excludeId));
+		return ApiResponseUtil.ok(sysRoleService.countRoleCode(value, excludeId));
 	}
 
 	@PreAuthorize("@pms.any('sys:role:grant','sys:role:revoke')")

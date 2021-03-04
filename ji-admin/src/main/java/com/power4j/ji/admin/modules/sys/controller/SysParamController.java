@@ -38,7 +38,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 /**
@@ -106,11 +105,11 @@ public class SysParamController implements CrudApi<Long, SysParamDTO> {
 		return ApiResponseUtil.ok(sysParamService.findByKey(key).orElse(null));
 	}
 
-	@GetMapping("/counter/key/{key}")
+	@GetMapping("/counter/key")
 	@Operation(summary = "统计参数名", description = "返回统计值,可用于唯一性检查")
-	public ApiResponse<Integer> countOfKey(@PathVariable("key") @NotEmpty String key,
+	public ApiResponse<Integer> countOfKey(@RequestParam String value,
 			@Parameter(description = "排除的ID") @RequestParam(required = false) Long excludeId) {
-		return ApiResponseUtil.ok(sysParamService.countParamKey(key, excludeId));
+		return ApiResponseUtil.ok(sysParamService.countParamKey(value, excludeId));
 	}
 
 }

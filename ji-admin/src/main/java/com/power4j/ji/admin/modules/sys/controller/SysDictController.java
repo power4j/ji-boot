@@ -40,7 +40,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotEmpty;
 import java.util.Collections;
 import java.util.List;
 
@@ -106,11 +105,11 @@ public class SysDictController implements CrudApi<Long, SysDictDTO> {
 				.ok(sysDictService.selectPage(page, param == null ? null : BeanUtil.toBean(param, SysDictDTO.class)));
 	}
 
-	@GetMapping("/counter/code/{code}")
+	@GetMapping("/counter/code")
 	@Operation(summary = "查找字典代码", description = "返回统计值,可用于唯一性检查")
-	public ApiResponse<Integer> countOfCode(@PathVariable("code") @NotEmpty String code,
+	public ApiResponse<Integer> countOfCode(@RequestParam String value,
 			@Parameter(description = "排除的ID") @RequestParam(required = false) Long excludeId) {
-		return ApiResponseUtil.ok(sysDictService.countDictCode(code, excludeId));
+		return ApiResponseUtil.ok(sysDictService.countDictCode(value, excludeId));
 	}
 
 	@GetMapping("/code/{code}")

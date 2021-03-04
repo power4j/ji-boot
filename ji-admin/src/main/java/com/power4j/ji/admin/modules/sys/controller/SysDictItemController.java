@@ -27,7 +27,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -73,13 +72,13 @@ public class SysDictItemController implements CrudApi<Long, SysDictItemDTO> {
 
 	@PreAuthorize("@pms.any('sys:dict:edit')")
 	@Override
-	public ApiResponse<SysDictItemDTO> delete(@PathVariable("id") Long id) {
+	public ApiResponse<SysDictItemDTO> delete(Long id) {
 		return ApiResponseUtil.ok(sysDictItemService.delete(id).orElse(null));
 	}
 
-	@GetMapping("/counter/values/{value}")
+	@GetMapping("/counter/value")
 	@Operation(summary = "查找字典项", description = "返回统计值,可用于唯一性检查")
-	public ApiResponse<Integer> countOfValue(@PathVariable("value") String value,
+	public ApiResponse<Integer> countOfValue(@RequestParam String value,
 			@Parameter(description = "排除的字典项ID") @RequestParam(required = false) Long excludeId,
 			@Parameter(description = "字典ID") @RequestParam Long dictId) {
 		return ApiResponseUtil.ok(sysDictItemService.countDictItemValue(value, excludeId, dictId));
