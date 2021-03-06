@@ -145,7 +145,7 @@ ji-boot:
       enabled: true
       # 静态资源,放行
       ignore:
-        patterns: "/static/**,/webjars/**,/favicon.ico"
+        patterns: "/static/**,/webjars/**,/ureport/res/**,/favicon.ico"
       filters:
         # 只允许特定IP访问监控端点
         - patterns: '/actuator/**'
@@ -172,7 +172,7 @@ ji-boot:
           access: permitAll
         # UReportServlet 放行
         - patterns: '/ureport/**'
-          access: permitAll
+          access: hasAuthority("sys:ureports:design")
         # druid 监控放行
         - patterns: '/druid/**'
           methods: GET,POST
