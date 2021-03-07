@@ -96,7 +96,6 @@ public class CaptchaFilter extends OncePerRequestFilter implements Ordered {
 			throws ServletException, IOException {
 		if (requiresCodeGenerate(request, response)) {
 			handleCodeGenerate(request, response);
-			return;
 		}
 		else if (requiresCodeValidate(request, response)) {
 			if (handleCodeValidate(request, response)) {

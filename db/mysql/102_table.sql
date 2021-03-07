@@ -77,14 +77,14 @@ CREATE TABLE `t_sys_resource`
     `create_at`   DATETIME COMMENT '创建时间',
     `update_at`   DATETIME COMMENT '更新时间',
     `type`        CHAR(2)  NOT NULL COMMENT '菜单类型',
-    `name`        VARCHAR(255) NOT NULL COMMENT '路由名称',
-    `title`       VARCHAR(20) NOT NULL COMMENT '显示名称',
-    `permission`  VARCHAR(255) NULL COMMENT '权限代码',
-    `path`        VARCHAR(255) NULL COMMENT '路由地址',
-    `component`   VARCHAR(255) NULL COMMENT 'UI组件',
-    `cache`       TINYINT NOT NULL DEFAULT '0' COMMENT '路由缓冲',
     `icon`        VARCHAR(40)  NULL COMMENT '图标',
     `sort`        INT NOT NULL DEFAULT 0 COMMENT '排序',
+    `permission`  VARCHAR(255) NULL COMMENT '权限代码',
+    `name`        VARCHAR(255) NOT NULL COMMENT '路由名称',
+    `title`       VARCHAR(20) NOT NULL COMMENT '显示名称',
+    `path`        VARCHAR(255) NULL COMMENT '路由地址',
+    `component`   VARCHAR(255) NULL COMMENT 'UI组件',
+    `cache`       TINYINT NOT NULL DEFAULT '1' COMMENT '路由缓冲',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB CHARSET = `utf8mb4` COMMENT ='UI资源';
 
