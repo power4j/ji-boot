@@ -154,25 +154,25 @@ ji-boot:
         # 应用管理接口,不允许外部访问
         - patterns: '/am/**'
           access: 'hasIpAddress("127.0.0.1")'
-        # swagger 放行
+        # swagger
         - patterns: '/swagger-ui/**,/swagger-ui.html,/swagger-resources'
           methods: GET
           access: permitAll
-        # knife4j 放行
+        # knife4j
         - patterns: '/doc.html'
           methods: GET
           access: permitAll
-        # OpenAPI端点 放行
+        # OpenAPI
         - patterns: '/v3/api-docs/**'
           methods: GET
           access: permitAll
-        # 验证码服务放行
+        # 验证码服务
         - patterns: ${ji.captcha.service-url}
           methods: GET
           access: permitAll
-        # UReportServlet 放行
+        # UReportServlet
         - patterns: '/ureport/**'
-          access: hasAuthority("sys:ureports:design")
+          access: permitAll
         # druid 监控放行
         - patterns: '/druid/**'
           methods: GET,POST

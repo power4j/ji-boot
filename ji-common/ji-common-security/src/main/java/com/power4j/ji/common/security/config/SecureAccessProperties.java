@@ -96,7 +96,7 @@ public class SecureAccessProperties {
 		 * <li>denyAll</li>
 		 * <li>anonymous</li>
 		 * <li>authenticated</li>
-		 * <li>fullyAuthenticated</li<li>rememberMe</li>
+		 * <li>fullyAuthenticated</li>
 		 * <li>hasAnyRole("xxx")</li>
 		 * <li>hasRole("xxx")</li>
 		 * <li>hasAnyAuthority("xxx")</li>

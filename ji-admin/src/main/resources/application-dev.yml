@@ -63,7 +63,7 @@ logging:
         security: info
         boot:
           autoconfigure:
-            logging: debug
+            logging: info
     com:
       power4j:
         ji:
