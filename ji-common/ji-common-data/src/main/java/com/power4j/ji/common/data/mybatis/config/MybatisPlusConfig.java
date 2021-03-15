@@ -17,11 +17,17 @@
 package com.power4j.ji.common.data.mybatis.config;
 
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.InnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import com.power4j.ji.common.data.mybatis.extension.scope.injector.InScopeSqlInjector;
+import com.power4j.ji.common.data.mybatis.extension.scope.interceptor.InScopeInterceptor;
+import com.power4j.ji.common.data.mybatis.extension.scope.processor.QueryProcessor;
 import com.power4j.ji.common.data.mybatis.handler.AutoFillHandler;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 
 /**
  * @author CJ (power4j@outlook.com)
@@ -33,9 +39,9 @@ public class MybatisPlusConfig {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public MybatisPlusInterceptor mybatisPlusInterceptor() {
+	public MybatisPlusInterceptor mybatisPlusInterceptor(ObjectProvider<InnerInterceptor> innerInterceptors) {
 		MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
-		interceptor.addInnerInterceptor(new PaginationInnerInterceptor());
+		innerInterceptors.orderedStream().forEach(interceptor::addInnerInterceptor);
 		return interceptor;
 	}
 
@@ -43,6 +49,25 @@ public class MybatisPlusConfig {
 	@ConditionalOnMissingBean
 	public AutoFillHandler autoFillHandler() {
 		return new AutoFillHandler();
+	}
+
+	@Bean
+	public InScopeSqlInjector joinOnSqlInjector() {
+		return new InScopeSqlInjector();
+	}
+
+	@Order(1000)
+	@Bean
+	public InScopeInterceptor joinOnInterceptor(ObjectProvider<QueryProcessor> queryProcessors) {
+		InScopeInterceptor interceptor = new InScopeInterceptor();
+		queryProcessors.ifAvailable(interceptor::setQuerySqlPreProcessor);
+		return interceptor;
+	}
+
+	@Order(2000)
+	@Bean
+	public PaginationInnerInterceptor paginationInnerInterceptor() {
+		return new PaginationInnerInterceptor();
 	}
 
 }

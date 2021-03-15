@@ -28,7 +28,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
@@ -48,20 +47,21 @@ public class SecuritySchemePostProcessor implements BeanPostProcessor {
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 		if (bean instanceof OpenAPI) {
-			OpenAPI openAPI = (OpenAPI) bean;
-			Map<String, SecurityScheme> securitySchemeMap = Optional.ofNullable(openAPI.getComponents())
-					.map(components -> components.getSecuritySchemes()).orElse(Collections.emptyMap());
+			OpenAPI openApi = (OpenAPI) bean;
+			Map<String, SecurityScheme> securitySchemeMap = Optional.ofNullable(openApi.getComponents())
+					.map(Components::getSecuritySchemes).orElse(Collections.emptyMap());
 
 			if (securitySchemeMap.isEmpty()) {
-				log.info("Add SecuritySchemes for : {}", Optional.ofNullable(openAPI.getInfo()).map(Info::getTitle));
-				openAPI.components(new Components().addSecuritySchemes(SCHEMA_NAME,
+				log.info("Add SecuritySchemes for : {}",
+						Optional.ofNullable(openApi.getInfo()).map(Info::getTitle).orElse(null));
+				openApi.components(new Components().addSecuritySchemes(SCHEMA_NAME,
 						new SecurityScheme().type(SecurityScheme.Type.APIKEY).name(SecurityConstant.HEADER_TOKEN_KEY)
 								.in(SecurityScheme.In.HEADER)))
-						.security(Arrays.asList(new SecurityRequirement().addList(SCHEMA_NAME)));
+						.security(Collections.singletonList(new SecurityRequirement().addList(SCHEMA_NAME)));
 			}
 			else {
 				log.warn("Skip add SecuritySchemes for : {}",
-						Optional.ofNullable(openAPI.getInfo()).map(Info::getTitle).orElse(null));
+						Optional.ofNullable(openApi.getInfo()).map(Info::getTitle).orElse(null));
 			}
 		}
 		return bean;
