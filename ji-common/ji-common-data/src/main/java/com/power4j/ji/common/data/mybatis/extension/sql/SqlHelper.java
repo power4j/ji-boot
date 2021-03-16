@@ -119,7 +119,7 @@ public class SqlHelper {
 				head = expression;
 			}
 			else {
-				head = andExpr ? new AndExpression(head, expression) : new OrExpression(head,expression);
+				head = andExpr ? new AndExpression(head, expression) : new OrExpression(head, expression);
 			}
 		}
 		return head;

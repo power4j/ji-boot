@@ -34,8 +34,11 @@ import java.util.Optional;
  * @since 1.0
  */
 public class LambdaHelper<T> {
+
 	private final Class<T> entityClass;
+
 	private Map<String, ColumnCache> columnMap = null;
+
 	private boolean initColumnMap = false;
 
 	public LambdaHelper(Class<T> entityClass) {
@@ -50,7 +53,7 @@ public class LambdaHelper<T> {
 	 * 实体类信息
 	 * @return
 	 */
-	public Optional<TableInfo> getTableInfo(){
+	public Optional<TableInfo> getTableInfo() {
 		return Optional.ofNullable(TableInfoHelper.getTableInfo(entityClass));
 	}
 
@@ -66,7 +69,7 @@ public class LambdaHelper<T> {
 
 	/**
 	 * 获取 SerializedLambda 对应的列信息，从 lambda 表达式中推测实体类
-	 * @param lambda     lambda 表达式
+	 * @param lambda lambda 表达式
 	 * @param onlyColumn 是否只包含列名称
 	 * @return 列
 	 */
@@ -92,8 +95,9 @@ public class LambdaHelper<T> {
 
 	private ColumnCache getColumnCache(String fieldName, Class<?> lambdaClass) {
 		ColumnCache columnCache = columnMap.get(LambdaUtils.formatKey(fieldName));
-		Assert.notNull(columnCache, "can not find lambda cache for this property [%s] of entity [%s]",
-				fieldName, lambdaClass.getName());
+		Assert.notNull(columnCache, "can not find lambda cache for this property [%s] of entity [%s]", fieldName,
+				lambdaClass.getName());
 		return columnCache;
 	}
+
 }

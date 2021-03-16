@@ -63,7 +63,7 @@ public class ScheduleLogController {
 			@Parameter(name = "ex", in = ParameterIn.QUERY, description = "异常,支持模糊查询"), @Parameter(name = "startTimeIn",
 					in = ParameterIn.QUERY, description = "执行日期范围", example = "2020-01-01,2020-12-31") })
 	public ApiResponse<PageData<ScheduleLogDTO>> page(@Parameter(hidden = true) PageRequest page,
-													  @Parameter(hidden = true) SearchScheduleLogVO param) {
+			@Parameter(hidden = true) SearchScheduleLogVO param) {
 		return ApiResponseUtil.ok(scheduleLogService.selectPage(page, param));
 	}
 

@@ -46,11 +46,12 @@ public class RoleScope {
 	 * @param uid 用户ID
 	 * @return InScope 查询条件
 	 */
-	public InScope forUser(Long uid,@Nullable String grantType){
-		Wrapper<SysRoleGrant> wrapper = new QueryWrapper<SysRoleGrant>().lambda()
-				.eq(SysRoleGrant::getUserId,uid)
-				.eq(Objects.nonNull(grantType), SysRoleGrant::getGrantType,grantType);
+	public InScope forUser(Long uid, @Nullable String grantType) {
+		Wrapper<SysRoleGrant> wrapper = new QueryWrapper<SysRoleGrant>().lambda().eq(SysRoleGrant::getUserId, uid)
+				.eq(Objects.nonNull(grantType), SysRoleGrant::getGrantType, grantType);
 		LambdaHelper<SysRole> lambdaHelper = new LambdaHelper<>(SysRole.class);
-		return InScope.ofModel(ScopeModelUtil.onValues(lambdaHelper.colToStr(SysRole::getId,true), sysRoleGranteeMapper.selectList(wrapper)));
+		return InScope.ofModel(ScopeModelUtil.onValues(lambdaHelper.colToStr(SysRole::getId, true),
+				sysRoleGranteeMapper.selectList(wrapper)));
 	}
+
 }

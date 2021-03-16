@@ -64,7 +64,8 @@ public class SysRoleServiceImpl extends AbstractCrudService<SysRoleMapper, SysRo
 	@Override
 	public List<SysRole> listForUser(String username, String grantType) {
 		SysUser user = sysUserMapper.selectOne(new QueryWrapper<SysUser>().lambda().eq(SysUser::getUsername, username));
-		return user == null ? Collections.emptyList() : getBaseMapper().selectListInScope(null,roleScope.forUser(user.getId(), grantType));
+		return user == null ? Collections.emptyList()
+				: getBaseMapper().selectListInScope(null, roleScope.forUser(user.getId(), grantType));
 	}
 
 	@Override

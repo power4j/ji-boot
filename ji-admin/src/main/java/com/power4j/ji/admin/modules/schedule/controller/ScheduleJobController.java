@@ -61,7 +61,7 @@ public class ScheduleJobController implements CrudApi<Long, ScheduleJobDTO> {
 					@Parameter(name = "groupName", in = ParameterIn.QUERY, description = "作业组,支持模糊查询"),
 					@Parameter(name = "status", in = ParameterIn.QUERY, description = "状态") })
 	public ApiResponse<PageData<ScheduleJobDTO>> page(@Parameter(hidden = true) PageRequest page,
-													  @Parameter(hidden = true) SearchScheduleJobVO param) {
+			@Parameter(hidden = true) SearchScheduleJobVO param) {
 		return ApiResponseUtil.ok(scheduleJobService.selectPage(page, param));
 	}
 

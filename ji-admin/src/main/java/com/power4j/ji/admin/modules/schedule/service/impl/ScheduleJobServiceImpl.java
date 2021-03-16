@@ -61,7 +61,8 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ScheduleJobServiceImpl extends AbstractCrudService<ScheduleJobMapper, ScheduleJobDTO, ScheduleJob> implements ScheduleJobService {
+public class ScheduleJobServiceImpl extends AbstractCrudService<ScheduleJobMapper, ScheduleJobDTO, ScheduleJob>
+		implements ScheduleJobService {
 
 	private final Scheduler scheduler;
 
