@@ -28,7 +28,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @author CJ (power4j@outlook.com)
@@ -50,8 +52,9 @@ public class RoleScope {
 		Wrapper<SysRoleGrant> wrapper = new QueryWrapper<SysRoleGrant>().lambda().eq(SysRoleGrant::getUserId, uid)
 				.eq(Objects.nonNull(grantType), SysRoleGrant::getGrantType, grantType);
 		LambdaHelper<SysRole> lambdaHelper = new LambdaHelper<>(SysRole.class);
-		return InScope.ofModel(ScopeModelUtil.onValues(lambdaHelper.colToStr(SysRole::getId, true),
-				sysRoleGranteeMapper.selectList(wrapper)));
+		List<Long> values = sysRoleGranteeMapper.selectList(wrapper).stream().map(SysRoleGrant::getRoleId)
+				.collect(Collectors.toList());
+		return InScope.ofModel(ScopeModelUtil.onValues(lambdaHelper.colToStr(SysRole::getId, true), values));
 	}
 
 }
