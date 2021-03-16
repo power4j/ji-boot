@@ -17,9 +17,16 @@
 package com.power4j.ji.admin.modules.sys.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.text.CharSequenceUtil;
+import com.power4j.ji.admin.modules.sys.constant.RoleGrantEnum;
 import com.power4j.ji.admin.modules.sys.dto.SysResourceGrantDTO;
 import com.power4j.ji.admin.modules.sys.dto.SysRoleDTO;
+import com.power4j.ji.admin.modules.sys.entity.SysResource;
+import com.power4j.ji.admin.modules.sys.entity.SysRole;
+import com.power4j.ji.admin.modules.sys.entity.SysRoleGrant;
 import com.power4j.ji.admin.modules.sys.service.SysResourceGrantService;
+import com.power4j.ji.admin.modules.sys.service.SysResourceService;
+import com.power4j.ji.admin.modules.sys.service.SysRoleGrantService;
 import com.power4j.ji.admin.modules.sys.service.SysRoleService;
 import com.power4j.ji.admin.modules.sys.vo.SearchSysRoleVO;
 import com.power4j.ji.common.core.constant.CrudConstant;
@@ -29,11 +36,13 @@ import com.power4j.ji.common.core.model.PageRequest;
 import com.power4j.ji.common.core.util.ApiResponseUtil;
 import com.power4j.ji.common.data.crud.api.CrudApi;
 import com.power4j.ji.common.data.crud.constant.SysCtlFlagEnum;
+import com.power4j.ji.common.security.util.SecurityUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,6 +53,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -51,6 +62,7 @@ import java.util.stream.Collectors;
  * @date 2020/12/10
  * @since 1.0
  */
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/sys/roles")
@@ -60,6 +72,10 @@ public class SysRoleController implements CrudApi<Long, SysRoleDTO> {
 	private final SysRoleService sysRoleService;
 
 	private final SysResourceGrantService sysResourceGrantService;
+
+	private final SysRoleGrantService sysRoleGrantService;
+
+	private final SysResourceService sysResourceService;
 
 	@PreAuthorize("@pms.any('sys:role:view')")
 	@GetMapping("/page")
@@ -94,14 +110,32 @@ public class SysRoleController implements CrudApi<Long, SysRoleDTO> {
 	@PreAuthorize("@pms.any('sys:role:grant','sys:role:revoke')")
 	@PostMapping("/{id}/resource")
 	@Operation(summary = "角色资源")
-	public ApiResponse<Void> setResource(@PathVariable("id") Long id, @RequestBody List<Long> resourceIds) {
-		SysRoleDTO sysRole = sysRoleService.read(id).orElse(null);
+	public ApiResponse<Void> setResource(@PathVariable("id") Long roleId, @RequestBody List<Long> resourceIds) {
+		SysRoleDTO sysRole = sysRoleService.read(roleId).orElse(null);
 		if (sysRole == null) {
-			return ApiResponseUtil.notFound(String.format("角色不存在(id %d)", id));
+			return ApiResponseUtil.notFound(String.format("角色不存在(id: %d)", roleId));
 		}
 		sysRoleService.checkSysCtlNot(sysRole, SysCtlFlagEnum.SYS_LOCKED.getValue(), "系统数据不允许修改");
-		// TODO 越权检查
-		sysResourceGrantService.setResources(id, resourceIds);
+		Long myId = SecurityUtil.getLoginUserId().get();
+		// 越权检查: 1 检查能否操作该角色 2 检查使用的资源是否超出本人的资源池
+		Optional<SysRoleGrant> granted = sysRoleGrantService.findByUserAndRole(myId, roleId)
+				.filter(o -> RoleGrantEnum.ADMIN.getValue().equals(o.getGrantType()));
+		if (!granted.isPresent() && !myId.equals(sysRole.getOwner())) {
+			return ApiResponseUtil.forbidden("你不是此角色的拥有者，也没有此角色的管理授权");
+		}
+
+		List<String> withAdmin = sysRoleService
+				.listForUser(SecurityUtil.getLoginUsername().get(), RoleGrantEnum.ADMIN.getValue()).stream()
+				.map(SysRole::getCode).collect(Collectors.toList());
+		Set<Long> myResources = sysResourceService.listForRoles(withAdmin).stream().map(SysResource::getId)
+				.collect(Collectors.toSet());
+		Set<Long> exceed = resourceIds.stream().filter(myResources::contains).collect(Collectors.toSet());
+		if (!exceed.isEmpty()) {
+			log.warn("角色资源越权,资源ID:{}", CharSequenceUtil.join(",", exceed));
+			return ApiResponseUtil.forbidden("只能将使用已经获得授权的资源");
+		}
+
+		sysResourceGrantService.setResources(roleId, resourceIds);
 		return ApiResponseUtil.ok();
 	}
 

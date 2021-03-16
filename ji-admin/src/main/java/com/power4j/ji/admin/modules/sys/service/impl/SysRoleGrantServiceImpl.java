@@ -62,6 +62,13 @@ public class SysRoleGrantServiceImpl extends AbstractCrudService<SysRoleGranteeM
 	}
 
 	@Override
+	public Optional<SysRoleGrant> findByUserAndRole(Long userId, Long roleId) {
+		Wrapper<SysRoleGrant> wrapper = Wrappers.<SysRoleGrant>lambdaQuery().eq(SysRoleGrant::getUserId, userId)
+				.eq(SysRoleGrant::getRoleId, roleId);
+		return Optional.ofNullable(getBaseMapper().selectOne(wrapper));
+	}
+
+	@Override
 	protected SysRoleGrantDTO prePostHandle(SysRoleGrantDTO dto) throws BizException {
 		grantCheck(dto);
 		return super.prePostHandle(dto);

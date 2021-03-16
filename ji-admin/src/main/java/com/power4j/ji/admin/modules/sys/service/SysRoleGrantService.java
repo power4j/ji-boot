@@ -22,6 +22,7 @@ import com.power4j.ji.common.data.crud.service.CrudService;
 import org.springframework.lang.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author CJ (power4j@outlook.com)
@@ -44,5 +45,13 @@ public interface SysRoleGrantService extends CrudService<SysRoleGrantDTO, SysRol
 	 * @return
 	 */
 	List<SysRoleGrant> getByUser(Long userId, @Nullable String grantType);
+
+	/**
+	 * 特定关系查找
+	 * @param userId
+	 * @param roleId
+	 * @return
+	 */
+	Optional<SysRoleGrant> findByUserAndRole(Long userId, Long roleId);
 
 }
