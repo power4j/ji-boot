@@ -22,6 +22,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.power4j.ji.admin.modules.sys.constant.CacheConstant;
 import com.power4j.ji.admin.modules.sys.dao.SysRoleMapper;
 import com.power4j.ji.admin.modules.sys.dao.SysUserMapper;
+import com.power4j.ji.admin.modules.sys.ds.internal.RoleScope;
 import com.power4j.ji.admin.modules.sys.dto.SysRoleDTO;
 import com.power4j.ji.admin.modules.sys.entity.SysRole;
 import com.power4j.ji.admin.modules.sys.entity.SysUser;
@@ -52,6 +53,8 @@ public class SysRoleServiceImpl extends AbstractCrudService<SysRoleMapper, SysRo
 
 	private final SysUserMapper sysUserMapper;
 
+	private final RoleScope roleScope;
+
 	@Override
 	public int countRoleCode(String code, Long ignoreId) {
 		return countByColumn("code", code, ignoreId);
@@ -61,7 +64,7 @@ public class SysRoleServiceImpl extends AbstractCrudService<SysRoleMapper, SysRo
 	@Override
 	public List<SysRole> listForUser(String username, String grantType) {
 		SysUser user = sysUserMapper.selectOne(new QueryWrapper<SysUser>().lambda().eq(SysUser::getUsername, username));
-		return user == null ? Collections.emptyList() : getBaseMapper().selectByUserId(user.getId(), grantType);
+		return user == null ? Collections.emptyList() : getBaseMapper().selectListInScope(null,roleScope.forUser(user.getId(), grantType));
 	}
 
 	@Override

@@ -20,10 +20,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.power4j.ji.admin.modules.sys.entity.SysRole;
 import com.power4j.ji.common.data.mybatis.extension.scope.mapper.ScopeSupport;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.lang.Nullable;
-
-import java.util.List;
 
 /**
  * @author CJ (power4j@outlook.com)
@@ -32,13 +28,5 @@ import java.util.List;
  */
 @Mapper
 public interface SysRoleMapper extends ScopeSupport<SysRole>, BaseMapper<SysRole> {
-
-	/**
-	 * 查询授予用户的角色
-	 * @param userId
-	 * @param grantType
-	 * @return
-	 */
-	List<SysRole> selectByUserId(@Param("userId") Long userId, @Nullable @Param("grantType") String grantType);
 
 }
