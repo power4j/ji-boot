@@ -14,18 +14,28 @@
  * limitations under the License.
  */
 
-package com.power4j.ji.admin.modules.schedule.dao;
+package com.power4j.ji.admin.modules.schedule.vo;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.power4j.ji.admin.modules.schedule.entity.SysJobLog;
-import org.apache.ibatis.annotations.Mapper;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * @author CJ (power4j@outlook.com)
- * @date 2021/1/25
+ * @date 2021/1/20
  * @since 1.0
  */
-@Mapper
-public interface SysJobLogMapper extends BaseMapper<SysJobLog> {
+@Data
+@Schema(title = "用户查询")
+public class SearchScheduleJobVO implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
+	@Schema(description = "作业组,支持模糊查询", example = "demo")
+	private String groupName;
+
+	@Schema(description = "状态", example = "0")
+	private String status;
 
 }

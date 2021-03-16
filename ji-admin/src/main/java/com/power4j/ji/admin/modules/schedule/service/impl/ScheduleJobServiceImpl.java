@@ -22,12 +22,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.power4j.ji.admin.modules.schedule.dao.SysJobMapper;
-import com.power4j.ji.admin.modules.schedule.dto.SysJobDTO;
-import com.power4j.ji.admin.modules.schedule.entity.SysJob;
-import com.power4j.ji.admin.modules.schedule.service.SysJobService;
+import com.power4j.ji.admin.modules.schedule.dao.ScheduleJobMapper;
+import com.power4j.ji.admin.modules.schedule.dto.ScheduleJobDTO;
+import com.power4j.ji.admin.modules.schedule.entity.ScheduleJob;
+import com.power4j.ji.admin.modules.schedule.service.ScheduleJobService;
 import com.power4j.ji.admin.modules.schedule.util.ScheduleUtil;
-import com.power4j.ji.admin.modules.schedule.vo.SearchSysJobVO;
+import com.power4j.ji.admin.modules.schedule.vo.SearchScheduleJobVO;
 import com.power4j.ji.common.core.constant.SysErrorCodes;
 import com.power4j.ji.common.core.exception.BizException;
 import com.power4j.ji.common.core.model.PageData;
@@ -61,12 +61,12 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class SysJobServiceImpl extends AbstractCrudService<SysJobMapper, SysJobDTO, SysJob> implements SysJobService {
+public class ScheduleJobServiceImpl extends AbstractCrudService<ScheduleJobMapper, ScheduleJobDTO, ScheduleJob> implements ScheduleJobService {
 
 	private final Scheduler scheduler;
 
 	@Override
-	protected SysJobDTO prePostHandle(SysJobDTO dto) {
+	protected ScheduleJobDTO prePostHandle(ScheduleJobDTO dto) {
 		validateTaskBean(dto.getTaskBean());
 		validateCron(dto.getCron());
 		dto.setCreateBy(SecurityUtil.getLoginUsername().orElse(null));
@@ -75,18 +75,18 @@ public class SysJobServiceImpl extends AbstractCrudService<SysJobMapper, SysJobD
 
 	@Transactional(rollbackFor = Exception.class)
 	@Override
-	public SysJobDTO post(SysJobDTO dto) {
-		SysJobDTO ret = super.post(dto);
+	public ScheduleJobDTO post(ScheduleJobDTO dto) {
+		ScheduleJobDTO ret = super.post(dto);
 		QuartzUtil.createPlan(scheduler, ScheduleUtil.toExecutionPlan(ret));
 		return ret;
 	}
 
 	@Override
-	protected SysJobDTO prePutHandle(SysJobDTO dto) {
+	protected ScheduleJobDTO prePutHandle(ScheduleJobDTO dto) {
 		validateTaskBean(dto.getTaskBean());
 		validateCron(dto.getCron());
 
-		SysJob entity = checkExists(dto.getOnlyId());
+		ScheduleJob entity = checkExists(dto.getOnlyId());
 		checkEditable(entity);
 		if (PlanStatusEnum.NORMAL.getValue().equals(entity.getStatus())) {
 			throw new BizException(SysErrorCodes.E_CONFLICT, "请先停止调度该任务");
@@ -97,41 +97,41 @@ public class SysJobServiceImpl extends AbstractCrudService<SysJobMapper, SysJobD
 
 	@Transactional(rollbackFor = Exception.class)
 	@Override
-	public SysJobDTO put(SysJobDTO dto) {
-		SysJobDTO ret = super.put(dto);
+	public ScheduleJobDTO put(ScheduleJobDTO dto) {
+		ScheduleJobDTO ret = super.put(dto);
 		QuartzUtil.updatePlan(scheduler, ScheduleUtil.toExecutionPlan(ret));
 		return ret;
 	}
 
 	@Transactional(rollbackFor = Exception.class)
 	@Override
-	public Optional<SysJobDTO> delete(Serializable id) {
-		SysJob sysJob = preDeleteHandle(id);
-		if (sysJob != null) {
+	public Optional<ScheduleJobDTO> delete(Serializable id) {
+		ScheduleJob scheduleJob = preDeleteHandle(id);
+		if (scheduleJob != null) {
 			removeById(id);
-			QuartzUtil.deletePlan(scheduler, sysJob.getId(), sysJob.getGroupName());
-			return Optional.of(toDto(sysJob));
+			QuartzUtil.deletePlan(scheduler, scheduleJob.getId(), scheduleJob.getGroupName());
+			return Optional.of(toDto(scheduleJob));
 		}
 		return Optional.empty();
 	}
 
 	@Override
-	public PageData<SysJobDTO> selectPage(PageRequest pageRequest, @Nullable SearchSysJobVO param) {
-		Wrapper<SysJob> wrapper = Wrappers.emptyWrapper();
+	public PageData<ScheduleJobDTO> selectPage(PageRequest pageRequest, @Nullable SearchScheduleJobVO param) {
+		Wrapper<ScheduleJob> wrapper = Wrappers.emptyWrapper();
 		if (param != null) {
-			wrapper = new QueryWrapper<SysJob>().lambda()
-					.eq(CharSequenceUtil.isNotBlank(param.getStatus()), SysJob::getStatus, param.getStatus())
-					.likeRight(CharSequenceUtil.isNotEmpty(param.getGroupName()), SysJob::getGroupName,
+			wrapper = new QueryWrapper<ScheduleJob>().lambda()
+					.eq(CharSequenceUtil.isNotBlank(param.getStatus()), ScheduleJob::getStatus, param.getStatus())
+					.likeRight(CharSequenceUtil.isNotEmpty(param.getGroupName()), ScheduleJob::getGroupName,
 							param.getGroupName());
 		}
-		Page<SysJob> page = getBaseMapper()
+		Page<ScheduleJob> page = getBaseMapper()
 				.selectPage(CrudUtil.toPage(pageRequest, Arrays.asList(new OrderItem("create_at", true))), wrapper);
 		return CrudUtil.toPageData(page).map(o -> toDto(o));
 	}
 
 	@Override
 	public String scheduleNow(Long jobId, boolean force, String fireBy) {
-		SysJobDTO job = require(jobId);
+		ScheduleJobDTO job = require(jobId);
 		if (!PlanStatusEnum.NORMAL.getValue().equals(job.getStatus()) && !force) {
 			throw new BizException(SysErrorCodes.E_CONFLICT, "任务已停止调度,请先恢复调度或者强制执行");
 		}
@@ -142,7 +142,7 @@ public class SysJobServiceImpl extends AbstractCrudService<SysJobMapper, SysJobD
 	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public void pauseJob(Long jobId) {
-		SysJobDTO job = require(jobId);
+		ScheduleJobDTO job = require(jobId);
 		if (!PlanStatusEnum.PAUSE.getValue().equals(job.getStatus())) {
 			job.setStatus(PlanStatusEnum.PAUSE.getValue());
 			job.setUpdateBy(SecurityUtil.getLoginUsername().orElse(null));
@@ -154,7 +154,7 @@ public class SysJobServiceImpl extends AbstractCrudService<SysJobMapper, SysJobD
 	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public Optional<LocalDateTime> resumeJob(Long jobId) {
-		SysJobDTO job = require(jobId);
+		ScheduleJobDTO job = require(jobId);
 		if (!PlanStatusEnum.NORMAL.getValue().equals(job.getStatus())) {
 			job.setStatus(PlanStatusEnum.NORMAL.getValue());
 			job.setUpdateBy(SecurityUtil.getLoginUsername().orElse(null));
@@ -165,11 +165,11 @@ public class SysJobServiceImpl extends AbstractCrudService<SysJobMapper, SysJobD
 	}
 
 	@Override
-	public List<SysJobDTO> listAll() {
+	public List<ScheduleJobDTO> listAll() {
 		return toDtoList(getBaseMapper().selectList(null));
 	}
 
-	protected SysJobDTO require(Long jobId) {
+	protected ScheduleJobDTO require(Long jobId) {
 		return read(jobId).orElseThrow(() -> new BizException(SysErrorCodes.E_NOT_FOUND, "任务不存在"));
 	}
 

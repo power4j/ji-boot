@@ -24,11 +24,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.power4j.ji.admin.modules.schedule.dao.SysJobLogMapper;
-import com.power4j.ji.admin.modules.schedule.dto.SysJobLogDTO;
-import com.power4j.ji.admin.modules.schedule.entity.SysJobLog;
-import com.power4j.ji.admin.modules.schedule.service.SysJobLogService;
-import com.power4j.ji.admin.modules.schedule.vo.SearchSysJobLogVO;
+import com.power4j.ji.admin.modules.schedule.dao.ScheduleLogMapper;
+import com.power4j.ji.admin.modules.schedule.dto.ScheduleLogDTO;
+import com.power4j.ji.admin.modules.schedule.entity.ScheduleLog;
+import com.power4j.ji.admin.modules.schedule.service.ScheduleLogService;
+import com.power4j.ji.admin.modules.schedule.vo.SearchScheduleLogVO;
 import com.power4j.ji.common.core.model.PageData;
 import com.power4j.ji.common.core.model.PageRequest;
 import com.power4j.ji.common.data.crud.util.CrudUtil;
@@ -46,10 +46,10 @@ import java.util.List;
  * @since 1.0
  */
 @Service
-public class SysJobLogServiceImpl extends ServiceImpl<SysJobLogMapper, SysJobLog> implements SysJobLogService {
+public class ScheduleLogServiceImpl extends ServiceImpl<ScheduleLogMapper, ScheduleLog> implements ScheduleLogService {
 
 	@Override
-	public SysJobLog insertJobLog(SysJobLog jobLog) {
+	public ScheduleLog insertJobLog(ScheduleLog jobLog) {
 		save(jobLog);
 		return jobLog;
 	}
@@ -63,21 +63,21 @@ public class SysJobLogServiceImpl extends ServiceImpl<SysJobLogMapper, SysJobLog
 	}
 
 	@Override
-	public PageData<SysJobLogDTO> selectPage(PageRequest pageRequest, @Nullable SearchSysJobLogVO param) {
-		Wrapper<SysJobLog> wrapper = new QueryWrapper<>();
+	public PageData<ScheduleLogDTO> selectPage(PageRequest pageRequest, @Nullable SearchScheduleLogVO param) {
+		Wrapper<ScheduleLog> wrapper = new QueryWrapper<>();
 		if (param != null) {
 			LocalDate start = ArrayUtil.get(param.getStartTimeIn(), 0);
 			LocalDate end = ArrayUtil.get(param.getStartTimeIn(), 1);
-			wrapper = new QueryWrapper<SysJobLog>().lambda()
-					.eq(CharSequenceUtil.isNotBlank(param.getTaskBean()), SysJobLog::getTaskBean, param.getTaskBean())
-					.eq(param.getSuccess() != null, SysJobLog::getSuccess, param.getSuccess())
-					.likeRight(CharSequenceUtil.isNotEmpty(param.getEx()), SysJobLog::getEx, param.getEx())
-					.ge(null != start, SysJobLog::getStartTime, CrudUtil.dayStart(start))
-					.le(null != end, SysJobLog::getStartTime, CrudUtil.dayEnd(end));
+			wrapper = new QueryWrapper<ScheduleLog>().lambda()
+					.eq(CharSequenceUtil.isNotBlank(param.getTaskBean()), ScheduleLog::getTaskBean, param.getTaskBean())
+					.eq(param.getSuccess() != null, ScheduleLog::getSuccess, param.getSuccess())
+					.likeRight(CharSequenceUtil.isNotEmpty(param.getEx()), ScheduleLog::getEx, param.getEx())
+					.ge(null != start, ScheduleLog::getStartTime, CrudUtil.dayStart(start))
+					.le(null != end, ScheduleLog::getStartTime, CrudUtil.dayEnd(end));
 		}
-		Page<SysJobLog> page = getBaseMapper().selectPage(
+		Page<ScheduleLog> page = getBaseMapper().selectPage(
 				CrudUtil.toPage(pageRequest, Collections.singletonList(new OrderItem("id", false))), wrapper);
-		return CrudUtil.toPageData(page).map(o -> BeanUtil.toBean(o, SysJobLogDTO.class));
+		return CrudUtil.toPageData(page).map(o -> BeanUtil.toBean(o, ScheduleLogDTO.class));
 	}
 
 }

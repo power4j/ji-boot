@@ -16,8 +16,8 @@
 
 package com.power4j.ji.admin.modules.schedule.init;
 
-import com.power4j.ji.admin.modules.schedule.dto.SysJobDTO;
-import com.power4j.ji.admin.modules.schedule.service.SysJobService;
+import com.power4j.ji.admin.modules.schedule.dto.ScheduleJobDTO;
+import com.power4j.ji.admin.modules.schedule.service.ScheduleJobService;
 import com.power4j.ji.admin.modules.schedule.util.ScheduleUtil;
 import com.power4j.ji.common.schedule.quartz.util.QuartzUtil;
 import lombok.RequiredArgsConstructor;
@@ -38,11 +38,11 @@ public class ScheduleInit {
 
 	private final Scheduler scheduler;
 
-	private final SysJobService sysJobService;
+	private final ScheduleJobService scheduleJobService;
 
 	@PostConstruct
 	public void init() {
-		List<SysJobDTO> jobList = sysJobService.listAll();
+		List<ScheduleJobDTO> jobList = scheduleJobService.listAll();
 		jobList.stream().map(ScheduleUtil::toExecutionPlan).forEach(plan -> QuartzUtil.sync(scheduler, plan));
 	}
 

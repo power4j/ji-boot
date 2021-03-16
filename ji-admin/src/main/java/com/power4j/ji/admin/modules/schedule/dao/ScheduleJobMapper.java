@@ -14,35 +14,18 @@
  * limitations under the License.
  */
 
-package com.power4j.ji.admin.modules.schedule.vo;
+package com.power4j.ji.admin.modules.schedule.dao;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
-import java.io.Serializable;
-import java.time.LocalDate;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.power4j.ji.admin.modules.schedule.entity.ScheduleJob;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @author CJ (power4j@outlook.com)
- * @date 2021/1/25
+ * @date 2021/1/20
  * @since 1.0
  */
-@Data
-@Schema(title = "执行日志查询")
-public class SearchSysJobLogVO implements Serializable {
-
-	private static final long serialVersionUID = 1L;
-
-	@Schema(description = "bean名称")
-	private String taskBean;
-
-	@Schema(description = "是否成功")
-	private Boolean success;
-
-	@Schema(description = "异常")
-	private String ex;
-
-	@Schema(description = "执行日期", example = "[\"2020-01-01\",\"2020-12-31\"]")
-	private LocalDate[] startTimeIn;
+@Mapper
+public interface ScheduleJobMapper extends BaseMapper<ScheduleJob> {
 
 }

@@ -16,9 +16,9 @@
 
 package com.power4j.ji.admin.modules.schedule.service;
 
-import com.power4j.ji.admin.modules.schedule.dto.SysJobLogDTO;
-import com.power4j.ji.admin.modules.schedule.entity.SysJobLog;
-import com.power4j.ji.admin.modules.schedule.vo.SearchSysJobLogVO;
+import com.power4j.ji.admin.modules.schedule.dto.ScheduleLogDTO;
+import com.power4j.ji.admin.modules.schedule.entity.ScheduleLog;
+import com.power4j.ji.admin.modules.schedule.vo.SearchScheduleLogVO;
 import com.power4j.ji.common.core.model.PageData;
 import com.power4j.ji.common.core.model.PageRequest;
 import org.springframework.lang.Nullable;
@@ -30,14 +30,14 @@ import java.util.List;
  * @date 2021/1/25
  * @since 1.0
  */
-public interface SysJobLogService {
+public interface ScheduleLogService {
 
 	/**
 	 * 插入记录
 	 * @param jobLog
 	 * @return
 	 */
-	SysJobLog insertJobLog(SysJobLog jobLog);
+	ScheduleLog insertJobLog(ScheduleLog jobLog);
 
 	/**
 	 * 批量删除
@@ -51,6 +51,6 @@ public interface SysJobLogService {
 	 * @param param
 	 * @return
 	 */
-	PageData<SysJobLogDTO> selectPage(PageRequest pageRequest, @Nullable SearchSysJobLogVO param);
+	PageData<ScheduleLogDTO> selectPage(PageRequest pageRequest, @Nullable SearchScheduleLogVO param);
 
 }

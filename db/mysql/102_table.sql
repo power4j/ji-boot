@@ -151,7 +151,7 @@ CREATE TABLE `t_sys_role_grantee`
     UNIQUE KEY `uk_user_role` (`user_id`,`role_id`)
 ) ENGINE = InnoDB CHARSET = `utf8mb4` COMMENT ='角色授权';
 
-CREATE TABLE `t_sys_job`
+CREATE TABLE `t_schedule_job`
 (
     `id`          BIGINT      NOT NULL COMMENT '主健',
     `sys_flag`    TINYINT     NOT NULL DEFAULT 0 COMMENT '数据标记 0 普通数据, 1 系统保护数据',
@@ -172,10 +172,10 @@ CREATE TABLE `t_sys_job`
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB CHARSET = `utf8mb4` COMMENT ='任务调度';
 
-ALTER TABLE `t_sys_job` ADD INDEX `idx_sys_flag` (`sys_flag`);
-ALTER TABLE `t_sys_job` ADD INDEX `idx_del_flag` (`del_flag`);
+ALTER TABLE `t_schedule_job` ADD INDEX `idx_sys_flag` (`sys_flag`);
+ALTER TABLE `t_schedule_job` ADD INDEX `idx_del_flag` (`del_flag`);
 
-CREATE TABLE `t_sys_job_log`
+CREATE TABLE `t_schedule_log`
 (
     `id`          BIGINT      NOT NULL COMMENT '主健',
     `execution_id` VARCHAR(40) NOT NULL COMMENT '执行ID',
@@ -193,7 +193,7 @@ CREATE TABLE `t_sys_job_log`
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB CHARSET = `utf8mb4` COMMENT ='任务执行日志';
 
-ALTER TABLE `t_sys_job_log` ADD INDEX `idx_1` (`task_bean`,`success`,`ex`,`start_time`);
+ALTER TABLE `t_schedule_log` ADD INDEX `idx_1` (`task_bean`,`success`,`ex`,`start_time`);
 
 CREATE TABLE `t_ureport_data`
 (

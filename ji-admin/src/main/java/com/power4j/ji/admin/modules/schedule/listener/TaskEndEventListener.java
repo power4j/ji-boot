@@ -16,8 +16,8 @@
 
 package com.power4j.ji.admin.modules.schedule.listener;
 
-import com.power4j.ji.admin.modules.schedule.entity.SysJobLog;
-import com.power4j.ji.admin.modules.schedule.service.SysJobLogService;
+import com.power4j.ji.admin.modules.schedule.entity.ScheduleLog;
+import com.power4j.ji.admin.modules.schedule.service.ScheduleLogService;
 import com.power4j.ji.admin.modules.schedule.util.ScheduleUtil;
 import com.power4j.ji.common.schedule.quartz.event.TaskEndEvent;
 import lombok.RequiredArgsConstructor;
@@ -36,13 +36,13 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class TaskEndEventListener implements ApplicationListener<PayloadApplicationEvent<TaskEndEvent>> {
 
-	private final SysJobLogService sysJobLogService;
+	private final ScheduleLogService scheduleLogService;
 
 	@Override
 	public void onApplicationEvent(PayloadApplicationEvent<TaskEndEvent> event) {
 		try {
-			SysJobLog jobLog = ScheduleUtil.toSysJobLog(event.getPayload());
-			sysJobLogService.insertJobLog(jobLog);
+			ScheduleLog jobLog = ScheduleUtil.toSysJobLog(event.getPayload());
+			scheduleLogService.insertJobLog(jobLog);
 		}
 		catch (Exception e) {
 			log.error(e.getMessage(), e);

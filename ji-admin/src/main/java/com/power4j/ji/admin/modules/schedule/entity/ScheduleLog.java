@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package com.power4j.ji.admin.modules.schedule.dto;
+package com.power4j.ji.admin.modules.schedule.entity;
 
-import com.power4j.ji.common.data.crud.util.Unique;
-import io.swagger.v3.oas.annotations.media.Schema;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -25,95 +26,79 @@ import java.time.LocalDateTime;
 
 /**
  * @author CJ (power4j@outlook.com)
- * @date 2021/1/25
+ * @date 2021/1/22
  * @since 1.0
  */
 @Data
-public class SysJobLogDTO implements Unique, Serializable {
+@TableName("t_schedule_log")
+public class ScheduleLog implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * 主健
 	 */
-	@Schema(description = "ID")
+	@TableId(type = IdType.ASSIGN_ID)
 	private Long id;
 
 	/**
 	 * 执行ID
 	 */
-	@Schema(description = "执行ID")
 	private String executionId;
 
 	/**
 	 * 触发者,null表示由系统触发
 	 */
-	@Schema(description = "触发者")
 	private String fireBy;
 
 	/**
 	 * 作业ID
 	 */
-	@Schema(description = "作业ID")
 	private Long jobId;
 
 	/**
 	 * 作业组
 	 */
-	@Schema(description = "作业组")
 	private String groupName;
 
 	/**
 	 * bean名称
 	 */
-	@Schema(description = "bean名称")
 	private String taskBean;
 
 	/**
 	 * 任务描述
 	 */
-	@Schema(description = "任务描述")
 	private String shortDescription;
 
 	/**
 	 * 执行开始时间
 	 */
-	@Schema(description = "执行开始时间")
 	private LocalDateTime startTime;
 
 	/**
 	 * 执行结束时间
 	 */
-	@Schema(description = "执行结束时间")
 	private LocalDateTime endTime;
 
 	/**
 	 * 执行耗时(毫秒)
 	 */
-	@Schema(description = "执行耗时(毫秒)")
 	private Long executeMs;
 
 	/**
 	 * 是否成功
 	 */
-	@Schema(description = "是否成功")
 	private Boolean success;
 
 	/**
 	 * 异常
 	 */
-	@Schema(description = "异常")
 	private String ex;
 
 	/**
 	 * 异常信息
 	 */
-	@Schema(description = "异常信息")
 	private String exMsg;
-
-	@Override
-	public Serializable getOnlyId() {
-		return id;
-	}
 
 }

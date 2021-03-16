@@ -16,9 +16,9 @@
 
 package com.power4j.ji.admin.modules.schedule.controller;
 
-import com.power4j.ji.admin.modules.schedule.dto.SysJobLogDTO;
-import com.power4j.ji.admin.modules.schedule.service.SysJobLogService;
-import com.power4j.ji.admin.modules.schedule.vo.SearchSysJobLogVO;
+import com.power4j.ji.admin.modules.schedule.dto.ScheduleLogDTO;
+import com.power4j.ji.admin.modules.schedule.service.ScheduleLogService;
+import com.power4j.ji.admin.modules.schedule.vo.SearchScheduleLogVO;
 import com.power4j.ji.common.core.constant.CrudConstant;
 import com.power4j.ji.common.core.model.ApiResponse;
 import com.power4j.ji.common.core.model.PageData;
@@ -47,9 +47,9 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 @RequestMapping("/sys/job-logs")
 @Tag(name = "任务执行日志")
-public class SysJobLogController {
+public class ScheduleLogController {
 
-	private final SysJobLogService sysJobLogService;
+	private final ScheduleLogService scheduleLogService;
 
 	@PreAuthorize("@pms.any('sys:job-log:view')")
 	@GetMapping("/page")
@@ -62,16 +62,16 @@ public class SysJobLogController {
 			@Parameter(name = "success", in = ParameterIn.QUERY, description = "是否成功"),
 			@Parameter(name = "ex", in = ParameterIn.QUERY, description = "异常,支持模糊查询"), @Parameter(name = "startTimeIn",
 					in = ParameterIn.QUERY, description = "执行日期范围", example = "2020-01-01,2020-12-31") })
-	public ApiResponse<PageData<SysJobLogDTO>> page(@Parameter(hidden = true) PageRequest page,
-			@Parameter(hidden = true) SearchSysJobLogVO param) {
-		return ApiResponseUtil.ok(sysJobLogService.selectPage(page, param));
+	public ApiResponse<PageData<ScheduleLogDTO>> page(@Parameter(hidden = true) PageRequest page,
+													  @Parameter(hidden = true) SearchScheduleLogVO param) {
+		return ApiResponseUtil.ok(scheduleLogService.selectPage(page, param));
 	}
 
 	@PreAuthorize("@pms.any('sys:job-log:del')")
 	@DeleteMapping
 	@Operation(summary = "批量删除")
 	public ApiResponse<?> deleteBatch(@RequestBody Long[] ids) {
-		sysJobLogService.deleteBatch(Arrays.asList(ids));
+		scheduleLogService.deleteBatch(Arrays.asList(ids));
 		return ApiResponseUtil.ok();
 	}
 

@@ -36,7 +36,7 @@ import java.io.Serializable;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class SysJobDTO extends BaseDTO implements Serializable {
+public class ScheduleJobDTO extends BaseDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

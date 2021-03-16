@@ -16,9 +16,9 @@
 
 package com.power4j.ji.admin.modules.schedule.service;
 
-import com.power4j.ji.admin.modules.schedule.dto.SysJobDTO;
-import com.power4j.ji.admin.modules.schedule.entity.SysJob;
-import com.power4j.ji.admin.modules.schedule.vo.SearchSysJobVO;
+import com.power4j.ji.admin.modules.schedule.dto.ScheduleJobDTO;
+import com.power4j.ji.admin.modules.schedule.entity.ScheduleJob;
+import com.power4j.ji.admin.modules.schedule.vo.SearchScheduleJobVO;
 import com.power4j.ji.common.core.model.PageData;
 import com.power4j.ji.common.core.model.PageRequest;
 import com.power4j.ji.common.data.crud.service.CrudService;
@@ -33,7 +33,7 @@ import java.util.Optional;
  * @date 2021/1/20
  * @since 1.0
  */
-public interface SysJobService extends CrudService<SysJobDTO, SysJob> {
+public interface ScheduleJobService extends CrudService<ScheduleJobDTO, ScheduleJob> {
 
 	/**
 	 * 分页查询
@@ -41,7 +41,7 @@ public interface SysJobService extends CrudService<SysJobDTO, SysJob> {
 	 * @param param
 	 * @return
 	 */
-	PageData<SysJobDTO> selectPage(PageRequest pageRequest, @Nullable SearchSysJobVO param);
+	PageData<ScheduleJobDTO> selectPage(PageRequest pageRequest, @Nullable SearchScheduleJobVO param);
 
 	/**
 	 * 立即调度
@@ -69,6 +69,6 @@ public interface SysJobService extends CrudService<SysJobDTO, SysJob> {
 	 * 查询全部数据
 	 * @return
 	 */
-	List<SysJobDTO> listAll();
+	List<ScheduleJobDTO> listAll();
 
 }

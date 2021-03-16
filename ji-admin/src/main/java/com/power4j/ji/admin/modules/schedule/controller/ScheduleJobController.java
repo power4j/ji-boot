@@ -16,9 +16,9 @@
 
 package com.power4j.ji.admin.modules.schedule.controller;
 
-import com.power4j.ji.admin.modules.schedule.dto.SysJobDTO;
-import com.power4j.ji.admin.modules.schedule.service.SysJobService;
-import com.power4j.ji.admin.modules.schedule.vo.SearchSysJobVO;
+import com.power4j.ji.admin.modules.schedule.dto.ScheduleJobDTO;
+import com.power4j.ji.admin.modules.schedule.service.ScheduleJobService;
+import com.power4j.ji.admin.modules.schedule.vo.SearchScheduleJobVO;
 import com.power4j.ji.common.core.constant.CrudConstant;
 import com.power4j.ji.common.core.model.ApiResponse;
 import com.power4j.ji.common.core.model.PageData;
@@ -46,9 +46,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/sys/jobs")
 @Tag(name = "任务调度")
-public class SysJobController implements CrudApi<Long, SysJobDTO> {
+public class ScheduleJobController implements CrudApi<Long, ScheduleJobDTO> {
 
-	private final SysJobService sysJobService;
+	private final ScheduleJobService scheduleJobService;
 
 	@PreAuthorize("@pms.any('sys:job:view')")
 	@GetMapping("/page")
@@ -60,39 +60,39 @@ public class SysJobController implements CrudApi<Long, SysJobDTO> {
 					@Parameter(name = CrudConstant.QRY_PAGE_ORDER_ASC, in = ParameterIn.QUERY, description = "是否升序"),
 					@Parameter(name = "groupName", in = ParameterIn.QUERY, description = "作业组,支持模糊查询"),
 					@Parameter(name = "status", in = ParameterIn.QUERY, description = "状态") })
-	public ApiResponse<PageData<SysJobDTO>> page(@Parameter(hidden = true) PageRequest page,
-			@Parameter(hidden = true) SearchSysJobVO param) {
-		return ApiResponseUtil.ok(sysJobService.selectPage(page, param));
+	public ApiResponse<PageData<ScheduleJobDTO>> page(@Parameter(hidden = true) PageRequest page,
+													  @Parameter(hidden = true) SearchScheduleJobVO param) {
+		return ApiResponseUtil.ok(scheduleJobService.selectPage(page, param));
 	}
 
 	@PreAuthorize("@pms.any('sys:job:view')")
 	@Override
-	public ApiResponse<SysJobDTO> read(Long id) {
-		return ApiResponseUtil.ok(sysJobService.read(id).orElse(null));
+	public ApiResponse<ScheduleJobDTO> read(Long id) {
+		return ApiResponseUtil.ok(scheduleJobService.read(id).orElse(null));
 	}
 
 	@PreAuthorize("@pms.any('sys:job:view')")
 	@Override
-	public ApiResponse<List<SysJobDTO>> readList(List<Long> idList) {
-		return ApiResponseUtil.ok(sysJobService.readList(idList));
+	public ApiResponse<List<ScheduleJobDTO>> readList(List<Long> idList) {
+		return ApiResponseUtil.ok(scheduleJobService.readList(idList));
 	}
 
 	@PreAuthorize("@pms.any('sys:job:add')")
 	@Override
-	public ApiResponse<SysJobDTO> post(SysJobDTO obj) {
-		return ApiResponseUtil.ok(sysJobService.post(obj));
+	public ApiResponse<ScheduleJobDTO> post(ScheduleJobDTO obj) {
+		return ApiResponseUtil.ok(scheduleJobService.post(obj));
 	}
 
 	@PreAuthorize("@pms.any('sys:job:edit')")
 	@Override
-	public ApiResponse<SysJobDTO> put(SysJobDTO obj) {
-		return ApiResponseUtil.ok(sysJobService.put(obj));
+	public ApiResponse<ScheduleJobDTO> put(ScheduleJobDTO obj) {
+		return ApiResponseUtil.ok(scheduleJobService.put(obj));
 	}
 
 	@PreAuthorize("@pms.any('sys:job:del')")
 	@Override
-	public ApiResponse<SysJobDTO> delete(Long id) {
-		return ApiResponseUtil.ok(sysJobService.delete(id).orElse(null));
+	public ApiResponse<ScheduleJobDTO> delete(Long id) {
+		return ApiResponseUtil.ok(scheduleJobService.delete(id).orElse(null));
 	}
 
 }

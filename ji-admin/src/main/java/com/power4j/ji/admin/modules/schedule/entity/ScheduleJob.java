@@ -30,8 +30,8 @@ import java.io.Serializable;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("t_sys_job")
-public class SysJob extends BaseEntity implements Serializable {
+@TableName("t_schedule_job")
+public class ScheduleJob extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

@@ -17,8 +17,8 @@
 package com.power4j.ji.admin.modules.schedule.util;
 
 import cn.hutool.core.text.CharSequenceUtil;
-import com.power4j.ji.admin.modules.schedule.dto.SysJobDTO;
-import com.power4j.ji.admin.modules.schedule.entity.SysJobLog;
+import com.power4j.ji.admin.modules.schedule.dto.ScheduleJobDTO;
+import com.power4j.ji.admin.modules.schedule.entity.ScheduleLog;
 import com.power4j.ji.common.schedule.quartz.event.TaskEndEvent;
 import com.power4j.ji.common.schedule.quartz.job.ExecutionPlan;
 import com.power4j.ji.common.schedule.quartz.job.MisFirePolicyEnum;
@@ -38,7 +38,7 @@ public class ScheduleUtil {
 	 * @param sysJob
 	 * @return
 	 */
-	public ExecutionPlan toExecutionPlan(SysJobDTO sysJob) {
+	public ExecutionPlan toExecutionPlan(ScheduleJobDTO sysJob) {
 		ExecutionPlan executionPlan = new ExecutionPlan();
 		executionPlan.setPlanId(sysJob.getId());
 		executionPlan.setGroupName(sysJob.getGroupName());
@@ -60,8 +60,8 @@ public class ScheduleUtil {
 	 * @param event
 	 * @return
 	 */
-	public SysJobLog toSysJobLog(TaskEndEvent event) {
-		SysJobLog jobLog = new SysJobLog();
+	public ScheduleLog toSysJobLog(TaskEndEvent event) {
+		ScheduleLog jobLog = new ScheduleLog();
 		jobLog.setExecutionId(event.getExecutionId());
 		jobLog.setJobId(event.getPlan().getPlanId());
 		jobLog.setFireBy(event.getFireBy());

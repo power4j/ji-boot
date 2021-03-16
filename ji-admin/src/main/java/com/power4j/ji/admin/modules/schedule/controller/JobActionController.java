@@ -16,7 +16,7 @@
 
 package com.power4j.ji.admin.modules.schedule.controller;
 
-import com.power4j.ji.admin.modules.schedule.service.SysJobService;
+import com.power4j.ji.admin.modules.schedule.service.ScheduleJobService;
 import com.power4j.ji.common.core.model.ApiResponse;
 import com.power4j.ji.common.core.util.ApiResponseUtil;
 import com.power4j.ji.common.security.util.SecurityUtil;
@@ -42,20 +42,20 @@ import java.time.LocalDateTime;
 @Tag(name = "任务调度")
 public class JobActionController {
 
-	private final SysJobService sysJobService;
+	private final ScheduleJobService scheduleJobService;
 
 	@Operation(summary = "立即调度")
 	@PreAuthorize("@pms.any('sys:job:action')")
 	@PostMapping("/{jobId}/action/trigger")
 	public ApiResponse<String> runNow(@PathVariable("jobId") Long jobId) {
-		return ApiResponseUtil.ok(sysJobService.scheduleNow(jobId, true, SecurityUtil.getLoginUsername().get()));
+		return ApiResponseUtil.ok(scheduleJobService.scheduleNow(jobId, true, SecurityUtil.getLoginUsername().get()));
 	}
 
 	@Operation(summary = "停止调度")
 	@PreAuthorize("@pms.any('sys:job:action')")
 	@PostMapping("/{jobId}/action/pause")
 	public ApiResponse<Void> pause(@PathVariable("jobId") Long jobId) {
-		sysJobService.pauseJob(jobId);
+		scheduleJobService.pauseJob(jobId);
 		return ApiResponseUtil.ok();
 	}
 
@@ -63,7 +63,7 @@ public class JobActionController {
 	@PreAuthorize("@pms.any('sys:job:action')")
 	@PostMapping("/{jobId}/action/resume")
 	public ApiResponse<LocalDateTime> resume(@PathVariable("jobId") Long jobId) {
-		return ApiResponseUtil.ok(sysJobService.resumeJob(jobId).orElse(null));
+		return ApiResponseUtil.ok(scheduleJobService.resumeJob(jobId).orElse(null));
 	}
 
 }
