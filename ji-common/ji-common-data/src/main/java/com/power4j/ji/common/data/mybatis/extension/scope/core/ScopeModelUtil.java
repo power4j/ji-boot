@@ -29,7 +29,7 @@ import java.util.HashSet;
 @UtilityClass
 public class ScopeModelUtil {
 
-	public InValues onValues(String column, Collection<Object> values) {
+	public InValues onValues(String column, Collection<?> values) {
 		return () -> Pair.of(column, new HashSet<>(values));
 	}
 

@@ -23,6 +23,7 @@ import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.StringValue;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
+import net.sf.jsqlparser.expression.operators.conditional.OrExpression;
 import net.sf.jsqlparser.expression.operators.relational.ExpressionList;
 import net.sf.jsqlparser.expression.operators.relational.InExpression;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
@@ -110,7 +111,7 @@ public class SqlHelper {
 		return inExpression;
 	}
 
-	public Expression compose(Collection<? extends Expression> expressions, boolean and) {
+	public Expression compose(Collection<? extends Expression> expressions, boolean andExpr) {
 		Assert.notEmpty(expressions, "Must non empty");
 		Expression head = null;
 		for (Expression expression : expressions) {
@@ -118,7 +119,7 @@ public class SqlHelper {
 				head = expression;
 			}
 			else {
-				head = new AndExpression(head, expression);
+				head = andExpr ? new AndExpression(head, expression) : new OrExpression(head,expression);
 			}
 		}
 		return head;
