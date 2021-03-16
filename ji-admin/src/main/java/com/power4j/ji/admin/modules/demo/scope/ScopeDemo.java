@@ -24,6 +24,7 @@ import com.power4j.ji.admin.modules.sys.entity.SysRole;
 import com.power4j.ji.common.data.mybatis.extension.scope.core.InScope;
 import com.power4j.ji.common.data.mybatis.extension.scope.core.ScopeModelUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -36,6 +37,7 @@ import java.util.List;
  * @date 2021/3/15
  * @since 1.0
  */
+@Profile("dev")
 @Component
 @RequiredArgsConstructor
 public class ScopeDemo {
