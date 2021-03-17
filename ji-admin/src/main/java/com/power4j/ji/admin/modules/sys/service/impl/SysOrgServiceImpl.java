@@ -16,24 +16,20 @@
 
 package com.power4j.ji.admin.modules.sys.service.impl;
 
-import cn.hutool.core.lang.Assert;
 import com.power4j.ji.admin.modules.sys.component.SysOrgPathBuilder;
 import com.power4j.ji.admin.modules.sys.dao.SysOrgMapper;
 import com.power4j.ji.admin.modules.sys.dto.SysOrgNodeDTO;
 import com.power4j.ji.admin.modules.sys.entity.SysOrg;
 import com.power4j.ji.admin.modules.sys.entity.SysOrgNode;
 import com.power4j.ji.admin.modules.sys.service.SysOrgService;
-import com.power4j.ji.common.core.constant.SysErrorCodes;
-import com.power4j.ji.common.core.exception.BizException;
-import com.power4j.ji.common.data.crud.service.impl.AbstractCrudService;
+import com.power4j.ji.common.data.crud.service.impl.AbstractTreeNodeCrudService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.io.Serializable;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author CJ (power4j@outlook.com)
@@ -42,62 +38,29 @@ import java.util.Optional;
  */
 @Service
 @RequiredArgsConstructor
-public class SysOrgServiceImpl extends AbstractCrudService<SysOrgMapper, SysOrgNodeDTO, SysOrg> implements SysOrgService {
+public class SysOrgServiceImpl extends AbstractTreeNodeCrudService<SysOrgMapper, SysOrgNodeDTO, SysOrg, SysOrgNode, SysOrgPathBuilder>
+		implements SysOrgService {
 
 	private final SysOrgPathBuilder pathBuilder;
 
 	@Override
-	public List<SysOrgNodeDTO> getChildren(Long rootId) {
-		return null;
-	}
-
-	@Override
-	public List<SysOrgNodeDTO> getTreeNodes(Long rootId) {
-		return null;
-	}
-
-	@Override
-	public SysOrgNodeDTO getTree(Long rootId) {
-		return null;
+	protected SysOrgPathBuilder getPathBuilder() {
+		return pathBuilder;
 	}
 
 	@Override
 	public List<SysOrg> listAll() {
-		return null;
+		return list();
 	}
 
 	@Override
 	public int countOrgCode(String code, @Nullable Long ignoreId) {
-		return 0;
+		return countByColumn("code", code, ignoreId);
 	}
 
-	@Transactional(rollbackFor = Exception.class)
 	@Override
-	public SysOrgNodeDTO post(SysOrgNodeDTO dto) {
-		dto = super.post(dto);
-		pathBuilder.insertNode(dto.getParentId(), dto.getId());
-		return dto;
-	}
-
-	@Transactional(rollbackFor = Exception.class)
-	@Override
-	public SysOrgNodeDTO put(SysOrgNodeDTO dto) {
-		List<SysOrgNode> nodes = pathBuilder.loadAncestors(dto.getNodeId(), 1, 1);
-		if (nodes.isEmpty()) {
-			throw new BizException(SysErrorCodes.E_BAD_REQUEST, "无效数据");
-		}
-		Assert.isTrue(nodes.size() == 1);
-		if (!nodes.get(0).getAncestor().equals(dto.getParentId())) {
-			pathBuilder.removeNode(dto.getId());
-			pathBuilder.insertNode(dto.getParentId(), dto.getId());
-		}
-		return super.put(dto);
-	}
-
-	@Transactional(rollbackFor = Exception.class)
-	@Override
-	public Optional<SysOrgNodeDTO> delete(Serializable id) {
-		pathBuilder.removeNode(id);
-		return super.delete(id);
+	protected List<SysOrgNodeDTO> fetchChildren(Long rootId, List<SysOrgNodeDTO> defVal) {
+		return super.fetchChildren(rootId,defVal).stream().sorted(Comparator.comparingInt(SysOrgNodeDTO::getSort))
+				.collect(Collectors.toList());
 	}
 }

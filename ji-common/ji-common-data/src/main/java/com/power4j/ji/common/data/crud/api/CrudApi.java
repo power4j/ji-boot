@@ -18,7 +18,7 @@ package com.power4j.ji.common.data.crud.api;
 
 import com.power4j.ji.common.core.model.ApiResponse;
 import com.power4j.ji.common.core.validate.Groups;
-import com.power4j.ji.common.data.crud.util.Unique;
+import com.power4j.ji.common.core.model.Unique;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;

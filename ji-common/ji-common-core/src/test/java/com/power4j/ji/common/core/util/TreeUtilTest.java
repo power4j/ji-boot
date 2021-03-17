@@ -38,6 +38,8 @@ public class TreeUtilTest {
 
 		private Long parentId;
 
+		private Boolean loadMore;
+
 		private List<TreeNode> children = new ArrayList<>();
 
 		@Override
@@ -63,6 +65,11 @@ public class TreeUtilTest {
 		@Override
 		public List<TreeNode> getNextNodes() {
 			return children;
+		}
+
+		@Override
+		public void setHasMoreNodes(boolean val) {
+			loadMore = val;
 		}
 
 		@Override

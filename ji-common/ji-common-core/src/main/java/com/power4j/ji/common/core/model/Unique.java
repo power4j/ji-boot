@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-package com.power4j.ji.common.data.crud.util;
+package com.power4j.ji.common.core.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import java.io.Serializable;
 
 /**
  * @author CJ (power4j@outlook.com)
@@ -28,10 +26,10 @@ import java.io.Serializable;
 public interface Unique {
 
 	/**
-	 * 唯一ID
+	 * 唯一ID,在整个系统中唯一
 	 * @return
 	 */
 	@JsonIgnore
-	Serializable getOnlyId();
+	Long getOnlyId();
 
 }

@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -96,9 +96,9 @@ public class SysResourceController implements CrudApi<Long, SysResourceDTO> {
 
 	@GetMapping("/tree/all")
 	@Operation(summary = "所有资源,树形结构")
-	public ApiResponse<List<SysResourceDTO>> allResources(@RequestParam(required = false) Boolean showRoot) {
+	public ApiResponse<List<SysResourceDTO>> getFullTree(@RequestParam(required = false) Boolean showRoot) {
 		if (showRoot != null && showRoot) {
-			return ApiResponseUtil.ok(Arrays.asList(sysResourceService.getTree(SysConstant.ROOT_RESOURCE_ID)));
+			return ApiResponseUtil.ok(Collections.singletonList(sysResourceService.getTree(SysConstant.ROOT_RESOURCE_ID)));
 		}
 		else {
 			return ApiResponseUtil.ok(sysResourceService.getTreeNodes(SysConstant.ROOT_RESOURCE_ID));
@@ -106,7 +106,7 @@ public class SysResourceController implements CrudApi<Long, SysResourceDTO> {
 	}
 
 	@GetMapping("/tree/children")
-	@Operation(summary = "读取子级")
+	@Operation(summary = "读取下一级")
 	public ApiResponse<List<SysResourceDTO>> getChildren(
 			@Parameter(description = "父级ID") @RequestParam(required = false) Long pid) {
 		return ApiResponseUtil.ok(sysResourceService.getChildren(pid == null ? SysConstant.ROOT_RESOURCE_ID : pid));

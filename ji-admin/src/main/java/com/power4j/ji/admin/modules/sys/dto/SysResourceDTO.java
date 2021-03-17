@@ -155,4 +155,9 @@ public class SysResourceDTO extends BaseDTO implements Node<SysResourceDTO>, Ser
 		setChildren(children);
 	}
 
+	@Override
+	public void setHasMoreNodes(boolean val) {
+		hasChildren = val;
+	}
+
 }

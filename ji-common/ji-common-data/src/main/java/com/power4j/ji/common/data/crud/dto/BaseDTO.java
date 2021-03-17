@@ -17,17 +17,17 @@
 package com.power4j.ji.common.data.crud.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.power4j.ji.common.core.model.Unique;
 import com.power4j.ji.common.core.validate.Groups;
 import com.power4j.ji.common.data.crud.util.SysCtl;
-import com.power4j.ji.common.data.crud.util.Unique;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -69,8 +69,9 @@ public abstract class BaseDTO implements Unique, SysCtl {
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private LocalDateTime createAt;
 
+	@NonNull
 	@Override
-	public Serializable getOnlyId() {
+	public Long getOnlyId() {
 		return id;
 	}
 

@@ -116,4 +116,9 @@ public class SysOrgNodeDTO extends BaseDTO implements Node<SysOrgNodeDTO>, Seria
 	public void setNextNodes(List<SysOrgNodeDTO> children) {
 		setChildren(children);
 	}
+
+	@Override
+	public void setHasMoreNodes(boolean val) {
+		hasChildren = val;
+	}
 }

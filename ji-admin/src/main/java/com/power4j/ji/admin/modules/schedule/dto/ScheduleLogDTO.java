@@ -16,7 +16,7 @@
 
 package com.power4j.ji.admin.modules.schedule.dto;
 
-import com.power4j.ji.common.data.crud.util.Unique;
+import com.power4j.ji.common.core.model.Unique;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -112,7 +112,7 @@ public class ScheduleLogDTO implements Unique, Serializable {
 	private String exMsg;
 
 	@Override
-	public Serializable getOnlyId() {
+	public Long getOnlyId() {
 		return id;
 	}
 

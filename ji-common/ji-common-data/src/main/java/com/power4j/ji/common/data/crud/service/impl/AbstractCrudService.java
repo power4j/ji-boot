@@ -30,7 +30,7 @@ import com.power4j.ji.common.core.model.PageRequest;
 import com.power4j.ji.common.data.crud.constant.SysCtlFlagEnum;
 import com.power4j.ji.common.data.crud.service.CrudService;
 import com.power4j.ji.common.data.crud.util.CrudUtil;
-import com.power4j.ji.common.data.crud.util.Unique;
+import com.power4j.ji.common.core.model.Unique;
 import lombok.Getter;
 import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;

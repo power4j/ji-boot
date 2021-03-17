@@ -21,7 +21,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.power4j.ji.common.data.crud.util.Unique;
+import com.power4j.ji.common.core.model.Unique;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -77,7 +77,7 @@ public class UserToken implements Unique, Serializable {
 	private LocalDateTime updateAt;
 
 	@Override
-	public Serializable getOnlyId() {
+	public Long getOnlyId() {
 		return id;
 	}
 

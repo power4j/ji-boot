@@ -16,10 +16,35 @@
 
 package com.power4j.ji.common.data.tree.service;
 
+import com.power4j.ji.common.core.model.Node;
+
+import java.util.List;
+
 /**
  * @author CJ (power4j@outlook.com)
  * @date 2021/3/17
  * @since 1.0
  */
-public class TreePathSupport {
+public interface TreePathSupport<T extends Node<T>> {
+
+	/**
+	 * 取下级
+	 * @param rootId
+	 * @return 如果没有下级返回空列表
+	 */
+	List<T> getChildren(Long rootId);
+
+	/**
+	 * 查询下级节点,并构建为树
+	 * @param rootId
+	 * @return
+	 */
+	List<T> getTreeNodes(Long rootId);
+
+	/**
+	 * 返回树
+	 * @param rootId
+	 * @return
+	 */
+	T getTree(Long rootId);
 }

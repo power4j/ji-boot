@@ -16,7 +16,6 @@
 
 package com.power4j.ji.admin.modules.sys.service.impl;
 
-import cn.hutool.core.lang.Assert;
 import cn.hutool.core.text.CharSequenceUtil;
 import com.power4j.ji.admin.modules.sys.component.SysResourcePathBuilder;
 import com.power4j.ji.admin.modules.sys.constant.CacheConstant;
@@ -30,7 +29,8 @@ import com.power4j.ji.admin.modules.sys.service.SysResourceService;
 import com.power4j.ji.common.core.constant.SysErrorCodes;
 import com.power4j.ji.common.core.exception.BizException;
 import com.power4j.ji.common.core.util.TreeUtil;
-import com.power4j.ji.common.data.crud.service.impl.AbstractCrudService;
+import com.power4j.ji.common.data.crud.entity.BaseEntity;
+import com.power4j.ji.common.data.crud.service.impl.AbstractTreeNodeCrudService;
 import com.power4j.ji.common.security.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -45,7 +45,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -57,7 +56,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @RequiredArgsConstructor
-public class SysResourceServiceImpl extends AbstractCrudService<SysResourceMapper, SysResourceDTO, SysResource>
+public class SysResourceServiceImpl extends AbstractTreeNodeCrudService<SysResourceMapper, SysResourceDTO, SysResource,SysResourceNode,SysResourcePathBuilder>
 		implements SysResourceService {
 
 	private final SysResourcePathBuilder pathBuilder;
@@ -72,9 +71,7 @@ public class SysResourceServiceImpl extends AbstractCrudService<SysResourceMappe
 		if (CharSequenceUtil.isEmpty(dto.getPath()) && !ResourceTypeEnum.BUTTON.getValue().equals(dto.getType())) {
 			throw new BizException(SysErrorCodes.E_BAD_REQUEST, "菜单和路由需要指定path");
 		}
-		dto = super.post(dto);
-		pathBuilder.insertNode(dto.getParentId(), dto.getId());
-		return dto;
+		return super.post(dto);
 	}
 
 	@Caching(evict = {
@@ -90,15 +87,6 @@ public class SysResourceServiceImpl extends AbstractCrudService<SysResourceMappe
 		if (CharSequenceUtil.isEmpty(dto.getPath()) && !ResourceTypeEnum.BUTTON.getValue().equals(dto.getType())) {
 			throw new BizException(SysErrorCodes.E_BAD_REQUEST, "菜单和路由需要指定path");
 		}
-		List<SysResourceNode> nodes = pathBuilder.loadAncestors(dto.getNodeId(), 1, 1);
-		if (nodes.isEmpty()) {
-			throw new BizException(SysErrorCodes.E_BAD_REQUEST, "无效数据");
-		}
-		Assert.isTrue(nodes.size() == 1);
-		if (!nodes.get(0).getAncestor().equals(dto.getParentId())) {
-			pathBuilder.removeNode(dto.getId());
-			pathBuilder.insertNode(dto.getParentId(), dto.getId());
-		}
 		return super.put(dto);
 	}
 
@@ -112,44 +100,26 @@ public class SysResourceServiceImpl extends AbstractCrudService<SysResourceMappe
 	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public Optional<SysResourceDTO> delete(Serializable id) {
-		pathBuilder.removeNode(id);
 		return super.delete(id);
 	}
 
-	@Transactional(rollbackFor = Exception.class)
 	@Override
-	public List<SysResourceDTO> getChildren(Long rootId) {
-		List<SysResourceDTO> children = fetchChildren(rootId, Collections.emptyList());
-		if (!children.isEmpty()) {
-			Map<Long, Long> layer = pathBuilder
-					.loadDescendants(children.stream().map(SysResourceDTO::getNodeId).collect(Collectors.toList()), 1,
-							1)
-					.stream().collect(Collectors.toMap(SysResourceNode::getAncestor, SysResourceNode::getDescendant,
-							(v1, v2) -> v2));
-			children.forEach(o -> o.setHasChildren(layer.containsKey(o.getNodeId())));
-		}
-
-		return children;
+	protected SysResourcePathBuilder getPathBuilder() {
+		return pathBuilder;
 	}
 
 	@Transactional(rollbackFor = Exception.class)
 	@Cacheable(cacheNames = CacheConstant.Name.RESOURCE_TREE, key = "'node:'+#rootId")
 	@Override
 	public List<SysResourceDTO> getTreeNodes(Long rootId) {
-		List<SysResourceDTO> nodes = getChildren(rootId);
-		nodes.forEach(node -> buildTree(node));
-		return nodes;
+		return super.getTreeNodes(rootId);
 	}
 
 	@Transactional(rollbackFor = Exception.class)
 	@Cacheable(cacheNames = CacheConstant.Name.RESOURCE_TREE, key = "'tree:'+#rootId")
 	@Override
 	public SysResourceDTO getTree(Long rootId) {
-		SysResourceDTO root = read(rootId).orElse(null);
-		if (root != null) {
-			root.setChildren(getTreeNodes(rootId));
-		}
-		return root;
+		return super.getTree(rootId);
 	}
 
 	@Cacheable(cacheNames = CacheConstant.Name.ROLE_CODES_TO_RESOURCES, key = "@keyMaker.makeKeyStr(#roleCodes)")
@@ -163,7 +133,7 @@ public class SysResourceServiceImpl extends AbstractCrudService<SysResourceMappe
 
 	@Override
 	public List<SysResource> listAll() {
-		return list(null);
+		return list();
 	}
 
 	@Cacheable(cacheNames = CacheConstant.Name.ROLE_CODES_TO_RESOURCE_TREE, key = "@keyMaker.makeKeyStr(#roleCodes)")
@@ -173,7 +143,7 @@ public class SysResourceServiceImpl extends AbstractCrudService<SysResourceMappe
 		if (roleCodes.isEmpty()) {
 			return Collections.emptyList();
 		}
-		Set<Long> granted = listForRoles(SecurityUtil.getLoginUserRoles()).stream().map(o -> o.getId())
+		Set<Long> granted = listForRoles(SecurityUtil.getLoginUserRoles()).stream().map(BaseEntity::getId)
 				.collect(Collectors.toSet());
 		List<SysResourceDTO> full = getTreeNodes(SysConstant.ROOT_RESOURCE_ID);
 		return TreeUtil.filterNode(full, node -> granted.contains(node.getNodeId()));
@@ -189,22 +159,9 @@ public class SysResourceServiceImpl extends AbstractCrudService<SysResourceMappe
 		return countByColumn("path", path, ignoreId);
 	}
 
-	protected void buildTree(SysResourceDTO node) {
-		node.setNextNodes(getChildren(node.getNodeId()));
-		if (node.getNextNodes() != null) {
-			node.getNextNodes().forEach(o -> buildTree(o));
-		}
-	}
-
+	@Override
 	protected List<SysResourceDTO> fetchChildren(Long rootId, List<SysResourceDTO> defVal) {
-		List<Long> ids = pathBuilder.loadDescendants(rootId, 1, 1).stream().map(SysResourceNode::getDescendant)
-				.collect(Collectors.toList());
-		if (ids.isEmpty()) {
-			return defVal;
-		}
-		List<SysResource> children = getBaseMapper().selectBatchIds(ids);
-		children.forEach(o -> o.setParentId(rootId));
-		return toDtoList(children).stream().sorted(Comparator.comparingInt(SysResourceDTO::getSort))
+		return super.fetchChildren(rootId,defVal).stream().sorted(Comparator.comparingInt(SysResourceDTO::getSort))
 				.collect(Collectors.toList());
 	}
 

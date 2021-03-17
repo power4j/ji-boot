@@ -28,4 +28,9 @@ public interface SysConstant {
 	 */
 	long ROOT_RESOURCE_ID = 0L;
 
+	/**
+	 * 组织机构根节点
+	 */
+	long ROOT_ORG_ID = 1L;
+
 }

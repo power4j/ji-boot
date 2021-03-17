@@ -21,7 +21,7 @@ package com.power4j.ji.common.data.crud.service;
 
 import com.power4j.ji.common.core.model.PageData;
 import com.power4j.ji.common.core.model.PageRequest;
-import com.power4j.ji.common.data.crud.util.Unique;
+import com.power4j.ji.common.core.model.Unique;
 
 import java.io.Serializable;
 import java.util.Collection;

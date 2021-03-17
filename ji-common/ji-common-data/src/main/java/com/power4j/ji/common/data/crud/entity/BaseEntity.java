@@ -21,13 +21,12 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.power4j.ji.common.core.model.Unique;
 import com.power4j.ji.common.data.crud.util.SysCtl;
-import com.power4j.ji.common.data.crud.util.Unique;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.lang.Nullable;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -75,7 +74,7 @@ public abstract class BaseEntity implements Unique, SysCtl {
 	private LocalDateTime updateAt;
 
 	@Override
-	public Serializable getOnlyId() {
+	public Long getOnlyId() {
 		return id;
 	}
 

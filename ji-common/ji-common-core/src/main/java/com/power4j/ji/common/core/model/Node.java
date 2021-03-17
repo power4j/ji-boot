@@ -29,7 +29,7 @@ import java.util.List;
  * @date 2020-11-17
  * @since 1.0
  */
-public interface Node<T extends Node<T>> {
+public interface Node<T extends Node<T>> extends Unique {
 
 	/**
 	 * 节点id
@@ -64,6 +64,7 @@ public interface Node<T extends Node<T>> {
 	 * @return
 	 */
 	@JsonIgnore
+	@Nullable
 	List<T> getNextNodes();
 
 	/**
@@ -73,6 +74,12 @@ public interface Node<T extends Node<T>> {
 	void setNextNodes(List<T> children);
 
 	/**
+	 * 是否有更多子节点可以读取,此方法一般用于帮助客户端懒加载
+	 * @param val
+	 */
+	void setHasMoreNodes(boolean val);
+
+	/**
 	 * 添加子级
 	 * @param node
 	 */
@@ -80,4 +87,12 @@ public interface Node<T extends Node<T>> {
 		getNextNodes().add(node);
 	}
 
+	/**
+	 * 唯一ID
+	 * @return
+	 */
+	@Override
+	default Long getOnlyId() {
+		return getNodeId();
+	}
 }
