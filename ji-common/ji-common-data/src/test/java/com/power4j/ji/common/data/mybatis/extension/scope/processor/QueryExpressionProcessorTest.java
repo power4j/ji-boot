@@ -40,22 +40,30 @@ class QueryExpressionProcessorTest {
 
 	// @formatter:off
 
+	// 原始未增强的 SQL
 	final String sql1 = "SELECT  id,code,name,status,owner,sys_flag,del_flag,create_at,update_at  FROM t_sys_role   WHERE del_flag IS NULL";
 	final String sql2 = "SELECT t.*, sys_dept.name FROM t_sys_role t left join sys_dept on sys_dept.id = t.dept_id WHERE t.del_flag IS NULL  order by code ";
 
+	// 关联原始查询的两个列,another_column 关联了空集
 	final List<ScopeModel> someEmpty = Arrays.asList(
 			ScopeModelUtil.onValues("dept_id", new HashSet<>(Arrays.asList(1, 2, 3, 4))),
 			ScopeModelUtil.onValues("another_column", Collections.emptySet())
 	);
+
 	final List<ScopeModel> allEmpty = Collections.emptyList();
 
+	// 在 no_matter 列上关联子查询
 	final List<ScopeModel> badSql = Collections.singletonList(
 			ScopeModelUtil.onSubQuery("no_matter", "select xx form t_xx where uid=1")
 	);
+
+	// 混合模式,一个列关联数据集，另一个列关联子查询
 	final List<ScopeModel> mixedModels = Arrays.asList(
 			ScopeModelUtil.onValues("dept_id", new HashSet<>(Arrays.asList(1, 2, 3, 4))),
 			ScopeModelUtil.onSubQuery("another_column", "select xx from t_xx where uid=1")
 	);
+
+	// 经过框架处理后,自动添加的条件语句
 	final String sql1ProcessedPiece = "AND dept_id IN ('1', '2', '3', '4') AND another_column IN (SELECT xx FROM t_xx WHERE uid = 1)";
 	final String sql2ProcessedPiece = "AND t.dept_id IN ('1', '2', '3', '4') AND t.another_column IN (SELECT xx FROM t_xx WHERE uid = 1)";
 	// @formatter:on

@@ -207,3 +207,27 @@ CREATE TABLE `t_ureport_data`
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_code` (`file`)
 ) ENGINE = InnoDB CHARSET = `utf8mb4` COMMENT ='UR报表';
+
+CREATE TABLE `t_sys_org`
+(
+    `id`          BIGINT      NOT NULL COMMENT '主健',
+    `sys_flag`    TINYINT     NOT NULL DEFAULT 0 COMMENT '数据标记 0 普通数据, 1 系统保护数据',
+    `del_flag`    DATETIME    NULL COMMENT '删除标志',
+    `create_at`   DATETIME COMMENT '创建时间',
+    `update_at`   DATETIME COMMENT '更新时间',
+    `tag`         CHAR(8)  NOT NULL DEFAULT '0' COMMENT '自定义标签',
+    `code`        VARCHAR(20) NOT NULL COMMENT '组织代码',
+    `name`        VARCHAR(40) NOT NULL COMMENT '名称',
+    `sort`        INT NOT NULL DEFAULT 0 COMMENT '排序',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uk_code` (`code`)
+) ENGINE = InnoDB CHARSET = `utf8mb4` COMMENT ='组织机构';
+
+
+CREATE TABLE `t_org_node`
+(
+    `ancestor`     BIGINT NOT NULL DEFAULT 0 COMMENT '祖先ID',
+    `descendant`   BIGINT NOT NULL COMMENT '后代ID',
+    `distance`   INT NOT NULL COMMENT '层距离',
+    PRIMARY KEY (`ancestor`,`descendant`,`distance`)
+) ENGINE = InnoDB CHARSET = `utf8mb4` COMMENT ='组织机构节点';

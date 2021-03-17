@@ -46,11 +46,11 @@ public class SysRoleGrantDTO extends BaseDTO implements Serializable {
 	private Long userId;
 
 	/**
-	 * 授权类型 0 普通 1 再授权
+	 * 授权类型
 	 */
-	@Schema(description = "授权类型 0 普通 1 再授权", example = "0")
+	@Schema(description = "授权类型,来自字典 sys_role_grant_type", example = "0")
 	@NotNull(groups = { Groups.Default.class })
-	@Pattern(regexp = "0|1", message = "授权类型只能是 0 或者 1", groups = { Groups.Default.class })
+	@Pattern(regexp = "[01]", message = "授权类型非法", groups = { Groups.Default.class })
 	private String grantType;
 
 	/**

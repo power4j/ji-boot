@@ -25,6 +25,7 @@ import com.power4j.ji.common.data.crud.util.SysCtl;
 import com.power4j.ji.common.data.crud.util.Unique;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.lang.Nullable;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -55,18 +56,21 @@ public abstract class BaseEntity implements Unique, SysCtl {
 	/**
 	 * 逻辑删除标志
 	 */
+	@Nullable
 	@TableLogic
 	private LocalDateTime delFlag;
 
 	/**
 	 * 创建时间
 	 */
+	@Nullable
 	@TableField(fill = FieldFill.INSERT)
 	private LocalDateTime createAt;
 
 	/**
 	 * 更新时间
 	 */
+	@Nullable
 	@TableField(fill = FieldFill.UPDATE)
 	private LocalDateTime updateAt;
 

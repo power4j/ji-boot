@@ -2,6 +2,14 @@ USE ji_boot;
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
+/*Data for the table `t_sys_dict` */
+insert  into `t_sys_dict`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`code`,`name`,`remarks`) values (1000000,1,NULL,'2020-12-30 13:57:19',NULL,'sys_org_tags','组织标签',NULL);
+
+/*Data for the table `t_sys_dict_item` */
+insert  into `t_sys_dict_item`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`dict_id`,`value`,`label`,`remarks`) values (1000001,1,NULL,'2020-12-30 13:57:19',NULL,1000000,'1','内部组织',NULL);
+insert  into `t_sys_dict_item`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`dict_id`,`value`,`label`,`remarks`) values (1000002,1,NULL,'2020-12-30 13:57:19',NULL,1000000,'2','供应渠道',NULL);
+insert  into `t_sys_dict_item`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`dict_id`,`value`,`label`,`remarks`) values (1000003,1,NULL,'2020-12-30 13:57:19',NULL,1000000,'3','市场片区',NULL);
+
 /*Data for the table `t_resource_node` */
 
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (0,0,0);

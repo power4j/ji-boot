@@ -14,24 +14,9 @@
  * limitations under the License.
  */
 
-package com.power4j.ji.common.data.crud.util;
+@NonNullApi
+@NonNullFields
+package com.power4j.ji.common.data.crud;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import java.io.Serializable;
-
-/**
- * @author CJ (power4j@outlook.com)
- * @date 2020/11/27
- * @since 1.0
- */
-public interface Unique {
-
-	/**
-	 * 唯一ID
-	 * @return
-	 */
-	@JsonIgnore
-	Serializable getOnlyId();
-
-}
+import org.springframework.lang.NonNullApi;
+import org.springframework.lang.NonNullFields;

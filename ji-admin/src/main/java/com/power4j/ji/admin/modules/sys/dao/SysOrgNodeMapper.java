@@ -14,24 +14,17 @@
  * limitations under the License.
  */
 
-package com.power4j.ji.common.data.crud.util;
+package com.power4j.ji.admin.modules.sys.dao;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import java.io.Serializable;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.power4j.ji.admin.modules.sys.entity.SysOrgNode;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @author CJ (power4j@outlook.com)
- * @date 2020/11/27
+ * @date 2021/3/17
  * @since 1.0
  */
-public interface Unique {
-
-	/**
-	 * 唯一ID
-	 * @return
-	 */
-	@JsonIgnore
-	Serializable getOnlyId();
-
+@Mapper
+public interface SysOrgNodeMapper extends BaseMapper<SysOrgNode> {
 }

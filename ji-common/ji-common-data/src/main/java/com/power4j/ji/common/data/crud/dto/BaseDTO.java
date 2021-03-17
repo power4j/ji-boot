@@ -23,6 +23,7 @@ import com.power4j.ji.common.data.crud.util.Unique;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
@@ -55,6 +56,7 @@ public abstract class BaseDTO implements Unique, SysCtl {
 	/**
 	 * 更新时间
 	 */
+	@Nullable
 	@Schema(description = "更新时间", accessMode = Schema.AccessMode.READ_ONLY)
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private LocalDateTime updateAt;
@@ -62,6 +64,7 @@ public abstract class BaseDTO implements Unique, SysCtl {
 	/**
 	 * 创建时间
 	 */
+	@Nullable
 	@Schema(description = "创建时间", accessMode = Schema.AccessMode.READ_ONLY)
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private LocalDateTime createAt;

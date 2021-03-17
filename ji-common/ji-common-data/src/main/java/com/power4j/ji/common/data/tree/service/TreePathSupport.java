@@ -14,24 +14,12 @@
  * limitations under the License.
  */
 
-package com.power4j.ji.common.data.crud.util;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import java.io.Serializable;
+package com.power4j.ji.common.data.tree.service;
 
 /**
  * @author CJ (power4j@outlook.com)
- * @date 2020/11/27
+ * @date 2021/3/17
  * @since 1.0
  */
-public interface Unique {
-
-	/**
-	 * 唯一ID
-	 * @return
-	 */
-	@JsonIgnore
-	Serializable getOnlyId();
-
+public class TreePathSupport {
 }

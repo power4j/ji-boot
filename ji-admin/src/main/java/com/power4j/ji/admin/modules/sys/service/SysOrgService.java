@@ -14,70 +14,54 @@
  * limitations under the License.
  */
 
-package com.power4j.ji.common.core.model;
+package com.power4j.ji.admin.modules.sys.service;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.power4j.ji.admin.modules.sys.dto.SysOrgNodeDTO;
+import com.power4j.ji.admin.modules.sys.entity.SysOrg;
+import com.power4j.ji.common.data.crud.service.CrudService;
 import org.springframework.lang.Nullable;
 
 import java.util.List;
 
 /**
- * 节点
- * <p>
- *
  * @author CJ (power4j@outlook.com)
- * @date 2020-11-17
+ * @date 2021/3/17
  * @since 1.0
  */
-public interface Node<T extends Node<T>> {
+public interface SysOrgService extends CrudService<SysOrgNodeDTO, SysOrg> {
 
 	/**
-	 * 节点id
+	 * 取下级
+	 * @param rootId
+	 * @return 如果没有下级返回空列表
+	 */
+	List<SysOrgNodeDTO> getChildren(Long rootId);
+
+	/**
+	 * 查询下级节点,并构建为树
+	 * @param rootId
 	 * @return
 	 */
-	@JsonIgnore
-	Long getNodeId();
+	List<SysOrgNodeDTO> getTreeNodes(Long rootId);
 
 	/**
-	 * 设置id
-	 * @param id
-	 */
-	void setNodeId(Long id);
-
-	/**
-	 * 父节点id
+	 * 返回树
+	 * @param rootId
 	 * @return
 	 */
-	@JsonIgnore
-	@Nullable
-	Long getNodePid();
+	SysOrgNodeDTO getTree(Long rootId);
 
 	/**
-	 * 设置父节点id
-	 * @param pid
+	 * 全部数据
 	 * @return
 	 */
-	void setNodePid(Long pid);
+	List<SysOrg> listAll();
 
 	/**
-	 * 子节点列表
+	 * 统计使用次数
+	 * @param code
+	 * @param ignoreId 排除的ID
 	 * @return
 	 */
-	@JsonIgnore
-	List<T> getNextNodes();
-
-	/**
-	 * 设置子节点
-	 * @param children
-	 */
-	void setNextNodes(List<T> children);
-
-	/**
-	 * 添加子级
-	 * @param node
-	 */
-	default void add(T node) {
-		getNextNodes().add(node);
-	}
-
+	int countOrgCode(String code, @Nullable Long ignoreId);
 }

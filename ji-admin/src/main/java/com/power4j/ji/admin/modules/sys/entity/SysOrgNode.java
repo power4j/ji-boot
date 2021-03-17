@@ -14,24 +14,30 @@
  * limitations under the License.
  */
 
-package com.power4j.ji.common.data.crud.util;
+package com.power4j.ji.admin.modules.sys.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.power4j.ji.common.data.tree.entity.TreePath;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 /**
  * @author CJ (power4j@outlook.com)
- * @date 2020/11/27
+ * @date 2021/3/17
  * @since 1.0
  */
-public interface Unique {
+@Data
+@EqualsAndHashCode(callSuper = false)
+@TableName("t_org_node")
+@NoArgsConstructor
+public class SysOrgNode extends TreePath implements Serializable {
 
-	/**
-	 * 唯一ID
-	 * @return
-	 */
-	@JsonIgnore
-	Serializable getOnlyId();
+	private static final long serialVersionUID = 1L;
 
+	public SysOrgNode(Long ancestor, Long descendant, Integer distance) {
+		super(ancestor, descendant, distance);
+	}
 }
