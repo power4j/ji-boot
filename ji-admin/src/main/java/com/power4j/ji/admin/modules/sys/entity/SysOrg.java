@@ -58,6 +58,11 @@ public class SysOrg extends BaseEntity implements Serializable {
 	private String tag;
 
 	/**
+	 * 备注
+	 */
+	private String remarks;
+
+	/**
 	 * 父节点
 	 */
 	@TableField(exist = false)

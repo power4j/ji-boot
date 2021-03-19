@@ -69,6 +69,13 @@ public class SysOrgNodeDTO extends BaseDTO implements Node<SysOrgNodeDTO>, Seria
 	private String tag;
 
 	/**
+	 * 备注
+	 */
+	@Schema(description = "备注", example = "colors")
+	@Size(max = 20, groups = { Groups.Default.class })
+	private String remarks;
+
+	/**
 	 * 父节点
 	 */
 	@Schema(description = "父节点", example = "0")

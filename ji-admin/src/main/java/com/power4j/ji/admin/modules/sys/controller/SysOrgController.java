@@ -95,7 +95,7 @@ public class SysOrgController implements CrudApi<Long, SysOrgNodeDTO> {
 	}
 
 	@GetMapping("/tree/all")
-	@Operation(summary = "所有资源,树形结构")
+	@Operation(summary = "所有机构,树形结构")
 	public ApiResponse<List<SysOrgNodeDTO>> getFullTree(@RequestParam(required = false) Boolean showRoot) {
 		if (showRoot != null && showRoot) {
 			return ApiResponseUtil.ok(Collections.singletonList(sysOrgService.getTree(SysConstant.ROOT_ORG_ID)));

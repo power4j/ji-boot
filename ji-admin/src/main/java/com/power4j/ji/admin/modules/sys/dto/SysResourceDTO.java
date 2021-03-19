@@ -53,8 +53,7 @@ public class SysResourceDTO extends BaseDTO implements Node<SysResourceDTO>, Ser
 	 * 路由名称
 	 */
 	@Schema(description = "路由名称", example = "home-page")
-	@NotBlank(groups = { Groups.Default.class })
-	@Size(min = 1, max = 240, groups = { Groups.Default.class })
+	@Size(max = 240, groups = { Groups.Default.class })
 	private String name;
 
 	/**
@@ -62,7 +61,7 @@ public class SysResourceDTO extends BaseDTO implements Node<SysResourceDTO>, Ser
 	 */
 	@Schema(description = "显示名称", example = "home-page")
 	@NotBlank(groups = { Groups.Default.class })
-	@Size(min = 1, max = 20, groups = { Groups.Default.class })
+	@Size(max = 20, groups = { Groups.Default.class })
 	private String title;
 
 	/**

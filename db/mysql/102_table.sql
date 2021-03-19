@@ -219,10 +219,10 @@ CREATE TABLE `t_sys_org`
     `code`        VARCHAR(20) NOT NULL COMMENT '组织代码',
     `name`        VARCHAR(40) NOT NULL COMMENT '名称',
     `sort`        INT NOT NULL DEFAULT 0 COMMENT '排序',
+    `remarks`     VARCHAR(40) NOT NULL DEFAULT '' COMMENT '备注',
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_code` (`code`)
 ) ENGINE = InnoDB CHARSET = `utf8mb4` COMMENT ='组织机构';
-
 
 CREATE TABLE `t_org_node`
 (
