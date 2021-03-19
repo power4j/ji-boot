@@ -55,6 +55,7 @@ public class SysOrgNodeDTO extends BaseDTO implements Node<SysOrgNodeDTO>, Seria
 	@NotBlank(groups = { Groups.Default.class })
 	@Size(min = 1, max = 20, groups = { Groups.Default.class })
 	private String code;
+
 	/**
 	 * 排序
 	 */
@@ -128,4 +129,5 @@ public class SysOrgNodeDTO extends BaseDTO implements Node<SysOrgNodeDTO>, Seria
 	public void setHasMoreNodes(boolean val) {
 		hasChildren = val;
 	}
+
 }

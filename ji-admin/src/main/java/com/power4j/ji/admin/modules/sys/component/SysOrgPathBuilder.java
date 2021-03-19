@@ -29,6 +29,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class SysOrgPathBuilder extends AbstractTreePathBuilder<SysOrgNode, BaseMapper<SysOrgNode>> {
+
 	@Override
 	protected QueryWrapper<SysOrgNode> createWrapper() {
 		return new QueryWrapper<>(null);
@@ -38,4 +39,5 @@ public class SysOrgPathBuilder extends AbstractTreePathBuilder<SysOrgNode, BaseM
 	protected SysOrgNode createNode(Long ancestor, Long descendant, Integer distance) {
 		return new SysOrgNode(ancestor, descendant, distance);
 	}
+
 }

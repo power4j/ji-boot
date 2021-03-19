@@ -64,4 +64,5 @@ public interface SysOrgService extends CrudService<SysOrgNodeDTO, SysOrg> {
 	 * @return
 	 */
 	int countOrgCode(String code, @Nullable Long ignoreId);
+
 }

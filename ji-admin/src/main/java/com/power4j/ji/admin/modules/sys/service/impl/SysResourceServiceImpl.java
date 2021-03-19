@@ -56,7 +56,8 @@ import java.util.stream.Collectors;
  */
 @Service
 @RequiredArgsConstructor
-public class SysResourceServiceImpl extends AbstractTreeNodeCrudService<SysResourceMapper, SysResourceDTO, SysResource,SysResourceNode,SysResourcePathBuilder>
+public class SysResourceServiceImpl extends
+		AbstractTreeNodeCrudService<SysResourceMapper, SysResourceDTO, SysResource, SysResourceNode, SysResourcePathBuilder>
 		implements SysResourceService {
 
 	private final SysResourcePathBuilder pathBuilder;
@@ -161,7 +162,7 @@ public class SysResourceServiceImpl extends AbstractTreeNodeCrudService<SysResou
 
 	@Override
 	protected List<SysResourceDTO> fetchChildren(Long rootId, List<SysResourceDTO> defVal) {
-		return super.fetchChildren(rootId,defVal).stream().sorted(Comparator.comparingInt(SysResourceDTO::getSort))
+		return super.fetchChildren(rootId, defVal).stream().sorted(Comparator.comparingInt(SysResourceDTO::getSort))
 				.collect(Collectors.toList());
 	}
 

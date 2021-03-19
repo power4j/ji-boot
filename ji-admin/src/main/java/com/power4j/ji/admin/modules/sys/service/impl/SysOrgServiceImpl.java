@@ -38,7 +38,8 @@ import java.util.stream.Collectors;
  */
 @Service
 @RequiredArgsConstructor
-public class SysOrgServiceImpl extends AbstractTreeNodeCrudService<SysOrgMapper, SysOrgNodeDTO, SysOrg, SysOrgNode, SysOrgPathBuilder>
+public class SysOrgServiceImpl
+		extends AbstractTreeNodeCrudService<SysOrgMapper, SysOrgNodeDTO, SysOrg, SysOrgNode, SysOrgPathBuilder>
 		implements SysOrgService {
 
 	private final SysOrgPathBuilder pathBuilder;
@@ -60,7 +61,8 @@ public class SysOrgServiceImpl extends AbstractTreeNodeCrudService<SysOrgMapper,
 
 	@Override
 	protected List<SysOrgNodeDTO> fetchChildren(Long rootId, List<SysOrgNodeDTO> defVal) {
-		return super.fetchChildren(rootId,defVal).stream().sorted(Comparator.comparingInt(SysOrgNodeDTO::getSort))
+		return super.fetchChildren(rootId, defVal).stream().sorted(Comparator.comparingInt(SysOrgNodeDTO::getSort))
 				.collect(Collectors.toList());
 	}
+
 }

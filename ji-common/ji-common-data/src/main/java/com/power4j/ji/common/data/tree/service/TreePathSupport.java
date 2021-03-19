@@ -47,4 +47,5 @@ public interface TreePathSupport<T extends Node<T>> {
 	 * @return
 	 */
 	T getTree(Long rootId);
+
 }

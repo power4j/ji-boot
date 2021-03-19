@@ -44,12 +44,8 @@ import java.util.stream.Collectors;
  * @param <P> 节点数据类型
  * @param <B> AbstractTreePathBuilder 类型
  */
-public abstract class AbstractTreeNodeCrudService<M extends BaseMapper<T>,
-		D extends Node<D>,
-		T extends Unique,
-		P extends TreePath,
-		B extends AbstractTreePathBuilder<P, BaseMapper<P>>>
-		extends AbstractCrudService<M,D,T> implements TreePathSupport<D> {
+public abstract class AbstractTreeNodeCrudService<M extends BaseMapper<T>, D extends Node<D>, T extends Unique, P extends TreePath, B extends AbstractTreePathBuilder<P, BaseMapper<P>>>
+		extends AbstractCrudService<M, D, T> implements TreePathSupport<D> {
 
 	/**
 	 * 获取PathBuilder
@@ -66,10 +62,8 @@ public abstract class AbstractTreeNodeCrudService<M extends BaseMapper<T>,
 		List<D> children = fetchChildren(rootId, Collections.emptyList());
 		if (!children.isEmpty()) {
 			Map<Long, Long> layer = getPathBuilder()
-					.loadDescendants(children.stream().map(D::getNodeId).collect(Collectors.toList()), 1,
-							1)
-					.stream().collect(Collectors.toMap(P::getAncestor, P::getDescendant,
-							(v1, v2) -> v2));
+					.loadDescendants(children.stream().map(D::getNodeId).collect(Collectors.toList()), 1, 1).stream()
+					.collect(Collectors.toMap(P::getAncestor, P::getDescendant, (v1, v2) -> v2));
 			children.forEach(o -> o.setHasMoreNodes(layer.containsKey(o.getNodeId())));
 		}
 
@@ -145,4 +139,5 @@ public abstract class AbstractTreeNodeCrudService<M extends BaseMapper<T>,
 		getPathBuilder().removeNode(id);
 		return super.delete(id);
 	}
+
 }

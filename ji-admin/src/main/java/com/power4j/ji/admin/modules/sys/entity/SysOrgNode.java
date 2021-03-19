@@ -40,4 +40,5 @@ public class SysOrgNode extends TreePath implements Serializable {
 	public SysOrgNode(Long ancestor, Long descendant, Integer distance) {
 		super(ancestor, descendant, distance);
 	}
+
 }

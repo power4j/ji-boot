@@ -98,7 +98,8 @@ public class SysResourceController implements CrudApi<Long, SysResourceDTO> {
 	@Operation(summary = "所有资源,树形结构")
 	public ApiResponse<List<SysResourceDTO>> getFullTree(@RequestParam(required = false) Boolean showRoot) {
 		if (showRoot != null && showRoot) {
-			return ApiResponseUtil.ok(Collections.singletonList(sysResourceService.getTree(SysConstant.ROOT_RESOURCE_ID)));
+			return ApiResponseUtil
+					.ok(Collections.singletonList(sysResourceService.getTree(SysConstant.ROOT_RESOURCE_ID)));
 		}
 		else {
 			return ApiResponseUtil.ok(sysResourceService.getTreeNodes(SysConstant.ROOT_RESOURCE_ID));

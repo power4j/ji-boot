@@ -26,6 +26,7 @@ import java.io.Serializable;
 
 /**
  * 组织机构
+ *
  * @author CJ (power4j@outlook.com)
  * @date 2021/3/17
  * @since 1.0
@@ -67,4 +68,5 @@ public class SysOrg extends BaseEntity implements Serializable {
 	 */
 	@TableField(exist = false)
 	private Long parentId;
+
 }

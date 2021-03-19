@@ -51,7 +51,7 @@ import java.util.List;
 public class SysOrgController implements CrudApi<Long, SysOrgNodeDTO> {
 
 	private final SysOrgService sysOrgService;
-	
+
 	@PreAuthorize("@pms.any('sys:org:view')")
 	@Override
 	public ApiResponse<List<SysOrgNodeDTO>> readList(List<Long> idList) {
@@ -115,7 +115,7 @@ public class SysOrgController implements CrudApi<Long, SysOrgNodeDTO> {
 	@GetMapping("/counter/code")
 	@Operation(summary = "统计code", description = "返回统计值,可用于唯一性检查")
 	public ApiResponse<Integer> countOfCode(@RequestParam String value,
-											@Parameter(description = "排除的ID") @RequestParam(required = false) Long excludeId) {
+			@Parameter(description = "排除的ID") @RequestParam(required = false) Long excludeId) {
 		return ApiResponseUtil.ok(sysOrgService.countOrgCode(value, excludeId));
 	}
 

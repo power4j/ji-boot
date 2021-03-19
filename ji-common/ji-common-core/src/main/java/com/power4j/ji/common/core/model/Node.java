@@ -95,4 +95,5 @@ public interface Node<T extends Node<T>> extends Unique {
 	default Long getOnlyId() {
 		return getNodeId();
 	}
+
 }
