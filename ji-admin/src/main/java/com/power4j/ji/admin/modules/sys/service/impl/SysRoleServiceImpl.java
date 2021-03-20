@@ -57,7 +57,7 @@ public class SysRoleServiceImpl extends AbstractCrudService<SysRoleMapper, SysRo
 
 	@Override
 	public int countRoleCode(String code, Long ignoreId) {
-		return countByColumn("code", code, ignoreId);
+		return countByLambdaColumn(SysRole::getCode, code, ignoreId);
 	}
 
 	@Cacheable(cacheNames = CacheConstant.Name.USERNAME_TO_ROLES, key = "#username + '_' + #grantType")

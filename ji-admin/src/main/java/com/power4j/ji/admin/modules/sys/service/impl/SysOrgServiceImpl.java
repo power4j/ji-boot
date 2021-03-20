@@ -56,7 +56,7 @@ public class SysOrgServiceImpl
 
 	@Override
 	public int countOrgCode(String code, @Nullable Long ignoreId) {
-		return countByColumn("code", code, ignoreId);
+		return countByLambdaColumn(SysOrg::getCode, code, ignoreId);
 	}
 
 	@Override

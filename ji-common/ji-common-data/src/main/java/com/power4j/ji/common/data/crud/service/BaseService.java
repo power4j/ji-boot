@@ -16,6 +16,7 @@
 
 package com.power4j.ji.common.data.crud.service;
 
+import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.power4j.ji.common.core.constant.SysErrorCodes;
 import com.power4j.ji.common.core.exception.BizException;
 import com.power4j.ji.common.data.crud.util.SysCtl;
@@ -36,16 +37,33 @@ public interface BaseService<T> {
 	/**
 	 * 根据主键统计
 	 * @param id
-	 * @return
+	 * @return 记录行数
 	 */
 	int countById(Serializable id);
+
+	/**
+	 * 根据某个字段进行统计
+	 * @param colFunc 数据库字段名称
+	 * @param value 数据库字段的值
+	 * @param ignoreId 排除的ID
+	 * @return 记录行数
+	 */
+	int countByLambdaColumn(SFunction<T, ?> colFunc, Object value, @Nullable Long ignoreId);
+
+	/**
+	 * 根据某些字段进行统计
+	 * @param columns key 是字段名, value 是字段值
+	 * @param ignoreId 排除的ID
+	 * @return 记录行数
+	 */
+	int countByLambdaColumns(Map<SFunction<T, ?>, Object> columns, @Nullable Long ignoreId);
 
 	/**
 	 * 根据某个字段进行统计
 	 * @param column 数据库字段名称
 	 * @param value 数据库字段的值
 	 * @param ignoreId 排除的ID
-	 * @return
+	 * @return 记录行数
 	 */
 	int countByColumn(String column, Object value, @Nullable Long ignoreId);
 
@@ -53,7 +71,7 @@ public interface BaseService<T> {
 	 * 根据某些字段进行统计
 	 * @param columns key 是字段名, value 是字段值
 	 * @param ignoreId 排除的ID
-	 * @return
+	 * @return 记录行数
 	 */
 	int countByColumns(Map<String, Object> columns, @Nullable Long ignoreId);
 

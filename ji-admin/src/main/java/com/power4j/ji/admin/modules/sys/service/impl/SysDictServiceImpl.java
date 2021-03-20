@@ -52,7 +52,7 @@ public class SysDictServiceImpl extends AbstractCrudService<SysDictMapper, SysDi
 
 	@Override
 	public int countDictCode(String code, Long ignoreId) {
-		return countByColumn("code", code, ignoreId);
+		return countByLambdaColumn(SysDict::getCode, code, ignoreId);
 	}
 
 	@Cacheable(cacheNames = CacheConstant.Name.DICT_CODE_TO_DICT, key = "#code")

@@ -21,13 +21,17 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.core.toolkit.ReflectionKit;
+import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.power4j.ji.common.data.crud.service.BaseService;
+import com.power4j.ji.common.data.mybatis.extension.util.LambdaHelper;
 import lombok.Getter;
+import org.springframework.lang.Nullable;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author CJ (power4j@outlook.com)
@@ -40,6 +44,9 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, 
 	@Getter
 	private final Class<T> tClass = (Class<T>) ReflectionKit.getSuperClassGenericType(getClass(), 2);
 
+	@Getter
+	private final LambdaHelper<T> lambdaHelper = new LambdaHelper<>(tClass);
+
 	@Override
 	public int countById(Serializable id) {
 		TableInfo tableInfo = TableInfoHelper.getTableInfo(tClass);
@@ -50,6 +57,18 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, 
 		QueryWrapper<T> wrapper = new QueryWrapper<>();
 		wrapper.eq(tableInfo.getKeyColumn(), id);
 		return getBaseMapper().selectCount(wrapper);
+	}
+
+	@Override
+	public int countByLambdaColumn(SFunction<T, ?> colFunc, Object value, @Nullable Long ignoreId) {
+		return countByColumn(lambdaHelper.colToStr(colFunc, true), value, ignoreId);
+	}
+
+	@Override
+	public int countByLambdaColumns(Map<SFunction<T, ?>, Object> columns, @Nullable Long ignoreId) {
+		Map<String, Object> parsed = columns.entrySet().stream()
+				.collect(Collectors.toMap(kv -> lambdaHelper.colToStr(kv.getKey(), true), Map.Entry::getValue));
+		return countByColumns(parsed, ignoreId);
 	}
 
 	@Override

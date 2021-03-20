@@ -54,7 +54,7 @@ public class UrFileServiceImpl extends AbstractCrudService<UrFileMapper, UrFileD
 
 	@Override
 	public int countFileName(String file, @Nullable Long ignoreId) {
-		return countByColumn("file", file, ignoreId);
+		return countByLambdaColumn(UrData::getFile, file, ignoreId);
 	}
 
 	@Override

@@ -45,7 +45,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Optional;
 
 /**
@@ -81,14 +81,14 @@ public class SysUserServiceImpl extends AbstractCrudService<SysUserMapper, SysUs
 					.ge(null != start, SysUser::getCreateAt, CrudUtil.dayStart(start))
 					.le(null != end, SysUser::getCreateAt, CrudUtil.dayEnd(end));
 		}
-		Page<SysUser> page = getBaseMapper()
-				.selectPage(CrudUtil.toPage(pageRequest, Arrays.asList(new OrderItem("create_at", true))), wrapper);
+		Page<SysUser> page = getBaseMapper().selectPage(
+				CrudUtil.toPage(pageRequest, Collections.singletonList(new OrderItem("create_at", true))), wrapper);
 		return CrudUtil.toPageData(page).map(o -> toDto(o));
 	}
 
 	@Override
 	public int countUsername(String username, Long ignoreId) {
-		return countByColumn("username", username, ignoreId);
+		return countByLambdaColumn(SysUser::getUsername, username, ignoreId);
 	}
 
 	@Override

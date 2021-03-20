@@ -45,7 +45,7 @@ public class SysParamServiceImpl extends AbstractCrudService<SysParamMapper, Sys
 
 	@Override
 	public int countParamKey(String key, Long ignoreId) {
-		return countByColumn("param_key", key, ignoreId);
+		return countByLambdaColumn(SysParam::getParamKey, key, ignoreId);
 	}
 
 	@Override
