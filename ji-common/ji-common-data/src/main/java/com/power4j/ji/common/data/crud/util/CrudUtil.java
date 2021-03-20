@@ -29,6 +29,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -56,8 +57,8 @@ public class CrudUtil {
 	 */
 	public <T> Page<T> toPage(PageRequest pageRequest) {
 		Page<T> page = new Page<>();
-		page.setSize(pageRequest.getSize());
-		page.setCurrent(pageRequest.getPage());
+		page.setSize(Optional.ofNullable(pageRequest.getSize()).orElse(0));
+		page.setCurrent(Optional.ofNullable(pageRequest.getPage()).orElse(0));
 
 		if (CollUtil.isNotEmpty(pageRequest.getAsc())) {
 			List<OrderItem> orderItems = pageRequest.getAsc().stream()
