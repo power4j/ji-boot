@@ -96,7 +96,7 @@ public interface BaseService<T> {
 	 * @param msg
 	 */
 	default void checkSysCtlNot(Object obj, Integer failValue, String msg) {
-		checkSysCtl(obj, o -> !o.getCtlFlag().equals(failValue), msg);
+		checkSysCtl(obj, o -> !o.getLowAttr().equals(failValue), msg);
 	}
 
 }

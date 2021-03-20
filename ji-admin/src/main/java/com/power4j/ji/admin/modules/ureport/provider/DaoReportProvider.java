@@ -24,7 +24,7 @@ import com.power4j.ji.admin.modules.ureport.constant.ReportConstants;
 import com.power4j.ji.admin.modules.ureport.dao.UrFileMapper;
 import com.power4j.ji.admin.modules.ureport.entity.UrData;
 import com.power4j.ji.admin.modules.ureport.util.UrUtil;
-import com.power4j.ji.common.data.crud.constant.SysCtlFlagEnum;
+import com.power4j.ji.common.data.crud.constant.LowAttrEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -68,7 +68,7 @@ public class DaoReportProvider implements ReportProvider {
 	public void deleteReport(String file) {
 		UrData urData = findOne(file).orElse(null);
 		if (Objects.nonNull(urData)) {
-			if (SysCtlFlagEnum.SYS_LOCKED.getValue() == urData.getSysFlag()) {
+			if (LowAttrEnum.SYS_LOCKED.getValue() == urData.getSysFlag()) {
 				throw new ReportException(String.format("不允许删除: %s", file));
 			}
 			urFileMapper.deleteById(urData.getId());
@@ -91,7 +91,7 @@ public class DaoReportProvider implements ReportProvider {
 			urFileMapper.insert(urData);
 		}
 		else {
-			if (SysCtlFlagEnum.SYS_LOCKED.getValue() == urData.getSysFlag()) {
+			if (LowAttrEnum.SYS_LOCKED.getValue() == urData.getSysFlag()) {
 				throw new ReportException(String.format("不允许修改: %s", file));
 			}
 			urData.setData(content.getBytes(StandardCharsets.UTF_8));

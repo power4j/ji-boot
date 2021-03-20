@@ -27,7 +27,7 @@ import com.power4j.ji.common.core.constant.SysErrorCodes;
 import com.power4j.ji.common.core.exception.BizException;
 import com.power4j.ji.common.core.model.PageData;
 import com.power4j.ji.common.core.model.PageRequest;
-import com.power4j.ji.common.data.crud.constant.SysCtlFlagEnum;
+import com.power4j.ji.common.data.crud.constant.LowAttrEnum;
 import com.power4j.ji.common.data.crud.service.CrudService;
 import com.power4j.ji.common.data.crud.util.CrudUtil;
 import com.power4j.ji.common.core.model.Unique;
@@ -180,7 +180,7 @@ public abstract class AbstractCrudService<M extends BaseMapper<T>, D extends Uni
 
 	protected <U> U checkEditable(Supplier<? extends U> supplier, @Nullable String msg) {
 		U data = supplier.get();
-		checkSysCtlNot(data, SysCtlFlagEnum.SYS_LOCKED.getValue(), msg != null ? msg : "系统数据不允许修改");
+		checkSysCtlNot(data, LowAttrEnum.SYS_LOCKED.getValue(), msg != null ? msg : "系统数据不允许修改");
 		return data;
 	}
 
@@ -190,7 +190,7 @@ public abstract class AbstractCrudService<M extends BaseMapper<T>, D extends Uni
 
 	protected <U> U checkDeletable(Supplier<? extends U> supplier, @Nullable String msg) {
 		U data = supplier.get();
-		checkSysCtlNot(data, SysCtlFlagEnum.SYS_LOCKED.getValue(), msg != null ? msg : "系统数据不允许删除");
+		checkSysCtlNot(data, LowAttrEnum.SYS_LOCKED.getValue(), msg != null ? msg : "系统数据不允许删除");
 		return data;
 	}
 

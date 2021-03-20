@@ -79,7 +79,7 @@ public abstract class BaseEntity implements Unique, SysCtl {
 	}
 
 	@Override
-	public Integer getCtlFlag() {
+	public Integer getLowAttr() {
 		return sysFlag;
 	}
 

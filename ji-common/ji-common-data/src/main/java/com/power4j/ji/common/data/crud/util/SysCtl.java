@@ -24,9 +24,9 @@ package com.power4j.ji.common.data.crud.util;
 public interface SysCtl {
 
 	/**
-	 * 数据保护标识
+	 * 数据属性
 	 * @return
 	 */
-	Integer getCtlFlag();
+	Integer getLowAttr();
 
 }

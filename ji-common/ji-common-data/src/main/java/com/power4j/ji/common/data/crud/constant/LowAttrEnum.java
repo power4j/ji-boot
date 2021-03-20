@@ -28,8 +28,8 @@ import java.util.function.Function;
  * @date 2020/11/27
  * @since 1.0
  */
-@MapDict(code = "sys_ctl_flag", name = "数据标识")
-public enum SysCtlFlagEnum {
+@MapDict(code = "sys_low_attr_flags", name = "数据标识")
+public enum LowAttrEnum {
 
 	/**
 	 * 普通数据
@@ -47,7 +47,7 @@ public enum SysCtlFlagEnum {
 	@DictValue
 	private final int value;
 
-	SysCtlFlagEnum(int value) {
+	LowAttrEnum(int value) {
 		this.value = value;
 	}
 
@@ -61,11 +61,11 @@ public enum SysCtlFlagEnum {
 	 * @param defValue 默认值
 	 * @return 如果解析失败返回默认值
 	 */
-	public static SysCtlFlagEnum parseOrDefault(final Integer value, final SysCtlFlagEnum defValue) {
+	public static LowAttrEnum parseOrDefault(final Integer value, final LowAttrEnum defValue) {
 		if (value == null) {
 			return defValue;
 		}
-		for (SysCtlFlagEnum o : SysCtlFlagEnum.values()) {
+		for (LowAttrEnum o : LowAttrEnum.values()) {
 			if (o.value == value.intValue()) {
 				return o;
 			}
@@ -78,7 +78,7 @@ public enum SysCtlFlagEnum {
 	 * @param value 被解析的数据
 	 * @return 如果解析失败返回 null
 	 */
-	public static SysCtlFlagEnum parseOrNull(final Integer value) {
+	public static LowAttrEnum parseOrNull(final Integer value) {
 		return parseOrDefault(value, null);
 	}
 
@@ -88,8 +88,8 @@ public enum SysCtlFlagEnum {
 	 * @param thrower 异常抛出器
 	 * @return 如果解析失败抛出异常
 	 */
-	public static SysCtlFlagEnum parseOrThrow(final Integer value, Function<Integer, RuntimeException> thrower) {
-		SysCtlFlagEnum o = parseOrDefault(value, null);
+	public static LowAttrEnum parseOrThrow(final Integer value, Function<Integer, RuntimeException> thrower) {
+		LowAttrEnum o = parseOrDefault(value, null);
 		if (o == null) {
 			throw thrower.apply(value);
 		}
@@ -101,7 +101,7 @@ public enum SysCtlFlagEnum {
 	 * @param value 被解析的数据
 	 * @return 如果解析失败抛出 IllegalArgumentException
 	 */
-	public static SysCtlFlagEnum parse(final Integer value) throws IllegalArgumentException {
+	public static LowAttrEnum parse(final Integer value) throws IllegalArgumentException {
 		return parseOrThrow(value, (v) -> new IllegalArgumentException("Invalid value : " + v));
 	}
 

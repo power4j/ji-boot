@@ -35,7 +35,7 @@ import com.power4j.ji.common.core.model.PageData;
 import com.power4j.ji.common.core.model.PageRequest;
 import com.power4j.ji.common.core.util.ApiResponseUtil;
 import com.power4j.ji.common.data.crud.api.CrudApi;
-import com.power4j.ji.common.data.crud.constant.SysCtlFlagEnum;
+import com.power4j.ji.common.data.crud.constant.LowAttrEnum;
 import com.power4j.ji.common.security.util.SecurityUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -115,7 +115,7 @@ public class SysRoleController implements CrudApi<Long, SysRoleDTO> {
 		if (sysRole == null) {
 			return ApiResponseUtil.notFound(String.format("角色不存在(id: %d)", roleId));
 		}
-		sysRoleService.checkSysCtlNot(sysRole, SysCtlFlagEnum.SYS_LOCKED.getValue(), "系统数据不允许修改");
+		sysRoleService.checkSysCtlNot(sysRole, LowAttrEnum.SYS_LOCKED.getValue(), "系统数据不允许修改");
 		Long myId = SecurityUtil.getLoginUserId().get();
 		// 越权检查: 1 检查能否操作该角色 2 检查使用的资源是否超出本人的资源池
 		Optional<SysRoleGrant> granted = sysRoleGrantService.findByUserAndRole(myId, roleId)
