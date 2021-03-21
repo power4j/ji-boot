@@ -68,7 +68,7 @@
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 
     <spring-javaformat.plugin.version>0.0.27</spring-javaformat.plugin.version>
-    <git.commit.plugin.version>4.0.3</git.commit.plugin.version>
+    <git.commit.plugin.version>4.0.4</git.commit.plugin.version>
     <spring-boot.version>2.4.3</spring-boot.version>
     <ji-bom.version>0.3.1</ji-bom.version>
   </properties>
