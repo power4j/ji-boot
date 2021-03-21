@@ -105,8 +105,8 @@ public class TreeUtil {
 		if (predicate.test(root)) {
 			out.add(root);
 		}
-		if (root.getNextNodes() != null && !root.getNextNodes().isEmpty()) {
-			List<T> nodes = root.getNextNodes();
+		List<T> nodes = root.getNextNodes();
+		if (nodes != null && !nodes.isEmpty()) {
 			for (T node : nodes) {
 				filter(node, predicate, out);
 			}
@@ -121,7 +121,7 @@ public class TreeUtil {
 	 * @param out 输出列表
 	 * @return 过滤结果
 	 */
-	public <T extends Node<T>> Collection<? extends T> filter(Collection<T> nodes, Predicate<? super T> predicate,
+	public <T extends Node<T>> Collection<T> filter(Collection<T> nodes, Predicate<? super T> predicate,
 			Collection<T> out) {
 		nodes.forEach(o -> filter(o, predicate, out));
 		return out;

@@ -26,11 +26,11 @@ import org.springframework.context.annotation.Configuration;
  * @since 1.0
  */
 @Configuration
-@EnableConfigurationProperties(FlygonContextProperties.class)
-public class FlygonContextConfig {
+@EnableConfigurationProperties(ReqContextProperties.class)
+public class ReqContextConfig {
 
 	@Bean
-	public RequestContext requestContext(FlygonContextProperties contextProperties) {
+	public RequestContext requestContext(ReqContextProperties contextProperties) {
 		return new RequestContext(contextProperties);
 	}
 

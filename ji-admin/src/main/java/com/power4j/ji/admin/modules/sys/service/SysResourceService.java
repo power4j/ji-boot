@@ -57,7 +57,7 @@ public interface SysResourceService extends CrudService<SysResourceDTO, SysResou
 	 * @param roleCodes
 	 * @return
 	 */
-	List<SysResource> listForRoles(Collection<String> roleCodes);
+	List<SysResource> listForRoles(@Nullable Collection<String> roleCodes);
 
 	/**
 	 * 全部数据
@@ -70,7 +70,7 @@ public interface SysResourceService extends CrudService<SysResourceDTO, SysResou
 	 * @param roleCodes
 	 * @return
 	 */
-	List<SysResourceDTO> getTreeForRoles(Collection<String> roleCodes);
+	List<SysResourceDTO> getTreeForRoles(@Nullable Collection<String> roleCodes);
 
 	/**
 	 * 统计使用次数

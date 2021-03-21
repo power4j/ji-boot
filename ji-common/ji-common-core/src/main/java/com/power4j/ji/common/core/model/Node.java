@@ -86,9 +86,8 @@ public interface Node<T extends Node<T>> extends Unique {
 	 * @param node
 	 */
 	default void add(T node) {
-		if (Objects.isNull(getNextNodes())) {
-			setNextNodes(new ArrayList<>(1));
-		}
+		initNextNodes();
+		assert getNextNodes() != null;
 		getNextNodes().add(node);
 	}
 
@@ -99,6 +98,16 @@ public interface Node<T extends Node<T>> extends Unique {
 	@Override
 	default Long getOnlyId() {
 		return getNodeId();
+	}
+
+	/**
+	 * 子节点列表
+	 * @return
+	 */
+	default void initNextNodes() {
+		if (Objects.isNull(getNextNodes())) {
+			setNextNodes(new ArrayList<>(1));
+		}
 	}
 
 }

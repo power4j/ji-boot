@@ -19,7 +19,7 @@ package com.power4j.ji.common.core.servlet;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.UUID;
 import com.power4j.ji.common.core.constant.CommonConstant;
-import com.power4j.ji.common.core.context.FlygonContextProperties;
+import com.power4j.ji.common.core.context.ReqContextProperties;
 import com.power4j.ji.common.core.context.RequestContext;
 import com.power4j.ji.common.core.util.HttpServletRequestUtil;
 import com.power4j.ji.common.core.util.ThreadStore;
@@ -39,7 +39,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor
 public class HttpServletRequestListener implements ServletRequestListener {
 
-	private final FlygonContextProperties contextProperties;
+	private final ReqContextProperties contextProperties;
 
 	@Override
 	public void requestDestroyed(ServletRequestEvent sre) {

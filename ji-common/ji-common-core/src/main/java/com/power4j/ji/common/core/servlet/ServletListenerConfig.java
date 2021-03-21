@@ -16,7 +16,7 @@
 
 package com.power4j.ji.common.core.servlet;
 
-import com.power4j.ji.common.core.context.FlygonContextProperties;
+import com.power4j.ji.common.core.context.ReqContextProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -33,7 +33,7 @@ public class ServletListenerConfig {
 
 	@Bean
 	public ServletListenerRegistrationBean<HttpServletRequestListener> httpServletRequestListener(
-			FlygonContextProperties contextProperties) {
+			ReqContextProperties contextProperties) {
 		return new ServletListenerRegistrationBean<>(new HttpServletRequestListener(contextProperties));
 	}
 

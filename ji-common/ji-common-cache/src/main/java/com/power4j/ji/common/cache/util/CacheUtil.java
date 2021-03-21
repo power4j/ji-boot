@@ -38,6 +38,9 @@ public class CacheUtil {
 	private final static int POS_INVALID = -1;
 
 	public TimeUnit parseTimeUnit(@Nullable String str, @Nullable TimeUnit defVal) {
+		if (str == null) {
+			return defVal;
+		}
 		char lastChar = Character.toLowerCase(str.charAt(str.length() - 1));
 		switch (lastChar) {
 		case 'd':

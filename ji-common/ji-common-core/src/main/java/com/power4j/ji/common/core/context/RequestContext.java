@@ -34,7 +34,7 @@ public class RequestContext {
 
 	public final static String REQUEST_CONTEXT_KEY = "request_context";
 
-	private final FlygonContextProperties contextProperties;
+	private final ReqContextProperties contextProperties;
 
 	public Optional<String> getRequestId() {
 		return Optional.ofNullable(getHeaders().getFirst(contextProperties.getHeaderMapping().getRequestId()));
@@ -53,11 +53,13 @@ public class RequestContext {
 	}
 
 	protected HttpHeaders getHeaders() {
-		return ThreadStore.get(REQUEST_CONTEXT_KEY, () -> loadHeader()).get();
+		return ThreadStore.get(REQUEST_CONTEXT_KEY, this::loadHeader).orElse(new HttpHeaders());
 	}
 
 	private HttpHeaders loadHeader() {
-		return HttpServletRequestUtil.pickupHeaders(HttpServletRequestUtil.getCurrentRequest().get(),
+		return HttpServletRequestUtil.pickupHeaders(
+				HttpServletRequestUtil.getCurrentRequest()
+						.orElseThrow(() -> new IllegalStateException("No request in current thread")),
 				contextProperties.getHeaders());
 	}
 

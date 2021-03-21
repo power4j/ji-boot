@@ -32,8 +32,8 @@ import java.util.List;
  */
 @Getter
 @Setter
-@ConfigurationProperties(FlygonContextProperties.PREFIX)
-public class FlygonContextProperties {
+@ConfigurationProperties(ReqContextProperties.PREFIX)
+public class ReqContextProperties {
 
 	public final static String PREFIX = CommonConstant.PROPERTY_PREFIX + ".context";
 

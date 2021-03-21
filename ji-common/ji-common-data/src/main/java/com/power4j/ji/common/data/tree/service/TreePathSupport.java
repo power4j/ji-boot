@@ -17,6 +17,7 @@
 package com.power4j.ji.common.data.tree.service;
 
 import com.power4j.ji.common.core.model.Node;
+import org.springframework.lang.Nullable;
 
 import java.util.List;
 
@@ -46,6 +47,7 @@ public interface TreePathSupport<T extends Node<T>> {
 	 * @param rootId
 	 * @return
 	 */
+	@Nullable
 	T getTree(Long rootId);
 
 }

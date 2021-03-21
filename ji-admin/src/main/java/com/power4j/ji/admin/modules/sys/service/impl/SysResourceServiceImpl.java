@@ -141,7 +141,7 @@ public class SysResourceServiceImpl extends
 	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public List<SysResourceDTO> getTreeForRoles(Collection<String> roleCodes) {
-		if (roleCodes.isEmpty()) {
+		if (roleCodes == null || roleCodes.isEmpty()) {
 			return Collections.emptyList();
 		}
 		Set<Long> granted = listForRoles(SecurityUtil.getLoginUserRoles()).stream().map(BaseEntity::getId)

@@ -26,6 +26,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.Nullable;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -62,8 +63,8 @@ public class CaffeineCacheConfig {
 		return cacheManager;
 	}
 
-	private void setCacheBuilder(CacheProperties cacheProperties, CaffeineSpec caffeineSpec,
-			Caffeine<Object, Object> caffeine, CaffeineCacheManager cacheManager) {
+	private void setCacheBuilder(CacheProperties cacheProperties, @Nullable CaffeineSpec caffeineSpec,
+			@Nullable Caffeine<Object, Object> caffeine, CaffeineCacheManager cacheManager) {
 		String specification = cacheProperties.getCaffeine().getSpec();
 		if (StringUtils.hasText(specification)) {
 			cacheManager.setCacheSpecification(specification);

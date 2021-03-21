@@ -30,9 +30,10 @@ import java.util.function.Supplier;
  * @since 1.0
  */
 @UtilityClass
+@SuppressWarnings("unchecked")
 public class ThreadStore {
 
-	private final static TransmittableThreadLocal<Map<String, Object>> store = new TransmittableThreadLocal() {
+	private final static TransmittableThreadLocal<Map<String, Object>> STORE = new TransmittableThreadLocal<Map<String, Object>>() {
 		@Override
 		protected Map<String, Object> initialValue() {
 			return new HashMap<>(16);
@@ -40,25 +41,25 @@ public class ThreadStore {
 	};
 
 	public <T> Optional<T> get(String key) {
-		return Optional.ofNullable((T) store.get().get(key));
+		return Optional.ofNullable(STORE.get().get(key)).map(o -> (T) o);
 	}
 
 	public <T> Optional<T> get(String key, Supplier<T> supplyIfAbsent) {
-		return Optional.ofNullable((T) store.get().computeIfAbsent(key, (k) -> supplyIfAbsent.get()));
+		return Optional.ofNullable((T) STORE.get().computeIfAbsent(key, (k) -> supplyIfAbsent.get()));
 	}
 
 	public <T> T put(String key, T val) {
-		store.get().put(key, val);
+		STORE.get().put(key, val);
 		return val;
 	}
 
 	public <T> T putIfAbsent(String key, T val) {
-		store.get().putIfAbsent(key, val);
+		STORE.get().putIfAbsent(key, val);
 		return val;
 	}
 
 	public void clear() {
-		store.remove();
+		STORE.remove();
 	}
 
 }
