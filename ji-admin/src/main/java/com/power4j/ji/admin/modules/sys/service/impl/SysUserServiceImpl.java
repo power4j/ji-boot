@@ -40,6 +40,7 @@ import com.power4j.ji.common.security.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.lang.Nullable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -92,7 +93,8 @@ public class SysUserServiceImpl extends AbstractCrudService<SysUserMapper, SysUs
 	}
 
 	@Override
-	public SysUser toEntity(SysUserDTO dto) {
+	@Nullable
+	public SysUser toEntity(@Nullable SysUserDTO dto) {
 		return BeanUtil.toBean(dto, SysUser.class, CopyOptions.create().setIgnoreProperties("slat"));
 	}
 

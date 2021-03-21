@@ -89,8 +89,7 @@ public class SysRoleController implements CrudApi<Long, SysRoleDTO> {
 					@Parameter(name = "status", in = ParameterIn.QUERY, description = "状态") })
 	public ApiResponse<PageData<SysRoleDTO>> page(@Parameter(hidden = true) PageRequest page,
 			@Parameter(hidden = true) SearchSysRoleVO param) {
-		return ApiResponseUtil
-				.ok(sysRoleService.selectPage(page, param == null ? null : BeanUtil.toBean(param, SysRoleDTO.class)));
+		return ApiResponseUtil.ok(sysRoleService.selectPage(page, BeanUtil.toBean(param, SysRoleDTO.class)));
 	}
 
 	@PreAuthorize("@pms.any('sys:role:view')")
@@ -173,7 +172,7 @@ public class SysRoleController implements CrudApi<Long, SysRoleDTO> {
 
 	@PreAuthorize("@pms.any('sys:role:del')")
 	@Override
-	public ApiResponse<SysRoleDTO> delete(@PathVariable("id") Long id) {
+	public ApiResponse<SysRoleDTO> delete(Long id) {
 		return ApiResponseUtil.ok(sysRoleService.delete(id).orElse(null));
 	}
 

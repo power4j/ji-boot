@@ -32,6 +32,7 @@ import com.power4j.ji.common.data.crud.service.impl.AbstractCrudService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,7 +72,7 @@ public class SysDictServiceImpl extends AbstractCrudService<SysDictMapper, SysDi
 	}
 
 	@Override
-	protected Wrapper<SysDict> getSearchWrapper(SysDictDTO param) {
+	protected Wrapper<SysDict> getSearchWrapper(@Nullable SysDictDTO param) {
 		if (param == null) {
 			return Wrappers.emptyWrapper();
 		}

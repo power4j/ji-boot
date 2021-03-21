@@ -30,6 +30,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -96,7 +97,7 @@ public class SysResourceController implements CrudApi<Long, SysResourceDTO> {
 
 	@GetMapping("/tree/all")
 	@Operation(summary = "所有资源,树形结构")
-	public ApiResponse<List<SysResourceDTO>> getFullTree(@RequestParam(required = false) Boolean showRoot) {
+	public ApiResponse<List<SysResourceDTO>> getFullTree(@Nullable @RequestParam(required = false) Boolean showRoot) {
 		if (showRoot != null && showRoot) {
 			return ApiResponseUtil
 					.ok(Collections.singletonList(sysResourceService.getTree(SysConstant.ROOT_RESOURCE_ID)));
@@ -109,7 +110,7 @@ public class SysResourceController implements CrudApi<Long, SysResourceDTO> {
 	@GetMapping("/tree/children")
 	@Operation(summary = "读取下一级")
 	public ApiResponse<List<SysResourceDTO>> getChildren(
-			@Parameter(description = "父级ID") @RequestParam(required = false) Long pid) {
+			@Nullable @Parameter(description = "父级ID") @RequestParam(required = false) Long pid) {
 		return ApiResponseUtil.ok(sysResourceService.getChildren(pid == null ? SysConstant.ROOT_RESOURCE_ID : pid));
 	}
 

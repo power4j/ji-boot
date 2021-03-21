@@ -62,16 +62,17 @@ public abstract class AbstractCrudService<M extends BaseMapper<T>, D extends Uni
 	 * @param param
 	 * @return
 	 */
-	protected Wrapper<T> getSearchWrapper(D param) {
+	protected Wrapper<T> getSearchWrapper(@Nullable D param) {
 		return param == null ? Wrappers.emptyWrapper() : new QueryWrapper<>(toEntity(param));
 	}
 
-	public Optional<D> searchOne(Wrapper<T> wrapper) {
+	public Optional<D> searchOne(@Nullable Wrapper<T> wrapper) {
 		return Optional.ofNullable(getBaseMapper().selectOne(wrapper)).map(this::toDto);
 	}
 
 	@Override
-	public T toEntity(D dto) {
+	@Nullable
+	public T toEntity(@Nullable D dto) {
 		if (dto == null) {
 			return null;
 		}
@@ -79,7 +80,8 @@ public abstract class AbstractCrudService<M extends BaseMapper<T>, D extends Uni
 	}
 
 	@Override
-	public D toDto(T entity) {
+	@Nullable
+	public D toDto(@Nullable T entity) {
 		if (entity == null) {
 			return null;
 		}
@@ -87,7 +89,7 @@ public abstract class AbstractCrudService<M extends BaseMapper<T>, D extends Uni
 	}
 
 	@Override
-	public PageData<D> selectPage(PageRequest pageRequest, D queryParam) {
+	public PageData<D> selectPage(PageRequest pageRequest, @Nullable D queryParam) {
 		Page<T> page = getBaseMapper().selectPage(CrudUtil.toPage(pageRequest), getSearchWrapper(queryParam));
 		return CrudUtil.toPageData(page).map(o -> toDto(o));
 	}
@@ -101,7 +103,7 @@ public abstract class AbstractCrudService<M extends BaseMapper<T>, D extends Uni
 	}
 
 	@Override
-	public List<D> searchList(D dto) {
+	public List<D> searchList(@Nullable D dto) {
 		List<T> list = getBaseMapper().selectList(new QueryWrapper<>(toEntity(dto)));
 		return toDtoList(list);
 	}

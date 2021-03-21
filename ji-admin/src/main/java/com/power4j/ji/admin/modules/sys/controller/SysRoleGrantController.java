@@ -78,7 +78,7 @@ public class SysRoleGrantController implements CrudApi<Long, SysRoleGrantDTO> {
 
 	@PreAuthorize("@pms.any('sys:role:revoke')")
 	@Override
-	public ApiResponse<SysRoleGrantDTO> delete(@PathVariable("id") Long id) {
+	public ApiResponse<SysRoleGrantDTO> delete(Long id) {
 		return ApiResponseUtil.ok(sysRoleGrantService.delete(id).orElse(null));
 	}
 

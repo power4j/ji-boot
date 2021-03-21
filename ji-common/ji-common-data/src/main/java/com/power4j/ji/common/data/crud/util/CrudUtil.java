@@ -42,8 +42,8 @@ public class CrudUtil {
 
 	/**
 	 * 转为数据库字段名称
-	 * @param prop
-	 * @return
+	 * @param prop 属性值
+	 * @return 字段值
 	 */
 	public String toColumnName(String prop) {
 		return StringUtils.camelToUnderline(prop);
@@ -51,9 +51,9 @@ public class CrudUtil {
 
 	/**
 	 * 转换 PageRequest
-	 * @param pageRequest
-	 * @param <T>
-	 * @return
+	 * @param pageRequest 分页请求
+	 * @param <T> 记录类型
+	 * @return Page对象
 	 */
 	public <T> Page<T> toPage(PageRequest pageRequest) {
 		Page<T> page = new Page<>();
@@ -61,11 +61,13 @@ public class CrudUtil {
 		page.setCurrent(Optional.ofNullable(pageRequest.getPage()).orElse(0));
 
 		if (CollUtil.isNotEmpty(pageRequest.getAsc())) {
+			assert pageRequest.getAsc() != null;
 			List<OrderItem> orderItems = pageRequest.getAsc().stream()
 					.map(col -> new OrderItem(toColumnName(col), true)).collect(Collectors.toList());
 			page.addOrder(orderItems);
 		}
 		if (CollUtil.isNotEmpty(pageRequest.getDesc())) {
+			assert pageRequest.getDesc() != null;
 			List<OrderItem> orderItems = pageRequest.getDesc().stream()
 					.map(col -> new OrderItem(toColumnName(col), false)).collect(Collectors.toList());
 			page.addOrder(orderItems);
@@ -75,9 +77,10 @@ public class CrudUtil {
 
 	/**
 	 * 转换 PageRequest
-	 * @param pageRequest
-	 * @param <T>
-	 * @return
+	 * @param pageRequest 分页请求
+	 * @param defaultOrders 默认排序
+	 * @param <T> 记录类型
+	 * @return Page对象
 	 */
 	public <T> Page<T> toPage(PageRequest pageRequest, List<OrderItem> defaultOrders) {
 		Page<T> page = toPage(pageRequest);
@@ -89,9 +92,9 @@ public class CrudUtil {
 
 	/**
 	 * 转换 Page
-	 * @param page
-	 * @param <T>
-	 * @return
+	 * @param page Page对象
+	 * @param <T> 记录类型
+	 * @return PageData
 	 */
 	public <T> PageData<T> toPageData(Page<T> page) {
 		PageData<T> pageData = new PageData<>();
@@ -103,17 +106,19 @@ public class CrudUtil {
 	}
 
 	/**
-	 * @param localDate
-	 * @return
+	 * @param localDate 日期
+	 * @return LocalDateTime对象
 	 */
+	@Nullable
 	public LocalDateTime dayStart(@Nullable LocalDate localDate) {
 		return localDate == null ? null : localDate.atTime(LocalTime.MIN);
 	}
 
 	/**
-	 * @param localDate
-	 * @return
+	 * @param localDate 日期
+	 * @return LocalDateTime对象
 	 */
+	@Nullable
 	public LocalDateTime dayEnd(@Nullable LocalDate localDate) {
 		return localDate == null ? null : localDate.atTime(LocalTime.MAX);
 	}

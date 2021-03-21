@@ -101,8 +101,7 @@ public class SysDictController implements CrudApi<Long, SysDictDTO> {
 					@Parameter(name = "name", in = ParameterIn.QUERY, description = "字典名称,支持模糊查询") })
 	public ApiResponse<PageData<SysDictDTO>> page(@Parameter(hidden = true) PageRequest page,
 			@Parameter(hidden = true) SearchSysDictVO param) {
-		return ApiResponseUtil
-				.ok(sysDictService.selectPage(page, param == null ? null : BeanUtil.toBean(param, SysDictDTO.class)));
+		return ApiResponseUtil.ok(sysDictService.selectPage(page, BeanUtil.toBean(param, SysDictDTO.class)));
 	}
 
 	@GetMapping("/counter/code")

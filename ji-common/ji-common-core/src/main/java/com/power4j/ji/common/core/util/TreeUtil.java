@@ -18,10 +18,12 @@ package com.power4j.ji.common.core.util;
 
 import com.power4j.ji.common.core.model.Node;
 import lombok.experimental.UtilityClass;
+import org.springframework.lang.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -43,10 +45,10 @@ public class TreeUtil {
 	 * 将一维树形节点构建为树
 	 * @param nodes 树形节点数据源
 	 * @param rootId 根节点ID,将以它为根来构造树
-	 * @param <T>
-	 * @return
+	 * @param <T> Node类型
+	 * @return 树形结构
 	 */
-	public <T extends Node> List<T> buildTree(Collection<T> nodes, final Object rootId) {
+	public <T extends Node<T>> List<T> buildTree(Collection<T> nodes, final Object rootId) {
 		List<T> tree = new ArrayList<>();
 		nodes.forEach(node -> {
 			if (rootId.equals(node.getNodePid())) {
@@ -59,11 +61,11 @@ public class TreeUtil {
 	/**
 	 * 非递归查找
 	 * @param nodes 树形节点数据源
-	 * @param predicate
-	 * @return
+	 * @param predicate 断言
+	 * @return List
 	 */
-	public List<Node> simpleSearch(Collection<? extends Node> nodes, Predicate<? super Node> predicate) {
-		return nodes.stream().filter(predicate::test).collect(Collectors.toList());
+	public <T extends Node<T>> List<T> simpleSearch(Collection<T> nodes, Predicate<? super T> predicate) {
+		return nodes.stream().filter(predicate).collect(Collectors.toList());
 	}
 
 	// ~ 树形结构处理
@@ -73,9 +75,10 @@ public class TreeUtil {
 	 * 遍历并过滤节点
 	 * @param nodes 节点
 	 * @param predicate 断言,返回true表示该节点需要保留
-	 * @return
+	 * @return List
 	 */
-	public <T extends Node> List<T> filterNode(List<T> nodes, Predicate<? super T> predicate) {
+	@Nullable
+	public <T extends Node<T>> List<T> filterNode(@Nullable List<T> nodes, Predicate<? super T> predicate) {
 		if (nodes == null || nodes.isEmpty()) {
 			return nodes;
 		}
@@ -96,9 +99,9 @@ public class TreeUtil {
 	 * @param root 根节点,即遍历的起始节点
 	 * @param predicate 断言,返回true表示该节点需要保留
 	 * @param out 集合容器，保存过滤结果
-	 * @return
+	 * @return 过滤结果
 	 */
-	public <T extends Node> Collection<T> filter(T root, Predicate<? super T> predicate, Collection<T> out) {
+	public <T extends Node<T>> Collection<T> filter(T root, Predicate<? super T> predicate, Collection<T> out) {
 		if (predicate.test(root)) {
 			out.add(root);
 		}
@@ -113,12 +116,12 @@ public class TreeUtil {
 
 	/**
 	 * 遍历并过滤节点
-	 * @param nodes
-	 * @param predicate
-	 * @param out
-	 * @return
+	 * @param nodes 遍历节点
+	 * @param predicate 断言
+	 * @param out 输出列表
+	 * @return 过滤结果
 	 */
-	public <T extends Node> Collection<? extends T> filter(Collection<T> nodes, Predicate<? super T> predicate,
+	public <T extends Node<T>> Collection<? extends T> filter(Collection<T> nodes, Predicate<? super T> predicate,
 			Collection<T> out) {
 		nodes.forEach(o -> filter(o, predicate, out));
 		return out;
@@ -126,10 +129,10 @@ public class TreeUtil {
 
 	/**
 	 * 转化为一维列表
-	 * @param root
-	 * @return
+	 * @param root 根节点
+	 * @return List
 	 */
-	public <T extends Node> List<T> flattenTree(T root) {
+	public <T extends Node<T>> List<T> flattenTree(T root) {
 		List<T> list = new ArrayList<>();
 		filter(root, o -> true, list);
 		return list;
@@ -137,32 +140,33 @@ public class TreeUtil {
 
 	/**
 	 * 转化为一维列表
-	 * @param root
-	 * @return
+	 * @param root 根节点
+	 * @return 一维集合
 	 */
-	public Collection<? extends Node> flattenTree(Node root, Collection<Node> out) {
+	public <T extends Node<T>> Collection<T> flattenTree(T root, Collection<T> out) {
 		return filter(root, o -> true, out);
 	}
 
 	/**
 	 * 获取叶子节点
-	 * @param root
-	 * @return
+	 * @param root 根节点
+	 * @return 节点列表
 	 */
-	public <T extends Node> Collection<T> getLeafNode(T root) {
+	public <T extends Node<T>> Collection<T> getLeafNode(T root) {
 		return filter(root, o -> (o.getNextNodes() == null || o.getNextNodes().isEmpty()), new ArrayList<>());
 	}
 
 	/**
 	 * 递归方式挂载子节点
-	 * @param nodes
-	 * @param parent
-	 * @param <T>
-	 * @return
+	 * @param nodes 子节点
+	 * @param parent 父节点
+	 * @param <T> Node
+	 * @return 父节点
 	 */
-	public <T extends Node> T mountChildren(Collection<T> nodes, T parent) {
+	public <T extends Node<T>> T mountChildren(Collection<T> nodes, T parent) {
 		for (T node : nodes) {
-			if (node.getNodePid().equals(parent.getNodeId())) {
+			final Long pid = node.getNodePid();
+			if (Objects.nonNull(pid) && pid.equals(parent.getNodeId())) {
 				if (node.getNextNodes() == null) {
 					node.setNextNodes(new ArrayList<>());
 				}

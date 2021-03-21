@@ -22,6 +22,7 @@ package com.power4j.ji.common.data.crud.service;
 import com.power4j.ji.common.core.model.PageData;
 import com.power4j.ji.common.core.model.PageRequest;
 import com.power4j.ji.common.core.model.Unique;
+import org.springframework.lang.Nullable;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -44,14 +45,15 @@ public interface CrudService<D, T extends Unique> extends BaseService<T> {
 	 * @param dto
 	 * @return
 	 */
-	T toEntity(D dto);
+	@Nullable
+	T toEntity(@Nullable D dto);
 
 	/**
 	 * DTO 转 Entity
 	 * @param dtoList
 	 * @return
 	 */
-	default List<T> toEntityList(Collection<D> dtoList) {
+	default List<T> toEntityList(@Nullable Collection<D> dtoList) {
 		if (dtoList == null || dtoList.isEmpty()) {
 			return Collections.emptyList();
 		}
@@ -63,14 +65,15 @@ public interface CrudService<D, T extends Unique> extends BaseService<T> {
 	 * @param entity
 	 * @return
 	 */
-	D toDto(T entity);
+	@Nullable
+	D toDto(@Nullable T entity);
 
 	/**
 	 * Entity 转 DTO
 	 * @param entityList
 	 * @return
 	 */
-	default List<D> toDtoList(Collection<T> entityList) {
+	default List<D> toDtoList(@Nullable Collection<T> entityList) {
 		if (entityList == null || entityList.isEmpty()) {
 			return Collections.emptyList();
 		}
@@ -83,7 +86,7 @@ public interface CrudService<D, T extends Unique> extends BaseService<T> {
 	 * @param queryParam
 	 * @return
 	 */
-	PageData<D> selectPage(PageRequest pageRequest, D queryParam);
+	PageData<D> selectPage(PageRequest pageRequest, @Nullable D queryParam);
 
 	/**
 	 * 创建
@@ -97,7 +100,7 @@ public interface CrudService<D, T extends Unique> extends BaseService<T> {
 	 * @param dto
 	 * @return
 	 */
-	List<D> searchList(D dto);
+	List<D> searchList(@Nullable D dto);
 
 	/**
 	 * 获取

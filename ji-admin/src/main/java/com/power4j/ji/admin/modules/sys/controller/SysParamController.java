@@ -95,8 +95,7 @@ public class SysParamController implements CrudApi<Long, SysParamDTO> {
 					@Parameter(name = "status", in = ParameterIn.QUERY, description = "状态") })
 	public ApiResponse<PageData<SysParamDTO>> page(@Parameter(hidden = true) PageRequest page,
 			@Parameter(hidden = true) SearchSysParamVO param) {
-		return ApiResponseUtil
-				.ok(sysParamService.selectPage(page, param == null ? null : BeanUtil.toBean(param, SysParamDTO.class)));
+		return ApiResponseUtil.ok(sysParamService.selectPage(page, BeanUtil.toBean(param, SysParamDTO.class)));
 	}
 
 	@GetMapping("/key/{key}")

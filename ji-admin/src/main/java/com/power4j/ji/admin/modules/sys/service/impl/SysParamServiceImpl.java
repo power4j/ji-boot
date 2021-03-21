@@ -28,6 +28,7 @@ import com.power4j.ji.common.core.exception.BizException;
 import com.power4j.ji.common.data.crud.service.impl.AbstractCrudService;
 import com.power4j.ji.common.security.util.SecurityUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
@@ -44,7 +45,7 @@ public class SysParamServiceImpl extends AbstractCrudService<SysParamMapper, Sys
 		implements SysParamService {
 
 	@Override
-	public int countParamKey(String key, Long ignoreId) {
+	public int countParamKey(String key, @Nullable Long ignoreId) {
 		return countByLambdaColumn(SysParam::getParamKey, key, ignoreId);
 	}
 
@@ -55,7 +56,7 @@ public class SysParamServiceImpl extends AbstractCrudService<SysParamMapper, Sys
 	}
 
 	@Override
-	protected Wrapper<SysParam> getSearchWrapper(SysParamDTO param) {
+	protected Wrapper<SysParam> getSearchWrapper(@Nullable SysParamDTO param) {
 		if (param == null) {
 			return Wrappers.emptyWrapper();
 		}

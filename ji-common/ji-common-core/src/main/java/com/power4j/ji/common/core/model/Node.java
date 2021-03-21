@@ -19,7 +19,9 @@ package com.power4j.ji.common.core.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.lang.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 节点
@@ -71,7 +73,7 @@ public interface Node<T extends Node<T>> extends Unique {
 	 * 设置子节点
 	 * @param children
 	 */
-	void setNextNodes(List<T> children);
+	void setNextNodes(@Nullable List<T> children);
 
 	/**
 	 * 是否有更多子节点可以读取,此方法一般用于帮助客户端懒加载
@@ -84,6 +86,9 @@ public interface Node<T extends Node<T>> extends Unique {
 	 * @param node
 	 */
 	default void add(T node) {
+		if (Objects.isNull(getNextNodes())) {
+			setNextNodes(new ArrayList<>(1));
+		}
 		getNextNodes().add(node);
 	}
 

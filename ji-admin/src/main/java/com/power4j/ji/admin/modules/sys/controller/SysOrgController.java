@@ -30,6 +30,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -96,7 +97,7 @@ public class SysOrgController implements CrudApi<Long, SysOrgNodeDTO> {
 
 	@GetMapping("/tree/all")
 	@Operation(summary = "所有机构,树形结构")
-	public ApiResponse<List<SysOrgNodeDTO>> getFullTree(@RequestParam(required = false) Boolean showRoot) {
+	public ApiResponse<List<SysOrgNodeDTO>> getFullTree(@Nullable @RequestParam(required = false) Boolean showRoot) {
 		if (showRoot != null && showRoot) {
 			return ApiResponseUtil.ok(Collections.singletonList(sysOrgService.getTree(SysConstant.ROOT_ORG_ID)));
 		}
@@ -108,7 +109,7 @@ public class SysOrgController implements CrudApi<Long, SysOrgNodeDTO> {
 	@GetMapping("/tree/children")
 	@Operation(summary = "读取下一级")
 	public ApiResponse<List<SysOrgNodeDTO>> getChildren(
-			@Parameter(description = "父级ID") @RequestParam(required = false) Long pid) {
+			@Nullable @Parameter(description = "父级ID") @RequestParam(required = false) Long pid) {
 		return ApiResponseUtil.ok(sysOrgService.getChildren(pid == null ? SysConstant.ROOT_ORG_ID : pid));
 	}
 
