@@ -34,6 +34,7 @@ import com.power4j.ji.common.security.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
@@ -56,13 +57,13 @@ public class SysRoleServiceImpl extends AbstractCrudService<SysRoleMapper, SysRo
 	private final RoleScope roleScope;
 
 	@Override
-	public int countRoleCode(String code, Long ignoreId) {
+	public int countRoleCode(String code, @Nullable Long ignoreId) {
 		return countByLambdaColumn(SysRole::getCode, code, ignoreId);
 	}
 
 	@Cacheable(cacheNames = CacheConstant.Name.USERNAME_TO_ROLES, key = "#username + '_' + #grantType")
 	@Override
-	public List<SysRole> listForUser(String username, String grantType) {
+	public List<SysRole> listForUser(String username, @Nullable String grantType) {
 		SysUser user = sysUserMapper.selectOne(new QueryWrapper<SysUser>().lambda().eq(SysUser::getUsername, username));
 		return user == null ? Collections.emptyList()
 				: getBaseMapper().selectListInScope(null, roleScope.forUser(user.getId(), grantType));

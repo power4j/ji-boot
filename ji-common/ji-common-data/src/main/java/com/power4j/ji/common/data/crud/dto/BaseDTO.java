@@ -16,6 +16,7 @@
 
 package com.power4j.ji.common.data.crud.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.power4j.ji.common.core.model.Unique;
 import com.power4j.ji.common.core.validate.Groups;
@@ -69,12 +70,14 @@ public abstract class BaseDTO implements Unique, SysCtl {
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private LocalDateTime createAt;
 
+	@JsonIgnore
 	@NonNull
 	@Override
 	public Long getOnlyId() {
 		return id;
 	}
 
+	@JsonIgnore
 	@Override
 	public Integer getLowAttr() {
 		return sysFlag;

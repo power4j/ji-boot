@@ -60,7 +60,7 @@ public class SysRoleDTO extends BaseDTO implements Serializable {
 	 */
 	@Schema(description = "状态 0 有效 1 停用", example = "0")
 	@NotNull(groups = { Groups.Default.class })
-	@Pattern(regexp = "0|1", message = "状态只能是 0 或者 1", groups = { Groups.Default.class })
+	@Pattern(regexp = "[01]", message = "状态只能是 0 或者 1", groups = { Groups.Default.class })
 	private String status;
 
 	/**
