@@ -70,7 +70,6 @@ springdoc:
     persist-authorization: true
     display-request-duration: true
     groups-order: ASC
-    apisSorter: alpha
     operationsSorter: method
     tagsSorter: alpha
     #oauth:

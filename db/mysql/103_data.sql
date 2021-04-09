@@ -33,6 +33,9 @@ insert  into `t_sys_org`(`id`, `sys_flag`, `del_flag`, `create_at`, `update_at`,
 insert  into `t_sys_org`(`id`, `sys_flag`, `del_flag`, `create_at`, `update_at`, `tag`, `code`, `name`, `sort`) VALUES (1372902329179774977, 0, NULL, '2021-03-19 21:26:37', NULL, '1', 'ES02', '运营中心', 2);
 insert  into `t_sys_org`(`id`, `sys_flag`, `del_flag`, `create_at`, `update_at`, `tag`, `code`, `name`, `sort`) VALUES (1372904031341584386, 0, NULL, '2021-03-19 21:33:23', '2021-03-19 21:37:17', '2', 'RD0', '上海特斯拉', 0);
 
+/*Data for the table `t_sys_position` */
+insert  into `t_sys_position`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`code`,`name`,`remarks`,`status`,`owner`) values (1380525982978342913,1,NULL,'2021-04-09 22:20:18',NULL,'admin','IT admin','test','0',2000);
+
 /*Data for the table `t_resource_node` */
 
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (0,0,0);
@@ -112,6 +115,13 @@ insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (0,137
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (0,1372881604922359810,5);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (0,1372881710115504129,5);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (0,1372881789375266817,5);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (0,1380538424051564545,3);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (0,1380539334869843970,4);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (0,1380542905745080321,5);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (0,1380543073051672578,5);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (0,1380543188197900289,5);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (0,1380543282800427009,5);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (0,1380543370499129346,5);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10010000001,10010000001,0);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10010000001,10020000001,1);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10010000001,10030000001,2);
@@ -176,6 +186,13 @@ insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10010
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10010000001,1372881604922359810,4);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10010000001,1372881710115504129,4);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10010000001,1372881789375266817,4);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10010000001,1380538424051564545,2);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10010000001,1380539334869843970,3);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10010000001,1380542905745080321,4);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10010000001,1380543073051672578,4);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10010000001,1380543188197900289,4);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10010000001,1380543282800427009,4);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10010000001,1380543370499129346,4);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10010000002,10010000002,0);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10010000002,1339141805648650242,1);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10010000002,1339141875248930817,1);
@@ -203,6 +220,13 @@ insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10020
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10020000001,1340701705814269954,2);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10020000001,1349445417704730625,1);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10020000001,1349445568901001218,2);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10020000001,1380538424051564545,1);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10020000001,1380539334869843970,2);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10020000001,1380542905745080321,3);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10020000001,1380543073051672578,3);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10020000001,1380543188197900289,3);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10020000001,1380543282800427009,3);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10020000001,1380543370499129346,3);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10030000001,10030000001,0);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10030000001,20000000001,1);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (10030000001,20000000002,1);
@@ -386,6 +410,24 @@ insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (13728
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1372881604922359810,1372881604922359810,0);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1372881710115504129,1372881710115504129,0);
 insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1372881789375266817,1372881789375266817,0);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1380538424051564545,1380538424051564545,0);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1380538424051564545,1380539334869843970,1);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1380538424051564545,1380542905745080321,2);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1380538424051564545,1380543073051672578,2);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1380538424051564545,1380543188197900289,2);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1380538424051564545,1380543282800427009,2);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1380538424051564545,1380543370499129346,2);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1380539334869843970,1380539334869843970,0);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1380539334869843970,1380542905745080321,1);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1380539334869843970,1380543073051672578,1);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1380539334869843970,1380543188197900289,1);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1380539334869843970,1380543282800427009,1);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1380539334869843970,1380543370499129346,1);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1380542905745080321,1380542905745080321,0);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1380543073051672578,1380543073051672578,0);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1380543188197900289,1380543188197900289,0);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1380543282800427009,1380543282800427009,0);
+insert  into `t_resource_node`(`ancestor`,`descendant`,`distance`) values (1380543370499129346,1380543370499129346,0);
 
 /*Data for the table `t_sys_resource` */
 
@@ -451,6 +493,13 @@ insert  into `t_sys_resource`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`
 insert  into `t_sys_resource`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`type`,`name`,`title`,`permission`,`path`,`component`,`cache`,`icon`,`sort`) values (1372881604922359810,0,NULL,'2021-03-19 20:04:16',NULL,2,'','删除','sys:org:del','','',0,'',2);
 insert  into `t_sys_resource`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`type`,`name`,`title`,`permission`,`path`,`component`,`cache`,`icon`,`sort`) values (1372881710115504129,0,NULL,'2021-03-19 20:04:41',NULL,2,'','修改','sys:org:edit','','',0,'',3);
 insert  into `t_sys_resource`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`type`,`name`,`title`,`permission`,`path`,`component`,`cache`,`icon`,`sort`) values (1372881789375266817,0,NULL,'2021-03-19 20:05:00',NULL,2,'','查看','sys:org:view','','',0,'',4);
+insert  into `t_sys_resource`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`type`,`name`,`title`,`permission`,`path`,`component`,`cache`,`icon`,`sort`) values (1380538424051564545,0,NULL,'2021-04-09 23:09:44',NULL,1,'sys-position','岗位管理',NULL,'/sys/position',NULL,1,'street-view',200);
+insert  into `t_sys_resource`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`type`,`name`,`title`,`permission`,`path`,`component`,`cache`,`icon`,`sort`) values (1380539334869843970,0,NULL,'2021-04-09 23:13:21',NULL,1,'sys-position-list-view','数据管理','sys:position:view','/sys/position/list-view','/sys/views/position',1,'list',1);
+insert  into `t_sys_resource`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`type`,`name`,`title`,`permission`,`path`,`component`,`cache`,`icon`,`sort`) values (1380542905745080321,0,NULL,'2021-04-09 23:27:33',NULL,2,'','资源授权','sys:position:permit','','',1,'',0);
+insert  into `t_sys_resource`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`type`,`name`,`title`,`permission`,`path`,`component`,`cache`,`icon`,`sort`) values (1380543073051672578,0,NULL,'2021-04-09 23:28:13',NULL,2,'','添加','sys:position:add','','',1,'',1);
+insert  into `t_sys_resource`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`type`,`name`,`title`,`permission`,`path`,`component`,`cache`,`icon`,`sort`) values (1380543188197900289,0,NULL,'2021-04-09 23:28:40',NULL,2,'','删除','sys:position:del','','',1,'',2);
+insert  into `t_sys_resource`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`type`,`name`,`title`,`permission`,`path`,`component`,`cache`,`icon`,`sort`) values (1380543282800427009,0,NULL,'2021-04-09 23:29:03',NULL,2,'','修改','sys:position:edit','','',1,'',3);
+insert  into `t_sys_resource`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`type`,`name`,`title`,`permission`,`path`,`component`,`cache`,`icon`,`sort`) values (1380543370499129346,0,NULL,'2021-04-09 23:29:23',NULL,2,'','查看','sys:position:view','','',1,'',4);
 
 /*Data for the table `t_sys_resource_grantee` */
 
@@ -516,6 +565,13 @@ insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (133817864
 insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1338178645550809090,1372881604922359810);
 insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1338178645550809090,1372881710115504129);
 insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1338178645550809090,1372881789375266817);
+insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1338178645550809090,1380538424051564545);
+insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1338178645550809090,1380539334869843970);
+insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1338178645550809090,1380542905745080321);
+insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1338178645550809090,1380543073051672578);
+insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1338178645550809090,1380543188197900289);
+insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1338178645550809090,1380543282800427009);
+insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1338178645550809090,1380543370499129346);
 
 /*Data for the table `t_sys_role` */
 

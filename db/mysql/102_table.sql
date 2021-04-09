@@ -144,7 +144,7 @@ CREATE TABLE `t_sys_role_grantee`
     `del_flag`    DATETIME    NULL COMMENT '删除标志',
     `create_at`   DATETIME COMMENT '创建时间',
     `update_at`   DATETIME COMMENT '更新时间',
-    `user_id`     BIGINT NOT NULL COMMENT '资源ID',
+    `user_id`     BIGINT NOT NULL COMMENT '用户ID',
     `role_id`     BIGINT NOT NULL DEFAULT 0 COMMENT '角色ID',
     `grant_type`  CHAR(1) NOT NULL DEFAULT 0 COMMENT '授权类型 0 普通 1 管理员',
     PRIMARY KEY (`id`),
@@ -231,3 +231,33 @@ CREATE TABLE `t_org_node`
     `distance`   INT NOT NULL COMMENT '层距离',
     PRIMARY KEY (`ancestor`,`descendant`,`distance`)
 ) ENGINE = InnoDB CHARSET = `utf8mb4` COMMENT ='组织机构节点';
+
+CREATE TABLE `t_sys_position`
+(
+    `id`          BIGINT      NOT NULL COMMENT '主健',
+    `sys_flag`    TINYINT     NOT NULL DEFAULT 0 COMMENT '数据标记 0 普通数据, 1 系统保护数据',
+    `del_flag`    DATETIME    NULL COMMENT '删除标志',
+    `create_at`   DATETIME COMMENT '创建时间',
+    `update_at`   DATETIME COMMENT '更新时间',
+    `code`        VARCHAR(20) NOT NULL COMMENT '编码',
+    `name`        VARCHAR(20) NOT NULL COMMENT '名称',
+    `remarks`     VARCHAR(20) COMMENT '备注',
+    `status`      CHAR(1) NOT NULL DEFAULT '0' COMMENT '状态 0 有效 1 停用',
+    `owner`       BIGINT COMMENT '拥有者',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uk_code` (`code`)
+) ENGINE = InnoDB CHARSET = `utf8mb4` COMMENT ='岗位';
+
+CREATE TABLE `t_sys_position_grant`
+(
+    `id`          BIGINT      NOT NULL COMMENT '主健',
+    `sys_flag`    TINYINT     NOT NULL DEFAULT 0 COMMENT '数据标记 0 普通数据, 1 系统保护数据',
+    `del_flag`    DATETIME    NULL COMMENT '删除标志',
+    `create_at`   DATETIME COMMENT '创建时间',
+    `update_at`   DATETIME COMMENT '更新时间',
+    `user_id`     BIGINT NOT NULL COMMENT '用户ID',
+    `position_id`     BIGINT NOT NULL DEFAULT 0 COMMENT '岗位ID',
+    `grant_type`  CHAR(1) NOT NULL DEFAULT 0 COMMENT '授权类型(保留字段)',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uk_user_position` (`user_id`,`position_id`)
+) ENGINE = InnoDB CHARSET = `utf8mb4` COMMENT ='岗位授权';
