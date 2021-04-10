@@ -88,4 +88,14 @@ public class SysUser extends BaseEntity implements Serializable {
 	 */
 	private String updateBy;
 
+	/**
+	 * 组织机构ID
+	 */
+	private Long orgId;
+
+	/**
+	 * 岗位ID
+	 */
+	private Long postId;
+
 }

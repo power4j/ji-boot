@@ -18,6 +18,8 @@ CREATE TABLE `t_sys_user`
   `status`      CHAR(1) NOT NULL DEFAULT '0' COMMENT '状态 0 有效 1 停用',
   `create_by`   VARCHAR(20) COMMENT '创建人',
   `update_by`   VARCHAR(20) COMMENT '更新人',
+  `org_id`      BIGINT NOT NULL DEFAULT 0 COMMENT '组织机构ID',
+  `post_id`     BIGINT NOT NULL DEFAULT 0 COMMENT '岗位ID',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_username` (`username`)
 ) ENGINE = InnoDB CHARSET = `utf8mb4` COMMENT ='用户';

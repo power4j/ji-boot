@@ -95,7 +95,7 @@ public class SysUserDTO extends BaseDTO implements Serializable {
 	 */
 	@Schema(description = "状态 0 有效 1 停用", example = "0")
 	@NotNull(groups = { Groups.Default.class })
-	@Pattern(regexp = "0|1", message = "状态只能是 0 或者 1", groups = { Groups.Default.class })
+	@Pattern(regexp = "[01]", message = "状态只能是 0 或者 1", groups = { Groups.Default.class })
 	private String status;
 
 	/**
@@ -111,5 +111,19 @@ public class SysUserDTO extends BaseDTO implements Serializable {
 	@Schema(description = "更新人", accessMode = Schema.AccessMode.READ_ONLY)
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private String updateBy;
+
+	/**
+	 * 组织机构ID
+	 */
+	@Schema(description = "组织机构ID")
+	@NotNull(groups = { Groups.Default.class })
+	private Long orgId;
+
+	/**
+	 * 岗位ID
+	 */
+	@Schema(description = "岗位ID")
+	@NotNull(groups = { Groups.Default.class })
+	private Long postId;
 
 }

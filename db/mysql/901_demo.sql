@@ -23,9 +23,6 @@ insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (134142497
 insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1341424978898296834,1340701292788572161);
 insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1341424978898296834,1340701705814269954);
 
-insert  into `t_sys_user`(`id`,`sys_flag`,`del_flag`,`create_by`,`create_at`,`update_by`,`update_at`,`username`,`password`,`salt`,`name`,`mail`,`mobile_phone`,`remarks`,`status`)
-values (1339613299839381505,0,NULL,'admin','2020-12-18 00:47:54','admin','2021-01-02 15:56:04','admin2','$2a$10$WNiWpSGX64Z3toh8z1Ba9OVGXq9jLb.3PRb9UXts0L1oTXXUv44sC',NULL,'测试235','','18081020301',NULL,'0');
-
 
 insert  into `t_sys_dict`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`code`,`name`,`remarks`) values (9000000,1,NULL,'2020-12-30 13:57:19',NULL,'sys_flag','技术等级',NULL);
 insert  into `t_sys_dict_item`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`dict_id`,`value`,`label`,`remarks`) values (9000001,1,NULL,'2020-12-30 13:57:19',NULL,9000000,'1','普通',NULL);
@@ -34,8 +31,11 @@ insert  into `t_sys_dict_item`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at
 insert  into `t_sys_dict_item`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`dict_id`,`value`,`label`,`remarks`) values (9000004,1,NULL,'2020-12-30 13:57:19',NULL,9000000,'4','面向百度编程',NULL);
 insert  into `t_sys_dict_item`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`dict_id`,`value`,`label`,`remarks`) values (9000005,1,NULL,'2020-12-30 13:57:19',NULL,9000000,'5','看脸',NULL);
 
-insert  into `t_sys_user`(`id`, `sys_flag`, `del_flag`, `create_by`, `create_at`, `update_by`, `update_at`, `username`, `password`, `salt`, `name`, `mail`, `mobile_phone`, `remarks`, `status`)
-values (2000, 1, NULL, NULL, NOW(), NULL, NULL, 'ops', '$2a$10$WNiWpSGX64Z3toh8z1Ba9OVGXq9jLb.3PRb9UXts0L1oTXXUv44sC', NULL, '集成测试账号', 'dev@power4j.com', '18088888888', '祝你好运', '0');
+insert  into `t_sys_user`(`id`,`sys_flag`,`del_flag`,`create_by`,`create_at`,`update_by`,`update_at`,`username`,`password`,`salt`,`name`,`mail`,`mobile_phone`,`remarks`,`status`,`org_id`,`post_id`)
+values (1339613299839381505,0,NULL,'admin','2020-12-18 00:47:54','admin','2021-01-02 15:56:04','admin2','$2a$10$WNiWpSGX64Z3toh8z1Ba9OVGXq9jLb.3PRb9UXts0L1oTXXUv44sC',NULL,'测试235','','18081020301',NULL,'0',1372893325519036417,1380525982978342913);
+
+insert  into `t_sys_user`(`id`, `sys_flag`, `del_flag`, `create_by`, `create_at`, `update_by`, `update_at`, `username`, `password`, `salt`, `name`, `mail`, `mobile_phone`, `remarks`, `status`,`org_id`,`post_id`)
+values (2000, 1, NULL, NULL, NOW(), NULL, NULL, 'ops', '$2a$10$WNiWpSGX64Z3toh8z1Ba9OVGXq9jLb.3PRb9UXts0L1oTXXUv44sC', NULL, '集成测试账号', 'dev@power4j.com', '18088888888', '祝你好运', '0',1372893325519036417,1380525982978342913);
 
 insert  into `t_api_token`(`id`, `token`, `uuid`, `username`, `expire_in`, `create_at`, `update_at`)
 values (1, '1234567890abcdef', '2000', 'ops', '2030-01-13 17:20:33', '2020-11-30 15:25:06', NULL);
