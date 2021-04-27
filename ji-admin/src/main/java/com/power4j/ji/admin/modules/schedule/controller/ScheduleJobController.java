@@ -25,6 +25,7 @@ import com.power4j.ji.common.core.model.PageData;
 import com.power4j.ji.common.core.model.PageRequest;
 import com.power4j.ji.common.core.util.ApiResponseUtil;
 import com.power4j.ji.common.data.crud.api.CrudApi;
+import com.power4j.ji.common.openapi.annotations.PageRequestParameters;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -52,13 +53,9 @@ public class ScheduleJobController implements CrudApi<Long, ScheduleJobDTO> {
 
 	@PreAuthorize("@pms.any('sys:job:view')")
 	@GetMapping("/page")
+	@PageRequestParameters
 	@Operation(summary = "分页",
-			parameters = {
-					@Parameter(name = CrudConstant.QRY_PAGE_INDEX, in = ParameterIn.QUERY, description = "页码,从1开始"),
-					@Parameter(name = CrudConstant.QRY_PAGE_SIZE, in = ParameterIn.QUERY, description = "记录数量"),
-					@Parameter(name = CrudConstant.QRY_PAGE_ORDER_PROP, in = ParameterIn.QUERY, description = "排序字段"),
-					@Parameter(name = CrudConstant.QRY_PAGE_ORDER_ASC, in = ParameterIn.QUERY, description = "是否升序"),
-					@Parameter(name = "groupName", in = ParameterIn.QUERY, description = "作业组,支持模糊查询"),
+			parameters = { @Parameter(name = "groupName", in = ParameterIn.QUERY, description = "作业组,支持模糊查询"),
 					@Parameter(name = "status", in = ParameterIn.QUERY, description = "状态") })
 	public ApiResponse<PageData<ScheduleJobDTO>> page(@Parameter(hidden = true) PageRequest page,
 			@Parameter(hidden = true) SearchScheduleJobVO param) {

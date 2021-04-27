@@ -24,6 +24,7 @@ import com.power4j.ji.common.core.model.ApiResponse;
 import com.power4j.ji.common.core.model.PageData;
 import com.power4j.ji.common.core.model.PageRequest;
 import com.power4j.ji.common.core.util.ApiResponseUtil;
+import com.power4j.ji.common.openapi.annotations.PageRequestParameters;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -53,15 +54,13 @@ public class ScheduleLogController {
 
 	@PreAuthorize("@pms.any('sys:job-log:view')")
 	@GetMapping("/page")
-	@Operation(summary = "分页", parameters = {
-			@Parameter(name = CrudConstant.QRY_PAGE_INDEX, in = ParameterIn.QUERY, description = "页码,从1开始"),
-			@Parameter(name = CrudConstant.QRY_PAGE_SIZE, in = ParameterIn.QUERY, description = "记录数量"),
-			@Parameter(name = CrudConstant.QRY_PAGE_ORDER_PROP, in = ParameterIn.QUERY, description = "排序字段"),
-			@Parameter(name = CrudConstant.QRY_PAGE_ORDER_ASC, in = ParameterIn.QUERY, description = "是否升序"),
-			@Parameter(name = "taskBean", in = ParameterIn.QUERY, description = "bean名称"),
-			@Parameter(name = "success", in = ParameterIn.QUERY, description = "是否成功"),
-			@Parameter(name = "ex", in = ParameterIn.QUERY, description = "异常,支持模糊查询"), @Parameter(name = "startTimeIn",
-					in = ParameterIn.QUERY, description = "执行日期范围", example = "2020-01-01,2020-12-31") })
+	@PageRequestParameters
+	@Operation(summary = "分页",
+			parameters = { @Parameter(name = "taskBean", in = ParameterIn.QUERY, description = "bean名称"),
+					@Parameter(name = "success", in = ParameterIn.QUERY, description = "是否成功"),
+					@Parameter(name = "ex", in = ParameterIn.QUERY, description = "异常,支持模糊查询"),
+					@Parameter(name = "startTimeIn", in = ParameterIn.QUERY, description = "执行日期范围",
+							example = "2020-01-01,2020-12-31") })
 	public ApiResponse<PageData<ScheduleLogDTO>> page(@Parameter(hidden = true) PageRequest page,
 			@Parameter(hidden = true) SearchScheduleLogVO param) {
 		return ApiResponseUtil.ok(scheduleLogService.selectPage(page, param));

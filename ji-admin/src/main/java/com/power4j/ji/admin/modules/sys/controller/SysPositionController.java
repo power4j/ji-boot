@@ -26,6 +26,7 @@ import com.power4j.ji.common.core.model.PageData;
 import com.power4j.ji.common.core.model.PageRequest;
 import com.power4j.ji.common.core.util.ApiResponseUtil;
 import com.power4j.ji.common.data.crud.api.CrudApi;
+import com.power4j.ji.common.openapi.annotations.PageRequestParameters;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -86,14 +87,9 @@ public class SysPositionController implements CrudApi<Long, SysPositionDTO> {
 
 	@PreAuthorize("@pms.any('sys:position:view')")
 	@GetMapping("/page")
-	@Operation(summary = "分页",
-			parameters = {
-					@Parameter(name = CrudConstant.QRY_PAGE_INDEX, in = ParameterIn.QUERY, description = "页码,从1开始"),
-					@Parameter(name = CrudConstant.QRY_PAGE_SIZE, in = ParameterIn.QUERY, description = "记录数量"),
-					@Parameter(name = CrudConstant.QRY_PAGE_ORDER_PROP, in = ParameterIn.QUERY, description = "排序字段"),
-					@Parameter(name = CrudConstant.QRY_PAGE_ORDER_ASC, in = ParameterIn.QUERY, description = "是否升序"),
-					@Parameter(name = "code", in = ParameterIn.QUERY, description = "岗位编码"),
-					@Parameter(name = "status", in = ParameterIn.QUERY, description = "状态") })
+	@PageRequestParameters
+	@Operation(summary = "分页", parameters = { @Parameter(name = "code", in = ParameterIn.QUERY, description = "岗位编码"),
+			@Parameter(name = "status", in = ParameterIn.QUERY, description = "状态") })
 	public ApiResponse<PageData<SysPositionDTO>> page(@Parameter(hidden = true) PageRequest page,
 			@Parameter(hidden = true) SearchSysRoleVO param) {
 		return ApiResponseUtil.ok(sysPositionService.selectPage(page, BeanUtil.toBean(param, SysPositionDTO.class)));
