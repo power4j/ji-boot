@@ -24,7 +24,7 @@
   <name>${project.artifactId}</name>
   <packaging>pom</packaging>
 
-  <url>https://github.com/power4j/flygon-server</url>
+  <url>https://github.com/power4j/ji-boot</url>
   <description>基于Spring Boot 2 的前后端分离权限管理系统</description>
 
   <licenses>
@@ -41,9 +41,9 @@
   </organization>
 
   <scm>
-    <url>https://github.com/power4j/ji-admin</url>
-    <connection>scm:git:git://github.com/power4j/ji-admin.git</connection>
-    <developerConnection>scm:git:https://github.com/power4j/ji-admin.git</developerConnection>
+    <url>https://github.com/power4j/ji-boot</url>
+    <connection>scm:git:git://github.com/power4j/ji-boot.git</connection>
+    <developerConnection>scm:git:https://github.com/power4j/ji-boot.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
 
@@ -238,7 +238,7 @@
           <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
           <minimumPriority>1</minimumPriority>
           <excludeRoots>
-            <excludeRoot>com/power4j/kit/printing/example</excludeRoot>
+            <excludeRoot>ji-admin/src/main/java/com/power4j/ji/admin/modules/demo</excludeRoot>
           </excludeRoots>
           <excludes>
             <exclude>**/*Test.java</exclude>
