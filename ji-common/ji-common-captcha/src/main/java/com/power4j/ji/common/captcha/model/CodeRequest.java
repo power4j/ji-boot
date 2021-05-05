@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.power4j.flygon.common.captcha.model;
+package com.power4j.ji.common.captcha.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
@@ -28,12 +28,10 @@ import java.io.Serializable;
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CodeValidateRequest implements Serializable {
+public class CodeRequest implements Serializable {
 
 	private final static long serialVersionUID = 1L;
 
 	private String reqToken;
-
-	private String code;
 
 }

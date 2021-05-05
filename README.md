@@ -125,7 +125,7 @@ ji-boot:
           methods: GET
           access: permitAll
         # 验证码服务放行  
-        - patterns: ${flygon.captcha.service-url}
+        - patterns: ${ji-boot.captcha.service-url}
           methods: GET
           access: permitAll
         # druid 监控放行  
@@ -137,7 +137,7 @@ ji-boot:
 
 ## 性能
 
-没有花太多时间专门做性能优化，但是对认证过程做了缓存优化，因为这个地方性能瓶颈较大，优化前后差距巨大。
+目前只对认证过程做了缓存优化，因为这个地方性能瓶颈较大，优化前后差距巨大。
 
 ### 测试结果
 

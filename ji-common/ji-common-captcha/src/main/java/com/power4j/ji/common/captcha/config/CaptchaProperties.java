@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.power4j.flygon.common.captcha.config;
+package com.power4j.ji.common.captcha.config;
 
 import com.power4j.ji.common.core.constant.CommonConstant;
 import lombok.Getter;

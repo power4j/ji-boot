@@ -16,7 +16,7 @@
 
 package com.power4j.ji.common.data.error;
 
-import com.power4j.ji.common.core.config.FlygonProperties;
+import com.power4j.ji.common.core.config.AppProperties;
 import com.power4j.ji.common.core.context.RequestContext;
 import com.power4j.ji.common.core.model.ApiResponse;
 import com.power4j.ji.common.core.translator.AbstractExceptionHandler;
@@ -49,9 +49,9 @@ import javax.servlet.Servlet;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class DataAccessExceptionTranslator extends AbstractExceptionHandler {
 
-	public DataAccessExceptionTranslator(FlygonProperties flygonProperties, ApplicationEventPublisher publisher,
-			RequestContext requestContext) {
-		super(flygonProperties, publisher, requestContext);
+	public DataAccessExceptionTranslator(AppProperties appProperties, ApplicationEventPublisher publisher,
+                                         RequestContext requestContext) {
+		super(appProperties, publisher, requestContext);
 	}
 
 	@ExceptionHandler(DataAccessException.class)

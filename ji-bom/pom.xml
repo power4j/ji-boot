@@ -159,7 +159,7 @@
         <artifactId>dict-mapper-spring-boot-starter</artifactId>
         <version>${dict-mapper.version}</version>
       </dependency>
-      <!-- flygon libs -->
+      <!-- ji-common libs -->
       <dependency>
         <groupId>com.power4j.ji</groupId>
         <artifactId>ji-common-core</artifactId>

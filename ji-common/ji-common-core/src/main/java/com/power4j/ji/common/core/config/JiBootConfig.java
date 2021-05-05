@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Configuration;
  * @since 1.0
  */
 @Configuration
-@EnableConfigurationProperties(FlygonProperties.class)
-public class FlygonConfig {
+@EnableConfigurationProperties(AppProperties.class)
+public class JiBootConfig {
 
 }

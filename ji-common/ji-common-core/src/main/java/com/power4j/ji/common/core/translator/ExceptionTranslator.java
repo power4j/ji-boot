@@ -16,7 +16,7 @@
 
 package com.power4j.ji.common.core.translator;
 
-import com.power4j.ji.common.core.config.FlygonProperties;
+import com.power4j.ji.common.core.config.AppProperties;
 import com.power4j.ji.common.core.context.RequestContext;
 import com.power4j.ji.common.core.exception.BizException;
 import com.power4j.ji.common.core.model.ApiResponse;
@@ -51,9 +51,9 @@ import java.sql.SQLException;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class ExceptionTranslator extends AbstractExceptionHandler {
 
-	public ExceptionTranslator(FlygonProperties flygonProperties, ApplicationEventPublisher publisher,
-			RequestContext requestContext) {
-		super(flygonProperties, publisher, requestContext);
+	public ExceptionTranslator(AppProperties appProperties, ApplicationEventPublisher publisher,
+                               RequestContext requestContext) {
+		super(appProperties, publisher, requestContext);
 	}
 
 	@ExceptionHandler(BizException.class)

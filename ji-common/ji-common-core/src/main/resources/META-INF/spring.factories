@@ -6,4 +6,4 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.power4j.ji.common.core.translator.GlobalExceptionConfig,\
   com.power4j.ji.common.core.servlet.ServletListenerConfig,\
   com.power4j.ji.common.core.context.ReqContextConfig,\
-  com.power4j.ji.common.core.config.FlygonConfig
+  com.power4j.ji.common.core.config.JiBootConfig

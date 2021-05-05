@@ -18,7 +18,7 @@ package com.power4j.ji.common.core.translator;
 
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.lang.UUID;
-import com.power4j.ji.common.core.config.FlygonProperties;
+import com.power4j.ji.common.core.config.AppProperties;
 import com.power4j.ji.common.core.context.RequestContext;
 import com.power4j.ji.common.core.util.DateTimeUtil;
 import com.power4j.ji.common.core.util.HttpServletRequestUtil;
@@ -33,15 +33,15 @@ import javax.servlet.http.HttpServletRequest;
  */
 public abstract class AbstractExceptionHandler {
 
-	private final FlygonProperties flygonProperties;
+	private final AppProperties appProperties;
 
 	private final ApplicationEventPublisher publisher;
 
 	private final RequestContext requestContext;
 
-	public AbstractExceptionHandler(FlygonProperties flygonProperties, ApplicationEventPublisher publisher,
-			RequestContext requestContext) {
-		this.flygonProperties = flygonProperties;
+	public AbstractExceptionHandler(AppProperties appProperties, ApplicationEventPublisher publisher,
+									RequestContext requestContext) {
+		this.appProperties = appProperties;
 		this.publisher = publisher;
 		this.requestContext = requestContext;
 	}
@@ -49,7 +49,7 @@ public abstract class AbstractExceptionHandler {
 	protected void publishEvent(Throwable e) {
 		ErrorEvent errorEvent = new ErrorEvent();
 		errorEvent.setId(UUID.fastUUID().toString());
-		errorEvent.setAppName(flygonProperties.getEnvironment().getProperty("spring.application.name", "未知应用"));
+		errorEvent.setAppName(appProperties.getEnvironment().getProperty("spring.application.name", "未知应用"));
 		errorEvent.setTimeUtc(DateTimeUtil.utcNow());
 		errorEvent.setEx(e.getClass().getName());
 		errorEvent.setExMsg(e.getMessage());

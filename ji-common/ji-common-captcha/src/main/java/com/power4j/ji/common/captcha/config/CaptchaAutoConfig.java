@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.power4j.flygon.common.captcha.config;
+package com.power4j.ji.common.captcha.config;
 
-import com.power4j.flygon.common.captcha.filter.CaptchaFilter;
+import com.power4j.ji.common.captcha.filter.CaptchaFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.CacheManager;

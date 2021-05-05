@@ -37,7 +37,7 @@ import java.util.Optional;
 @Getter
 @Setter
 @ConfigurationProperties(CommonConstant.PROPERTY_PREFIX)
-public class FlygonProperties implements EnvironmentAware, EnvironmentCapable {
+public class AppProperties implements EnvironmentAware, EnvironmentCapable {
 
 	private Environment environment;
 

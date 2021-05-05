@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.power4j.flygon.common.captcha.filter;
+package com.power4j.ji.common.captcha.filter;
 
 import cn.hutool.core.util.RandomUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.power4j.flygon.common.captcha.model.CodeRequest;
-import com.power4j.flygon.common.captcha.model.CodeValidateRequest;
+import com.power4j.ji.common.captcha.model.CodeRequest;
+import com.power4j.ji.common.captcha.model.CodeValidateRequest;
 import com.power4j.ji.common.core.constant.SysErrorCodes;
 import com.power4j.ji.common.core.model.ApiResponse;
 import com.power4j.ji.common.core.util.ApiResponseUtil;

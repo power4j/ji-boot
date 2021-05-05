@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.power4j.flygon.common.captcha.config.CaptchaAutoConfig
+  com.power4j.ji.common.captcha.config.CaptchaAutoConfig
