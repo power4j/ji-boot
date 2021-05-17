@@ -6,12 +6,12 @@ updates:
     interval: daily
   open-pull-requests-limit: 10
   ignore:
-    - dependency-name: org.hibernate.validator:hibernate-validator-test-utils
-      versions:
-      - 7.0.1.Final
-    - dependency-name: cn.hutool:hutool-all
-      versions:
-      - 5.6.0
-    - dependency-name: com.alibaba:druid-spring-boot-starter
-      versions:
-      - 1.2.4
+  - dependency-name: org.hibernate.validator:hibernate-validator-test-utils
+    versions:
+    - 7.0.1.Final
+  - dependency-name: cn.hutool:hutool-all
+    versions:
+    - 5.6.0
+  - dependency-name: com.alibaba:druid-spring-boot-starter
+    versions:
+    - 1.2.4
