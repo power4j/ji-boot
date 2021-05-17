@@ -50,7 +50,7 @@ import javax.servlet.Servlet;
 public class DataAccessExceptionTranslator extends AbstractExceptionHandler {
 
 	public DataAccessExceptionTranslator(AppProperties appProperties, ApplicationEventPublisher publisher,
-                                         RequestContext requestContext) {
+			RequestContext requestContext) {
 		super(appProperties, publisher, requestContext);
 	}
 

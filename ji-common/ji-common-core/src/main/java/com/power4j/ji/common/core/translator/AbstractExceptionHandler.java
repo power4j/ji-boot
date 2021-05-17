@@ -40,7 +40,7 @@ public abstract class AbstractExceptionHandler {
 	private final RequestContext requestContext;
 
 	public AbstractExceptionHandler(AppProperties appProperties, ApplicationEventPublisher publisher,
-									RequestContext requestContext) {
+			RequestContext requestContext) {
 		this.appProperties = appProperties;
 		this.publisher = publisher;
 		this.requestContext = requestContext;

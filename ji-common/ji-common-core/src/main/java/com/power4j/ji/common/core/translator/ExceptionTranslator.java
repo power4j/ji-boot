@@ -52,7 +52,7 @@ import java.sql.SQLException;
 public class ExceptionTranslator extends AbstractExceptionHandler {
 
 	public ExceptionTranslator(AppProperties appProperties, ApplicationEventPublisher publisher,
-                               RequestContext requestContext) {
+			RequestContext requestContext) {
 		super(appProperties, publisher, requestContext);
 	}
 
