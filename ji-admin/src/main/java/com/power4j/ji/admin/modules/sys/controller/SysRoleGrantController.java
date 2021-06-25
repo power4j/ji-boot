@@ -23,6 +23,7 @@ import com.power4j.ji.common.core.model.ApiResponse;
 import com.power4j.ji.common.core.util.ApiResponseUtil;
 import com.power4j.ji.common.core.validate.Groups;
 import com.power4j.ji.common.data.crud.api.CrudApi;
+import com.power4j.ji.common.security.audit.ApiLog;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -52,30 +53,35 @@ public class SysRoleGrantController implements CrudApi<Long, SysRoleGrantDTO> {
 
 	private final SysRoleGrantService sysRoleGrantService;
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:role:grant','sys:role:revoke')")
 	@Override
 	public ApiResponse<List<SysRoleGrantDTO>> readList(List<Long> idList) {
 		return ApiResponseUtil.ok(sysRoleGrantService.readList(idList));
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:role:grant','sys:role:revoke')")
 	@Override
 	public ApiResponse<SysRoleGrantDTO> read(Long id) {
 		return ApiResponseUtil.ok(sysRoleGrantService.read(id).orElse(null));
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:role:grant')")
 	@Override
 	public ApiResponse<SysRoleGrantDTO> post(@Validated({ Groups.Create.class }) @RequestBody SysRoleGrantDTO obj) {
 		return ApiResponseUtil.ok(sysRoleGrantService.post(obj));
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:role:grant','sys:role:revoke')")
 	@Override
 	public ApiResponse<SysRoleGrantDTO> put(SysRoleGrantDTO obj) {
 		return ApiResponseUtil.ok(sysRoleGrantService.put(obj));
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:role:revoke')")
 	@Override
 	public ApiResponse<SysRoleGrantDTO> delete(Long id) {

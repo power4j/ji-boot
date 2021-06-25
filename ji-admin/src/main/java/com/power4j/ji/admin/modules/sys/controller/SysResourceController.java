@@ -19,16 +19,15 @@ package com.power4j.ji.admin.modules.sys.controller;
 import com.power4j.ji.admin.modules.sys.constant.SysConstant;
 import com.power4j.ji.admin.modules.sys.dto.SysResourceDTO;
 import com.power4j.ji.admin.modules.sys.service.SysResourceService;
-import com.power4j.ji.common.core.constant.CrudConstant;
 import com.power4j.ji.common.core.model.ApiResponse;
 import com.power4j.ji.common.core.model.PageData;
 import com.power4j.ji.common.core.model.PageRequest;
 import com.power4j.ji.common.core.util.ApiResponseUtil;
 import com.power4j.ji.common.data.crud.api.CrudApi;
 import com.power4j.ji.common.openapi.annotations.PageRequestParameters;
+import com.power4j.ji.common.security.audit.ApiLog;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.Nullable;
@@ -54,36 +53,42 @@ public class SysResourceController implements CrudApi<Long, SysResourceDTO> {
 
 	private final SysResourceService sysResourceService;
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:resource:view')")
 	@Override
 	public ApiResponse<List<SysResourceDTO>> readList(List<Long> idList) {
 		return ApiResponseUtil.ok(sysResourceService.readList(idList));
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:resource:view')")
 	@Override
 	public ApiResponse<SysResourceDTO> read(Long id) {
 		return ApiResponseUtil.ok(sysResourceService.read(id).orElse(null));
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:resource:add')")
 	@Override
 	public ApiResponse<SysResourceDTO> post(SysResourceDTO obj) {
 		return ApiResponseUtil.ok(sysResourceService.post(obj));
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:resource:edit')")
 	@Override
 	public ApiResponse<SysResourceDTO> put(SysResourceDTO obj) {
 		return ApiResponseUtil.ok(sysResourceService.put(obj));
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:resource:del')")
 	@Override
 	public ApiResponse<SysResourceDTO> delete(Long id) {
 		return ApiResponseUtil.ok(sysResourceService.delete(id).orElse(null));
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:resource:view')")
 	@GetMapping("/page")
 	@PageRequestParameters

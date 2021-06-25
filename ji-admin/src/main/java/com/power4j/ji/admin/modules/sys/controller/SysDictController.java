@@ -22,13 +22,13 @@ import com.power4j.ji.admin.modules.sys.dto.SysDictItemDTO;
 import com.power4j.ji.admin.modules.sys.service.SysDictItemService;
 import com.power4j.ji.admin.modules.sys.service.SysDictService;
 import com.power4j.ji.admin.modules.sys.vo.SearchSysDictVO;
-import com.power4j.ji.common.core.constant.CrudConstant;
 import com.power4j.ji.common.core.model.ApiResponse;
 import com.power4j.ji.common.core.model.PageData;
 import com.power4j.ji.common.core.model.PageRequest;
 import com.power4j.ji.common.core.util.ApiResponseUtil;
 import com.power4j.ji.common.data.crud.api.CrudApi;
 import com.power4j.ji.common.openapi.annotations.PageRequestParameters;
+import com.power4j.ji.common.security.audit.ApiLog;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -61,36 +61,42 @@ public class SysDictController implements CrudApi<Long, SysDictDTO> {
 
 	private final SysDictItemService sysDictItemService;
 
+	@ApiLog(module = "系统", tag = "查看字典")
 	@PreAuthorize("@pms.any('sys:dict:view')")
 	@Override
 	public ApiResponse<List<SysDictDTO>> readList(List<Long> idList) {
 		return ApiResponseUtil.ok(sysDictService.readList(idList));
 	}
 
+	@ApiLog(module = "系统", tag = "查看字典")
 	@PreAuthorize("@pms.any('sys:dict:view')")
 	@Override
 	public ApiResponse<SysDictDTO> read(Long id) {
 		return ApiResponseUtil.ok(sysDictService.read(id).orElse(null));
 	}
 
+	@ApiLog(module = "系统", tag = "添加字典")
 	@PreAuthorize("@pms.any('sys:dict:add')")
 	@Override
 	public ApiResponse<SysDictDTO> post(SysDictDTO obj) {
 		return ApiResponseUtil.ok(sysDictService.post(obj));
 	}
 
+	@ApiLog(module = "系统", tag = "修改字典")
 	@PreAuthorize("@pms.any('sys:dict:edit')")
 	@Override
 	public ApiResponse<SysDictDTO> put(SysDictDTO obj) {
 		return ApiResponseUtil.ok(sysDictService.put(obj));
 	}
 
+	@ApiLog(module = "系统", tag = "删除字典")
 	@PreAuthorize("@pms.any('sys:dict:del')")
 	@Override
 	public ApiResponse<SysDictDTO> delete(Long id) {
 		return ApiResponseUtil.ok(sysDictService.delete(id).orElse(null));
 	}
 
+	@ApiLog(module = "系统", tag = "查看字典")
 	@PreAuthorize("@pms.any('sys:dict:view')")
 	@GetMapping("/page")
 	@PageRequestParameters

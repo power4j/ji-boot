@@ -20,13 +20,13 @@ import cn.hutool.core.bean.BeanUtil;
 import com.power4j.ji.admin.modules.sys.dto.SysParamDTO;
 import com.power4j.ji.admin.modules.sys.service.SysParamService;
 import com.power4j.ji.admin.modules.sys.vo.SearchSysParamVO;
-import com.power4j.ji.common.core.constant.CrudConstant;
 import com.power4j.ji.common.core.model.ApiResponse;
 import com.power4j.ji.common.core.model.PageData;
 import com.power4j.ji.common.core.model.PageRequest;
 import com.power4j.ji.common.core.util.ApiResponseUtil;
 import com.power4j.ji.common.data.crud.api.CrudApi;
 import com.power4j.ji.common.openapi.annotations.PageRequestParameters;
+import com.power4j.ji.common.security.audit.ApiLog;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -54,36 +54,42 @@ public class SysParamController implements CrudApi<Long, SysParamDTO> {
 
 	private final SysParamService sysParamService;
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:param:view')")
 	@Override
 	public ApiResponse<List<SysParamDTO>> readList(List<Long> idList) {
 		return ApiResponseUtil.ok(sysParamService.readList(idList));
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:param:view')")
 	@Override
 	public ApiResponse<SysParamDTO> read(Long id) {
 		return ApiResponseUtil.ok(sysParamService.read(id).orElse(null));
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:param:add')")
 	@Override
 	public ApiResponse<SysParamDTO> post(SysParamDTO obj) {
 		return ApiResponseUtil.ok(sysParamService.post(obj));
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:param:edit')")
 	@Override
 	public ApiResponse<SysParamDTO> put(SysParamDTO obj) {
 		return ApiResponseUtil.ok(sysParamService.put(obj));
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:param:del')")
 	@Override
 	public ApiResponse<SysParamDTO> delete(Long id) {
 		return ApiResponseUtil.ok(sysParamService.delete(id).orElse(null));
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:param:view')")
 	@GetMapping("/page")
 	@PageRequestParameters

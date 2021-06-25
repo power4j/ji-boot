@@ -26,6 +26,7 @@ import com.power4j.ji.common.core.model.PageData;
 import com.power4j.ji.common.core.model.PageRequest;
 import com.power4j.ji.common.core.util.ApiResponseUtil;
 import com.power4j.ji.common.core.util.HttpServletResponseUtil;
+import com.power4j.ji.common.security.audit.ApiLog;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -54,6 +55,7 @@ public class UrFileController {
 
 	private final UrFileService urFileService;
 
+	@ApiLog(module = "报表", tag = "查看报表定义")
 	@PreAuthorize("@pms.any('sys:ureports:view')")
 	@GetMapping("/page")
 	@Operation(summary = "分页",
@@ -66,6 +68,7 @@ public class UrFileController {
 		return ApiResponseUtil.ok(urFileService.selectPage(page, searchUrFileVO));
 	}
 
+	@ApiLog(module = "报表", tag = "删除报表定义")
 	@PreAuthorize("@pms.any('sys:ureports:del')")
 	@DeleteMapping("/file/{fileName}")
 	@Operation(summary = "删除报表")
@@ -73,6 +76,7 @@ public class UrFileController {
 		return ApiResponseUtil.ok(urFileService.deleteByFileName(fileName).orElse(null));
 	}
 
+	@ApiLog(module = "报表", tag = "导出报表定义")
 	@PreAuthorize("@pms.any('sys:ureports:export')")
 	@GetMapping("/export/file/{fileName}")
 	@Operation(summary = "导出报表")

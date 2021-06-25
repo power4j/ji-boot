@@ -29,7 +29,6 @@ import com.power4j.ji.admin.modules.sys.service.SysResourceService;
 import com.power4j.ji.admin.modules.sys.service.SysRoleGrantService;
 import com.power4j.ji.admin.modules.sys.service.SysRoleService;
 import com.power4j.ji.admin.modules.sys.vo.SearchSysRoleVO;
-import com.power4j.ji.common.core.constant.CrudConstant;
 import com.power4j.ji.common.core.model.ApiResponse;
 import com.power4j.ji.common.core.model.PageData;
 import com.power4j.ji.common.core.model.PageRequest;
@@ -37,6 +36,7 @@ import com.power4j.ji.common.core.util.ApiResponseUtil;
 import com.power4j.ji.common.data.crud.api.CrudApi;
 import com.power4j.ji.common.data.crud.constant.LowAttrEnum;
 import com.power4j.ji.common.openapi.annotations.PageRequestParameters;
+import com.power4j.ji.common.security.audit.ApiLog;
 import com.power4j.ji.common.security.util.SecurityUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -78,6 +78,7 @@ public class SysRoleController implements CrudApi<Long, SysRoleDTO> {
 
 	private final SysResourceService sysResourceService;
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:role:view')")
 	@GetMapping("/page")
 	@PageRequestParameters
@@ -88,6 +89,7 @@ public class SysRoleController implements CrudApi<Long, SysRoleDTO> {
 		return ApiResponseUtil.ok(sysRoleService.selectPage(page, BeanUtil.toBean(param, SysRoleDTO.class)));
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:role:view')")
 	@GetMapping("/all")
 	@Operation(summary = "角色列表")
@@ -102,6 +104,7 @@ public class SysRoleController implements CrudApi<Long, SysRoleDTO> {
 		return ApiResponseUtil.ok(sysRoleService.countRoleCode(value, excludeId));
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:role:grant','sys:role:revoke')")
 	@PostMapping("/{id}/resource")
 	@Operation(summary = "角色资源")
@@ -142,30 +145,35 @@ public class SysRoleController implements CrudApi<Long, SysRoleDTO> {
 		return ApiResponseUtil.ok(list);
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:role:view')")
 	@Override
 	public ApiResponse<SysRoleDTO> read(Long id) {
 		return ApiResponseUtil.ok(sysRoleService.read(id).orElse(null));
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:role:view')")
 	@Override
 	public ApiResponse<List<SysRoleDTO>> readList(List<Long> idList) {
 		return ApiResponseUtil.ok(sysRoleService.readList(idList));
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:role:add')")
 	@Override
 	public ApiResponse<SysRoleDTO> post(SysRoleDTO obj) {
 		return ApiResponseUtil.ok(sysRoleService.post(obj));
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:role:edit')")
 	@Override
 	public ApiResponse<SysRoleDTO> put(SysRoleDTO obj) {
 		return ApiResponseUtil.ok(sysRoleService.put(obj));
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:role:del')")
 	@Override
 	public ApiResponse<SysRoleDTO> delete(Long id) {

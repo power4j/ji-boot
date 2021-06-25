@@ -19,13 +19,13 @@ package com.power4j.ji.admin.modules.schedule.controller;
 import com.power4j.ji.admin.modules.schedule.dto.ScheduleJobDTO;
 import com.power4j.ji.admin.modules.schedule.service.ScheduleJobService;
 import com.power4j.ji.admin.modules.schedule.vo.SearchScheduleJobVO;
-import com.power4j.ji.common.core.constant.CrudConstant;
 import com.power4j.ji.common.core.model.ApiResponse;
 import com.power4j.ji.common.core.model.PageData;
 import com.power4j.ji.common.core.model.PageRequest;
 import com.power4j.ji.common.core.util.ApiResponseUtil;
 import com.power4j.ji.common.data.crud.api.CrudApi;
 import com.power4j.ji.common.openapi.annotations.PageRequestParameters;
+import com.power4j.ji.common.security.audit.ApiLog;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -51,6 +51,7 @@ public class ScheduleJobController implements CrudApi<Long, ScheduleJobDTO> {
 
 	private final ScheduleJobService scheduleJobService;
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:job:view')")
 	@GetMapping("/page")
 	@PageRequestParameters
@@ -62,30 +63,35 @@ public class ScheduleJobController implements CrudApi<Long, ScheduleJobDTO> {
 		return ApiResponseUtil.ok(scheduleJobService.selectPage(page, param));
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:job:view')")
 	@Override
 	public ApiResponse<ScheduleJobDTO> read(Long id) {
 		return ApiResponseUtil.ok(scheduleJobService.read(id).orElse(null));
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:job:view')")
 	@Override
 	public ApiResponse<List<ScheduleJobDTO>> readList(List<Long> idList) {
 		return ApiResponseUtil.ok(scheduleJobService.readList(idList));
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:job:add')")
 	@Override
 	public ApiResponse<ScheduleJobDTO> post(ScheduleJobDTO obj) {
 		return ApiResponseUtil.ok(scheduleJobService.post(obj));
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:job:edit')")
 	@Override
 	public ApiResponse<ScheduleJobDTO> put(ScheduleJobDTO obj) {
 		return ApiResponseUtil.ok(scheduleJobService.put(obj));
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:job:del')")
 	@Override
 	public ApiResponse<ScheduleJobDTO> delete(Long id) {

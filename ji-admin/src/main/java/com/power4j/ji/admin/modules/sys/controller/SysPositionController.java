@@ -20,13 +20,13 @@ import cn.hutool.core.bean.BeanUtil;
 import com.power4j.ji.admin.modules.sys.dto.SysPositionDTO;
 import com.power4j.ji.admin.modules.sys.service.SysPositionService;
 import com.power4j.ji.admin.modules.sys.vo.SearchSysRoleVO;
-import com.power4j.ji.common.core.constant.CrudConstant;
 import com.power4j.ji.common.core.model.ApiResponse;
 import com.power4j.ji.common.core.model.PageData;
 import com.power4j.ji.common.core.model.PageRequest;
 import com.power4j.ji.common.core.util.ApiResponseUtil;
 import com.power4j.ji.common.data.crud.api.CrudApi;
 import com.power4j.ji.common.openapi.annotations.PageRequestParameters;
+import com.power4j.ji.common.security.audit.ApiLog;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -55,36 +55,42 @@ public class SysPositionController implements CrudApi<Long, SysPositionDTO> {
 
 	private final SysPositionService sysPositionService;
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:position:view')")
 	@Override
 	public ApiResponse<SysPositionDTO> read(Long id) {
 		return ApiResponseUtil.ok(sysPositionService.read(id).orElse(null));
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:position:view')")
 	@Override
 	public ApiResponse<List<SysPositionDTO>> readList(List<Long> idList) {
 		return ApiResponseUtil.ok(sysPositionService.readList(idList));
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:position:add')")
 	@Override
 	public ApiResponse<SysPositionDTO> post(SysPositionDTO obj) {
 		return ApiResponseUtil.ok(sysPositionService.post(obj));
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:position:edit')")
 	@Override
 	public ApiResponse<SysPositionDTO> put(SysPositionDTO obj) {
 		return ApiResponseUtil.ok(sysPositionService.put(obj));
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:position:del')")
 	@Override
 	public ApiResponse<SysPositionDTO> delete(Long id) {
 		return ApiResponseUtil.ok(sysPositionService.delete(id).orElse(null));
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:position:view')")
 	@GetMapping("/page")
 	@PageRequestParameters
@@ -95,6 +101,7 @@ public class SysPositionController implements CrudApi<Long, SysPositionDTO> {
 		return ApiResponseUtil.ok(sysPositionService.selectPage(page, BeanUtil.toBean(param, SysPositionDTO.class)));
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:position:view')")
 	@GetMapping("/all")
 	@Operation(summary = "岗位列表")

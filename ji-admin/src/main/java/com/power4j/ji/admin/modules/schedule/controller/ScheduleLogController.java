@@ -19,12 +19,12 @@ package com.power4j.ji.admin.modules.schedule.controller;
 import com.power4j.ji.admin.modules.schedule.dto.ScheduleLogDTO;
 import com.power4j.ji.admin.modules.schedule.service.ScheduleLogService;
 import com.power4j.ji.admin.modules.schedule.vo.SearchScheduleLogVO;
-import com.power4j.ji.common.core.constant.CrudConstant;
 import com.power4j.ji.common.core.model.ApiResponse;
 import com.power4j.ji.common.core.model.PageData;
 import com.power4j.ji.common.core.model.PageRequest;
 import com.power4j.ji.common.core.util.ApiResponseUtil;
 import com.power4j.ji.common.openapi.annotations.PageRequestParameters;
+import com.power4j.ji.common.security.audit.ApiLog;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -52,6 +52,7 @@ public class ScheduleLogController {
 
 	private final ScheduleLogService scheduleLogService;
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:job-log:view')")
 	@GetMapping("/page")
 	@PageRequestParameters
@@ -66,6 +67,7 @@ public class ScheduleLogController {
 		return ApiResponseUtil.ok(scheduleLogService.selectPage(page, param));
 	}
 
+	@ApiLog
 	@PreAuthorize("@pms.any('sys:job-log:del')")
 	@DeleteMapping
 	@Operation(summary = "批量删除")

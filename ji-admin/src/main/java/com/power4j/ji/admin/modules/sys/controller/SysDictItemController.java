@@ -21,6 +21,7 @@ import com.power4j.ji.admin.modules.sys.service.SysDictItemService;
 import com.power4j.ji.common.core.model.ApiResponse;
 import com.power4j.ji.common.core.util.ApiResponseUtil;
 import com.power4j.ji.common.data.crud.api.CrudApi;
+import com.power4j.ji.common.security.audit.ApiLog;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -46,30 +47,35 @@ public class SysDictItemController implements CrudApi<Long, SysDictItemDTO> {
 
 	private final SysDictItemService sysDictItemService;
 
+	@ApiLog(module = "系统", tag = "查看字典项")
 	@PreAuthorize("@pms.any('sys:dict:view')")
 	@Override
 	public ApiResponse<List<SysDictItemDTO>> readList(List<Long> idList) {
 		return ApiResponseUtil.ok(sysDictItemService.readList(idList));
 	}
 
+	@ApiLog(module = "系统", tag = "查看字典项")
 	@PreAuthorize("@pms.any('sys:dict:view')")
 	@Override
 	public ApiResponse<SysDictItemDTO> read(Long id) {
 		return ApiResponseUtil.ok(sysDictItemService.read(id).orElse(null));
 	}
 
+	@ApiLog(module = "系统", tag = "修改字典项")
 	@PreAuthorize("@pms.any('sys:dict:edit')")
 	@Override
 	public ApiResponse<SysDictItemDTO> post(SysDictItemDTO obj) {
 		return ApiResponseUtil.ok(sysDictItemService.post(obj));
 	}
 
+	@ApiLog(module = "系统", tag = "修改字典项")
 	@PreAuthorize("@pms.any('sys:dict:edit')")
 	@Override
 	public ApiResponse<SysDictItemDTO> put(SysDictItemDTO obj) {
 		return ApiResponseUtil.ok(sysDictItemService.put(obj));
 	}
 
+	@ApiLog(module = "系统", tag = "修改字典项")
 	@PreAuthorize("@pms.any('sys:dict:edit')")
 	@Override
 	public ApiResponse<SysDictItemDTO> delete(Long id) {

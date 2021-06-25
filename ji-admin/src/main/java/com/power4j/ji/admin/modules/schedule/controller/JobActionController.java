@@ -19,6 +19,7 @@ package com.power4j.ji.admin.modules.schedule.controller;
 import com.power4j.ji.admin.modules.schedule.service.ScheduleJobService;
 import com.power4j.ji.common.core.model.ApiResponse;
 import com.power4j.ji.common.core.util.ApiResponseUtil;
+import com.power4j.ji.common.security.audit.ApiLog;
 import com.power4j.ji.common.security.util.SecurityUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -44,6 +45,7 @@ public class JobActionController {
 
 	private final ScheduleJobService scheduleJobService;
 
+	@ApiLog
 	@Operation(summary = "立即调度")
 	@PreAuthorize("@pms.any('sys:job:action')")
 	@PostMapping("/{jobId}/action/trigger")
@@ -51,6 +53,7 @@ public class JobActionController {
 		return ApiResponseUtil.ok(scheduleJobService.scheduleNow(jobId, true, SecurityUtil.getLoginUsername().get()));
 	}
 
+	@ApiLog
 	@Operation(summary = "停止调度")
 	@PreAuthorize("@pms.any('sys:job:action')")
 	@PostMapping("/{jobId}/action/pause")
@@ -59,6 +62,7 @@ public class JobActionController {
 		return ApiResponseUtil.ok();
 	}
 
+	@ApiLog
 	@Operation(summary = "恢复调度")
 	@PreAuthorize("@pms.any('sys:job:action')")
 	@PostMapping("/{jobId}/action/resume")
