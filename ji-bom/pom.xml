@@ -63,6 +63,7 @@
     <!-- dependencies -->
     <druid.version>1.2.6</druid.version>
     <hutool.version>5.6.7</hutool.version>
+    <coca-kit.version>0.0.2</coca-kit.version>
     <knife4j.version>3.0.2</knife4j.version>
     <redisson.version>3.15.6</redisson.version>
     <ureport.version>2.2.9</ureport.version>
@@ -118,6 +119,11 @@
         <groupId>cn.hutool</groupId>
         <artifactId>hutool-all</artifactId>
         <version>${hutool.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.power4j.kit</groupId>
+        <artifactId>coca-core</artifactId>
+        <version>${coca-kit.version}</version>
       </dependency>
       <dependency>
         <groupId>org.redisson</groupId>

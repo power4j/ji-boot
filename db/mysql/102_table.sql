@@ -263,3 +263,24 @@ CREATE TABLE `t_sys_position_grant`
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_user_position` (`user_id`,`position_id`)
 ) ENGINE = InnoDB CHARSET = `utf8mb4` COMMENT ='岗位授权';
+
+CREATE TABLE `t_sys_log`
+(
+    `id`        BIGINT      NOT NULL COMMENT '主健',
+    `module`    VARCHAR(100) COMMENT '模块',
+    `api_tag`   VARCHAR(100) COMMENT '名称',
+    `access_at`  DATETIME NOT NULL COMMENT '访问时间',
+    `duration`   INT NOT NULL DEFAULT '0' COMMENT '执行耗时毫秒',
+    `method`     VARCHAR(10) COMMENT 'HTTP方法',
+    `path`       VARCHAR(255) COMMENT 'URL路径',
+    `query`      VARCHAR(255) COMMENT 'URL参数',
+    `uid`        BIGINT      NOT NULL COMMENT '用户ID',
+    `username`       VARCHAR(32) COMMENT '用户名',
+    `location`       VARCHAR(32) COMMENT '访问来源',
+    `response_code`  VARCHAR(8) COMMENT 'API响应码',
+    `ex`       VARCHAR(255) COMMENT '异常',
+    `ex_msg`   VARCHAR(255) COMMENT '异常信息',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB CHARSET = `utf8mb4` COMMENT ='访问日志';
+
+ALTER TABLE `t_sys_log` ADD INDEX `idx_1` (`module`,`username`);

@@ -35,6 +35,10 @@
       <artifactId>hutool-all</artifactId>
     </dependency>
     <dependency>
+      <groupId>com.power4j.kit</groupId>
+      <artifactId>coca-core</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
     </dependency>
