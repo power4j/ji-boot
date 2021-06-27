@@ -89,7 +89,7 @@ public class HttpServletRequestUtil {
 		if (CharSequenceUtil.isBlank(address) || UNKNOWN.equalsIgnoreCase(address)) {
 			address = request.getRemoteAddr();
 		}
-		return Optional.ofNullable(address).map(s -> CharSequenceUtil.split(s, ",")[0]);
+		return Optional.ofNullable(address).map(s -> CharSequenceUtil.splitToArray(s, ",")[0]);
 	}
 
 	/**
