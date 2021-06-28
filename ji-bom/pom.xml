@@ -65,7 +65,7 @@
     <hutool.version>5.7.2</hutool.version>
     <coca-kit.version>0.0.2</coca-kit.version>
     <knife4j.version>3.0.2</knife4j.version>
-    <redisson.version>3.15.6</redisson.version>
+    <redisson.version>3.16.0</redisson.version>
     <ureport.version>2.2.9</ureport.version>
     <esc-pos.version>1.0.1</esc-pos.version>
     <sequence.version>1.4.0</sequence.version>
