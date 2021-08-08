@@ -21,8 +21,8 @@ import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.core.toolkit.Assert;
 import com.baomidou.mybatisplus.core.toolkit.LambdaUtils;
 import com.baomidou.mybatisplus.core.toolkit.support.ColumnCache;
+import com.baomidou.mybatisplus.core.toolkit.support.LambdaMeta;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
-import com.baomidou.mybatisplus.core.toolkit.support.SerializedLambda;
 import org.apache.ibatis.reflection.property.PropertyNamer;
 
 import java.util.Map;
@@ -51,7 +51,7 @@ public class LambdaHelper<T> {
 
 	/**
 	 * 实体类信息
-	 * @return
+	 * @return TableInfo
 	 */
 	public Optional<TableInfo> getTableInfo() {
 		return Optional.ofNullable(TableInfoHelper.getTableInfo(entityClass));
@@ -64,7 +64,7 @@ public class LambdaHelper<T> {
 	 * @return 列名称
 	 */
 	public String colToStr(SFunction<T, ?> colFunc, boolean onlyColumn) {
-		return getColumn(LambdaUtils.resolve(colFunc), onlyColumn);
+		return getColumn(LambdaUtils.extract(colFunc), onlyColumn);
 	}
 
 	/**
@@ -73,8 +73,8 @@ public class LambdaHelper<T> {
 	 * @param onlyColumn 是否只包含列名称
 	 * @return 列
 	 */
-	protected String getColumn(SerializedLambda lambda, boolean onlyColumn) {
-		Class<?> aClass = lambda.getInstantiatedType();
+	protected String getColumn(LambdaMeta lambda, boolean onlyColumn) {
+		Class<?> aClass = lambda.getInstantiatedClass();
 		tryInitCache(aClass);
 		String fieldName = PropertyNamer.methodToProperty(lambda.getImplMethodName());
 		ColumnCache columnCache = getColumnCache(fieldName, aClass);

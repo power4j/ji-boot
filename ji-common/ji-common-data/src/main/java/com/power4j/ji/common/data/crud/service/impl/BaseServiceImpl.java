@@ -42,7 +42,8 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, 
 
 	@SuppressWarnings("unchecked")
 	@Getter
-	private final Class<T> tClass = (Class<T>) ReflectionKit.getSuperClassGenericType(getClass(), 2);
+	private final Class<T> tClass = (Class<T>) ReflectionKit.getSuperClassGenericType(getClass(), BaseServiceImpl.class,
+			2);
 
 	@Getter
 	private final LambdaHelper<T> lambdaHelper = new LambdaHelper<>(tClass);

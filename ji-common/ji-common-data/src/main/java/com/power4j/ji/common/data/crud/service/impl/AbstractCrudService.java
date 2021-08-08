@@ -38,6 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -51,16 +52,18 @@ public abstract class AbstractCrudService<M extends BaseMapper<T>, D extends Uni
 
 	@SuppressWarnings("unchecked")
 	@Getter
-	private final Class<D> dtoClass = (Class<D>) ReflectionKit.getSuperClassGenericType(getClass(), 1);
+	private final Class<D> dtoClass = (Class<D>) ReflectionKit.getSuperClassGenericType(getClass(),
+			AbstractCrudService.class, 1);
 
 	@SuppressWarnings("unchecked")
 	@Getter
-	private final Class<T> entityType = (Class<T>) ReflectionKit.getSuperClassGenericType(getClass(), 2);
+	private final Class<T> entityType = (Class<T>) ReflectionKit.getSuperClassGenericType(getClass(),
+			AbstractCrudService.class, 2);
 
 	/**
 	 * 分页查询 QueryWrapper
 	 * @param param
-	 * @return
+	 * @return Wrapper
 	 */
 	protected Wrapper<T> getSearchWrapper(@Nullable D param) {
 		return param == null ? Wrappers.emptyWrapper() : new QueryWrapper<>(toEntity(param));
@@ -91,7 +94,7 @@ public abstract class AbstractCrudService<M extends BaseMapper<T>, D extends Uni
 	@Override
 	public PageData<D> selectPage(PageRequest pageRequest, @Nullable D queryParam) {
 		Page<T> page = getBaseMapper().selectPage(CrudUtil.toPage(pageRequest), getSearchWrapper(queryParam));
-		return CrudUtil.toPageData(page).map(o -> toDto(o));
+		return CrudUtil.toPageData(page).map(this::toDto);
 	}
 
 	@Override
@@ -99,7 +102,7 @@ public abstract class AbstractCrudService<M extends BaseMapper<T>, D extends Uni
 	public D post(D dto) {
 		T entity = toEntity(prePostHandle(dto));
 		save(entity);
-		return toDto(entity);
+		return Objects.requireNonNull(toDto(entity));
 	}
 
 	@Override

@@ -91,7 +91,7 @@ public interface CrudService<D, T extends Unique> extends BaseService<T> {
 	/**
 	 * 创建
 	 * @param dto
-	 * @return
+	 * @return D
 	 */
 	D post(D dto);
 
