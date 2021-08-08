@@ -33,10 +33,23 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
       - name: Build and analyze
+        id: sonar1
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.login=$SONAR_TOKEN
+        run: |
+          ./mvnw \
+            --batch-mode \
+            org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+      - name: Retry Sonar on Failure
+        id: sonar2
+        if: steps.sonar1.outcome == 'failure'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        run: |
+          ./mvnw \
+            --batch-mode \
+            org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
       - name: Test with Maven
         run: mvn -B test -DskipTests=false
       - name: Upload to Codecov
