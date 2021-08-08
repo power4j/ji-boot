@@ -32,13 +32,33 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-      - name: Build and analyze
+      - name: Build
+        run: ./mvnw clean install
+      - name: Sonar Analyze
+        id: sonar1
+        if: github.event_name == 'push'
+        continue-on-error: true
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          # Needed to get some information about the pull request, if any
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # SonarCloud access token should be generated from https://sonarcloud.io/account/security/
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+        run: |
+          ./mvnw \
+            --batch-mode \
+            org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+      - name: Retry Sonar Analyze
+        id: sonar2
+        if: github.event_name == 'push' && steps.sonar1.outcome == 'failure'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          ./mvnw \
+            --batch-mode \
+            org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
       - name: Test with Maven
-        run: mvn -B test -DskipTests=false
+        run: ./mvnw -B test -DskipTests=false
       - name: Upload to Codecov
         uses: codecov/codecov-action@v1
         with:
