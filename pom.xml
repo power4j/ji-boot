@@ -229,50 +229,6 @@
           <goals>deploy</goals>
         </configuration>
       </plugin>
-      <!-- PMD -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-pmd-plugin</artifactId>
-        <version>3.14.0</version>
-        <configuration>
-          <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
-          <minimumPriority>1</minimumPriority>
-          <excludeRoots>
-            <excludeRoot>ji-admin/src/main/java/com/power4j/ji/admin/modules/demo</excludeRoot>
-          </excludeRoots>
-          <excludes>
-            <exclude>**/*Test.java</exclude>
-          </excludes>
-          <printFailingErrors>true</printFailingErrors>
-          <rulesets>
-            <ruleset>rulesets/java/ali-comment.xml</ruleset>
-            <ruleset>rulesets/java/ali-concurrent.xml</ruleset>
-            <ruleset>rulesets/java/ali-constant.xml</ruleset>
-            <ruleset>rulesets/java/ali-exception.xml</ruleset>
-            <ruleset>rulesets/java/ali-flowcontrol.xml</ruleset>
-            <ruleset>rulesets/java/ali-naming.xml</ruleset>
-            <ruleset>rulesets/java/ali-oop.xml</ruleset>
-            <ruleset>rulesets/java/ali-orm.xml</ruleset>
-            <ruleset>rulesets/java/ali-other.xml</ruleset>
-            <ruleset>rulesets/java/ali-set.xml</ruleset>
-          </rulesets>
-        </configuration>
-        <executions>
-          <execution>
-            <phase>verify</phase>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
-        <dependencies>
-          <dependency>
-            <groupId>com.alibaba.p3c</groupId>
-            <artifactId>p3c-pmd</artifactId>
-            <version>2.1.1</version>
-          </dependency>
-        </dependencies>
-      </plugin>
       <!-- jacoco-maven-plugin -->
       <plugin>
         <groupId>org.jacoco</groupId>
@@ -292,6 +248,12 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <!-- sonar-maven-plugin -->
+      <plugin>
+        <groupId>org.sonarsource.scanner.maven</groupId>
+        <artifactId>sonar-maven-plugin</artifactId>
+        <version>3.9.0.2155</version>
       </plugin>
     </plugins>
   </build>
