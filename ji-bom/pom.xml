@@ -64,7 +64,7 @@
     <druid.version>1.2.6</druid.version>
     <hutool.version>5.7.2</hutool.version>
     <coca-kit.version>0.0.2</coca-kit.version>
-    <knife4j.version>3.0.2</knife4j.version>
+    <knife4j.version>3.0.3</knife4j.version>
     <redisson.version>3.16.1</redisson.version>
     <ureport.version>2.2.9</ureport.version>
     <esc-pos.version>1.0.1</esc-pos.version>
