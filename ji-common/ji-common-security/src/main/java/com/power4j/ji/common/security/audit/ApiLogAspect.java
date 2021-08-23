@@ -68,14 +68,18 @@ public class ApiLogAspect {
 		finally {
 			int ms = (int) (Duration.between(startTime, Instant.now()).toMillis());
 			event.setDuration(ms);
+			publishEvent(event);
 		}
+		return obj;
+	}
+
+	protected void publishEvent(AccessEvent event) {
 		try {
 			SpringContextUtil.publishEvent(event);
 		}
 		catch (Exception e) {
 			log.warn(e.getMessage(), e);
 		}
-		return obj;
 	}
 
 	protected String getMethodName(ProceedingJoinPoint point) {
