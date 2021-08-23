@@ -19,9 +19,9 @@ package com.power4j.ji.common.data.mybatis.extension.scope.processor;
 import cn.hutool.core.collection.CollectionUtil;
 import com.power4j.ji.common.data.mybatis.extension.scope.core.InSubQuery;
 import com.power4j.ji.common.data.mybatis.extension.scope.core.InValues;
-import com.power4j.ji.common.data.mybatis.extension.scope.core.ProcessOpt;
 import com.power4j.ji.common.data.mybatis.extension.scope.core.MpQueryContext;
 import com.power4j.ji.common.data.mybatis.extension.scope.core.Pair;
+import com.power4j.ji.common.data.mybatis.extension.scope.core.ProcessOpt;
 import com.power4j.ji.common.data.mybatis.extension.scope.core.ScopeModel;
 import com.power4j.ji.common.data.mybatis.extension.scope.exceptions.SkipQueryException;
 

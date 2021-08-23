@@ -17,8 +17,8 @@
 package com.power4j.ji.common.data.mybatis.extension.scope.processor;
 
 import com.baomidou.mybatisplus.core.toolkit.PluginUtils;
-import com.power4j.ji.common.data.mybatis.extension.scope.core.ProcessOpt;
 import com.power4j.ji.common.data.mybatis.extension.scope.core.MpQueryContext;
+import com.power4j.ji.common.data.mybatis.extension.scope.core.ProcessOpt;
 import com.power4j.ji.common.data.mybatis.extension.scope.exceptions.SkipQueryException;
 import com.power4j.ji.common.data.mybatis.extension.sql.SqlHelper;
 import net.sf.jsqlparser.expression.Alias;

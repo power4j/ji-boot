@@ -18,12 +18,12 @@ package com.power4j.ji.common.data.mybatis.extension.scope.processor;
 
 import cn.hutool.core.text.CharSequenceUtil;
 import com.power4j.ji.common.data.mybatis.extension.scope.core.InScope;
-import com.power4j.ji.common.data.mybatis.extension.scope.core.ProcessOpt;
 import com.power4j.ji.common.data.mybatis.extension.scope.core.MpQueryContext;
+import com.power4j.ji.common.data.mybatis.extension.scope.core.ProcessOpt;
 import com.power4j.ji.common.data.mybatis.extension.scope.core.ScopeModel;
 import com.power4j.ji.common.data.mybatis.extension.scope.core.ScopeModelUtil;
-import com.power4j.ji.common.data.mybatis.extension.scope.exceptions.SqlProcessException;
 import com.power4j.ji.common.data.mybatis.extension.scope.exceptions.SkipQueryException;
+import com.power4j.ji.common.data.mybatis.extension.scope.exceptions.SqlProcessException;
 import net.sf.jsqlparser.JSQLParserException;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.session.Configuration;

@@ -17,8 +17,8 @@
 package com.power4j.ji.common.data.mybatis.extension.scope.processor;
 
 import com.power4j.ji.common.data.mybatis.extension.scope.core.InScope;
-import com.power4j.ji.common.data.mybatis.extension.scope.core.ProcessOpt;
 import com.power4j.ji.common.data.mybatis.extension.scope.core.MpQueryContext;
+import com.power4j.ji.common.data.mybatis.extension.scope.core.ProcessOpt;
 import com.power4j.ji.common.data.mybatis.extension.scope.core.ScopeModel;
 import com.power4j.ji.common.data.mybatis.extension.scope.core.ScopeModelUtil;
 import com.power4j.ji.common.data.mybatis.extension.scope.exceptions.SkipQueryException;

@@ -19,8 +19,8 @@ package com.power4j.ji.common.data.mybatis.extension.scope.processor;
 import cn.hutool.core.text.CharSequenceUtil;
 import com.baomidou.mybatisplus.core.toolkit.PluginUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
-import com.power4j.ji.common.data.mybatis.extension.scope.core.ProcessOpt;
 import com.power4j.ji.common.data.mybatis.extension.scope.core.MpQueryContext;
+import com.power4j.ji.common.data.mybatis.extension.scope.core.ProcessOpt;
 import com.power4j.ji.common.data.mybatis.extension.scope.exceptions.SkipQueryException;
 
 import java.util.Map;
