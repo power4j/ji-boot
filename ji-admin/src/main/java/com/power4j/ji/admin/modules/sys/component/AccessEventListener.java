@@ -17,9 +17,12 @@
 package com.power4j.ji.admin.modules.sys.component;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.text.CharSequenceUtil;
 import com.power4j.coca.kit.common.async.TaskKit;
 import com.power4j.ji.admin.modules.sys.dao.SysLogMapper;
 import com.power4j.ji.admin.modules.sys.entity.SysLog;
+import com.power4j.ji.common.data.region.GeoIp;
+import com.power4j.ji.common.data.region.GeoIpRegistry;
 import com.power4j.ji.common.security.audit.AccessEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,12 +42,20 @@ public class AccessEventListener implements ApplicationListener<PayloadApplicati
 
 	private final SysLogMapper sysLogMapper;
 
+	private final GeoIpRegistry geoIpRegistry;
+
 	@Override
-	public void onApplicationEvent(PayloadApplicationEvent<AccessEvent> payload) {
-		final SysLog entity = BeanUtil.toBean(payload.getPayload(), SysLog.class);
-		TaskKit.runLater(() -> sysLogMapper.insert(entity), ((duration, throwable) -> {
+	public void onApplicationEvent(PayloadApplicationEvent<AccessEvent> event) {
+		TaskKit.runLater(() -> this.save(event.getPayload()), ((duration, throwable) -> {
 			log.error("访问日志保存失败", throwable);
 		}));
+	}
+
+	private void save(AccessEvent accessEvent) {
+		final SysLog entity = BeanUtil.toBean(accessEvent, SysLog.class);
+		String geo = geoIpRegistry.search(accessEvent.getLocation()).orElse(GeoIp.UNKNOWN).displayString();
+		entity.setGeoIp(CharSequenceUtil.subPre(geo, 40));
+		sysLogMapper.insert(entity);
 	}
 
 }

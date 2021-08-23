@@ -1,3 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.power4j.ji.common.data.mybatis.config.MybatisPlusConfig,\
-  com.power4j.ji.common.data.error.DataAccessExceptionTranslator
+  com.power4j.ji.common.data.error.DataAccessExceptionTranslator,\
+  com.power4j.ji.common.data.region.EmbeddedGeoIpDbConfig

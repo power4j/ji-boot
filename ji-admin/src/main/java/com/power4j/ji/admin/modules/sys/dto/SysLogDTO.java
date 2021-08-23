@@ -125,6 +125,12 @@ public class SysLogDTO implements Unique, Serializable {
 	@Schema(description = "异常信息")
 	private String exMsg;
 
+	/**
+	 * IP地理信息
+	 */
+	@Schema(description = "IP地理信息")
+	private String geoIp;
+
 	@Override
 	public Long getOnlyId() {
 		return id;

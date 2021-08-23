@@ -111,6 +111,11 @@ public class SysLog implements Unique, Serializable {
 	 */
 	private String exMsg;
 
+	/**
+	 * IP地理信息
+	 */
+	private String geoIp;
+
 	@Override
 	public Long getOnlyId() {
 		return id;

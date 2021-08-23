@@ -137,6 +137,20 @@
         <directory>src/main/resources</directory>
         <filtering>true</filtering>
       </resource>
+      <resource>
+        <directory>src/main/resources/ip2region</directory>
+        <filtering>true</filtering>
+        <excludes>
+          <exclude>ip2region.db</exclude>
+        </excludes>
+      </resource>
+      <resource>
+        <directory>src/main/resources/ip2region</directory>
+        <filtering>false</filtering>
+        <includes>
+          <include>ip2region.db</include>
+        </includes>
+      </resource>
     </resources>
     <plugins>
       <plugin>
@@ -158,6 +172,11 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
+        <configuration>
+          <nonFilteredFileExtensions>
+            <nonFilteredFileExtension>db</nonFilteredFileExtension>
+          </nonFilteredFileExtensions>
+        </configuration>
       </plugin>
     </plugins>
   </build>
