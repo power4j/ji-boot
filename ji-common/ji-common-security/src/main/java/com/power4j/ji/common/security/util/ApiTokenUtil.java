@@ -20,6 +20,7 @@ import cn.hutool.core.text.CharSequenceUtil;
 import com.power4j.ji.common.core.constant.SecurityConstant;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.Nullable;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -37,6 +38,7 @@ public class ApiTokenUtil {
 	 * @param request
 	 * @return 没有值返回null
 	 */
+	@Nullable
 	public String getApiTokenValue(HttpServletRequest request) {
 		String value = request.getHeader(SecurityConstant.HEADER_TOKEN_KEY);
 		if (CharSequenceUtil.isNotBlank(value)) {

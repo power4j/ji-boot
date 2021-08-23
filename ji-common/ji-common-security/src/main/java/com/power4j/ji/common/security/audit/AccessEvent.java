@@ -33,6 +33,11 @@ public class AccessEvent implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
+	 * 请求ID
+	 */
+	private String requestId;
+
+	/**
 	 * 模块
 	 */
 	@Schema(description = "模块")

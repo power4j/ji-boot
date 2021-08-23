@@ -42,6 +42,12 @@ public class SysLogDTO implements Unique, Serializable {
 	private Long id;
 
 	/**
+	 * 请求ID
+	 */
+	@Schema(description = "请求ID")
+	private String requestId;
+
+	/**
 	 * 模块
 	 */
 	@Schema(description = "模块")

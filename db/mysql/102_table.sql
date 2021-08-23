@@ -267,6 +267,7 @@ CREATE TABLE `t_sys_position_grant`
 CREATE TABLE `t_sys_log`
 (
     `id`        BIGINT      NOT NULL COMMENT '主健',
+    `request_id` VARCHAR(40) NOT NULL DEFAULT '' COMMENT '请求ID',
     `module`    VARCHAR(100) COMMENT '模块',
     `api_tag`   VARCHAR(100) COMMENT '名称',
     `access_at`  DATETIME NOT NULL COMMENT '访问时间',

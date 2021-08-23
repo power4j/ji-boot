@@ -42,6 +42,11 @@ public class SysLog implements Unique, Serializable {
 	private Long id;
 
 	/**
+	 * 请求ID
+	 */
+	private String requestId;
+
+	/**
 	 * 模块
 	 */
 	private String module;

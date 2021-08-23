@@ -42,18 +42,18 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, 
 
 	@SuppressWarnings("unchecked")
 	@Getter
-	private final Class<T> tClass = (Class<T>) ReflectionKit.getSuperClassGenericType(getClass(), BaseServiceImpl.class,
-			2);
+	private final Class<T> entityType = (Class<T>) ReflectionKit.getSuperClassGenericType(getClass(),
+			BaseServiceImpl.class, 1);
 
 	@Getter
-	private final LambdaHelper<T> lambdaHelper = new LambdaHelper<>(tClass);
+	private final LambdaHelper<T> lambdaHelper = new LambdaHelper<>(entityType);
 
 	@Override
 	public int countById(Serializable id) {
-		TableInfo tableInfo = TableInfoHelper.getTableInfo(tClass);
+		TableInfo tableInfo = TableInfoHelper.getTableInfo(entityType);
 		if (tableInfo == null) {
 			throw new IllegalStateException(
-					String.format("Can not find TableInfo for %s, check mybatis config", tClass.getSimpleName()));
+					String.format("Can not find TableInfo for %s, check mybatis config", entityType.getSimpleName()));
 		}
 		QueryWrapper<T> wrapper = new QueryWrapper<>();
 		wrapper.eq(tableInfo.getKeyColumn(), id);
@@ -73,21 +73,21 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, 
 	}
 
 	@Override
-	public int countByColumn(String column, Object value, Long ignoreId) {
+	public int countByColumn(String column, Object value, @Nullable Long ignoreId) {
 		Map<String, Object> map = new HashMap<>(1);
 		map.put(column, value);
 		return countByColumns(map, ignoreId);
 	}
 
 	@Override
-	public int countByColumns(Map<String, Object> columns, Long ignoreId) {
+	public int countByColumns(Map<String, Object> columns, @Nullable Long ignoreId) {
 		QueryWrapper<T> wrapper = new QueryWrapper<>();
 		wrapper.allEq(columns);
 		if (ignoreId != null) {
-			TableInfo tableInfo = TableInfoHelper.getTableInfo(tClass);
+			TableInfo tableInfo = TableInfoHelper.getTableInfo(entityType);
 			if (tableInfo == null) {
-				throw new IllegalStateException(
-						String.format("Can not find TableInfo for %s, check mybatis config", tClass.getSimpleName()));
+				throw new IllegalStateException(String.format("Can not find TableInfo for %s, check mybatis config",
+						entityType.getSimpleName()));
 			}
 			wrapper.ne(tableInfo.getKeyColumn(), ignoreId);
 		}

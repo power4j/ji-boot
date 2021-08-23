@@ -556,22 +556,5 @@ insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (133817864
 insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1338178645550809090,1408461598310342658);
 insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1338178645550809090,1408462932266786818);
 insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1338178645550809090,1408463616307437570);
-insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1341424978898296834,10010000001);
-insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1341424978898296834,10010000002);
-insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1341424978898296834,10020000001);
-insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1341424978898296834,1338793651296350209);
-insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1341424978898296834,1338795784578027521);
-insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1341424978898296834,1338795995027230721);
-insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1341424978898296834,1338796190397911041);
-insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1341424978898296834,1339095398288048129);
-insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1341424978898296834,1339095620003151874);
-insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1341424978898296834,1339141805648650242);
-insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1341424978898296834,1339141875248930817);
-insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1341424978898296834,1339141968685441026);
-insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1341424978898296834,1339142060758802434);
-insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1341424978898296834,1339142219286716418);
-insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1341424978898296834,1340676892001431553);
-insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1341424978898296834,1340701292788572161);
-insert  into `t_sys_resource_grantee`(`role_id`,`resource_id`) values (1341424978898296834,1340701705814269954);
 
 SET FOREIGN_KEY_CHECKS = 1;

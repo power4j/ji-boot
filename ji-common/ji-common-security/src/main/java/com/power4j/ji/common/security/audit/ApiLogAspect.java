@@ -19,6 +19,7 @@ package com.power4j.ji.common.security.audit;
 import cn.hutool.core.text.CharSequenceUtil;
 import com.power4j.coca.kit.common.number.Num;
 import com.power4j.coca.kit.common.text.StringPool;
+import com.power4j.ji.common.core.context.RequestContext;
 import com.power4j.ji.common.core.model.ApiResponse;
 import com.power4j.ji.common.core.util.HttpServletRequestUtil;
 import com.power4j.ji.common.core.util.SpringContextUtil;
@@ -28,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -44,6 +46,9 @@ import java.util.Optional;
 @Aspect
 @RequiredArgsConstructor
 public class ApiLogAspect {
+
+	@Autowired
+	private RequestContext requestContext;
 
 	@Around("@annotation(apiLog)")
 	public Object around(ProceedingJoinPoint point, ApiLog apiLog) throws Throwable {
@@ -105,6 +110,7 @@ public class ApiLogAspect {
 			event.setUid(user.getUid());
 			event.setUsername(user.getUsername());
 		});
+		requestContext.getRequestId().ifPresent(event::setRequestId);
 		// default values
 		event.setDuration(Num.ZERO);
 		event.setResponseCode(StringPool.EMPTY);
