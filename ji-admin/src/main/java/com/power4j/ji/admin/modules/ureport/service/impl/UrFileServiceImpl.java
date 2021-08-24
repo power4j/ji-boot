@@ -53,7 +53,7 @@ public class UrFileServiceImpl extends AbstractCrudService<UrFileMapper, UrFileD
 	private final DaoReportProvider daoReportProvider;
 
 	@Override
-	public int countFileName(String file, @Nullable Long ignoreId) {
+	public long countFileName(String file, @Nullable Long ignoreId) {
 		return countByLambdaColumn(UrData::getFile, file, ignoreId);
 	}
 

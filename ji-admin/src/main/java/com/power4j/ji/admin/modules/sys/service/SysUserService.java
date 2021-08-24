@@ -54,6 +54,6 @@ public interface SysUserService extends CrudService<SysUserDTO, SysUser> {
 	 * @param ignoreId 排除的ID
 	 * @return
 	 */
-	int countUsername(String username, @Nullable Long ignoreId);
+	long countUsername(String username, @Nullable Long ignoreId);
 
 }

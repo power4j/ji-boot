@@ -45,6 +45,6 @@ public interface SysDictItemService extends CrudService<SysDictItemDTO, SysDictI
 	 * @param dictId
 	 * @return
 	 */
-	int countDictItemValue(String value, @Nullable Long ignoreId, Serializable dictId);
+	long countDictItemValue(String value, @Nullable Long ignoreId, Serializable dictId);
 
 }

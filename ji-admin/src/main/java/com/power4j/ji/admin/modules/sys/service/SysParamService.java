@@ -36,7 +36,7 @@ public interface SysParamService extends CrudService<SysParamDTO, SysParam> {
 	 * @param ignoreId 排除的ID
 	 * @return
 	 */
-	int countParamKey(String key, @Nullable Long ignoreId);
+	long countParamKey(String key, @Nullable Long ignoreId);
 
 	/**
 	 * 根据Key查找

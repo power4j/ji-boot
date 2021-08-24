@@ -88,7 +88,7 @@ public class SysUserServiceImpl extends AbstractCrudService<SysUserMapper, SysUs
 	}
 
 	@Override
-	public int countUsername(String username, Long ignoreId) {
+	public long countUsername(String username, Long ignoreId) {
 		return countByLambdaColumn(SysUser::getUsername, username, ignoreId);
 	}
 

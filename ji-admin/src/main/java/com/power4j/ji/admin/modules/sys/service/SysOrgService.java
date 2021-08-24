@@ -63,6 +63,6 @@ public interface SysOrgService extends CrudService<SysOrgNodeDTO, SysOrg> {
 	 * @param ignoreId 排除的ID
 	 * @return
 	 */
-	int countOrgCode(String code, @Nullable Long ignoreId);
+	long countOrgCode(String code, @Nullable Long ignoreId);
 
 }

@@ -78,7 +78,7 @@ public interface SysResourceService extends CrudService<SysResourceDTO, SysResou
 	 * @param ignoreId 排除的ID
 	 * @return
 	 */
-	int countResourceName(String name, @Nullable Long ignoreId);
+	long countResourceName(String name, @Nullable Long ignoreId);
 
 	/**
 	 * 统计使用次数
@@ -86,6 +86,6 @@ public interface SysResourceService extends CrudService<SysResourceDTO, SysResou
 	 * @param ignoreId 排除的ID
 	 * @return
 	 */
-	int countResourcePath(String path, @Nullable Long ignoreId);
+	long countResourcePath(String path, @Nullable Long ignoreId);
 
 }

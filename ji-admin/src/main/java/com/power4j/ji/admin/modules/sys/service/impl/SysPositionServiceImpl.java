@@ -44,7 +44,7 @@ public class SysPositionServiceImpl extends AbstractCrudService<SysPositionMappe
 		implements SysPositionService {
 
 	@Override
-	public int countRoleCode(String code, @Nullable Long ignoreId) {
+	public long countRoleCode(String code, @Nullable Long ignoreId) {
 		return countByLambdaColumn(SysPosition::getCode, code, ignoreId);
 	}
 

@@ -49,7 +49,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, 
 	private final LambdaHelper<T> lambdaHelper = new LambdaHelper<>(entityType);
 
 	@Override
-	public int countById(Serializable id) {
+	public long countById(Serializable id) {
 		TableInfo tableInfo = TableInfoHelper.getTableInfo(entityType);
 		if (tableInfo == null) {
 			throw new IllegalStateException(
@@ -61,26 +61,26 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, 
 	}
 
 	@Override
-	public int countByLambdaColumn(SFunction<T, ?> colFunc, Object value, @Nullable Long ignoreId) {
+	public long countByLambdaColumn(SFunction<T, ?> colFunc, Object value, @Nullable Long ignoreId) {
 		return countByColumn(lambdaHelper.colToStr(colFunc, true), value, ignoreId);
 	}
 
 	@Override
-	public int countByLambdaColumns(Map<SFunction<T, ?>, Object> columns, @Nullable Long ignoreId) {
+	public long countByLambdaColumns(Map<SFunction<T, ?>, Object> columns, @Nullable Long ignoreId) {
 		Map<String, Object> parsed = columns.entrySet().stream()
 				.collect(Collectors.toMap(kv -> lambdaHelper.colToStr(kv.getKey(), true), Map.Entry::getValue));
 		return countByColumns(parsed, ignoreId);
 	}
 
 	@Override
-	public int countByColumn(String column, Object value, @Nullable Long ignoreId) {
+	public long countByColumn(String column, Object value, @Nullable Long ignoreId) {
 		Map<String, Object> map = new HashMap<>(1);
 		map.put(column, value);
 		return countByColumns(map, ignoreId);
 	}
 
 	@Override
-	public int countByColumns(Map<String, Object> columns, @Nullable Long ignoreId) {
+	public long countByColumns(Map<String, Object> columns, @Nullable Long ignoreId) {
 		QueryWrapper<T> wrapper = new QueryWrapper<>();
 		wrapper.allEq(columns);
 		if (ignoreId != null) {

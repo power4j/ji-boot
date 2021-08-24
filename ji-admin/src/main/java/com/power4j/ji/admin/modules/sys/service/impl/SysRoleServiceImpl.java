@@ -57,7 +57,7 @@ public class SysRoleServiceImpl extends AbstractCrudService<SysRoleMapper, SysRo
 	private final RoleScope roleScope;
 
 	@Override
-	public int countRoleCode(String code, @Nullable Long ignoreId) {
+	public long countRoleCode(String code, @Nullable Long ignoreId) {
 		return countByLambdaColumn(SysRole::getCode, code, ignoreId);
 	}
 

@@ -52,7 +52,7 @@ public class SysDictServiceImpl extends AbstractCrudService<SysDictMapper, SysDi
 	private final SysDictItemMapper sysDictItemMapper;
 
 	@Override
-	public int countDictCode(String code, Long ignoreId) {
+	public long countDictCode(String code, Long ignoreId) {
 		return countByLambdaColumn(SysDict::getCode, code, ignoreId);
 	}
 

@@ -36,7 +36,7 @@ public interface SysDictService extends CrudService<SysDictDTO, SysDict> {
 	 * @param ignoreId
 	 * @return
 	 */
-	int countDictCode(String code, @Nullable Long ignoreId);
+	long countDictCode(String code, @Nullable Long ignoreId);
 
 	/**
 	 * 查询

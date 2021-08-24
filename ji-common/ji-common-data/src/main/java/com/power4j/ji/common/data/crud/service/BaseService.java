@@ -39,7 +39,7 @@ public interface BaseService<T> {
 	 * @param id
 	 * @return 记录行数
 	 */
-	int countById(Serializable id);
+	long countById(Serializable id);
 
 	/**
 	 * 根据某个字段进行统计
@@ -48,7 +48,7 @@ public interface BaseService<T> {
 	 * @param ignoreId 排除的ID
 	 * @return 记录行数
 	 */
-	int countByLambdaColumn(SFunction<T, ?> colFunc, Object value, @Nullable Long ignoreId);
+	long countByLambdaColumn(SFunction<T, ?> colFunc, Object value, @Nullable Long ignoreId);
 
 	/**
 	 * 根据某些字段进行统计
@@ -56,7 +56,7 @@ public interface BaseService<T> {
 	 * @param ignoreId 排除的ID
 	 * @return 记录行数
 	 */
-	int countByLambdaColumns(Map<SFunction<T, ?>, Object> columns, @Nullable Long ignoreId);
+	long countByLambdaColumns(Map<SFunction<T, ?>, Object> columns, @Nullable Long ignoreId);
 
 	/**
 	 * 根据某个字段进行统计
@@ -65,7 +65,7 @@ public interface BaseService<T> {
 	 * @param ignoreId 排除的ID
 	 * @return 记录行数
 	 */
-	int countByColumn(String column, Object value, @Nullable Long ignoreId);
+	long countByColumn(String column, Object value, @Nullable Long ignoreId);
 
 	/**
 	 * 根据某些字段进行统计
@@ -73,7 +73,7 @@ public interface BaseService<T> {
 	 * @param ignoreId 排除的ID
 	 * @return 记录行数
 	 */
-	int countByColumns(Map<String, Object> columns, @Nullable Long ignoreId);
+	long countByColumns(Map<String, Object> columns, @Nullable Long ignoreId);
 
 	/**
 	 * 校验 SysCtl

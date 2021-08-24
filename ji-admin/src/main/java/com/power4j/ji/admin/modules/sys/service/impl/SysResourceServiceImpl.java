@@ -151,12 +151,12 @@ public class SysResourceServiceImpl extends
 	}
 
 	@Override
-	public int countResourceName(String name, Long ignoreId) {
+	public long countResourceName(String name, Long ignoreId) {
 		return countByLambdaColumn(SysResource::getName, name, ignoreId);
 	}
 
 	@Override
-	public int countResourcePath(String path, @Nullable Long ignoreId) {
+	public long countResourcePath(String path, @Nullable Long ignoreId) {
 		return countByLambdaColumn(SysResource::getPath, path, ignoreId);
 	}
 

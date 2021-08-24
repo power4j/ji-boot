@@ -87,7 +87,8 @@ public class SysDictItemController implements CrudApi<Long, SysDictItemDTO> {
 	public ApiResponse<Integer> countOfValue(@RequestParam String value,
 			@Parameter(description = "排除的字典项ID") @RequestParam(required = false) Long excludeId,
 			@Parameter(description = "字典ID") @RequestParam Long dictId) {
-		return ApiResponseUtil.ok(sysDictItemService.countDictItemValue(value, excludeId, dictId));
+		return ApiResponseUtil.ok(sysDictItemService.countDictItemValue(value, excludeId, dictId))
+				.mapIfPresent(Math::toIntExact);
 	}
 
 }

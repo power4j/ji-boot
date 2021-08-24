@@ -115,7 +115,7 @@ public class SysUserController implements CrudApi<Long, SysUserDTO> {
 	@Operation(summary = "统计用户名", description = "返回统计值,可用于唯一性检查")
 	public ApiResponse<Integer> countOfUsername(@RequestParam String value,
 			@Parameter(description = "排除的用户ID") @RequestParam(required = false) Long excludeId) {
-		return ApiResponseUtil.ok(sysUserService.countUsername(value, excludeId));
+		return ApiResponseUtil.ok(sysUserService.countUsername(value, excludeId)).mapIfPresent(Math::toIntExact);
 	}
 
 	@GetMapping("/{username}/roles")

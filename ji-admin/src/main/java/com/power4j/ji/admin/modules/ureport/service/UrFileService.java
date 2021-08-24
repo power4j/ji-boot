@@ -39,7 +39,7 @@ public interface UrFileService extends CrudService<UrFileDTO, UrData> {
 	 * @param ignoreId 排除的ID
 	 * @return
 	 */
-	int countFileName(String file, @Nullable Long ignoreId);
+	long countFileName(String file, @Nullable Long ignoreId);
 
 	/**
 	 * 查询

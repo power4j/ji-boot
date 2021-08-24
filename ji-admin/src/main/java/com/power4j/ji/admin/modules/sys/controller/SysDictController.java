@@ -17,6 +17,7 @@
 package com.power4j.ji.admin.modules.sys.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.NumberUtil;
 import com.power4j.ji.admin.modules.sys.dto.SysDictDTO;
 import com.power4j.ji.admin.modules.sys.dto.SysDictItemDTO;
 import com.power4j.ji.admin.modules.sys.service.SysDictItemService;
@@ -111,7 +112,7 @@ public class SysDictController implements CrudApi<Long, SysDictDTO> {
 	@Operation(summary = "查找字典代码", description = "返回统计值,可用于唯一性检查")
 	public ApiResponse<Integer> countOfCode(@RequestParam String value,
 			@Parameter(description = "排除的ID") @RequestParam(required = false) Long excludeId) {
-		return ApiResponseUtil.ok(sysDictService.countDictCode(value, excludeId));
+		return ApiResponseUtil.ok(sysDictService.countDictCode(value, excludeId)).mapIfPresent(Math::toIntExact);
 	}
 
 	@GetMapping("/code/{code}")

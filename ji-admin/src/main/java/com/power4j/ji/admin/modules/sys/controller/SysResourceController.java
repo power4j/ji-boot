@@ -120,14 +120,16 @@ public class SysResourceController implements CrudApi<Long, SysResourceDTO> {
 	@Operation(summary = "统计name", description = "返回统计值,可用于唯一性检查")
 	public ApiResponse<Integer> countOfName(@RequestParam String value,
 			@Parameter(description = "排除的ID") @RequestParam(required = false) Long excludeId) {
-		return ApiResponseUtil.ok(sysResourceService.countResourceName(value, excludeId));
+		return ApiResponseUtil.ok(sysResourceService.countResourceName(value, excludeId))
+				.mapIfPresent(Math::toIntExact);
 	}
 
 	@GetMapping("/counter/path")
 	@Operation(summary = "统计path", description = "返回统计值,可用于唯一性检查")
 	public ApiResponse<Integer> countOfPath(@RequestParam String value,
 			@Parameter(description = "排除的ID") @RequestParam(required = false) Long excludeId) {
-		return ApiResponseUtil.ok(sysResourceService.countResourcePath(value, excludeId));
+		return ApiResponseUtil.ok(sysResourceService.countResourcePath(value, excludeId))
+				.mapIfPresent(Math::toIntExact);
 	}
 
 }

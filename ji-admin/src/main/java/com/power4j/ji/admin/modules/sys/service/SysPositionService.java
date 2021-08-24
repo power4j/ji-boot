@@ -37,7 +37,7 @@ public interface SysPositionService extends CrudService<SysPositionDTO, SysPosit
 	 * @param ignoreId 排除的ID
 	 * @return
 	 */
-	int countRoleCode(String code, @Nullable Long ignoreId);
+	long countRoleCode(String code, @Nullable Long ignoreId);
 
 	/**
 	 * 角色列表

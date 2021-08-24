@@ -101,7 +101,7 @@ public class SysRoleController implements CrudApi<Long, SysRoleDTO> {
 	@Operation(summary = "统计角色编码", description = "返回统计值,可用于唯一性检查")
 	public ApiResponse<Integer> countOfCode(@RequestParam String value,
 			@Parameter(description = "排除的ID") @RequestParam(required = false) Long excludeId) {
-		return ApiResponseUtil.ok(sysRoleService.countRoleCode(value, excludeId));
+		return ApiResponseUtil.ok(sysRoleService.countRoleCode(value, excludeId)).mapIfPresent(Math::toIntExact);
 	}
 
 	@ApiLog

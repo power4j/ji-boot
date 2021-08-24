@@ -111,7 +111,7 @@ public class SysParamController implements CrudApi<Long, SysParamDTO> {
 	@Operation(summary = "统计参数名", description = "返回统计值,可用于唯一性检查")
 	public ApiResponse<Integer> countOfKey(@RequestParam String value,
 			@Parameter(description = "排除的ID") @RequestParam(required = false) Long excludeId) {
-		return ApiResponseUtil.ok(sysParamService.countParamKey(value, excludeId));
+		return ApiResponseUtil.ok(sysParamService.countParamKey(value, excludeId)).mapIfPresent(Math::toIntExact);
 	}
 
 }

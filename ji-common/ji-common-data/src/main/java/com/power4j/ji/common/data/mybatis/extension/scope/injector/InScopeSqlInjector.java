@@ -19,6 +19,7 @@ package com.power4j.ji.common.data.mybatis.extension.scope.injector;
 import com.baomidou.mybatisplus.core.injector.AbstractMethod;
 import com.baomidou.mybatisplus.core.injector.DefaultSqlInjector;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.power4j.ji.common.data.mybatis.extension.scope.injector.methods.SelectListInScope;
 import com.power4j.ji.common.data.mybatis.extension.scope.injector.methods.SelectMapsInScope;
 import com.power4j.ji.common.data.mybatis.extension.scope.injector.methods.SelectMapsPageInScope;
@@ -43,14 +44,14 @@ public class InScopeSqlInjector extends DefaultSqlInjector {
 					new SelectMapsPageInScope(), new SelectObjsInScope()));
 
 	@Override
-	public List<AbstractMethod> getMethodList(Class<?> mapperClass) {
+	public List<AbstractMethod> getMethodList(Class<?> mapperClass, TableInfo tableInfo) {
 		List<AbstractMethod> methodList = new ArrayList<>();
 		if (ScopeSupport.class.isAssignableFrom(mapperClass)) {
 			methodList.addAll(ADDITIONAL_METHODS);
 		}
 		// Defaults
 		if (BaseMapper.class.isAssignableFrom(mapperClass)) {
-			methodList.addAll(super.getMethodList(mapperClass));
+			methodList.addAll(super.getMethodList(mapperClass, tableInfo));
 		}
 		return Collections.unmodifiableList(methodList);
 	}
