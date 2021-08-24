@@ -63,7 +63,7 @@
     <!-- dependencies -->
     <druid.version>1.2.6</druid.version>
     <hutool.version>5.7.9</hutool.version>
-    <coca-kit.version>0.0.2</coca-kit.version>
+    <coca-kit.version>0.1.0</coca-kit.version>
     <knife4j.version>3.0.3</knife4j.version>
     <redisson.version>3.16.1</redisson.version>
     <ureport.version>2.2.9</ureport.version>
