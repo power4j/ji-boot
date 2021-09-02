@@ -17,21 +17,22 @@
 package com.power4j.ji.common.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.power4j.ji.common.core.model.ApiResponse;
 import com.power4j.ji.common.core.util.ApiResponseUtil;
 import com.power4j.ji.common.core.util.HttpServletResponseUtil;
-import com.power4j.ji.common.security.model.ApiToken;
 import com.power4j.ji.common.security.service.TokenService;
+import com.power4j.ji.common.security.util.ApiTokenUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * @author CJ (power4j@outlook.com)
@@ -40,7 +41,7 @@ import java.io.IOException;
  */
 @Slf4j
 @RequiredArgsConstructor
-public class SignInSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+public class DefaultLogoutHandler implements LogoutHandler {
 
 	@Setter
 	private ObjectMapper objectMapper = new ObjectMapper();
@@ -48,13 +49,28 @@ public class SignInSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 	private final TokenService tokenService;
 
 	@Override
-	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-			Authentication authentication) throws IOException, ServletException {
-		log.debug("Authentication success : {}", authentication.getName());
-		ApiToken token = tokenService.createToken(authentication);
-		HttpServletResponseUtil.writeJson(response, objectMapper, ApiResponseUtil.ok(token), HttpStatus.OK);
+	public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+		log.debug("Handling logout: {}", Optional.ofNullable(authentication).map(o -> o.getName()).orElse(null));
+		try {
+			doLogout(request, response);
+		}
+		catch (Exception e) {
+			log.error(e.getMessage(), e);
+		}
+	}
 
-		clearAuthenticationAttributes(request);
+	protected void doLogout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		ApiResponse<?> data = ApiResponseUtil.ok();
+		String tokenValue = ApiTokenUtil.getApiTokenValue(request).map(String::trim).orElse(null);
+		if (tokenValue == null || tokenValue.isEmpty()) {
+			data = ApiResponseUtil.badRequest("No token");
+		}
+		else {
+			if (!tokenService.deleteToken(tokenValue)) {
+				data = ApiResponseUtil.badRequest("Bad token : " + tokenValue);
+			}
+		}
+		HttpServletResponseUtil.writeJson(response, objectMapper, data, HttpStatus.OK);
 	}
 
 }

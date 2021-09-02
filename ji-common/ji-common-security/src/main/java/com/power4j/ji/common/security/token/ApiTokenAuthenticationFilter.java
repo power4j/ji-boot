@@ -16,12 +16,10 @@
 
 package com.power4j.ji.common.security.token;
 
-import com.power4j.ji.common.core.constant.SecurityConstant;
-import com.power4j.ji.common.security.util.ApiTokenUtil;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationManagerResolver;
+import org.springframework.security.web.authentication.AuthenticationConverter;
+import org.springframework.security.web.authentication.AuthenticationFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -31,25 +29,21 @@ import java.io.IOException;
 
 /**
  * @author CJ (power4j@outlook.com)
- * @date 2020/11/22
+ * @date 2021/8/31
  * @since 1.0
  */
-@Slf4j
-public class ApiTokenAuthenticationFilter extends OncePerRequestFilter {
+public class ApiTokenAuthenticationFilter extends AuthenticationFilter {
 
-	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException {
-		SecurityContext securityContext = SecurityContextHolder.getContext();
-		if (securityContext.getAuthentication() == null || !securityContext.getAuthentication().isAuthenticated()) {
-			String tokenValue = ApiTokenUtil.getApiTokenValue(request);
-			if (tokenValue != null && !tokenValue.isEmpty()) {
-				ApiTokenAuthentication apiTokenAuthentication = new ApiTokenAuthentication(tokenValue.trim());
-				SecurityContextHolder.getContext().setAuthentication(apiTokenAuthentication);
-			}
-			request.setAttribute(SecurityConstant.TOKEN_ATTRIBUTE_KEY, true);
-		}
-		filterChain.doFilter(request, response);
+	public ApiTokenAuthenticationFilter(AuthenticationManager authenticationManager, AuthenticationConverter authenticationConverter) {
+		super(authenticationManager, authenticationConverter);
 	}
 
+	public ApiTokenAuthenticationFilter(AuthenticationManagerResolver<HttpServletRequest> authenticationManagerResolver, AuthenticationConverter authenticationConverter) {
+		super(authenticationManagerResolver, authenticationConverter);
+	}
+
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+		super.doFilterInternal(request, response, filterChain);
+	}
 }

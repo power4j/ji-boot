@@ -16,6 +16,7 @@
 
 package com.power4j.ji.admin.modules.security.service;
 
+import com.power4j.ji.common.security.social.SocialUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
@@ -23,6 +24,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  * @date 2020/11/26
  * @since 1.0
  */
-public interface AuthService extends UserDetailsService {
+public interface AuthService extends UserDetailsService, SocialUserDetailsService {
 
 }

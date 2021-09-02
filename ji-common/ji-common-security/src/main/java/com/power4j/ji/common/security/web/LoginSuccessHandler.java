@@ -14,25 +14,23 @@
  * limitations under the License.
  */
 
-package com.power4j.ji.common.security.handler;
+package com.power4j.ji.common.security.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.power4j.ji.common.core.model.ApiResponse;
 import com.power4j.ji.common.core.util.ApiResponseUtil;
 import com.power4j.ji.common.core.util.HttpServletResponseUtil;
+import com.power4j.ji.common.security.model.ApiToken;
 import com.power4j.ji.common.security.service.TokenService;
-import com.power4j.ji.common.security.util.ApiTokenUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Optional;
 
 /**
  * @author CJ (power4j@outlook.com)
@@ -41,36 +39,25 @@ import java.util.Optional;
  */
 @Slf4j
 @RequiredArgsConstructor
-public class SignOutHandler implements LogoutHandler {
+public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
 	@Setter
-	private ObjectMapper objectMapper = new ObjectMapper();
+	private ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
+
 
 	private final TokenService tokenService;
 
 	@Override
-	public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-		log.debug("Handling logout: {}", Optional.ofNullable(authentication).map(o -> o.getName()).orElse(null));
-		try {
-			doLogout(request, response);
+	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+			Authentication authentication) throws IOException {
+		log.debug("Authentication success : {}", authentication.getName());
+		ApiToken token = tokenService.createToken(authentication);
+		try{
+			HttpServletResponseUtil.writeJson(response, objectMapper, ApiResponseUtil.ok(token), HttpStatus.OK);
+		} catch (IOException e){
+			log.error(e.getMessage(),e);
+			throw e;
 		}
-		catch (Exception e) {
-			log.error(e.getMessage(), e);
-		}
-	}
-
-	protected void doLogout(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		ApiResponse<?> data = ApiResponseUtil.ok();
-		String tokenValue = ApiTokenUtil.getApiTokenValue(request);
-		if (tokenValue == null || tokenValue.isEmpty()) {
-			data = ApiResponseUtil.badRequest("No token");
-		}
-		else {
-			if (!tokenService.deleteToken(tokenValue)) {
-				data = ApiResponseUtil.badRequest("Bad token : " + tokenValue);
-			}
-		}
-		HttpServletResponseUtil.writeJson(response, objectMapper, data, HttpStatus.OK);
 	}
 
 }

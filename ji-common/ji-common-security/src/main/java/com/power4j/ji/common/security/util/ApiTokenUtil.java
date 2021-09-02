@@ -20,9 +20,10 @@ import cn.hutool.core.text.CharSequenceUtil;
 import com.power4j.ji.common.core.constant.SecurityConstant;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.lang.Nullable;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @author CJ (power4j@outlook.com)
@@ -38,19 +39,18 @@ public class ApiTokenUtil {
 	 * @param request
 	 * @return 没有值返回null
 	 */
-	@Nullable
-	public String getApiTokenValue(HttpServletRequest request) {
+	public Optional<String> getApiTokenValue(HttpServletRequest request) {
 		String value = request.getHeader(SecurityConstant.HEADER_TOKEN_KEY);
-		if (CharSequenceUtil.isNotBlank(value)) {
+		if (CharSequenceUtil.isNotEmpty(value)) {
 			log.trace("请求头中的{}:{}", SecurityConstant.HEADER_TOKEN_KEY, value);
-			return value;
+			return Optional.of(value);
 		}
 		String[] values = request.getParameterValues(SecurityConstant.PARAMETER_TOKEN_KEY);
-		if (values != null && values.length > 0) {
+		if (Objects.nonNull(value) && values.length > 0) {
 			log.trace("请求参数的{}:{}", SecurityConstant.HEADER_TOKEN_KEY, values);
-			return values[0];
+			return Optional.of(values[0]);
 		}
-		return null;
+		return Optional.empty();
 	}
 
 }
