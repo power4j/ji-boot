@@ -56,4 +56,12 @@ public interface SysUserService extends CrudService<SysUserDTO, SysUser> {
 	 */
 	long countUsername(String username, @Nullable Long ignoreId);
 
+
+	/**
+	 * 根据用户ID查询
+	 * @param uid
+	 * @return
+	 */
+	Optional<SysUser> getByUserId(long uid);
+
 }

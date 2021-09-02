@@ -14,29 +14,12 @@
  * limitations under the License.
  */
 
-package com.power4j.ji.common.security.token;
-
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
+package com.power4j.ji.common.security.social;
 
 /**
  * @author CJ (power4j@outlook.com)
- * @date 2020/11/24
+ * @date 2021/8/26
  * @since 1.0
  */
-@Data
-@NoArgsConstructor
-public class TokenRequest implements Serializable {
-
-	private static final long serialVersionUID = 1L;
-
-	@Schema(description = "用户名")
-	private String username;
-
-	@Schema(description = "口令")
-	private String password;
-
+public abstract class AbstractSocialLoginHandler implements SocialLoginHandler {
 }

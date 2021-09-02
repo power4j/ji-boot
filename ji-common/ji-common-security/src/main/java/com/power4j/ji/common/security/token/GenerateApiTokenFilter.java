@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package com.power4j.ji.common.security.filter;
+package com.power4j.ji.common.security.token;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.power4j.ji.common.security.token.TokenRequest;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +40,7 @@ import java.io.Reader;
  * @since 1.0
  */
 @Slf4j
-public class SignInFilter extends UsernamePasswordAuthenticationFilter {
+public class GenerateApiTokenFilter extends UsernamePasswordAuthenticationFilter {
 
 	@Setter
 	private boolean postOnly = true;
@@ -57,7 +56,7 @@ public class SignInFilter extends UsernamePasswordAuthenticationFilter {
 					String.format("Authentication method not supported: %s,Use %s instead", request.getMethod(),
 							HttpMethod.POST.name()));
 		}
-		TokenRequest tokenRequest;
+		UsernameLoginRequest usernameLoginRequest;
 		MediaType mediaType = null;
 		try {
 			mediaType = MediaType.parseMediaType(request.getHeader(HttpHeaders.CONTENT_TYPE));
@@ -66,13 +65,13 @@ public class SignInFilter extends UsernamePasswordAuthenticationFilter {
 			log.warn(e.getMessage(), e);
 		}
 		if (mediaType != null && mediaType.isCompatibleWith(MediaType.APPLICATION_JSON)) {
-			tokenRequest = getAuthInfoFromBody(request);
+			usernameLoginRequest = getAuthInfoFromBody(request);
 		}
 		else {
-			tokenRequest = getAuthInfoFromFormData(request);
+			usernameLoginRequest = getAuthInfoFromFormData(request);
 		}
 		UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(
-				tokenRequest.getUsername(), tokenRequest.getPassword());
+				usernameLoginRequest.getUsername(), usernameLoginRequest.getPassword());
 		setDetails(request, authRequest);
 		return this.getAuthenticationManager().authenticate(authRequest);
 	}
@@ -82,22 +81,22 @@ public class SignInFilter extends UsernamePasswordAuthenticationFilter {
 		authRequest.setDetails(this.authenticationDetailsSource.buildDetails(request));
 	}
 
-	private TokenRequest getAuthInfoFromBody(HttpServletRequest request) {
+	private UsernameLoginRequest getAuthInfoFromBody(HttpServletRequest request) {
 		try (Reader reader = request.getReader()) {
-			return objectMapper.readValue(reader, TokenRequest.class);
+			return objectMapper.readValue(reader, UsernameLoginRequest.class);
 		}
 		catch (IOException e) {
 			throw new AuthenticationServiceException("failed to get username or password from request", e);
 		}
 	}
 
-	private TokenRequest getAuthInfoFromFormData(HttpServletRequest request) {
+	private UsernameLoginRequest getAuthInfoFromFormData(HttpServletRequest request) {
 		String username = obtainUsername(request);
 		String password = obtainPassword(request);
-		TokenRequest tokenRequest = new TokenRequest();
-		tokenRequest.setUsername(username);
-		tokenRequest.setPassword(password);
-		return tokenRequest;
+		UsernameLoginRequest usernameLoginRequest = new UsernameLoginRequest();
+		usernameLoginRequest.setUsername(username);
+		usernameLoginRequest.setPassword(password);
+		return usernameLoginRequest;
 	}
 
 }

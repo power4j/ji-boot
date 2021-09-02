@@ -51,7 +51,12 @@ public class SecureAccessProperties {
 	/**
 	 * 自定义配置
 	 */
-	public List<HttpAccess> filters = new ArrayList<>();
+	private List<HttpAccess> filters = new ArrayList<>();
+
+	/**
+	 * 默认访问控制
+	 */
+	private String defaultAccess = "authenticated";
 
 	@Getter
 	@Setter

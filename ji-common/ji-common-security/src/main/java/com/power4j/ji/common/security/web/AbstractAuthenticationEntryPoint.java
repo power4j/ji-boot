@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 
-package com.power4j.ji.common.security.token;
+package com.power4j.ji.common.security.web;
 
-import cn.hutool.http.HttpStatus;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.power4j.ji.common.core.constant.SysErrorCodes;
 import com.power4j.ji.common.core.model.ApiResponse;
 import com.power4j.ji.common.security.msg.SecurityMessageSource;
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.MessageSourceAccessor;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
@@ -35,31 +32,44 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
 
 /**
  * @author CJ (power4j@outlook.com)
- * @date 2020/11/23
+ * @date 2021/9/2
  * @since 1.0
  */
 @Slf4j
-@RequiredArgsConstructor
-public class ApiTokenAuthenticationEntryPoint implements AuthenticationEntryPoint {
+public abstract class AbstractAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
-	private final ObjectMapper jsonMapper;
+	@Getter
+	private final MessageSourceAccessor messages = SecurityMessageSource.getAccessor();
 
-	protected final MessageSourceAccessor messages = SecurityMessageSource.getAccessor();
 
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response,
-			AuthenticationException authException) throws IOException {
+						 AuthenticationException authException) throws IOException {
 		final String reqUrl = request.getRequestURI();
 		log.debug("Handling {} : {} {}", authException.getClass().getSimpleName(), authException.getMessage(), reqUrl);
-		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-		ApiResponse<Object> result = ApiResponse.of(SysErrorCodes.E_UNAUTHORIZED, authException.getMessage());
-		result.setData(reqUrl);
+		renderResponse(request,response,authException);
+	}
+
+	/**
+	 * 写响应信息
+	 * @param request
+	 * @param response
+	 * @param authException
+	 * @throws IOException
+	 */
+	protected abstract void renderResponse(HttpServletRequest request, HttpServletResponse response,
+										   AuthenticationException authException) throws IOException;
+
+
+	protected int determineApiResponseCode(AuthenticationException authException){
+		return SysErrorCodes.E_FAIL;
+	}
+
+	protected ApiResponse<?> makeApiResponse(AuthenticationException authException){
+		ApiResponse<Object> result = ApiResponse.of(determineApiResponseCode(authException), authException.getMessage());
 
 		if (authException instanceof InsufficientAuthenticationException) {
 			String msg = messages.getMessage("AbstractAccessDecisionManager.accessDenied", authException.getMessage());
@@ -84,9 +94,6 @@ public class ApiTokenAuthenticationEntryPoint implements AuthenticationEntryPoin
 			result.setMsg(msg);
 		}
 
-		response.setStatus(HttpStatus.HTTP_UNAUTHORIZED);
-		PrintWriter printWriter = response.getWriter();
-		printWriter.println(jsonMapper.writeValueAsString(result));
+		return result;
 	}
-
 }

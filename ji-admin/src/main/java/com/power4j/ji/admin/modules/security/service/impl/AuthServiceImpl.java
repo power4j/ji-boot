@@ -18,6 +18,7 @@ package com.power4j.ji.admin.modules.security.service.impl;
 
 import cn.hutool.core.text.CharSequenceUtil;
 import com.power4j.ji.admin.modules.security.service.AuthService;
+import com.power4j.ji.admin.modules.social.common.service.SocialBindingService;
 import com.power4j.ji.admin.modules.sys.constant.StatusEnum;
 import com.power4j.ji.admin.modules.sys.entity.SysResource;
 import com.power4j.ji.admin.modules.sys.entity.SysRole;
@@ -27,6 +28,8 @@ import com.power4j.ji.admin.modules.sys.service.SysRoleService;
 import com.power4j.ji.admin.modules.sys.service.SysUserService;
 import com.power4j.ji.common.core.constant.SecurityConstant;
 import com.power4j.ji.common.security.LoginUser;
+import com.power4j.ji.common.security.social.SocialLoginException;
+import com.power4j.ji.common.security.social.SocialLoginHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
@@ -37,6 +40,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -50,21 +55,54 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
+	private final SocialBindingService socialBindingService;
 	private final SysUserService sysUserService;
 
 	private final SysRoleService sysRoleService;
 
 	private final SysResourceService sysResourceService;
 
+	/**
+	 * Key: Social type
+	 */
+	private final Map<String, SocialLoginHandler> handlerMap;
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		return sysUserService
+				.getByUsername(username)
+				.map(this::buildUserDetails).orElseThrow(() -> new UsernameNotFoundException(String.format("用户不存在:%s", username)));
+	}
 
-		SysUser user = sysUserService.getByUsername(username).orElse(null);
-		if (user == null) {
-			log.debug("用户不存在:{}", username);
-			throw new UsernameNotFoundException(String.format("用户不存在:%s", username));
+	public String getSocialLoginId(String type,String code) throws SocialLoginException {
+		final SocialLoginHandler handler = Objects.nonNull(handlerMap) ? handlerMap.get(type) : null;
+		if(Objects.isNull(handler)){
+			throw new SocialLoginException("Not support:"+type);
 		}
-		Set<String> roles = sysRoleService.listForUser(username, null).stream()
+
+		String openId = handler.getUserId(code);
+		if(Objects.isNull(openId)){
+			throw new SocialLoginException("第三方系统返回用户ID为空");
+		}
+		return openId;
+	}
+
+	@Override
+	public UserDetails loadBySocial(String socialKey, String state) throws UsernameNotFoundException {
+		String openId;
+		try {
+			openId = getSocialLoginId(socialKey,state);
+		} catch (SocialLoginException e) {
+			throw new UsernameNotFoundException(e.getMessage(),e);
+		}
+		return socialBindingService.findByOpenId(socialKey, openId)
+				.flatMap(o -> sysUserService.getByUserId(o.getUid()))
+				.map(this::buildUserDetails)
+				.orElseThrow(() -> new UsernameNotFoundException("用户不存在,请先绑定"));
+	}
+
+	protected UserDetails buildUserDetails(SysUser user) throws UsernameNotFoundException {
+		Set<String> roles = sysRoleService.listForUser(user.getUsername(), null).stream()
 				.filter(o -> StatusEnum.NORMAL.getValue().equals(o.getStatus())).map(SysRole::getCode)
 				.collect(Collectors.toSet());
 
@@ -82,5 +120,4 @@ public class AuthServiceImpl implements AuthService {
 		loginUser.setName(user.getName());
 		return loginUser;
 	}
-
 }

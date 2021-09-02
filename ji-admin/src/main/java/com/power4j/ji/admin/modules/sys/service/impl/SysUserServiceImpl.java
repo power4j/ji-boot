@@ -93,6 +93,11 @@ public class SysUserServiceImpl extends AbstractCrudService<SysUserMapper, SysUs
 	}
 
 	@Override
+	public Optional<SysUser> getByUserId(long uid) {
+		return Optional.ofNullable(getById(uid));
+	}
+
+	@Override
 	@Nullable
 	public SysUser toEntity(@Nullable SysUserDTO dto) {
 		return BeanUtil.toBean(dto, SysUser.class, CopyOptions.create().setIgnoreProperties("slat"));

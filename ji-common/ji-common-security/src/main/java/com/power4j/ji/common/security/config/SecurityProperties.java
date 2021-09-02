@@ -40,6 +40,8 @@ public class SecurityProperties {
 
 	private String logoutUrl = "/logout";
 
+	private String socialLoginUrl = "/social/login";
+
 	@Data
 	public static class ApiTokenProperties {
 

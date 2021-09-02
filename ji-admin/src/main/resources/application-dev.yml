@@ -60,7 +60,7 @@ logging:
   level:
     org:
       springframework:
-        security: info
+        security: debug
         boot:
           autoconfigure:
             logging: info
@@ -70,7 +70,7 @@ logging:
           admin:
             modules: debug
           common:
-            security: info
+            security: debug
             schedule:
               quartz:
                 listener: debug

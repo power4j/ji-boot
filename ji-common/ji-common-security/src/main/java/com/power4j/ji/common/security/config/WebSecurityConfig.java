@@ -16,55 +16,59 @@
 
 package com.power4j.ji.common.security.config;
 
-import cn.hutool.core.text.CharSequenceUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.power4j.ji.common.core.context.RequestContext;
-import com.power4j.ji.common.security.filter.SignInFilter;
-import com.power4j.ji.common.security.handler.SignInFailureHandler;
-import com.power4j.ji.common.security.handler.SignInSuccessHandler;
-import com.power4j.ji.common.security.handler.SignOutHandler;
-import com.power4j.ji.common.security.handler.SignOutSuccessHandler;
+import com.power4j.ji.common.security.handler.DefaultLogoutHandler;
+import com.power4j.ji.common.security.handler.DefaultLogoutSuccessHandler;
 import com.power4j.ji.common.security.listener.AuthenticationFailureListener;
 import com.power4j.ji.common.security.listener.AuthenticationSuccessListener;
 import com.power4j.ji.common.security.service.PermissionService;
 import com.power4j.ji.common.security.service.TokenService;
-import com.power4j.ji.common.security.token.ApiTokenAuthenticationEntryPoint;
+import com.power4j.ji.common.security.token.GenerateApiTokenFilter;
+import com.power4j.ji.common.security.token.ApiTokenAuthenticationConverter;
 import com.power4j.ji.common.security.token.ApiTokenAuthenticationFilter;
 import com.power4j.ji.common.security.token.ApiTokenAuthenticationProvider;
+import com.power4j.ji.common.security.web.AccessDeniedEntryPoint;
+import com.power4j.ji.common.security.web.LoginFailureHandler;
+import com.power4j.ji.common.security.web.LoginSuccessHandler;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.util.Assert;
 
-import java.util.Collection;
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ * The main web security config
  * @author CJ (power4j@outlook.com)
  * @date 2020/11/22
  * @since 1.0
  */
 @Slf4j
+@Order
 @Configuration(proxyBeanMethods = false)
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -82,7 +86,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private SecureAccessProperties secureAccessProperties;
 
 	@Autowired
-	private UserDetailsService userDetailsService;
+	private ObjectProvider<UserDetailsService> userDetailsServiceObjectProvider;
+
+	@Autowired
+	private ObjectProvider<ExpressionUrlAuthorizationConfigurerCustomizer<HttpSecurity>> authorizationConfigurerCustomizers;
 
 	@Autowired
 	private TokenService tokenService;
@@ -100,24 +107,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Bean
 	public ApiTokenAuthenticationProvider apiTokenAuthenticationProvider() {
-		ApiTokenAuthenticationProvider apiTokenAuthenticationProvider = new ApiTokenAuthenticationProvider(tokenService,
-				userDetailsService);
-		return apiTokenAuthenticationProvider;
+		return new ApiTokenAuthenticationProvider(tokenService,
+				userDetailsServiceObjectProvider.getObject());
 	}
 
-	@Bean
-	public SignInFilter signInFilter() throws Exception {
-		SignInSuccessHandler signInSuccessHandler = new SignInSuccessHandler(tokenService);
-		signInSuccessHandler.setObjectMapper(objectMapper);
-		SignInFailureHandler signInFailureHandler = new SignInFailureHandler();
-		signInFailureHandler.setObjectMapper(objectMapper);
+	protected GenerateApiTokenFilter loginFilter() throws Exception {
+		LoginSuccessHandler loginSuccessHandler = new LoginSuccessHandler(tokenService);
+		LoginFailureHandler loginFailureHandler = new LoginFailureHandler();
 
-		SignInFilter filter = new SignInFilter();
+		GenerateApiTokenFilter filter = new GenerateApiTokenFilter();
 		filter.setObjectMapper(objectMapper);
 		filter.setAuthenticationManager(authenticationManager());
 		filter.setFilterProcessesUrl(securityProperties.getLoginUrl());
-		filter.setAuthenticationSuccessHandler(signInSuccessHandler);
-		filter.setAuthenticationFailureHandler(signInFailureHandler);
+		filter.setAuthenticationSuccessHandler(loginSuccessHandler);
+		filter.setAuthenticationFailureHandler(loginFailureHandler);
 		return filter;
 	}
 
@@ -131,81 +134,77 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		return new AuthenticationFailureListener();
 	}
 
+	@Bean
+	public WebSecurityCustomizer webSecurityCustomizer(){
+
+		return (webSecurity) -> {
+			if (secureAccessProperties.isEnabled()) {
+				secureAccessProperties.getIgnore().getPatterns().forEach(pattern -> {
+					log.info("Config web security, ignoring: {}", pattern);
+					webSecurity.ignoring().antMatchers(pattern);
+				});
+			}
+		};
+	}
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) {
 		auth.authenticationProvider(apiTokenAuthenticationProvider());
 		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-		daoAuthenticationProvider.setUserDetailsService(userDetailsService);
+		daoAuthenticationProvider.setUserDetailsService(userDetailsServiceObjectProvider.getObject());
 		daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
 		auth.authenticationProvider(daoAuthenticationProvider);
 	}
 
-	@Override
-	public void configure(WebSecurity web) {
-		if (secureAccessProperties.isEnabled()) {
-			applyWebSecurity(web, secureAccessProperties.getIgnore().getPatterns());
-		}
-	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		DefaultLogoutHandler defaultLogoutHandler = new DefaultLogoutHandler(tokenService);
+		defaultLogoutHandler.setObjectMapper(objectMapper);
 
-		http.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		ApiTokenAuthenticationFilter apiTokenAuthenticationFilter = new ApiTokenAuthenticationFilter();
-		http.authenticationProvider(apiTokenAuthenticationProvider());
-		http.addFilterBefore(signInFilter(), UsernamePasswordAuthenticationFilter.class);
-		http.addFilterAfter(apiTokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-		http.exceptionHandling().authenticationEntryPoint(new ApiTokenAuthenticationEntryPoint(objectMapper));
-		http.headers().frameOptions().disable();
-		http.authorizeRequests()
+		// @formatter:off
+		http.csrf().disable()
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				.and()
+				.addFilterBefore(loginFilter(), UsernamePasswordAuthenticationFilter.class)
+				.addFilterAfter(createApiTokenAuthenticationFilter(), BasicAuthenticationFilter.class)
+				.exceptionHandling().authenticationEntryPoint(new AccessDeniedEntryPoint())
+				.and()
+				.headers().frameOptions().disable()
+				.and()
+				.logout()
+				.logoutRequestMatcher(
+						new AntPathRequestMatcher(securityProperties.getLogoutUrl(), HttpMethod.POST.name()))
+				.addLogoutHandler(defaultLogoutHandler).logoutSuccessHandler(new DefaultLogoutSuccessHandler()).permitAll()
+				.and()
+				.authorizeRequests()
 				.mvcMatchers(HttpMethod.POST, securityProperties.getLoginUrl(), securityProperties.getLogoutUrl())
 				.permitAll();
 
-		SignOutHandler signOutHandler = new SignOutHandler(tokenService);
-		signOutHandler.setObjectMapper(objectMapper);
-		http.logout()
-				.logoutRequestMatcher(
-						new AntPathRequestMatcher(securityProperties.getLogoutUrl(), HttpMethod.POST.name()))
-				.addLogoutHandler(signOutHandler).logoutSuccessHandler(new SignOutSuccessHandler()).permitAll();
-		if (secureAccessProperties.isEnabled()) {
-			applyHttpAccess(http, secureAccessProperties.getFilters());
+		ExpressionUrlAuthorizationConfigurer<HttpSecurity> authorizationConfigurer = (ExpressionUrlAuthorizationConfigurer<HttpSecurity>)http.getConfigurer(ExpressionUrlAuthorizationConfigurer.class);
+		if(authorizationConfigurer == null){
+			authorizationConfigurer = new ExpressionUrlAuthorizationConfigurer<>(http.getSharedObject(ApplicationContext.class));
 		}
-		http.authorizeRequests().anyRequest().authenticated();
+		applyAuthorizationConfigurerCustomizers(authorizationConfigurer);
+		// @formatter:on
 	}
 
-	protected void applyWebSecurity(WebSecurity web, Collection<String> patterns) {
-		patterns.forEach(pattern -> {
-			log.info("Config web security, ignoring: {}", pattern);
-			web.ignoring().antMatchers(pattern);
-		});
+	protected void applyAuthorizationConfigurerCustomizers(ExpressionUrlAuthorizationConfigurer<HttpSecurity> configurer) {
+		List<ExpressionUrlAuthorizationConfigurerCustomizer<HttpSecurity>> customizers = authorizationConfigurerCustomizers.orderedStream().collect(Collectors.toList());
+		customizers.forEach(o -> o.customize(configurer));
+		getDefaultUrlRegistryCustomizer().customize(configurer);
 	}
 
-	protected void applyHttpAccess(HttpSecurity http, Collection<SecureAccessProperties.HttpAccess> httpAccesses)
-			throws Exception {
-		ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = http
-				.authorizeRequests();
-		if (httpAccesses != null && !httpAccesses.isEmpty()) {
-			httpAccesses.forEach(httpAccess -> {
-				Assert.hasText(httpAccess.getAccess(), "Access expression is required");
-				if (httpAccess.getMethods() != null && !httpAccess.getMethods().isEmpty()) {
-					Set<HttpMethod> methodSet = httpAccess.getMethods().stream()
-							.map(m -> (m == null || m.trim().isEmpty()) ? null : HttpMethod.valueOf(m))
-							.filter(m -> m != null).collect(Collectors.toSet());
-					for (HttpMethod m : methodSet) {
-						log.info("Add access {} : [{}] {}", httpAccess.getAccess(), m.name(),
-								CharSequenceUtil.join(", ", httpAccess.getPatterns()));
-						registry.antMatchers(m, httpAccess.getPatterns().toArray(new String[0]))
-								.access(httpAccess.getAccess());
-					}
-				}
-				else {
-					log.info("add access {} : [{}] {}", httpAccess.getAccess(), "*",
-							CharSequenceUtil.join(", ", httpAccess.getPatterns()));
-					registry.antMatchers(httpAccess.getPatterns().toArray(new String[0]))
-							.access(httpAccess.getAccess());
-				}
-			});
-		}
+	protected ApiTokenAuthenticationFilter createApiTokenAuthenticationFilter() throws Exception {
+		ApiTokenAuthenticationFilter authenticationFilter = new ApiTokenAuthenticationFilter(authenticationManagerBean(),new ApiTokenAuthenticationConverter());
+		AccessDeniedEntryPoint entryPoint = new AccessDeniedEntryPoint();
+		authenticationFilter.setFailureHandler(entryPoint::commence);
+		authenticationFilter.setSuccessHandler((request, response, authentication) -> {} );
+		return authenticationFilter;
 	}
 
+	protected ExternalUrlAuthorizationConfigurer getDefaultUrlRegistryCustomizer(){
+		return new ExternalUrlAuthorizationConfigurer(secureAccessProperties);
+	}
 }

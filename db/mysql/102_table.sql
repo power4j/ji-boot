@@ -275,7 +275,7 @@ CREATE TABLE `t_sys_log`
     `method`     VARCHAR(10) COMMENT 'HTTP方法',
     `path`       VARCHAR(255) COMMENT 'URL路径',
     `query`      VARCHAR(255) COMMENT 'URL参数',
-    `uid`        BIGINT      NOT NULL COMMENT '用户ID',
+    `uid`        BIGINT      NOT NULL DEFAULT '0' COMMENT '用户ID',
     `username`       VARCHAR(32) COMMENT '用户名',
     `location`       VARCHAR(32) COMMENT 'IP',
     `geo_ip`         VARCHAR(40) NOT NULL DEFAULT '' COMMENT 'IP地理信息',
@@ -286,3 +286,18 @@ CREATE TABLE `t_sys_log`
 ) ENGINE = InnoDB CHARSET = `utf8mb4` COMMENT ='访问日志';
 
 ALTER TABLE `t_sys_log` ADD INDEX `idx_1` (`module`,`username`);
+
+
+CREATE TABLE `t_social_binding`
+(
+    `id`          BIGINT      NOT NULL COMMENT '主健',
+    `sys_flag`    TINYINT     NOT NULL DEFAULT 0 COMMENT '数据标记 0 普通数据, 1 系统保护数据',
+    `del_flag`    DATETIME    NULL COMMENT '删除标志',
+    `create_at`   DATETIME COMMENT '创建时间',
+    `update_at`   DATETIME COMMENT '更新时间',
+    `type`        VARCHAR(40) NOT NULL COMMENT '类型',
+    `open_id`     VARCHAR(128) NOT NULL COMMENT '社交账号ID',
+    `uid`         BIGINT      NOT NULL COMMENT '用户ID',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uk_open_id` (`type`,`open_id`)
+) ENGINE = InnoDB CHARSET = `utf8mb4` COMMENT ='社交账号绑定';

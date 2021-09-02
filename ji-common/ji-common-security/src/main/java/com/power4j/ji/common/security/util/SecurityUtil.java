@@ -21,7 +21,9 @@ import com.power4j.ji.common.core.constant.SecurityConstant;
 import com.power4j.ji.common.security.LoginUser;
 import lombok.experimental.UtilityClass;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -56,7 +58,7 @@ public class SecurityUtil {
 	 * @return
 	 */
 	public Optional<String> getLoginUsername() {
-		return getLoginUser().map(loginUser -> loginUser.getUsername());
+		return getLoginUser().map(User::getUsername);
 	}
 
 	/**
@@ -64,7 +66,7 @@ public class SecurityUtil {
 	 * @return
 	 */
 	public Optional<Long> getLoginUserId() {
-		return getLoginUser().map(loginUser -> loginUser.getUid());
+		return getLoginUser().map(LoginUser::getUid);
 	}
 
 	/**
@@ -73,7 +75,7 @@ public class SecurityUtil {
 	 */
 	public Set<String> getLoginUserAuthorities() {
 		return getLoginUser().map(
-				loginUser -> loginUser.getAuthorities().stream().map(o -> o.getAuthority()).collect(Collectors.toSet()))
+				loginUser -> loginUser.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet()))
 				.orElse(Collections.emptySet());
 	}
 

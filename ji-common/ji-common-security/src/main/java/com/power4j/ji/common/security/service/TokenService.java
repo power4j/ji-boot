@@ -41,6 +41,7 @@ public interface TokenService {
 	boolean deleteToken(String tokenValue);
 
 	/**
+	 * TODO: 多种类型
 	 * 创建 访问令牌
 	 * @param authentication
 	 * @return

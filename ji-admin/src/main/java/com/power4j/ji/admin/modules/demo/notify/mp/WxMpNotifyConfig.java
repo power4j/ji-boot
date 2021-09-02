@@ -25,6 +25,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * TODO: USE WX-JAVA-MP
  * @author CJ (power4j@outlook.com)
  * @date 2021/1/16
  * @since 1.0

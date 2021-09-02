@@ -53,7 +53,7 @@ public class HttpServletResponseUtil {
 	 * @see RequestContextListener
 	 * @return
 	 */
-	public Optional<HttpServletResponse> getCurrentRequest() {
+	public Optional<HttpServletResponse> getCurrentResponse() {
 		return Optional.ofNullable(RequestContextHolder.getRequestAttributes()).map(x -> (ServletRequestAttributes) x)
 				.map(ServletRequestAttributes::getResponse);
 	}

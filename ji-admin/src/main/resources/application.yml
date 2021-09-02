@@ -82,6 +82,8 @@ springdoc:
   group-configs:
     - group: sys 系统管理
       paths-to-match: /sys/**
+    - group: 微信小程序
+      paths-to-match: /wx-mini/**
     - group: 控制台
       paths-to-match: /am/**
     - group: 模拟测试
@@ -108,7 +110,7 @@ ji-boot:
   # 缓存配置
   cache:
     # redisson caffeine none
-    type: redisson
+    type: caffeine
     caffeine:
       spec: "expireAfterWrite=24h,maximumSize=100000"
     redisson:
@@ -134,6 +136,7 @@ ji-boot:
     # 可自定义登录、注销地址
     login-url: '/login'
     logout-url: '/logout'
+    social-login-url: '/social/login'
     api-token:
       # 过期时间,秒
       expire-sec: 86400
@@ -166,8 +169,12 @@ ji-boot:
           methods: GET
           access: permitAll
         # 验证码服务
-        - patterns: ${ji.captcha.service-url}
+        - patterns: ${ji-boot.captcha.code-url}
           methods: GET
+          access: permitAll
+        # 社交账号绑定回调
+        - patterns: '/social/wx-mini/connect'
+          methods: POST
           access: permitAll
         # UReportServlet
         - patterns: '/ureport/**'
@@ -191,3 +198,33 @@ dict-mapper:
     enable-endpoint: true
     # 接口URL
     endpoint-base-url: /sys/immutable-dictionaries
+
+# 微信相关 -> wx-java-xxx-spring-boot-starter
+wx:
+  # 小程序配置
+  miniapp:
+    appid: ${WX_MINI_APPID:wxbe258bcc31ee6f10}
+    secret: ${WX_MINI_SECRET:123456}
+    # 测试账号可乱填
+    token: ${WX_MINI_TOKEN:12345678}
+    # 测试账号可乱填
+    aesKey: ${WX_MINI_AES_KEY:123456}
+    # 消息格式，XML或者JSON
+    msgDataFormat: JSON
+    # 存储配置redis(可选)
+    # 注意: 指定redis.host值后不会使用容器注入的redis连接(JedisPool)
+    config-storage:
+      # 配置类型: Memory(默认), Jedis, RedisTemplate
+      type: Memory
+      # 相关redis前缀配置: wa(默认)
+      #key-prefix: wx-mini
+      #redis:
+      #  host: 127.0.0.1
+      #  port: 6379
+      # http客户端配置
+      # http客户端类型: HttpClient(默认), OkHttp, JoddHttp
+      http-client-type: OkHttp
+      #http-proxy-host:
+      #http-proxy-port:
+      #http-proxy-username:
+      #http-proxy-password:
