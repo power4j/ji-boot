@@ -4,7 +4,7 @@ ARG JAR_FILE=target/ji-admin.jar
 COPY ${JAR_FILE} app.jar
 RUN java -Djarmode=layertools -jar app.jar extract && rm app.jar
 
-FROM openjdk:8
+FROM amazoncorretto:11
 LABEL maintainer="jclazz@outlook.com"
 ENV TZ=Asia/Shanghai JAVA_OPTS="-Xms256m -Xmx256m -Djava.security.egd=file:/dev/./urandom"
 WORKDIR /app
