@@ -22,6 +22,9 @@
 >
 > 如需本地部署体验，请使用`ji-boot-docker`项目
 
+- 后端项目仓库:  [码云](https://gitee.com/power4j/ji-boot)    [GitHub](https://github.com/power4j/ji-boot)
+- WEB端项目仓库:  [码云](https://github.com/power4j/ji-admin-ui)    [GitHub](https://github.com/power4j/ji-admin-ui)
+- 小程序Demo项目仓库:  [码云](https://gitee.com/power4j/demo-wx-miniapp)    [GitHub](https://github.com/power4j/demo-wx-miniapp) 
 
 注意事项：本项目使用`spring-javaformat`插件来统一代码风格，项目打包报错请执行`mvn spring-javaformat:apply`一键修复。
 
@@ -37,7 +40,7 @@
 - [ ] 登录日志、接口审计日志
 - [ ] 数据权限
 - [x] 报表功能
-- [ ] 公众号、小程序登录认证
+- [x] 公众号、小程序登录认证
 - [ ] 支付宝、微信支付
 
 
@@ -135,27 +138,16 @@ ji-boot:
 
 ```
 
-## 性能
-
-目前只对认证过程做了缓存优化，因为这个地方性能瓶颈较大，优化前后差距巨大。
-
-### 测试结果
-
-Jmeter 配置
-
-![jmeter-test](docs/assets/img/testing/1c2g-1.png)
-
-> 1C2G 云服务器（corretto Jdk 11） `-Xms256m -Xmx512m`
-
-![1c2g-ar](docs/assets/img/testing/1c2g-ar.png)
-
-
-> 12C16G 台式机（oracle Jdk 8） `-Xms1g -Xmx1g`
-
-![12c16g-ar](docs/assets/img/testing/12c16g-ar.png)
 
 
 ### 界面截图
+
+<table>
+  <tr>
+    <td><img src="http://picdn.eta.pub/img/login.jpg"></td>
+    <td><img src="http://picdn.eta.pub/img/login-scuccess.jpg"></td>
+  </tr>
+</table>
 
 ![ui-sys-res.png](docs/assets/img/testing/ui-sys-res.png)
 
@@ -180,6 +172,24 @@ Jmeter 配置
 
 ![ding-err-notify.png](docs/assets/img/testing/ding-err-notify.png)
 
+## 性能
+
+目前只对认证过程做了缓存优化，因为这个地方性能瓶颈较大，优化前后差距巨大。
+
+### 测试结果
+
+Jmeter 配置
+
+![jmeter-test](docs/assets/img/testing/1c2g-1.png)
+
+> 1C2G 云服务器（corretto Jdk 11） `-Xms256m -Xmx512m`
+
+![1c2g-ar](docs/assets/img/testing/1c2g-ar.png)
+
+
+> 12C16G 台式机（oracle Jdk 8） `-Xms1g -Xmx1g`
+
+![12c16g-ar](docs/assets/img/testing/12c16g-ar.png)
 
 ## Special Thanks
 
@@ -187,7 +197,7 @@ Jmeter 配置
 
 
  ## 联系方式
- 
+
 
 ![weichat](docs/assets/img/wei-chat.png)
 
