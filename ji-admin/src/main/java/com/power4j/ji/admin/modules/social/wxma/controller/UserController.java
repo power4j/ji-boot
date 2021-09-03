@@ -16,7 +16,11 @@
 
 package com.power4j.ji.admin.modules.social.wxma.controller;
 
+import com.power4j.ji.admin.modules.social.common.constant.SocialTypeEnum;
+import com.power4j.ji.admin.modules.social.common.service.SocialBindingService;
 import com.power4j.ji.admin.modules.social.wxma.service.AccountService;
+import com.power4j.ji.common.core.model.ApiResponse;
+import com.power4j.ji.common.core.util.ApiResponseUtil;
 import com.power4j.ji.common.security.audit.ApiLog;
 import com.power4j.ji.common.security.util.SecurityUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,6 +31,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,17 +47,28 @@ import java.util.Objects;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/wx-mini/user")
-@Tag(name = "账号服务")
+@Tag(name = "第三方账号服务")
 public class UserController {
 
 	private final AccountService accountService;
 
-	// ~ Helper
-	// ===================================================================================================
+	private final SocialBindingService bindingService;
+
+	@ApiLog(module = "微信小程序", tag = "解除账号绑定")
+	@DeleteMapping(value = "/binging")
+	@Operation(summary = "解除微信小程序账号绑定")
+	public ApiResponse<Boolean> removeBinding() {
+		Long uid = SecurityUtil.getLoginUserId().orElse(null);
+		if (Objects.isNull(uid)) {
+			return ApiResponseUtil.ok(Boolean.FALSE);
+		}
+		bindingService.deleteBinding(SocialTypeEnum.WX_MA.getValue(), uid);
+		return ApiResponseUtil.ok(Boolean.TRUE);
+	}
 
 	@ApiLog(module = "微信小程序", tag = "查看账号绑定二维码")
 	@GetMapping(value = "/binding/qr/img", produces = MediaType.IMAGE_JPEG_VALUE)
-	@Operation(summary = "查看账号绑定二维码")
+	@Operation(summary = "查看微信小程序账号绑定二维码")
 	public ResponseEntity<Resource> getAccBindingQrCodeImage() {
 		Long uid = SecurityUtil.getLoginUserId().orElse(null);
 		if (Objects.isNull(uid)) {
