@@ -74,9 +74,8 @@ public class SecurityUtil {
 	 * @return
 	 */
 	public Set<String> getLoginUserAuthorities() {
-		return getLoginUser().map(
-				loginUser -> loginUser.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet()))
-				.orElse(Collections.emptySet());
+		return getLoginUser().map(loginUser -> loginUser.getAuthorities().stream().map(GrantedAuthority::getAuthority)
+				.collect(Collectors.toSet())).orElse(Collections.emptySet());
 	}
 
 	/**

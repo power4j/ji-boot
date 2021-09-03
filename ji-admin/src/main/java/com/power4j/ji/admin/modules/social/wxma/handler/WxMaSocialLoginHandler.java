@@ -37,6 +37,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Component(SocialConstant.SOCIAL_KEY_WX_MINI_APP)
 public class WxMaSocialLoginHandler extends AbstractSocialLoginHandler {
+
 	private final WxMaService wxMaService;
 
 	@Override
@@ -44,8 +45,10 @@ public class WxMaSocialLoginHandler extends AbstractSocialLoginHandler {
 		try {
 			WxMaJscode2SessionResult result = wxMaService.jsCode2SessionInfo(code);
 			return Optional.ofNullable(result.getUnionid()).orElse(result.getOpenid());
-		} catch (WxErrorException e) {
+		}
+		catch (WxErrorException e) {
 			throw new SocialLoginException(e.getMessage(), e);
 		}
 	}
+
 }

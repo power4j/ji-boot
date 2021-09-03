@@ -41,6 +41,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/social/wx-mini")
 @Tag(name = "账号服务")
 public class WxMaSocialController {
+
 	private final AccountService accountService;
 
 	@ApiLog(module = "社交账号", tag = "小程序账号绑定")

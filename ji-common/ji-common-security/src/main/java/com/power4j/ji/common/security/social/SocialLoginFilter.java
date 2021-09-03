@@ -36,6 +36,7 @@ import java.io.Reader;
  * @since 1.0
  */
 public class SocialLoginFilter extends AbstractAuthenticationProcessingFilter {
+
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
 	public SocialLoginFilter(String defaultFilterProcessesUrl) {
@@ -43,7 +44,8 @@ public class SocialLoginFilter extends AbstractAuthenticationProcessingFilter {
 	}
 
 	@Override
-	public Authentication attemptAuthentication(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws AuthenticationException, IOException, ServletException {
+	public Authentication attemptAuthentication(HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse) throws AuthenticationException, IOException, ServletException {
 		if (!HttpMethod.POST.name().equalsIgnoreCase(httpServletRequest.getMethod())) {
 			throw new AuthenticationServiceException(
 					String.format("Authentication method not supported: %s,Use %s instead", HttpMethod.POST.name(),
@@ -59,7 +61,7 @@ public class SocialLoginFilter extends AbstractAuthenticationProcessingFilter {
 		authRequest.setDetails(this.authenticationDetailsSource.buildDetails(request));
 	}
 
-	protected SocialAuthenticationToken getSocialAuthenticationToken(HttpServletRequest request){
+	protected SocialAuthenticationToken getSocialAuthenticationToken(HttpServletRequest request) {
 
 		CodeLoginRequest loginRequest;
 		try (Reader reader = request.getReader()) {
@@ -68,6 +70,7 @@ public class SocialLoginFilter extends AbstractAuthenticationProcessingFilter {
 		catch (IOException e) {
 			throw new AuthenticationServiceException("failed to get login body from request", e);
 		}
-		return new SocialAuthenticationToken(loginRequest.getType(),loginRequest.getCode());
+		return new SocialAuthenticationToken(loginRequest.getType(), loginRequest.getCode());
 	}
+
 }

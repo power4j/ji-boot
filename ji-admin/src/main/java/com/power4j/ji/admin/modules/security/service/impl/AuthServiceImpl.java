@@ -56,6 +56,7 @@ import java.util.stream.Collectors;
 public class AuthServiceImpl implements AuthService {
 
 	private final SocialBindingService socialBindingService;
+
 	private final SysUserService sysUserService;
 
 	private final SysRoleService sysRoleService;
@@ -69,19 +70,18 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		return sysUserService
-				.getByUsername(username)
-				.map(this::buildUserDetails).orElseThrow(() -> new UsernameNotFoundException(String.format("用户不存在:%s", username)));
+		return sysUserService.getByUsername(username).map(this::buildUserDetails)
+				.orElseThrow(() -> new UsernameNotFoundException(String.format("用户不存在:%s", username)));
 	}
 
-	public String getSocialLoginId(String type,String code) throws SocialLoginException {
+	public String getSocialLoginId(String type, String code) throws SocialLoginException {
 		final SocialLoginHandler handler = Objects.nonNull(handlerMap) ? handlerMap.get(type) : null;
-		if(Objects.isNull(handler)){
-			throw new SocialLoginException("Not support:"+type);
+		if (Objects.isNull(handler)) {
+			throw new SocialLoginException("Not support:" + type);
 		}
 
 		String openId = handler.getUserId(code);
-		if(Objects.isNull(openId)){
+		if (Objects.isNull(openId)) {
 			throw new SocialLoginException("第三方系统返回用户ID为空");
 		}
 		return openId;
@@ -91,14 +91,13 @@ public class AuthServiceImpl implements AuthService {
 	public UserDetails loadBySocial(String socialKey, String state) throws UsernameNotFoundException {
 		String openId;
 		try {
-			openId = getSocialLoginId(socialKey,state);
-		} catch (SocialLoginException e) {
-			throw new UsernameNotFoundException(e.getMessage(),e);
+			openId = getSocialLoginId(socialKey, state);
 		}
-		return socialBindingService.findByOpenId(socialKey, openId)
-				.flatMap(o -> sysUserService.getByUserId(o.getUid()))
-				.map(this::buildUserDetails)
-				.orElseThrow(() -> new UsernameNotFoundException("用户不存在,请先绑定"));
+		catch (SocialLoginException e) {
+			throw new UsernameNotFoundException(e.getMessage(), e);
+		}
+		return socialBindingService.findByOpenId(socialKey, openId).flatMap(o -> sysUserService.getByUserId(o.getUid()))
+				.map(this::buildUserDetails).orElseThrow(() -> new UsernameNotFoundException("用户不存在,请先绑定"));
 	}
 
 	protected UserDetails buildUserDetails(SysUser user) throws UsernameNotFoundException {
@@ -120,4 +119,5 @@ public class AuthServiceImpl implements AuthService {
 		loginUser.setName(user.getName());
 		return loginUser;
 	}
+
 }

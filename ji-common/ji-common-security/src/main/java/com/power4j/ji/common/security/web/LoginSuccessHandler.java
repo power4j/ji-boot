@@ -44,7 +44,6 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 	@Setter
 	private ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
 
-
 	private final TokenService tokenService;
 
 	@Override
@@ -52,10 +51,11 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 			Authentication authentication) throws IOException {
 		log.debug("Authentication success : {}", authentication.getName());
 		ApiToken token = tokenService.createToken(authentication);
-		try{
+		try {
 			HttpServletResponseUtil.writeJson(response, objectMapper, ApiResponseUtil.ok(token), HttpStatus.OK);
-		} catch (IOException e){
-			log.error(e.getMessage(),e);
+		}
+		catch (IOException e) {
+			log.error(e.getMessage(), e);
 			throw e;
 		}
 	}

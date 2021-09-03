@@ -47,10 +47,15 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
+
 	private final static String ACC_BING_PAGE = null;
-	private final static String APP_SCENE_BIND_ACC="bind@%d";
+
+	private final static String APP_SCENE_BIND_ACC = "bind@%d";
+
 	private final WxMaService wxMaService;
+
 	private final SysUserService sysUserService;
+
 	private final SocialBindingService socialBindingService;
 
 	@Override
@@ -60,10 +65,12 @@ public class AccountServiceImpl implements AccountService {
 			throw new RtException("用户不存在");
 		}
 		// FIXME : 并不安全,仅用于流程演示
-		final String scene = String.format(APP_SCENE_BIND_ACC,uid);
+		final String scene = String.format(APP_SCENE_BIND_ACC, uid);
 		try {
-			return wxMaService.getQrcodeService().createWxaCodeUnlimitBytes(scene, ACC_BING_PAGE, 320, true, null, false);
-		} catch (WxErrorException e) {
+			return wxMaService.getQrcodeService().createWxaCodeUnlimitBytes(scene, ACC_BING_PAGE, 320, true, null,
+					false);
+		}
+		catch (WxErrorException e) {
 			log.error(e.getError().toString());
 			throw new RtException(e.getMessage(), e);
 		}
@@ -76,7 +83,8 @@ public class AccountServiceImpl implements AccountService {
 		long uid;
 		try {
 			uid = Long.parseLong(serverToken);
-		} catch (NumberFormatException e) {
+		}
+		catch (NumberFormatException e) {
 			if (log.isDebugEnabled()) {
 				log.debug("非法请求参数 :uid = {}", serverToken);
 			}
@@ -84,7 +92,7 @@ public class AccountServiceImpl implements AccountService {
 		}
 
 		SysUserDTO userDTO = sysUserService.read(uid).orElse(null);
-		if(Objects.isNull(userDTO) || !StatusEnum.NORMAL.getValue().equals(userDTO.getStatus())){
+		if (Objects.isNull(userDTO) || !StatusEnum.NORMAL.getValue().equals(userDTO.getStatus())) {
 			return ApiResponseUtil.conflict("用户不存在或者已禁用");
 		}
 		try {
@@ -93,8 +101,9 @@ public class AccountServiceImpl implements AccountService {
 			if (log.isDebugEnabled()) {
 				log.debug("绑定小程序用户,uid = {},微信ID = {}", uid, socialId);
 			}
-			socialBindingService.createBinding(SocialTypeEnum.WX_MA.getValue(), socialId,uid);
-		} catch (WxErrorException e) {
+			socialBindingService.createBinding(SocialTypeEnum.WX_MA.getValue(), socialId, uid);
+		}
+		catch (WxErrorException e) {
 			log.error(e.getError().toString());
 			throw new RtException(e.getMessage(), e);
 		}
@@ -105,4 +114,5 @@ public class AccountServiceImpl implements AccountService {
 
 		return ApiResponseUtil.ok(userInfoDTO);
 	}
+
 }

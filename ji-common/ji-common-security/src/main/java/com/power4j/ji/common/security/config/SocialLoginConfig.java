@@ -48,11 +48,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @RequiredArgsConstructor
 @AutoConfigureBefore(WebSecurityConfig.class)
-@ConditionalOnBean({SocialLoginHandler.class, SocialUserDetailsService.class})
+@ConditionalOnBean({ SocialLoginHandler.class, SocialUserDetailsService.class })
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class SocialLoginConfig extends WebSecurityConfigurerAdapter {
+
 	private final SecurityProperties securityProperties;
+
 	private final ObjectProvider<SocialUserDetailsService> userDetailsServiceObjectProvider;
+
 	private TokenService tokenService;
 
 	@Autowired
@@ -84,13 +87,14 @@ public class SocialLoginConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Override
-	protected void configure(AuthenticationManagerBuilder auth){
+	protected void configure(AuthenticationManagerBuilder auth) {
 		SocialUserDetailsService socialUserDetailsService = userDetailsServiceObjectProvider.getObject();
 		SocialAuthenticationProvider provider = new SocialAuthenticationProvider(socialUserDetailsService);
 		auth.authenticationProvider(provider);
 	}
 
-	public SocialAuthenticationProvider createSocialAuthenticationProvider(){
+	public SocialAuthenticationProvider createSocialAuthenticationProvider() {
 		return new SocialAuthenticationProvider(userDetailsServiceObjectProvider.getObject());
 	}
+
 }

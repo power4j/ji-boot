@@ -44,25 +44,26 @@ import java.util.Objects;
 @RequestMapping("/wx-mini/user")
 @Tag(name = "账号服务")
 public class UserController {
-	private final AccountService accountService;
 
+	private final AccountService accountService;
 
 	// ~ Helper
 	// ===================================================================================================
 
 	@ApiLog(module = "微信小程序", tag = "查看账号绑定二维码")
-	@GetMapping(value = "/binding/qr/img",produces = MediaType.IMAGE_JPEG_VALUE)
+	@GetMapping(value = "/binding/qr/img", produces = MediaType.IMAGE_JPEG_VALUE)
 	@Operation(summary = "查看账号绑定二维码")
 	public ResponseEntity<Resource> getAccBindingQrCodeImage() {
 		Long uid = SecurityUtil.getLoginUserId().orElse(null);
-		if(Objects.isNull(uid)){
+		if (Objects.isNull(uid)) {
 			return ResponseEntity.notFound().build();
 		}
 		try {
 			ByteArrayResource inputStream = new ByteArrayResource(accountService.getAccBindingQrImgData(uid));
 			return ResponseEntity.ok().contentLength(inputStream.contentLength()).body(inputStream);
-		}catch (Exception e){
-			log.error(e.getMessage(),e);
+		}
+		catch (Exception e) {
+			log.error(e.getMessage(), e);
 			return ResponseEntity.internalServerError().build();
 		}
 	}

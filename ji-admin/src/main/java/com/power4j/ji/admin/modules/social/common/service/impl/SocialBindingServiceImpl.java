@@ -34,22 +34,20 @@ import java.util.Optional;
  * @since 1.0
  */
 @Service
-public class SocialBindingServiceImpl extends BaseServiceImpl<SocialBindingMapper, SocialBinding> implements SocialBindingService {
+public class SocialBindingServiceImpl extends BaseServiceImpl<SocialBindingMapper, SocialBinding>
+		implements SocialBindingService {
+
 	@Override
 	public Optional<SocialBinding> findByOpenId(String type, String openId) {
-		return lambdaQuery().eq(SocialBinding::getType,type)
-				.eq(SocialBinding::getOpenId,openId)
-				.oneOpt();
+		return lambdaQuery().eq(SocialBinding::getType, type).eq(SocialBinding::getOpenId, openId).oneOpt();
 	}
 
 	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public SocialBinding createBinding(String type, String openId, long uid) {
-		SocialBinding binding = lambdaQuery().eq(SocialBinding::getType,type)
-				.eq(SocialBinding::getUid,uid)
-				.one();
-		if(Objects.nonNull(binding)){
-			throw new BizException(SysErrorCodes.E_CONFLICT,"用户已经绑定同类型社交账号");
+		SocialBinding binding = lambdaQuery().eq(SocialBinding::getType, type).eq(SocialBinding::getUid, uid).one();
+		if (Objects.nonNull(binding)) {
+			throw new BizException(SysErrorCodes.E_CONFLICT, "用户已经绑定同类型社交账号");
 		}
 		binding = new SocialBinding();
 		binding.setOpenId(openId);
@@ -61,8 +59,7 @@ public class SocialBindingServiceImpl extends BaseServiceImpl<SocialBindingMappe
 
 	@Override
 	public void deleteBinding(String type, long uid) {
-		lambdaUpdate().eq(SocialBinding::getType,type)
-				.eq(SocialBinding::getUid,uid)
-				.remove();
+		lambdaUpdate().eq(SocialBinding::getType, type).eq(SocialBinding::getUid, uid).remove();
 	}
+
 }

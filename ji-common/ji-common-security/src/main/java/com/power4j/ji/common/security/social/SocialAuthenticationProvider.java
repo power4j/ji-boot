@@ -40,17 +40,20 @@ import org.springframework.util.Assert;
 public class SocialAuthenticationProvider implements AuthenticationProvider {
 
 	private final UserDetailsChecker userDetailsChecker = new DefaultUserDetailsChecker();
+
 	private final SocialUserDetailsService userDetailsService;
+
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		Assert.isInstanceOf(SocialAuthenticationToken.class,authentication,"Not SocialAuthenticationToken");
+		Assert.isInstanceOf(SocialAuthenticationToken.class, authentication, "Not SocialAuthenticationToken");
 
 		final String key = authentication.getPrincipal().toString();
 		final String state = authentication.getCredentials().toString();
 		UserDetails userDetails;
-		try{
-			userDetails = userDetailsService.loadBySocial(key,state);
-		}catch (UsernameNotFoundException e){
+		try {
+			userDetails = userDetailsService.loadBySocial(key, state);
+		}
+		catch (UsernameNotFoundException e) {
 			log.warn(e.getMessage());
 			throw e;
 		}
@@ -59,7 +62,7 @@ public class SocialAuthenticationProvider implements AuthenticationProvider {
 			throw new UsernameNotFoundException("该用户未注册");
 		}
 		userDetailsChecker.check(userDetails);
-		return new SocialAuthenticationToken(userDetails,userDetails.getAuthorities());
+		return new SocialAuthenticationToken(userDetails, userDetails.getAuthorities());
 	}
 
 	@Override
@@ -68,6 +71,7 @@ public class SocialAuthenticationProvider implements AuthenticationProvider {
 	}
 
 	private static class DefaultUserDetailsChecker implements UserDetailsChecker {
+
 		@Override
 		public void check(UserDetails user) {
 			if (!user.isAccountNonLocked()) {

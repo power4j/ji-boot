@@ -60,11 +60,10 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @RequiredArgsConstructor
 @AutoConfigureBefore(WebSecurityConfig.class)
-@ConditionalOnBean({SocialLoginHandler.class, SocialUserDetailsService.class})
-@EnableConfigurationProperties({SecurityProperties.class})
+@ConditionalOnBean({ SocialLoginHandler.class, SocialUserDetailsService.class })
+@EnableConfigurationProperties({ SecurityProperties.class })
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class ApiTokenConfig extends WebSecurityConfigurerAdapter {
-
 
 	@Autowired
 	private SecurityProperties securityProperties;
@@ -77,7 +76,6 @@ public class ApiTokenConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private ObjectProvider<TokenService> tokenServiceObjectProvider;
-
 
 	@Bean
 	@ConditionalOnMissingBean
@@ -125,4 +123,5 @@ public class ApiTokenConfig extends WebSecurityConfigurerAdapter {
 		filter.setAuthenticationFailureHandler(loginFailureHandler);
 		return filter;
 	}
+
 }

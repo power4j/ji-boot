@@ -26,13 +26,14 @@ import java.util.Optional;
  * @since 1.0
  */
 public interface SocialBindingService {
+
 	/**
 	 * 查询绑定关系
 	 * @param type
 	 * @param openId
 	 * @return
 	 */
-	Optional<SocialBinding> findByOpenId(String type,String openId);
+	Optional<SocialBinding> findByOpenId(String type, String openId);
 
 	/**
 	 * 创建绑定关系
@@ -41,12 +42,13 @@ public interface SocialBindingService {
 	 * @param uid
 	 * @return
 	 */
-	SocialBinding createBinding(String type,String openId,long uid);
+	SocialBinding createBinding(String type, String openId, long uid);
 
 	/**
 	 * 删除绑定关系
 	 * @param type
 	 * @param uid
 	 */
-	void deleteBinding(String type,long uid);
+	void deleteBinding(String type, long uid);
+
 }

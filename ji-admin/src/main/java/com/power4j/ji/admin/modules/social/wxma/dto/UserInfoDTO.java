@@ -39,7 +39,6 @@ public class UserInfoDTO implements Serializable {
 	@Schema(description = "用户名", example = "power4j")
 	private String username;
 
-
 	/**
 	 * 姓名
 	 */
@@ -52,4 +51,5 @@ public class UserInfoDTO implements Serializable {
 	@Nullable
 	@Schema(description = "创建时间")
 	private LocalDateTime createAt;
+
 }

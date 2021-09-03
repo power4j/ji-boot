@@ -27,4 +27,5 @@ import org.springframework.security.config.annotation.web.configurers.Expression
  */
 public interface ExpressionUrlAuthorizationConfigurerCustomizer<H extends HttpSecurityBuilder<H>>
 		extends Customizer<ExpressionUrlAuthorizationConfigurer<H>> {
+
 }

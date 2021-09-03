@@ -30,4 +30,5 @@ public interface SocialLoginHandler {
 	 * @throws SocialLoginException
 	 */
 	String getUserId(String code) throws SocialLoginException;
+
 }
