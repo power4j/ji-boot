@@ -63,6 +63,7 @@ import java.util.stream.Collectors;
 
 /**
  * The main web security config
+ *
  * @author CJ (power4j@outlook.com)
  * @date 2020/11/22
  * @since 1.0
@@ -107,8 +108,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Bean
 	public ApiTokenAuthenticationProvider apiTokenAuthenticationProvider() {
-		return new ApiTokenAuthenticationProvider(tokenService,
-				userDetailsServiceObjectProvider.getObject());
+		return new ApiTokenAuthenticationProvider(tokenService, userDetailsServiceObjectProvider.getObject());
 	}
 
 	protected GenerateApiTokenFilter loginFilter() throws Exception {
@@ -135,7 +135,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
-	public WebSecurityCustomizer webSecurityCustomizer(){
+	public WebSecurityCustomizer webSecurityCustomizer() {
 
 		return (webSecurity) -> {
 			if (secureAccessProperties.isEnabled()) {
@@ -155,7 +155,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
 		auth.authenticationProvider(daoAuthenticationProvider);
 	}
-
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -190,21 +189,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// @formatter:on
 	}
 
-	protected void applyAuthorizationConfigurerCustomizers(ExpressionUrlAuthorizationConfigurer<HttpSecurity> configurer) {
-		List<ExpressionUrlAuthorizationConfigurerCustomizer<HttpSecurity>> customizers = authorizationConfigurerCustomizers.orderedStream().collect(Collectors.toList());
+	protected void applyAuthorizationConfigurerCustomizers(
+			ExpressionUrlAuthorizationConfigurer<HttpSecurity> configurer) {
+		List<ExpressionUrlAuthorizationConfigurerCustomizer<HttpSecurity>> customizers = authorizationConfigurerCustomizers
+				.orderedStream().collect(Collectors.toList());
 		customizers.forEach(o -> o.customize(configurer));
 		getDefaultUrlRegistryCustomizer().customize(configurer);
 	}
 
 	protected ApiTokenAuthenticationFilter createApiTokenAuthenticationFilter() throws Exception {
-		ApiTokenAuthenticationFilter authenticationFilter = new ApiTokenAuthenticationFilter(authenticationManagerBean(),new ApiTokenAuthenticationConverter());
+		ApiTokenAuthenticationFilter authenticationFilter = new ApiTokenAuthenticationFilter(
+				authenticationManagerBean(), new ApiTokenAuthenticationConverter());
 		AccessDeniedEntryPoint entryPoint = new AccessDeniedEntryPoint();
 		authenticationFilter.setFailureHandler(entryPoint::commence);
-		authenticationFilter.setSuccessHandler((request, response, authentication) -> {} );
+		authenticationFilter.setSuccessHandler((request, response, authentication) -> {
+		});
 		return authenticationFilter;
 	}
 
-	protected ExternalUrlAuthorizationConfigurer getDefaultUrlRegistryCustomizer(){
+	protected ExternalUrlAuthorizationConfigurer getDefaultUrlRegistryCustomizer() {
 		return new ExternalUrlAuthorizationConfigurer(secureAccessProperties);
 	}
+
 }

@@ -39,12 +39,15 @@ public class SocialBinding extends BaseEntity implements Serializable {
 	 * 社交账号类型
 	 */
 	private String type;
+
 	/**
 	 * 社交账号ID
 	 */
 	private String openId;
+
 	/**
 	 * 用户ID
 	 */
 	private Long uid;
+
 }

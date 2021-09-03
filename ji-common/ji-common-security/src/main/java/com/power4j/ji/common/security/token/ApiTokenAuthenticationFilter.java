@@ -34,16 +34,20 @@ import java.io.IOException;
  */
 public class ApiTokenAuthenticationFilter extends AuthenticationFilter {
 
-	public ApiTokenAuthenticationFilter(AuthenticationManager authenticationManager, AuthenticationConverter authenticationConverter) {
+	public ApiTokenAuthenticationFilter(AuthenticationManager authenticationManager,
+			AuthenticationConverter authenticationConverter) {
 		super(authenticationManager, authenticationConverter);
 	}
 
-	public ApiTokenAuthenticationFilter(AuthenticationManagerResolver<HttpServletRequest> authenticationManagerResolver, AuthenticationConverter authenticationConverter) {
+	public ApiTokenAuthenticationFilter(AuthenticationManagerResolver<HttpServletRequest> authenticationManagerResolver,
+			AuthenticationConverter authenticationConverter) {
 		super(authenticationManagerResolver, authenticationConverter);
 	}
 
 	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+			throws ServletException, IOException {
 		super.doFilterInternal(request, response, filterChain);
 	}
+
 }

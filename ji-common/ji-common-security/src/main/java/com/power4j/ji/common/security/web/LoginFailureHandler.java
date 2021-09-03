@@ -36,7 +36,9 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
 	private final ApiResponseEntryPoint apiResponseEntryPoint = new ApiResponseEntryPoint();
 
 	@Override
-	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+			AuthenticationException exception) throws IOException, ServletException {
 		apiResponseEntryPoint.commence(request, response, exception);
 	}
+
 }

@@ -28,19 +28,21 @@ import java.util.Collections;
  * @since 1.0
  */
 public class SocialAuthenticationToken extends AbstractAuthenticationToken {
+
 	private final String code;
+
 	private final Object principal;
 
-	public SocialAuthenticationToken(String type, String code){
+	public SocialAuthenticationToken(String type, String code) {
 		super(Collections.emptyList());
 		this.principal = type;
 		this.code = code;
 	}
 
-	public SocialAuthenticationToken(Object principal,Collection<? extends GrantedAuthority> authorities){
+	public SocialAuthenticationToken(Object principal, Collection<? extends GrantedAuthority> authorities) {
 		super(authorities);
 		this.principal = principal;
-		this.code=null;
+		this.code = null;
 		super.setAuthenticated(true);
 	}
 
@@ -53,4 +55,5 @@ public class SocialAuthenticationToken extends AbstractAuthenticationToken {
 	public Object getPrincipal() {
 		return principal;
 	}
+
 }

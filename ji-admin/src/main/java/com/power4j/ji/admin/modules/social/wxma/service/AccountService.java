@@ -26,6 +26,7 @@ import com.power4j.ji.common.core.model.ApiResponse;
  * @since 1.0
  */
 public interface AccountService {
+
 	/**
 	 * 获取账号绑定链接
 	 * @param uid 用户ID
@@ -39,4 +40,5 @@ public interface AccountService {
 	 * @return
 	 */
 	ApiResponse<UserInfoDTO> userBind(UserBindingDTO dto);
+
 }

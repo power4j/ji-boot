@@ -31,10 +31,10 @@ public class UserBindingDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-
 	@Schema(description = "小程序wx.login接口返回的code")
 	private String weiChatCode;
 
 	@Schema(description = "服务端token")
 	private String serverToken;
+
 }

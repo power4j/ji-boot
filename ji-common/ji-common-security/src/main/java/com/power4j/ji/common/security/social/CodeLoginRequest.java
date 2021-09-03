@@ -31,9 +31,10 @@ public class CodeLoginRequest implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Schema(description = "类型",example = "wx_mini_app")
+	@Schema(description = "类型", example = "wx_mini_app")
 	private String type;
 
 	@Schema(description = "授权码")
 	private String code;
+
 }

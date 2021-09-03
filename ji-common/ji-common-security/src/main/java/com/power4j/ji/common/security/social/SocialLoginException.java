@@ -22,6 +22,7 @@ package com.power4j.ji.common.security.social;
  * @since 1.0
  */
 public class SocialLoginException extends Exception {
+
 	public SocialLoginException(String message) {
 		super(message);
 	}
@@ -33,4 +34,5 @@ public class SocialLoginException extends Exception {
 	public SocialLoginException(Throwable cause) {
 		super(cause);
 	}
+
 }

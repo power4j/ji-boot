@@ -36,17 +36,23 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @RequiredArgsConstructor
-public class ExternalUrlAuthorizationConfigurer implements ExpressionUrlAuthorizationConfigurerCustomizer<HttpSecurity> {
+public class ExternalUrlAuthorizationConfigurer
+		implements ExpressionUrlAuthorizationConfigurerCustomizer<HttpSecurity> {
+
 	private final SecureAccessProperties secureAccessProperties;
 
 	@SneakyThrows
 	@Override
 	public void customize(ExpressionUrlAuthorizationConfigurer<HttpSecurity> configurer) {
-		if(secureAccessProperties.isEnabled()){
-			applyHttpAccess(configurer.getRegistry(),secureAccessProperties.getFilters(),secureAccessProperties.getDefaultAccess());
+		if (secureAccessProperties.isEnabled()) {
+			applyHttpAccess(configurer.getRegistry(), secureAccessProperties.getFilters(),
+					secureAccessProperties.getDefaultAccess());
 		}
 	}
-	protected void applyHttpAccess(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry,Collection<SecureAccessProperties.HttpAccess> httpAccesses, String defaultAccess) {
+
+	protected void applyHttpAccess(
+			ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry,
+			Collection<SecureAccessProperties.HttpAccess> httpAccesses, String defaultAccess) {
 		if (httpAccesses != null && !httpAccesses.isEmpty()) {
 			httpAccesses.forEach(httpAccess -> {
 				Assert.hasText(httpAccess.getAccess(), "Access expression is required");
@@ -72,4 +78,5 @@ public class ExternalUrlAuthorizationConfigurer implements ExpressionUrlAuthoriz
 		log.info("default access : {}", defaultAccess);
 		registry.anyRequest().access(defaultAccess);
 	}
+
 }

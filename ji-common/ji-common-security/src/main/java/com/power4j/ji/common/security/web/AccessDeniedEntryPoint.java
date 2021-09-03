@@ -32,4 +32,5 @@ public class AccessDeniedEntryPoint extends ApiResponseEntryPoint {
 	protected int determineHttpResponseStatusCode(AuthenticationException authException) {
 		return HttpStatus.HTTP_UNAUTHORIZED;
 	}
+
 }

@@ -44,13 +44,12 @@ public abstract class AbstractAuthenticationEntryPoint implements Authentication
 	@Getter
 	private final MessageSourceAccessor messages = SecurityMessageSource.getAccessor();
 
-
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response,
-						 AuthenticationException authException) throws IOException {
+			AuthenticationException authException) throws IOException {
 		final String reqUrl = request.getRequestURI();
 		log.debug("Handling {} : {} {}", authException.getClass().getSimpleName(), authException.getMessage(), reqUrl);
-		renderResponse(request,response,authException);
+		renderResponse(request, response, authException);
 	}
 
 	/**
@@ -61,15 +60,15 @@ public abstract class AbstractAuthenticationEntryPoint implements Authentication
 	 * @throws IOException
 	 */
 	protected abstract void renderResponse(HttpServletRequest request, HttpServletResponse response,
-										   AuthenticationException authException) throws IOException;
+			AuthenticationException authException) throws IOException;
 
-
-	protected int determineApiResponseCode(AuthenticationException authException){
+	protected int determineApiResponseCode(AuthenticationException authException) {
 		return SysErrorCodes.E_FAIL;
 	}
 
-	protected ApiResponse<?> makeApiResponse(AuthenticationException authException){
-		ApiResponse<Object> result = ApiResponse.of(determineApiResponseCode(authException), authException.getMessage());
+	protected ApiResponse<?> makeApiResponse(AuthenticationException authException) {
+		ApiResponse<Object> result = ApiResponse.of(determineApiResponseCode(authException),
+				authException.getMessage());
 
 		if (authException instanceof InsufficientAuthenticationException) {
 			String msg = messages.getMessage("AbstractAccessDecisionManager.accessDenied", authException.getMessage());
@@ -96,4 +95,5 @@ public abstract class AbstractAuthenticationEntryPoint implements Authentication
 
 		return result;
 	}
+
 }

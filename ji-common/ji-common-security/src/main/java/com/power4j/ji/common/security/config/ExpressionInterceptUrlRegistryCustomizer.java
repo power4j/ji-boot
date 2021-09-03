@@ -25,5 +25,7 @@ import org.springframework.security.config.annotation.web.configurers.Expression
  * @date 2021/9/1
  * @since 1.0
  */
-public interface ExpressionInterceptUrlRegistryCustomizer<H extends HttpSecurityBuilder<H>> extends Customizer<ExpressionUrlAuthorizationConfigurer<H>.ExpressionInterceptUrlRegistry> {
+public interface ExpressionInterceptUrlRegistryCustomizer<H extends HttpSecurityBuilder<H>>
+		extends Customizer<ExpressionUrlAuthorizationConfigurer<H>.ExpressionInterceptUrlRegistry> {
+
 }

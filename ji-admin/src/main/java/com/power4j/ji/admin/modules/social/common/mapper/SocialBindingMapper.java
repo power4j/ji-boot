@@ -27,4 +27,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface SocialBindingMapper extends BaseMapper<SocialBinding> {
+
 }

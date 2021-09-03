@@ -36,12 +36,14 @@ import java.nio.charset.StandardCharsets;
  * @since 1.0
  */
 public class ApiResponseEntryPoint extends AbstractAuthenticationEntryPoint {
+
 	@Getter
 	@Setter
 	private ObjectMapper jsonMapper = new ObjectMapper();
 
 	@Override
-	protected void renderResponse(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
+	protected void renderResponse(HttpServletRequest request, HttpServletResponse response,
+			AuthenticationException authException) throws IOException {
 		ApiResponse<?> result = makeApiResponse(authException);
 		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -50,7 +52,8 @@ public class ApiResponseEntryPoint extends AbstractAuthenticationEntryPoint {
 		printWriter.println(getJsonMapper().writeValueAsString(result));
 	}
 
-	protected int determineHttpResponseStatusCode(AuthenticationException authException){
+	protected int determineHttpResponseStatusCode(AuthenticationException authException) {
 		return HttpStatus.HTTP_OK;
 	}
+
 }

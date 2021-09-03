@@ -30,11 +30,10 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Slf4j
 public class ApiTokenAuthenticationConverter implements AuthenticationConverter {
+
 	@Override
 	public Authentication convert(HttpServletRequest request) {
-		return ApiTokenUtil.getApiTokenValue(request)
-				.map(String::trim)
-				.map(ApiTokenAuthentication::new)
-				.orElse(null);
+		return ApiTokenUtil.getApiTokenValue(request).map(String::trim).map(ApiTokenAuthentication::new).orElse(null);
 	}
+
 }

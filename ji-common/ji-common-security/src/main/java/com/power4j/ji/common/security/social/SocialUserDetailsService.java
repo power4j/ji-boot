@@ -34,5 +34,6 @@ public interface SocialUserDetailsService {
 	 * @throws UsernameNotFoundException if the user could not be found or the user has no
 	 * GrantedAuthority
 	 */
-	UserDetails loadBySocial(String socialKey,String state) throws UsernameNotFoundException;
+	UserDetails loadBySocial(String socialKey, String state) throws UsernameNotFoundException;
+
 }
