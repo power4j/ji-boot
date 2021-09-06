@@ -31,6 +31,7 @@ ALTER TABLE `t_sys_user` ADD INDEX `idx_create_at` (`create_at`);
 CREATE TABLE `t_api_token`
 (
     `id`          BIGINT      NOT NULL COMMENT '主健',
+    `client`      VARCHAR(20) NOT NULL COMMENT '客户端',
     `token`       VARCHAR(40) NOT NULL COMMENT '访问令牌',
     `uuid`        VARCHAR(20) NOT NULL COMMENT '用户UID',
     `username`    VARCHAR(200) NOT NULL COMMENT '登录用户名',
@@ -298,6 +299,5 @@ CREATE TABLE `t_social_binding`
     `type`        VARCHAR(40) NOT NULL COMMENT '类型',
     `open_id`     VARCHAR(128) NOT NULL COMMENT '社交账号ID',
     `uid`         BIGINT      NOT NULL COMMENT '用户ID',
-    PRIMARY KEY (`id`),
-    UNIQUE KEY `uk_open_id` (`type`,`open_id`)
+    PRIMARY KEY (`id`)
 ) ENGINE = InnoDB CHARSET = `utf8mb4` COMMENT ='社交账号绑定';

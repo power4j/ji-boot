@@ -27,4 +27,16 @@ import com.power4j.ji.common.security.service.TokenService;
  */
 public interface ApiTokenService extends BaseService<UserToken>, TokenService {
 
+	String CLIENT_WEB = "web";
+
+	String CLIENT_MOBILE = "mobile";
+
+	/**
+	 * 删除令牌
+	 * @param client 客户端类型
+	 * @param uid 用户ID
+	 * @return 实际删除数量
+	 */
+	long remove(String client, long uid);
+
 }

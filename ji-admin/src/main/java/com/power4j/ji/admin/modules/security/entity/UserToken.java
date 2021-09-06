@@ -45,6 +45,11 @@ public class UserToken implements Unique, Serializable {
 	private Long id;
 
 	/**
+	 * 客户端
+	 */
+	private String client;
+
+	/**
 	 * 访问令牌
 	 */
 	private String token;

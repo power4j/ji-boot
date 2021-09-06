@@ -31,6 +31,7 @@ import com.power4j.ji.common.data.crud.service.impl.BaseServiceImpl;
 import com.power4j.ji.common.security.LoginUser;
 import com.power4j.ji.common.security.config.SecurityProperties;
 import com.power4j.ji.common.security.model.ApiToken;
+import com.power4j.ji.common.security.social.SocialAuthenticationToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.Cache;
@@ -44,6 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -83,13 +85,15 @@ public class ApiTokenServiceImpl extends BaseServiceImpl<UserTokenMapper, UserTo
 		LocalDateTime expire = LocalDateTime.now().plusSeconds(securityProperties.getApiToken().getExpireSec());
 		int maxToken = securityProperties.getApiToken().getMaxUserToken();
 		Assert.isInstanceOf(LoginUser.class, authentication.getPrincipal());
+		String client = determineClientType(authentication);
 		LoginUser loginUser = (LoginUser) authentication.getPrincipal();
-		int count = removeOverLimited(loginUser.getUid(), maxToken);
+		int count = removeOverLimited(client, loginUser.getUid(), maxToken);
 		if (count > 0) {
 			log.warn("Max user token exceed, {} token deleted for user: {}", count, loginUser.getUsername());
 		}
 		UserToken entity = new UserToken();
 		entity.setToken(UUID.fastUUID().toString());
+		entity.setClient(client);
 		entity.setUsername(loginUser.getUsername());
 		entity.setUuid(loginUser.getUid());
 		entity.setExpireIn(expire);
@@ -106,18 +110,33 @@ public class ApiTokenServiceImpl extends BaseServiceImpl<UserTokenMapper, UserTo
 		return getBaseMapper().selectList(wrapper);
 	}
 
-	protected int removeOverLimited(Long uid, int limit) {
+	protected int removeOverLimited(String client, Long uid, int limit) {
 		List<UserToken> tokenList = loadUserToken(uid, LocalDateTime.now()).stream()
-				.sorted(Comparator.comparing(UserToken::getExpireIn)).collect(Collectors.toList());
+				.filter(o -> client.equals(o.getClient())).sorted(Comparator.comparing(UserToken::getExpireIn))
+				.collect(Collectors.toList());
 		if (tokenList.size() >= limit) {
 			List<UserToken> removed = CollectionUtil.sub(tokenList, 0, tokenList.size() - limit + 1);
-			Cache cache = cacheManager.getCache(CacheConstant.Name.API_TOKEN_TO_USER_TOKEN);
+			Cache cache = Objects.requireNonNull(cacheManager.getCache(CacheConstant.Name.API_TOKEN_TO_USER_TOKEN));
 			removed.forEach(userToken -> cache.evict(userToken.getToken()));
 			List<Long> idList = removed.stream().map(UserToken::getId).collect(Collectors.toList());
 			getBaseMapper().deleteBatchIds(idList);
 			return idList.size();
 		}
 		return 0;
+	}
+
+	protected String determineClientType(Authentication authentication) {
+		if (SocialAuthenticationToken.class.isAssignableFrom(authentication.getClass())) {
+			return CLIENT_MOBILE;
+		}
+		return CLIENT_WEB;
+	}
+
+	@Override
+	public long remove(String client, long uid) {
+		Wrapper<UserToken> wrapper = Wrappers.<UserToken>lambdaQuery().eq(UserToken::getUuid, uid)
+				.eq(Objects.nonNull(client), UserToken::getClient, client);
+		return getBaseMapper().delete(wrapper);
 	}
 
 }

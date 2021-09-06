@@ -16,6 +16,7 @@
 
 package com.power4j.ji.admin.modules.social.wxma.controller;
 
+import com.power4j.ji.admin.modules.security.service.ApiTokenService;
 import com.power4j.ji.admin.modules.social.common.constant.SocialTypeEnum;
 import com.power4j.ji.admin.modules.social.common.service.SocialBindingService;
 import com.power4j.ji.admin.modules.social.wxma.service.AccountService;
@@ -54,6 +55,8 @@ public class UserController {
 
 	private final SocialBindingService bindingService;
 
+	private final ApiTokenService apiTokenService;
+
 	@ApiLog(module = "微信小程序", tag = "解除账号绑定")
 	@DeleteMapping(value = "/binging")
 	@Operation(summary = "解除微信小程序账号绑定")
@@ -63,6 +66,7 @@ public class UserController {
 			return ApiResponseUtil.ok(Boolean.FALSE);
 		}
 		bindingService.deleteBinding(SocialTypeEnum.WX_MA.getValue(), uid);
+		apiTokenService.remove(ApiTokenService.CLIENT_MOBILE, uid);
 		return ApiResponseUtil.ok(Boolean.TRUE);
 	}
 
