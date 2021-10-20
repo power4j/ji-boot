@@ -31,7 +31,9 @@ import com.power4j.ji.common.core.model.Unique;
 import com.power4j.ji.common.data.crud.constant.LowAttrEnum;
 import com.power4j.ji.common.data.crud.service.CrudService;
 import com.power4j.ji.common.data.crud.util.CrudUtil;
+import com.power4j.ji.common.data.crud.util.SysCtl;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +42,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
@@ -47,6 +50,7 @@ import java.util.function.Supplier;
  * @date 2020/11/20
  * @since 1.0
  */
+@Slf4j
 public abstract class AbstractCrudService<M extends BaseMapper<T>, D extends Unique, T extends Unique>
 		extends BaseServiceImpl<M, T> implements CrudService<D, T> {
 
@@ -197,6 +201,19 @@ public abstract class AbstractCrudService<M extends BaseMapper<T>, D extends Uni
 		U data = supplier.get();
 		checkSysCtlNot(data, LowAttrEnum.SYS_LOCKED.getValue(), msg != null ? msg : "系统数据不允许删除");
 		return data;
+	}
+
+	@Override
+	public void checkSysCtl(Object obj, Predicate<SysCtl> predicate, String msg) {
+		if (obj instanceof SysCtl) {
+			if (!predicate.test((SysCtl) obj)) {
+				throw new BizException(SysErrorCodes.E_FORBIDDEN, msg);
+			}
+		}
+		else {
+			String clazz = Optional.ofNullable(obj).map(o -> o.getClass().getName()).orElse("null");
+			log.warn("Not implements SysCtl:{}", clazz);
+		}
 	}
 
 }

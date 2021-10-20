@@ -29,6 +29,7 @@ import com.power4j.ji.admin.modules.sys.entity.SysUser;
 import com.power4j.ji.admin.modules.sys.service.SysRoleService;
 import com.power4j.ji.common.core.constant.SysErrorCodes;
 import com.power4j.ji.common.core.exception.BizException;
+import com.power4j.ji.common.data.crud.constant.LowAttrEnum;
 import com.power4j.ji.common.data.crud.service.impl.AbstractCrudService;
 import com.power4j.ji.common.security.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -117,6 +118,13 @@ public class SysRoleServiceImpl extends AbstractCrudService<SysRoleMapper, SysRo
 	@Override
 	public Optional<SysRoleDTO> delete(Serializable id) {
 		return super.delete(id);
+	}
+
+	public static void main(String[] args) {
+		SysRoleServiceImpl sysRoleService = new SysRoleServiceImpl(null, null);
+		SysRole role = new SysRole();
+		role.setSysFlag(LowAttrEnum.SYS_LOCKED.getValue());
+		sysRoleService.checkDeletable(() -> role, "test");
 	}
 
 }
