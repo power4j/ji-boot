@@ -110,7 +110,7 @@ ji-boot:
   # 缓存配置
   cache:
     # redisson caffeine none
-    type: caffeine
+    type: redisson
     caffeine:
       spec: "expireAfterWrite=24h,maximumSize=100000"
     redisson:
