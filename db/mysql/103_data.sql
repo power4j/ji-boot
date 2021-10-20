@@ -28,21 +28,21 @@ insert  into `t_org_node`(`ancestor`, `descendant`, `distance`) VALUES (13729040
 
 /*Data for the table `t_sys_org` */
 insert  into `t_sys_org`(`id`, `sys_flag`, `del_flag`, `create_at`, `update_at`, `tag`, `code`, `name`, `sort`) VALUES (1, 1, NULL, '2020-12-20 23:31:10', NULL, '0', '0', '根节点', 0);
-insert  into `t_sys_org`(`id`, `sys_flag`, `del_flag`, `create_at`, `update_at`, `tag`, `code`, `name`, `sort`) VALUES (1372893325519036417, 0, NULL, '2020-12-20 23:31:10', NULL, '1', 'G0', 'G0集团', 0);
-insert  into `t_sys_org`(`id`, `sys_flag`, `del_flag`, `create_at`, `update_at`, `tag`, `code`, `name`, `sort`) VALUES (1372900735176482818, 0, NULL, '2021-03-19 21:20:17', NULL, '1', 'ES0', '西南分公司', 1);
-insert  into `t_sys_org`(`id`, `sys_flag`, `del_flag`, `create_at`, `update_at`, `tag`, `code`, `name`, `sort`) VALUES (1372902329179774977, 0, NULL, '2021-03-19 21:26:37', NULL, '1', 'ES02', '运营中心', 2);
-insert  into `t_sys_org`(`id`, `sys_flag`, `del_flag`, `create_at`, `update_at`, `tag`, `code`, `name`, `sort`) VALUES (1372904031341584386, 0, NULL, '2021-03-19 21:33:23', '2021-03-19 21:37:17', '2', 'RD0', '上海特斯拉', 0);
+insert  into `t_sys_org`(`id`, `sys_flag`, `del_flag`, `create_at`, `update_at`, `tag`, `code`, `name`, `sort`) VALUES (1372893325519036417, 1, NULL, '2020-12-20 23:31:10', NULL, '1', 'G0', 'G0集团', 0);
+insert  into `t_sys_org`(`id`, `sys_flag`, `del_flag`, `create_at`, `update_at`, `tag`, `code`, `name`, `sort`) VALUES (1372900735176482818, 1, NULL, '2021-03-19 21:20:17', NULL, '1', 'ES0', '西南分公司', 1);
+insert  into `t_sys_org`(`id`, `sys_flag`, `del_flag`, `create_at`, `update_at`, `tag`, `code`, `name`, `sort`) VALUES (1372902329179774977, 1, NULL, '2021-03-19 21:26:37', NULL, '1', 'ES02', '运营中心', 2);
+insert  into `t_sys_org`(`id`, `sys_flag`, `del_flag`, `create_at`, `update_at`, `tag`, `code`, `name`, `sort`) VALUES (1372904031341584386, 1, NULL, '2021-03-19 21:33:23', '2021-03-19 21:37:17', '2', 'RD0', '上海特斯拉', 0);
 
 /*Data for the table `t_sys_position` */
 insert  into `t_sys_position`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`code`,`name`,`remarks`,`status`,`owner`) values (1380525982978342913,1,NULL,'2021-04-09 22:20:18',NULL,'admin','IT admin','test','0',2000);
 
 /*Data for the table `t_sys_role` */
 
-insert  into `t_sys_role`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`code`,`name`,`remarks`,`status`,`owner`) values (1338178645550809090,0,NULL,'2020-12-14 01:47:06',NULL,'admin','系统管理员',NULL,'0',NULL);
+insert  into `t_sys_role`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`code`,`name`,`remarks`,`status`,`owner`) values (1338178645550809090,1,NULL,'2020-12-14 01:47:06',NULL,'admin','系统管理员',NULL,'0',NULL);
 
 /*Data for the table `t_sys_role_grantee` */
 
-insert  into `t_sys_role_grantee`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`user_id`,`role_id`,`grant_type`) values (1,0,NULL,'2020-12-20 23:31:10','2020-12-21 02:13:44',1,1338178645550809090,'1');
+insert  into `t_sys_role_grantee`(`id`,`sys_flag`,`del_flag`,`create_at`,`update_at`,`user_id`,`role_id`,`grant_type`) values (1,1,NULL,'2020-12-20 23:31:10','2020-12-21 02:13:44',1,1338178645550809090,'1');
 
 /*Data for the table `t_sys_user` */
 
