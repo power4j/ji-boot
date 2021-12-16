@@ -57,15 +57,15 @@ public class DateTimeParser {
 	public final static DateTimeFormatter UTC_DATETIME_FORMATTER = DateTimeFormatter
 			.ofPattern(DateTimePattern.DATETIME_UTC);
 
-	private static List<Pair<String, DateTimeFormatter>> YEAR_MONTH_FORMAT_REGISTRY = new ArrayList<>(3);
+	private final static List<Pair<String, DateTimeFormatter>> YEAR_MONTH_FORMAT_REGISTRY = new ArrayList<>(3);
 
-	private static List<Pair<String, DateTimeFormatter>> MONTH_DAY_FORMAT_REGISTRY = new ArrayList<>(3);
+	private final static List<Pair<String, DateTimeFormatter>> MONTH_DAY_FORMAT_REGISTRY = new ArrayList<>(3);
 
-	private static List<Pair<String, DateTimeFormatter>> DATE_FORMAT_REGISTRY = new ArrayList<>(3);
+	private final static List<Pair<String, DateTimeFormatter>> DATE_FORMAT_REGISTRY = new ArrayList<>(3);
 
-	private static List<Pair<String, DateTimeFormatter>> TIME_FORMAT_REGISTRY = new ArrayList<>(3);
+	private final static List<Pair<String, DateTimeFormatter>> TIME_FORMAT_REGISTRY = new ArrayList<>(3);
 
-	private static List<Pair<String, DateTimeFormatter>> DATE_TIME_FORMAT_REGISTRY = new ArrayList<>(3);
+	private final static List<Pair<String, DateTimeFormatter>> DATE_TIME_FORMAT_REGISTRY = new ArrayList<>(3);
 
 	static {
 
