@@ -68,13 +68,13 @@
     <redisson.version>3.16.1</redisson.version>
     <ureport.version>2.2.9</ureport.version>
     <esc-pos.version>1.0.2</esc-pos.version>
-    <sequence.version>1.4.0</sequence.version>
+    <sequence.version>1.5.0</sequence.version>
     <ez-captcha.version>0.1.1</ez-captcha.version>
     <dict-mapper.version>0.1.3</dict-mapper.version>
     <friendly-id.version>1.1.0</friendly-id.version>
     <dinger.version>1.2.0</dinger.version>
     <ip2region.version>1.7.2</ip2region.version>
-    <weixin-java.version>4.1.0</weixin-java.version>
+    <weixin-java.version>4.2.0</weixin-java.version>
     <mybatis-plus.version>3.4.3.2</mybatis-plus.version>
     <springdoc-openapi.version>1.5.10</springdoc-openapi.version>
     <transmittable-thread-local.version>2.12.1</transmittable-thread-local.version>
