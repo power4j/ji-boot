@@ -61,9 +61,9 @@
     <maven.compiler.target>1.8</maven.compiler.target>
     <ji.version>0.3.1</ji.version>
     <!-- dependencies -->
-    <druid.version>1.2.6</druid.version>
+    <druid.version>1.2.8</druid.version>
     <hutool.version>5.7.9</hutool.version>
-    <coca-kit.version>0.1.0</coca-kit.version>
+    <coca-kit.version>0.1.1</coca-kit.version>
     <knife4j.version>3.0.3</knife4j.version>
     <redisson.version>3.16.3</redisson.version>
     <ureport.version>2.2.9</ureport.version>
