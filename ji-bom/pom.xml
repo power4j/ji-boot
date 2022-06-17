@@ -61,7 +61,7 @@
     <maven.compiler.target>1.8</maven.compiler.target>
     <ji.version>0.3.1</ji.version>
     <!-- dependencies -->
-    <druid.version>1.2.6</druid.version>
+    <druid.version>1.2.11</druid.version>
     <hutool.version>5.7.9</hutool.version>
     <coca-kit.version>0.1.1</coca-kit.version>
     <knife4j.version>3.0.3</knife4j.version>
@@ -77,7 +77,7 @@
     <weixin-java.version>4.1.0</weixin-java.version>
     <mybatis-plus.version>3.4.3.2</mybatis-plus.version>
     <springdoc-openapi.version>1.6.6</springdoc-openapi.version>
-    <transmittable-thread-local.version>2.12.1</transmittable-thread-local.version>
+    <transmittable-thread-local.version>2.13.0</transmittable-thread-local.version>
     <hibernate-validator-test-utils.version>6.1.7.Final</hibernate-validator-test-utils.version>
   </properties>
 
