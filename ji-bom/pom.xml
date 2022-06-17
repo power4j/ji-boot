@@ -74,7 +74,7 @@
     <friendly-id.version>1.1.0</friendly-id.version>
     <dinger.version>1.2.0</dinger.version>
     <ip2region.version>1.7.2</ip2region.version>
-    <weixin-java.version>4.1.0</weixin-java.version>
+    <weixin-java.version>4.2.0</weixin-java.version>
     <mybatis-plus.version>3.4.3.2</mybatis-plus.version>
     <springdoc-openapi.version>1.6.6</springdoc-openapi.version>
     <transmittable-thread-local.version>2.12.1</transmittable-thread-local.version>
